@@ -1,0 +1,23 @@
+{
+  "name": "poketrax",
+  "version": "0.0.1",
+  "description": "Pokemon TCG collection management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgunzelman88/PokeTrax.git"
+  },
+  "keywords": [
+    "#pokemon",
+    "#TCG"
+  ],
+  "author": "jgunzelman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jgunzelman88/PokeTrax/issues"
+  },
+  "homepage": "https://github.com/jgunzelman88/PokeTrax#readme"
+}
