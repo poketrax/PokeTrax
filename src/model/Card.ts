@@ -1,7 +1,7 @@
 export class Card {
-    public id: string
+    public idTCGP: string
     public name : string
-    public setId: string
+    public setIdTCGP: string
     public setName: string
     public setCardNumber : string
     public rarity: string
@@ -21,9 +21,9 @@ export class Card {
     public attack4?: string
 
     constructor(id: string, name:string, setId:string, setName:string, setCardNumber:string, rarity:string, img:string, description:string, releaseDate:string){
-        this.id = id
+        this.idTCGP = id
         this.name = name
-        this.setId = setId
+        this.setIdTCGP = setId
         this.setName = setName
         this.setCardNumber = setCardNumber
         this.rarity = rarity
