@@ -1,7 +1,7 @@
 import React from 'react';
+import { CardDB } from '../controls/CardDB';
 import pokeball from "../static/pokeball.svg"
 import Cards from "./Cards"
-
 class State {
     page: string = "cards"
 }
