@@ -1,0 +1,3844 @@
+{
+  "series": [
+    "Sword & Shield",
+    "Sun & Moon",
+    "XY",
+    "Black & White",
+    "Black & White Promos",
+    "Call of Legends",
+    "HeartGold SoulSilver",
+    "Platinum",
+    "Nintendo Promos",
+    "Diamond & Pearl",
+    "EX Ruby & Sapphire",
+    "e-Card",
+    "Legendary Collection",
+    "Neo Genesis",
+    "Gym Heroes",
+    "Base Set"
+  ],
+  "expansions": [
+    {
+      "name": "Brilliant Stars",
+      "series": "Sword & Shield",
+      "tcgName": "swsh09-brilliant-stars",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Brilliant-Stars.logo.340.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Brilliant-Stars.symbol.340.png",
+      "cards": []
+    },
+    {
+      "name": "Fusion Strike",
+      "series": "Sword & Shield",
+      "tcgName": "swsh08-fusion-strike",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Fusion-Strike.logo.335.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Fusion-Strike.symbol.335.png",
+      "cards": []
+    },
+    {
+      "name": "Celebrations",
+      "series": "Sword & Shield",
+      "tcgName": "celebrations",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Celebrations.logo.329.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Celebrations.symbol.329.png",
+      "cards": []
+    },
+    {
+      "name": "Evolving Skies",
+      "series": "Sword & Shield",
+      "tcgName": "swsh07-evolving-skies",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Evolving-Skies.logo.325.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Evolving-Skies.symbol.325.png",
+      "cards": []
+    },
+    {
+      "name": "Chilling Reign",
+      "series": "Sword & Shield",
+      "tcgName": "swsh06-chilling-reign",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Chilling-Reign.logo.320.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Chilling-Reign.symbol.320.png",
+      "cards": []
+    },
+    {
+      "name": "Battle Styles",
+      "series": "Sword & Shield",
+      "tcgName": "swsh05-battle-styles",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Battle-Styles.logo.305.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Battle-Styles.symbol.305.png",
+      "cards": []
+    },
+    {
+      "name": "Shining Fates",
+      "series": "Sword & Shield",
+      "tcgName": "shining-fates",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Shining-Fates.logo.304.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Shining-Fates.symbol.304.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's 25th Anniversary",
+      "series": "Sword & Shield",
+      "tcgName": "mcdonalds-25th-anniversary-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-25th-Anniversary.logo.300.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-25th-Anniversary.symbol.300.png",
+      "cards": []
+    },
+    {
+      "name": "Vivid Voltage",
+      "series": "Sword & Shield",
+      "tcgName": "swsh04-vivid-voltage",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Vivid-Voltage.logo.299.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Vivid-Voltage.symbol.299.png",
+      "cards": []
+    },
+    {
+      "name": "Champion's Path",
+      "series": "Sword & Shield",
+      "tcgName": "champions-path",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Champions-Path.logo.298.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Champions-Path.symbol.298.png",
+      "cards": []
+    },
+    {
+      "name": "Pokemon Futsal Promos",
+      "series": "Sword & Shield",
+      "tcgName": "N/A",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Pokemon-Futsal-Promos.logo.303.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Pokemon-Futsal-Promos.symbol.303.png",
+      "cards": []
+    },
+    {
+      "name": "Darkness Ablaze",
+      "series": "Sword & Shield",
+      "tcgName": "swsh03-darkness-ablaze",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Darkness-Ablaze.logo.296.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Darkness-Ablaze.symbol.296.png",
+      "cards": []
+    },
+    {
+      "name": "Rebel Clash",
+      "series": "Sword & Shield",
+      "tcgName": "swsh02-rebel-clash",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Rebel-Clash.logo.292.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Rebel-Clash.symbol.292.png",
+      "cards": []
+    },
+    {
+      "name": "Sword & Shield Promos",
+      "series": "Sword & Shield",
+      "tcgName": "swsh-sword-and-shield-promo-cards",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Sword-Shield-Promos.logo.287.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Sword-Shield-Promos.symbol.287.png",
+      "cards": []
+    },
+    {
+      "name": "Sword & Shield",
+      "series": "Sword & Shield",
+      "tcgName": "swsh01-sword-and-shield-base-set",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Sword-Shield.logo.286.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Sword-Shield.symbol.286.png",
+      "cards": []
+    },
+    {
+      "name": "Cosmic Eclipse",
+      "series": "Sun & Moon",
+      "tcgName": "sm-cosmic-eclipse",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Cosmic-Eclipse.logo.280.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Cosmic-Eclipse.symbol.280.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2019 FR)",
+      "series": "Sun & Moon",
+      "tcgName": "mcdonalds-promos-2019",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2019-FR.logo.334.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2019-FR.symbol.334.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2019)",
+      "series": "Sun & Moon",
+      "tcgName": "mcdonalds-promos-2019",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2019.logo.290.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2019.symbol.290.png",
+      "cards": []
+    },
+    {
+      "name": "Hidden Fates",
+      "series": "Sun & Moon",
+      "tcgName": "hidden-fates",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Hidden-Fates.logo.279.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Hidden-Fates.symbol.279.png",
+      "cards": []
+    },
+    {
+      "name": "Unified Minds",
+      "series": "Sun & Moon",
+      "tcgName": "sm-unified-minds",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Unified-Minds.logo.275.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Unified-Minds.symbol.275.png",
+      "cards": []
+    },
+    {
+      "name": "Unbroken Bonds",
+      "series": "Sun & Moon",
+      "tcgName": "sm-unbroken-bonds",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Unbroken-Bonds.logo.269.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Unbroken-Bonds.symbol.269.png",
+      "cards": []
+    },
+    {
+      "name": "Detective Pikachu",
+      "series": "Sun & Moon",
+      "tcgName": "detective-pikachu",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Detective-Pikachu.logo.270.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Detective-Pikachu.symbol.270.png",
+      "cards": []
+    },
+    {
+      "name": "Team Up",
+      "series": "Sun & Moon",
+      "tcgName": "sm-team-up",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Team-Up.logo.261.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Team-Up.symbol.261.png",
+      "cards": []
+    },
+    {
+      "name": "Lost Thunder",
+      "series": "Sun & Moon",
+      "tcgName": "sm-lost-thunder",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Lost-Thunder.logo.259.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Lost-Thunder.symbol.259.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2018)",
+      "series": "Sun & Moon",
+      "tcgName": "mcdonalds-promos-2018",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2018.logo.265.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2018.symbol.265.png",
+      "cards": []
+    },
+    {
+      "name": "Dragon Majesty",
+      "series": "Sun & Moon",
+      "tcgName": "dragon-majesty",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Dragon-Majesty.logo.257.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Dragon-Majesty.symbol.257.png",
+      "cards": []
+    },
+    {
+      "name": "Celestial Storm",
+      "series": "Sun & Moon",
+      "tcgName": "sm-celestial-storm",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Celestial-Storm.logo.244.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Celestial-Storm.symbol.244.png",
+      "cards": []
+    },
+    {
+      "name": "Forbidden Light",
+      "series": "Sun & Moon",
+      "tcgName": "sm-forbidden-light",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Forbidden-Light.logo.239.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Forbidden-Light.symbol.239.png",
+      "cards": []
+    },
+    {
+      "name": "Ultra Prism",
+      "series": "Sun & Moon",
+      "tcgName": "sm-ultra-prism",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Ultra-Prism.logo.234.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Ultra-Prism.symbol.234.png",
+      "cards": []
+    },
+    {
+      "name": "Crimson Invasion",
+      "series": "Sun & Moon",
+      "tcgName": "sm-crimson-invasion",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Crimson-Invasion.logo.229.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Crimson-Invasion.symbol.229.png",
+      "cards": []
+    },
+    {
+      "name": "Shining Legends",
+      "series": "Sun & Moon",
+      "tcgName": "shining-legends",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Shining-Legends.logo.231.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Shining-Legends.symbol.231.png",
+      "cards": []
+    },
+    {
+      "name": "Burning Shadows",
+      "series": "Sun & Moon",
+      "tcgName": "sm-burning-shadows",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Burning-Shadows.logo.225.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Burning-Shadows.symbol.225.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2017)",
+      "series": "Sun & Moon",
+      "tcgName": "mcdonalds-promos-2017",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2017.logo.230.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2017.symbol.230.png",
+      "cards": []
+    },
+    {
+      "name": "Guardians Rising",
+      "series": "Sun & Moon",
+      "tcgName": "sm-guardians-rising",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Guardians-Rising.logo.220.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Guardians-Rising.symbol.220.png",
+      "cards": []
+    },
+    {
+      "name": "Sun & Moon Promos",
+      "series": "Sun & Moon",
+      "tcgName": "sm-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Sun-Moon-Promos.logo.209.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Sun-Moon-Promos.symbol.209.png",
+      "cards": []
+    },
+    {
+      "name": "Sun & Moon",
+      "series": "Sun & Moon",
+      "tcgName": "sm-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Sun-Moon.logo.205.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Sun-Moon.symbol.205.png",
+      "cards": []
+    },
+    {
+      "name": "Evolutions",
+      "series": "XY",
+      "tcgName": "xy-evolutions",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Evolutions.logo.197.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Evolutions.symbol.197.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2016)",
+      "series": "XY",
+      "tcgName": "N/A",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2016.logo.207.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2016.symbol.207.png",
+      "cards": []
+    },
+    {
+      "name": "Steam Siege",
+      "series": "XY",
+      "tcgName": "xy-steam-siege",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Steam-Siege.logo.192.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Steam-Siege.symbol.192.png",
+      "cards": []
+    },
+    {
+      "name": "Fates Collide",
+      "series": "XY",
+      "tcgName": "xy-fates-collide",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Fates-Collide.logo.188.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Fates-Collide.symbol.188.png",
+      "cards": []
+    },
+    {
+      "name": "Generations",
+      "series": "XY",
+      "tcgName": "generations",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Generations.logo.187.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Generations.symbol.187.png",
+      "cards": []
+    },
+    {
+      "name": "BREAKPoint",
+      "series": "XY",
+      "tcgName": "xy-breakpoint",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/BREAKPoint.logo.183.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/BREAKPoint.symbol.183.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2015)",
+      "series": "XY",
+      "tcgName": "mcdonalds-promos-2015",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2015.logo.182.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2015.symbol.182.png",
+      "cards": []
+    },
+    {
+      "name": "XY BREAKthrough",
+      "series": "XY",
+      "tcgName": "xy-breakthrough",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/XY-Breakthrough.logo.179.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/XY-Breakthrough.symbol.179.png",
+      "cards": []
+    },
+    {
+      "name": "Ancient Origins",
+      "series": "XY",
+      "tcgName": "xy-ancient-origins",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Ancient-Origins.logo.174.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Ancient-Origins.symbol.174.png",
+      "cards": []
+    },
+    {
+      "name": "Roaring Skies",
+      "series": "XY",
+      "tcgName": "xy-roaring-skies",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Roaring-Skies.logo.169.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Roaring-Skies.symbol.169.png",
+      "cards": []
+    },
+    {
+      "name": "Double Crisis",
+      "series": "XY",
+      "tcgName": "double-crisis",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Double-Crisis.logo.172.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Double-Crisis.symbol.172.png",
+      "cards": []
+    },
+    {
+      "name": "Primal Clash",
+      "series": "XY",
+      "tcgName": "xy-primal-clash",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Primal-Clash.logo.166.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Primal-Clash.symbol.166.png",
+      "cards": []
+    },
+    {
+      "name": "Phantom Forces",
+      "series": "XY",
+      "tcgName": "xy-phantom-forces",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Phantom-Forces.logo.162.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Phantom-Forces.symbol.162.png",
+      "cards": []
+    },
+    {
+      "name": "Furious Fists",
+      "series": "XY",
+      "tcgName": "xy-furious-fists",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Furious-Fists.logo.159.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Furious-Fists.symbol.159.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2014)",
+      "series": "XY",
+      "tcgName": "mcdonalds-promos-2014",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2014.logo.158.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2014.symbol.158.png",
+      "cards": []
+    },
+    {
+      "name": "XY Flashfire",
+      "series": "XY",
+      "tcgName": "xy-flashfire",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/XY-Flashfire.logo.155.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/XY-Flashfire.symbol.155.png",
+      "cards": []
+    },
+    {
+      "name": "Kalos Starter Set",
+      "series": "XY",
+      "tcgName": "kalos-starter-set",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Kalos-Starter-Set.logo.150.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Kalos-Starter-Set.symbol.150.png",
+      "cards": []
+    },
+    {
+      "name": "XY Promos",
+      "series": "XY",
+      "tcgName": "xy-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/XY-Promos.logo.143.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/XY-Promos.symbol.143.png",
+      "cards": []
+    },
+    {
+      "name": "XY",
+      "series": "XY",
+      "tcgName": "xy-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/XY.logo.142.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/XY.symbol.142.png",
+      "cards": []
+    },
+    {
+      "name": "Radiant Collection",
+      "series": "Black & White",
+      "tcgName": "generations-radiant-collection",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Radiant-Collection.logo.148.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Radiant-Collection.symbol.148.png",
+      "cards": []
+    },
+    {
+      "name": "Legendary Treasures",
+      "series": "Black & White",
+      "tcgName": "legendary-treasures",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Legendary-Treasures.logo.138.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Legendary-Treasures.symbol.138.png",
+      "cards": []
+    },
+    {
+      "name": "Plasma Blast",
+      "series": "Black & White",
+      "tcgName": "plasma-blast",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Plasma-Blast.logo.131.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Plasma-Blast.symbol.131.png",
+      "cards": []
+    },
+    {
+      "name": "Plasma Freeze",
+      "series": "Black & White",
+      "tcgName": "plasma-freeze",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Plasma-Freeze.logo.51.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Plasma-Freeze.symbol.51.png",
+      "cards": []
+    },
+    {
+      "name": "Plasma Storm",
+      "series": "Black & White",
+      "tcgName": "plasma-storm",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Plasma-Storm.logo.26.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Plasma-Storm.symbol.26.png",
+      "cards": []
+    },
+    {
+      "name": "Boundaries Crossed",
+      "series": "Black & White",
+      "tcgName": "boundaries-crossed",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Boundaries-Crossed.logo.7.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Boundaries-Crossed.symbol.7.png",
+      "cards": []
+    },
+    {
+      "name": "Dragon Vault",
+      "series": "Black & White",
+      "tcgName": "dragon-vault",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Dragon-Vault.logo.8.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Dragon-Vault.symbol.8.png",
+      "cards": []
+    },
+    {
+      "name": "Dragons Exalted",
+      "series": "Black & White",
+      "tcgName": "dragons-exalted",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Dragons-Exalted.logo.2.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Dragons-Exalted.symbol.2.png",
+      "cards": []
+    },
+    {
+      "name": "Dark Explorers",
+      "series": "Black & White",
+      "tcgName": "dark-explorers",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Dark-Explorers.logo.6.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Dark-Explorers.symbol.6.png",
+      "cards": []
+    },
+    {
+      "name": "Next Destinies",
+      "series": "Black & White",
+      "tcgName": "next-destinies",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Next-Destinies.logo.5.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Next-Destinies.symbol.5.png",
+      "cards": []
+    },
+    {
+      "name": "Noble Victories",
+      "series": "Black & White",
+      "tcgName": "noble-victories",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Noble-Victories.logo.4.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Noble-Victories.symbol.4.png",
+      "cards": []
+    },
+    {
+      "name": "Emerging Powers",
+      "series": "Black & White",
+      "tcgName": "emerging-powers",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Emerging-Powers.logo.3.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Emerging-Powers.symbol.3.png",
+      "cards": []
+    },
+    {
+      "name": "Black & White",
+      "series": "Black & White",
+      "tcgName": "black-and-white",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Black-White.logo.1.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Black-White.symbol.1.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2013)",
+      "series": "Black & White Promos",
+      "tcgName": "N/A",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Promos-2013.logo.147.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Collection-2013.symbol.147.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2012)",
+      "series": "Black & White Promos",
+      "tcgName": "mcdonalds-promos-2012",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Promos-2012.logo.11.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Promos-2012.symbol.11.png",
+      "cards": []
+    },
+    {
+      "name": "McDonald's Collection (2011)",
+      "series": "Black & White Promos",
+      "tcgName": "mcdonalds-promos-2011",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/McDonalds-Promos-2011.logo.10.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/McDonalds-Promos-2011.symbol.10.png",
+      "cards": []
+    },
+    {
+      "name": "Black & White Promos",
+      "series": "Black & White Promos",
+      "tcgName": "black-and-white-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Black-White-Promos.logo.9.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Black-White-Promos.symbol.9.png",
+      "cards": []
+    },
+    {
+      "name": "Call of Legends",
+      "series": "Call of Legends",
+      "tcgName": "call-of-legends",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Call-of-Legends.logo.33.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Call-of-Legends.symbol.33.png",
+      "cards": []
+    },
+    {
+      "name": "HS Triumphant",
+      "series": "HeartGold SoulSilver",
+      "tcgName": "triumphant",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/HS-Triumphant.logo.37.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/HS-Triumphant.symbol.37.png",
+      "cards": []
+    },
+    {
+      "name": "HS Undaunted",
+      "series": "HeartGold SoulSilver",
+      "tcgName": "undaunted",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/HS-Undaunted.logo.36.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/HS-Undaunted.symbol.36.png",
+      "cards": []
+    },
+    {
+      "name": "HS Unleashed",
+      "series": "HeartGold SoulSilver",
+      "tcgName": "unleashed",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/HS-Unleashed.logo.35.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/HS-Unleashed.symbol.35.png",
+      "cards": []
+    },
+    {
+      "name": "HeartGold SoulSilver Promos",
+      "series": "HeartGold SoulSilver",
+      "tcgName": "heartgold-soulsilver",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/HeartGold-SoulSilver-Promos.logo.107.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/HeartGold-SoulSilver-Promos.symbol.107.png",
+      "cards": []
+    },
+    {
+      "name": "HeartGold SoulSilver",
+      "series": "HeartGold SoulSilver",
+      "tcgName": "heartgold-soulsilver",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/HeartGold-SoulSilver.logo.34.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/HeartGold-SoulSilver.symbol.34.png",
+      "cards": []
+    },
+    {
+      "name": "Pokemon Rumble",
+      "series": "Platinum",
+      "tcgName": "rumble",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Pokemon-Rumble.logo.52.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Pokemon-Rumble.symbol.52.png",
+      "cards": []
+    },
+    {
+      "name": "Platinum - Arceus",
+      "series": "Platinum",
+      "tcgName": "platinum",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Platinum-Arceus.logo.41.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Platinum-Arceus.symbol.41.png",
+      "cards": []
+    },
+    {
+      "name": "Platinum - Supreme Victors",
+      "series": "Platinum",
+      "tcgName": "supreme-victors",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Platinum-Supreme-Victors.logo.40.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Platinum-Supreme-Victors.symbol.40.png",
+      "cards": []
+    },
+    {
+      "name": "Platinum - Rising Rivals",
+      "series": "Platinum",
+      "tcgName": "platinum",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Platinum-Rising-Rivals.logo.39.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Platinum-Rising-Rivals.symbol.39.png",
+      "cards": []
+    },
+    {
+      "name": "Platinum",
+      "series": "Platinum",
+      "tcgName": "platinum",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Platinum.logo.38.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Platinum.symbol.38.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 9",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-9",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-9.logo.106.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-9.symbol.106.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 8",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-8",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-8.logo.105.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-8.symbol.105.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 7",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-7",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-7.logo.104.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-7.symbol.104.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 6",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-6",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-6.logo.103.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-6.symbol.103.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 5",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-5",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-5.logo.102.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-5.symbol.102.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 4",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-4",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-4.logo.71.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-4.symbol.71.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 3",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-3",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-3.logo.70.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-3.symbol.70.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 2",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-2",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-2.logo.69.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-2.symbol.69.png",
+      "cards": []
+    },
+    {
+      "name": "POP Series 1",
+      "series": "Nintendo Promos",
+      "tcgName": "pop-series-1",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/POP-Series-1.logo.68.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/POP-Series-1.symbol.68.png",
+      "cards": []
+    },
+    {
+      "name": "Nintendo Promos",
+      "series": "Nintendo Promos",
+      "tcgName": "nintendo-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Nintendo-Promos.logo.50.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Nintendo-Promos.symbol.50.png",
+      "cards": []
+    },
+    {
+      "name": "Stormfront",
+      "series": "Diamond & Pearl",
+      "tcgName": "stormfront",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Stormfront.logo.48.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Stormfront.symbol.48.png",
+      "cards": []
+    },
+    {
+      "name": "Legends Awakened",
+      "series": "Diamond & Pearl",
+      "tcgName": "legends-awakened",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Legends-Awakened.logo.47.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Legends-Awakened.symbol.47.png",
+      "cards": []
+    },
+    {
+      "name": "Majestic Dawn",
+      "series": "Diamond & Pearl",
+      "tcgName": "majestic-dawn",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Majestic-Dawn.logo.46.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Majestic-Dawn.symbol.46.png",
+      "cards": []
+    },
+    {
+      "name": "Great Encounters",
+      "series": "Diamond & Pearl",
+      "tcgName": "great-encounters",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Great-Encounters.logo.45.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Great-Encounters.symbol.45.png",
+      "cards": []
+    },
+    {
+      "name": "Secret Wonders",
+      "series": "Diamond & Pearl",
+      "tcgName": "secret-wonders",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Secret-Wonders.logo.44.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Secret-Wonders.symbol.44.png",
+      "cards": []
+    },
+    {
+      "name": "Mysterious Treasures",
+      "series": "Diamond & Pearl",
+      "tcgName": "mysterious-treasures",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Mysterious-Treasures.logo.43.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Mysterious-Treasures.symbol.43.png",
+      "cards": []
+    },
+    {
+      "name": "DP Black Star Promos",
+      "series": "Diamond & Pearl",
+      "tcgName": "diamond-and-pearl-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/DP-Black-Star-Promos.logo.101.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/DP-Black-Star-Promos.symbol.101.png",
+      "cards": []
+    },
+    {
+      "name": "Diamond & Pearl",
+      "series": "Diamond & Pearl",
+      "tcgName": "diamond-and-pearl",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Diamond-Pearl.logo.42.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Diamond-Pearl.symbol.42.png",
+      "cards": []
+    },
+    {
+      "name": "EX Power Keepers",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "power-keepers",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Power-Keepers.logo.67.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Power-Keepers.symbol.67.png",
+      "cards": []
+    },
+    {
+      "name": "EX Dragon Frontiers",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "dragon-frontiers",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Dragon-Frontiers.logo.66.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Dragon-Frontiers.symbol.66.png",
+      "cards": []
+    },
+    {
+      "name": "EX Crystal Guardians",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "crystal-guardians",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Crystal-Guardians.logo.65.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Crystal-Guardians.symbol.65.png",
+      "cards": []
+    },
+    {
+      "name": "EX Holon Phantoms",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "holon-phantoms",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Holon-Phantoms.logo.64.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Holon-Phantoms.symbol.64.png",
+      "cards": []
+    },
+    {
+      "name": "EX Legend Maker",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "legend-maker",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Legend-Maker.logo.63.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Legend-Maker.symbol.63.png",
+      "cards": []
+    },
+    {
+      "name": "EX Delta Species",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "delta-species",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Delta-Species.logo.62.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Delta-Species.symbol.62.png",
+      "cards": []
+    },
+    {
+      "name": "EX Unseen Forces Unown Collection",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "unseen-forces",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Unseen-Forces-Unown-Collection.logo.161.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Unseen-Forces-Unown-Collection.symbol.161.png",
+      "cards": []
+    },
+    {
+      "name": "EX Unseen Forces",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "unseen-forces",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Unseen-Forces.logo.61.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Unseen-Forces.symbol.61.png",
+      "cards": []
+    },
+    {
+      "name": "EX Emerald",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "emerald",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Emerald.logo.60.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Emerald.symbol.60.png",
+      "cards": []
+    },
+    {
+      "name": "EX Deoxys",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "deoxys",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Deoxys.logo.59.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Deoxys.symbol.59.png",
+      "cards": []
+    },
+    {
+      "name": "EX Team Rocket Returns",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "team-rocket-returns",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Team-Rocket-Returns.logo.58.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Team-Rocket-Returns.symbol.58.png",
+      "cards": []
+    },
+    {
+      "name": "EX FireRed & LeafGreen",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "firered-and-leafgreen",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-FireRed-LeafGreen.logo.57.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-FireRed-LeafGreen.symbol.57.png",
+      "cards": []
+    },
+    {
+      "name": "EX Hidden Legends",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "hidden-legends",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Hidden-Legends.logo.56.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Hidden-Legends.symbol.56.png",
+      "cards": []
+    },
+    {
+      "name": "EX Team Magma vs Team Aqua",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "team-magma-vs-team-aqua",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Team-Magma-vs-Team-Aqua.logo.55.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Team-Magma-vs-Team-Aqua.symbol.55.png",
+      "cards": []
+    },
+    {
+      "name": "EX Dragon",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "dragon",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Dragon.logo.54.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Dragon.symbol.54.png",
+      "cards": []
+    },
+    {
+      "name": "EX Sandstorm",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "sandstorm",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/EX-Sandstorm.logo.53.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/EX-Sandstorm.symbol.53.png",
+      "cards": []
+    },
+    {
+      "name": "EX Ruby & Sapphire",
+      "series": "EX Ruby & Sapphire",
+      "tcgName": "ruby-and-sapphire",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Ruby-Sapphire.logo.49.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Ruby-Sapphire.symbol.49.png",
+      "cards": []
+    },
+    {
+      "name": "Skyridge",
+      "series": "e-Card",
+      "tcgName": "skyridge",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Skyridge.logo.111.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Skyridge.symbol.111.png",
+      "cards": []
+    },
+    {
+      "name": "Aquapolis",
+      "series": "e-Card",
+      "tcgName": "aquapolis",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Aquapolis.logo.110.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Aquapolis.symbol.110.png",
+      "cards": []
+    },
+    {
+      "name": "Best of Game",
+      "series": "e-Card",
+      "tcgName": "best-of-promos",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Best-of-Game.logo.196.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Best-of-Game.symbol.196.png",
+      "cards": []
+    },
+    {
+      "name": "Expedition",
+      "series": "e-Card",
+      "tcgName": "expedition",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Expedition.logo.109.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Expedition.symbol.109.png",
+      "cards": []
+    },
+    {
+      "name": "Legendary Collection",
+      "series": "Legendary Collection",
+      "tcgName": "legendary-collection",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Legendary-Collection.logo.112.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Legendary-Collection.symbol.112.png",
+      "cards": []
+    },
+    {
+      "name": "Neo Destiny",
+      "series": "Neo Genesis",
+      "tcgName": "neo-destiny",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Neo-Destiny.logo.116.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Neo-Destiny.symbol.116.png",
+      "cards": []
+    },
+    {
+      "name": "Neo Revelation",
+      "series": "Neo Genesis",
+      "tcgName": "neo-revelation",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Neo-Revelation.logo.115.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Neo-Revelation.symbol.115.png",
+      "cards": []
+    },
+    {
+      "name": "Southern Islands",
+      "series": "Neo Genesis",
+      "tcgName": "southern-islands",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Southern-Islands.logo.124.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Southern-Islands.symbol.124.png",
+      "cards": []
+    },
+    {
+      "name": "Neo Discovery",
+      "series": "Neo Genesis",
+      "tcgName": "neo-discovery",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Neo-Discovery.logo.114.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Neo-Discovery.symbol.114.png",
+      "cards": []
+    },
+    {
+      "name": "Neo Genesis",
+      "series": "Neo Genesis",
+      "tcgName": "neo-genesis",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Neo-Genesis.logo.113.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Neo-Genesis.symbol.113.png",
+      "cards": []
+    },
+    {
+      "name": "Gym Challenge",
+      "series": "Gym Heroes",
+      "tcgName": "gym-challenge",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Gym-Challenge.logo.118.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Gym-Challenge.symbol.118.png",
+      "cards": []
+    },
+    {
+      "name": "Gym Heroes",
+      "series": "Gym Heroes",
+      "tcgName": "gym-heroes",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Gym-Heroes.logo.117.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Gym-Heroes.symbol.117.png",
+      "cards": []
+    },
+    {
+      "name": "Team Rocket",
+      "series": "Base Set",
+      "tcgName": "team-rocket",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Team-Rocket.logo.123.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Team-Rocket.symbol.123.png",
+      "cards": []
+    },
+    {
+      "name": "Base Set 2",
+      "series": "Base Set",
+      "tcgName": "base-set-2",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Base-Set-2.logo.122.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Base-Set-2.symbol.122.png",
+      "cards": []
+    },
+    {
+      "name": "Fossil",
+      "series": "Base Set",
+      "tcgName": "fossil",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Fossil.logo.121.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Fossil.symbol.121.png",
+      "cards": []
+    },
+    {
+      "name": "Wizards of the Coast Promos",
+      "series": "Base Set",
+      "tcgName": "wotc-promo",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Wizards-of-the-Coast-Promos.logo.125.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Wizards-of-the-Coast-Promos.symbol.125.png",
+      "cards": []
+    },
+    {
+      "name": "Jungle",
+      "series": "Base Set",
+      "tcgName": "jungle",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Jungle.logo.120.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Jungle.symbol.120.png",
+      "cards": []
+    },
+    {
+      "name": "Base Set",
+      "series": "Base Set",
+      "tcgName": "base-set",
+      "pokellectorSet": "",
+      "count": 0,
+      "logoURL": "https://den-media.pokellector.com/logos/Base-Set.logo.119.png",
+      "symbolURL": "https://den-media.pokellector.com/logos/Base-Set.symbol.119.png",
+      "cards": [
+        {
+          "idTCGP": 42350,
+          "name": "Water Energy",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "102",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42350_200w.jpg",
+          "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Energy"
+          ],
+          "cardTypeB": "Basic Water Energy",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42441,
+          "name": "Fighting Energy",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "97",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42441_200w.jpg",
+          "description": "<em>Copyright: (c) 1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c) 1999 Wizards",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Energy"
+          ],
+          "cardTypeB": "Basic Fighting Energy",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42439,
+          "name": "Switch",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "95",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42439_200w.jpg",
+          "description": "Switch 1 of your Benched Pokemon with your Active  Pokemon.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42404,
+          "name": "Gyarados",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "6",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42404_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "F-30",
+          "weakness": "G",
+          "flavorText": "",
+          "attack1": "[WWW] Dragon Rage (50)",
+          "attack2": "[WWWW] Bubblebeam (40)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42405,
+          "name": "Ponyta",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "60",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42405_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "None",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[2] Smash Kick (20)",
+          "attack2": "[RR] Flame Tail (30)",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42349,
+          "name": "Psychic Energy",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "101",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42349_200w.jpg",
+          "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards</em>",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Energy"
+          ],
+          "cardTypeB": "Basic Psychic Energy",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42408,
+          "name": "Squirtle",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "63",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42408_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[W] Bubble (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack2": "[1W] Withdraw \r\n<br>Flip a coin. If heads, prevent all damage done to Squirtle during your opponent's next turn. <i>(Any other effects of attacks will happen.)</i>",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42431,
+          "name": "Professor Oak",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "88",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42431_200w.jpg",
+          "description": "Discard your hand, then draw 7 cards.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42415,
+          "name": "Hitmonchan",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "7",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42415_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fighting"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fighting",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[F] Jab (20)",
+          "attack2": "[1FF] Special Punch (40)",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42402,
+          "name": "Pikachu",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "58",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42402_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Lightning"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Lightning",
+          "resistance": "None",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[1] Gnaw (10)",
+          "attack2": "[1L] Thunder Jolt (30)\r\n<br>Flip a coin. If tails, Pikachu does 10 damage to itself.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42443,
+          "name": "Grass Energy",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "99",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42443_200w.jpg",
+          "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Energy"
+          ],
+          "cardTypeB": "Basic Grass Energy",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42389,
+          "name": "Charmander",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "46",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42389_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "None",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[1] Scratch (10)",
+          "attack2": "[1R] Ember (30)\r\n<br>Discard 1 Fire Energy card attached to Charmander in order to use this attack.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42347,
+          "name": "Mewtwo",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "10",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42347_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Psychic"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Psychic",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[1P] Psychic (10+)\r\n<br>Does 10 damage plus 10 more damage for each Energy card attached to the Defending Pokemon.",
+          "attack2": "[PP] Barrier\r\n<br>Discard 1 Psychic Energy card attached to Mewtwo in order to use this attack. During your opponent's next turn, prevent all effects of attacks, including damage, done to Mewtwo.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42442,
+          "name": "Fire Energy",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "98",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42442_200w.jpg",
+          "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Energy"
+          ],
+          "cardTypeB": "Basic Fire Energy",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42385,
+          "name": "Wartortle",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "42",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42385_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[1W] WIthdraw \r\n<br>Flip a coin. If heads, prevent all damage done to Wartortle during your opponent's next turn. <i>(Any other effects of attacks still happen.)</i>",
+          "attack2": "[2W] Bite (40)",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42352,
+          "name": "Ninetales",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "12",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42352_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "None",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[2] Lure\r\n<br>If your opponent has any Benched Pokemon, choose 1 of them and switch it with the Defending Pokemon.",
+          "attack2": "[RRRR] Fire Blast (80)\r\n<br>Discard 1 Fire Energy card attached to Ninetales in order to use this attack.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42387,
+          "name": "Bulbasaur",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "44",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42387_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[GG] Leech Seed (20)\r\n<br>Unless all damage from this attack is prevented, you may remove 1 damage counter from Bulbasaur.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42438,
+          "name": "Potion",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "94",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42438_200w.jpg",
+          "description": "<em><strong>(Old Card Text; Reference latest printing)</em></strong>\r\n<br>\r\n<br>Remove up to 2 damage counters from 1 of your Pokemon.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42396,
+          "name": "Machop",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "52",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42396_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fighting"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fighting",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[F] Low Kick (20)",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42390,
+          "name": "Diglett",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "47",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42390_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fighting"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fighting",
+          "resistance": "L-30",
+          "weakness": "G",
+          "flavorText": "",
+          "attack1": "[F] Dig (10)",
+          "attack2": "[FF] Mud Slap (30)",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42436,
+          "name": "Energy Removal",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "92",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42436_200w.jpg",
+          "description": "Choose 1 Energy card attached to 1 of your opponent's Pokemon and discard it.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42348,
+          "name": "Lightning Energy",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "100",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42348_200w.jpg",
+          "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Energy"
+          ],
+          "cardTypeB": "Basic Lightning Energy",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42372,
+          "name": "Ivysaur",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "30",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42372_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[2G] Vine Whip (30)",
+          "attack2": "[GGG] Poisonpowder (20)\r\n<br>The Defending Pokemon is now Poisoned.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42413,
+          "name": "Vulpix",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "68",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42413_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "None",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[RR] Confuse Ray (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Confused.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42386,
+          "name": "Abra",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "43",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42386_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Psychic"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Psychic",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[P] Psyshock (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42394,
+          "name": "Gastly",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "50",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42394_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Psychic"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Psychic",
+          "resistance": "F-30",
+          "weakness": "None",
+          "flavorText": "",
+          "attack1": "[P] Sleeping Gas\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Asleep.",
+          "attack2": "[1P] Destiny Bond \r\n<br>Discard 1 Psychic Energy card attached to Gastly in order to use this attack. If a Pokemon Knocks Out Gastly during your opponent's next turn, Knock Out that Pokemon.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42434,
+          "name": "Super Potion",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "90",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42434_200w.jpg",
+          "description": "Discard 1 Energy card attached to 1 of your own Pokemon in order to remove up to 4 damage counters from that Pokemon.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42435,
+          "name": "Bill",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "91",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42435_200w.jpg",
+          "description": "Draw 2 cards.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42399,
+          "name": "Nidoran M",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "55",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42399_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[G] Horn Hazard (30)\r\n<br>Flip a coin. If tails, this attack does nothing.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42410,
+          "name": "Staryu",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "65",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42410_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[W] Slap (20)",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42361,
+          "name": "Electabuzz",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "20",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42361_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Lightning"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Lightning",
+          "resistance": "None",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[L] Thundershock (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack2": "[1L] Thunderpunch (30+)\r\n<br>Flip a coin. If heads, this attack does 30 damage plus 10 more damage; if tails, this attack does 30 damage and Electabuzz does 10 damage to itself.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42417,
+          "name": "Computer Search",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "71",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42417_200w.jpg",
+          "description": "Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42395,
+          "name": "Koffing",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "51",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42395_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[GG] Foul Gas (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned; if tails, it is now Confused.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42427,
+          "name": "Energy Retrieval",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "81",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42427_200w.jpg",
+          "description": "Trade 1 of the other cards in your hand for up to 2 basic Energy cards from your discard pile.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42351,
+          "name": "Nidoking",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "11",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42351_200w.jpg",
+          "description": "",
+          "stage": "Stage 2",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[2G] Thrash (30+)\r\n<br>Flip a coin. If heads, this attack does 30 damage plus 10 more damage; if tails, this attack does 30 damage and Nidoking does 10 damage to itself.",
+          "attack2": "[GGG] Toxic (20)\r\n<br>The Defending Pokemon is now Poisoned. It now takes 20 Poison damage instead of 10 after each player's turn <i>(even if it was already Poisoned)</i>.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42440,
+          "name": "Double Colorless Energy",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "96",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42440_200w.jpg",
+          "description": "Provides 2 Colorless energy.\r\n<br>Doesn't count as a basic Energy card.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Energy"
+          ],
+          "cardTypeB": "Special Colorless Energy",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42379,
+          "name": "Nidorino",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "37",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42379_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[2G] Double Kick (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
+          "attack2": "[2GG] Horn Drill (50)",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42421,
+          "name": "Lass",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "75",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42421_200w.jpg",
+          "description": "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42407,
+          "name": "Sandshrew",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "62",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42407_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fighting"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fighting",
+          "resistance": "L-30",
+          "weakness": "G",
+          "flavorText": "",
+          "attack1": "[F] Sand-attack (10)\r\n<br>If the Defending Pokemon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42433,
+          "name": "Magneton",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "9",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42433_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Lightning"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Lightning",
+          "resistance": "None",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[1LL] Thunder Wave (30)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack2": "[2LL] Selfdestruct (80)\r\n<br>Does 20 damage to each Pokemon on each player's Bench. <i>(Don't apply Weakness and Resistance for Benched Pokemon.)</i> Magneton does 80 damage to itself.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42400,
+          "name": "Onix",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "56",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42400_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fighting"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fighting",
+          "resistance": "None",
+          "weakness": "G",
+          "flavorText": "",
+          "attack1": "[F] Rock Throw (10)",
+          "attack2": "[FF] Harden \r\n<br>During your opponent's next turn, whenever 30 or less damage is done to Onix <i>(after applying Weakness and Resistance)</i>, prevent that damage. <i>(Any other effects of attacks still happen.)</i>",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42437,
+          "name": "Gust of Wind",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "93",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42437_200w.jpg",
+          "description": "Choose 1 of your opponent's Benched Pokemon and switch it with his or her Active Pokemon.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42371,
+          "name": "Chansey",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "3",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42371_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "P-30",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[2] Scrunch \r\n<br>Flip a coin. If heads, prevent all damage done to Chansey during your opponent's next turn. <i>(Any other effects of attacks still happen.)</i>",
+          "attack2": "[4] Double-edge (80)\r\n<br>Chansey does 80 damage to itself.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42353,
+          "name": "Poliwrath",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "13",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42353_200w.jpg",
+          "description": "",
+          "stage": "Stage 2",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "G",
+          "flavorText": "",
+          "attack1": "[1WW] Water Gun (30+)\r\n<br>Does 30 damage plus 10 more damage for each Water Energy attached to Poliwrath but not used to pay for this attack's Energy cost. Extra Water Energy after the 2nd doesn't count.",
+          "attack2": "[2WW] Whirlpool (40)\r\n<br>If the Defending Pokemon has any Energy cards attached to it, choose 1 of them and discard it.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42374,
+          "name": "Kadabra",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "32",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42374_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Psychic"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Psychic",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[PP] Recover\r\n<br>Discard 1 Psychic Energy card attached to Kadabra in order to use this attack. Remove all damage counters from Kadabra.",
+          "attack2": "[1PP] Super Psy (50)",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42403,
+          "name": "Poliwag",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "59",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42403_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "G",
+          "flavorText": "",
+          "attack1": "[W] Water Gun (10+)\r\n<br>Does 10 damage plus 10 more damage for each Water Energy attached to Poliwag but not used to pay for this attack's Energy cost. Extra Water Energy after the 2nd don't count.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42346,
+          "name": "Alakazam",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "1",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42346_200w.jpg",
+          "description": "<b>Pokemon Power: Damage Swap</b>\r\n<br>As often as you like during your turn <em>(before your attack)</em>, you may move 1 damage counter from 1 of your Pokemon to another as long as you don't Knock Out that Pokemon. This power can't be used if Alakazam is Asleep, Confused, or Paralyzed.",
+          "stage": "Stage 2",
+          "energyType": [
+            "Psychic"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Psychic",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[PPP] Confuse Ray (30)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Confused.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42381,
+          "name": "Porygon",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "39",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42381_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "P-30",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[1] Conversion 1\r\n<br>If the Defending Pokemon has a Weakness, you may change it to ta type of your choice other than Colorless.",
+          "attack2": "[2] Conversion 2\r\n<br>Change Porygon's Resistance to a type of your choice other than Colorless.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42357,
+          "name": "Beedrill",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "17",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42357_200w.jpg",
+          "description": "",
+          "stage": "Stage 2",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "F-30",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[3] Twineedle (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
+          "attack2": "[GGG] Poison Sting (40)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42406,
+          "name": "Rattata",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "61",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42406_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "P-30",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[1] Bite (20)",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42358,
+          "name": "Dragonair",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "18",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42358_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "P-30",
+          "weakness": "None",
+          "flavorText": "",
+          "attack1": "[3] Slam (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
+          "attack2": "[4] Hyper Beam (20)\r\n<br>If the Defending Pokemon has any Energy cards attached to it, choose 1 of them and discard it.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42370,
+          "name": "Haunter",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "29",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42370_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Psychic"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Psychic",
+          "resistance": "F-30",
+          "weakness": "None",
+          "flavorText": "",
+          "attack1": "[P] Hypnosis\r\n<br>The Defending Pokemon is now Asleep.",
+          "attack2": "[PP] Dream Eater (50)\r\n<br>You can't use this attack unless the Defending Pokemon is Asleep.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42373,
+          "name": "Jynx",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "31",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42373_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Psychic"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Psychic",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[P] Doubleslap (10x)\r\n<br>Flip 2 coins. This attack does 10 damage times the number of heads.",
+          "attack2": "[1PP] Meditate (20+)\r\n<br>Does 20 damage plus 10 more damage for each damage counter on the Defending Pokemon.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42424,
+          "name": "Super Energy Removal",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "79",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42424_200w.jpg",
+          "description": "Discard 1 Energy card attached to 1 of your own Pokemon in order to choose 1 of your opponent's Pokemon and up to 2 Energy cards attached to it. Discard those Energy cards.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42363,
+          "name": "Pidgeotto",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "22",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42363_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "F-30",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[2] Whirlwind (20)\r\n<br>If your opponent has any Benched Pokemon, he or she chooses 1 of them and switches it with the Defending Pokemon. <i>(Do the damage before switching the Pokemon.)</i>",
+          "attack2": "[3] Mirror Move\r\n<br>If Pidgeotto was attacked last turn, do the final result of that attack on Pidgeotto to the Defending Pokemon.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42359,
+          "name": "Dugtrio",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "19",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42359_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Fighting"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fighting",
+          "resistance": "L-30",
+          "weakness": "G",
+          "flavorText": "",
+          "attack1": "[1FF] Slash (40)",
+          "attack2": "[FFFF] Earthquake (70)\r\n<br>Does 10 damage to each of your own Benched Pokemon. <i>(Don't apply Weakness and Resistance for Benched Pokemon.)</i>",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42365,
+          "name": "Charmeleon",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "24",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42365_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "None",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[3] Slash (30)",
+          "attack2": "[1RR] Flamethrower (50)\r\n<br>Discard 1 Fire Energy card attached to Charmeleon in order to use this attack.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42364,
+          "name": "Arcanine",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "23",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42364_200w.jpg",
+          "description": "",
+          "stage": "Stage 2",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "None",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[1RR] Flamethrower (50)\r\n<br>Discard 1 Fire Energy card attached to Arcanine in order to use this attack.",
+          "attack2": "[2RR] Take Down (80)\r\n<br>Arcanine does 30 damage to itself.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42375,
+          "name": "Kakuna",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "33",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42375_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[2] Stiffen\r\n<br>Flip a coin. If heads, prevent all damage done to Kakuna during your opponent's next turn. <i>(Any other effects of attacks still happen.)</i>",
+          "attack2": "[GG] Poisonpowder (20)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42409,
+          "name": "Starmie",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "64",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42409_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[WW] Recover \r\n<br>Discard 1 Water Energy card attached to Starmie in order to use this attack. Remove all damage counters from Starmie.",
+          "attack2": "[2W] Star Freeze (20)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42393,
+          "name": "Clefairy",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "5",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42393_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "P-30",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[1] Sing \r\n<br>Flip a coin. If heads, the Defending Pokemon is now Asleep.",
+          "attack2": "[3] Metronome \r\n<br>Choose 1 of the Defending Pokemon's attacks. Metronome copies that attack except for its Energy costs and anything else required to use that attack, such as discarding Energy cards. <i>(No matter what type the Defending Pokemon is, Clefairy's type is still Colorless.)</i>",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 108645,
+          "name": "Pokedex",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "87",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/108645_200w.jpg",
+          "description": "Look at up to 5 cards from the top of your deck and rearrange them as you like.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 108648,
+          "name": "Pokemon Trader",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "77",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/108648_200w.jpg",
+          "description": "Trade 1 of the Basic Pokemon or Evolution cards in your hand for 1 of the Basic Pokemon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42397,
+          "name": "Magnemite",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "53",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42397_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Lightning"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Lightning",
+          "resistance": "None",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[L] Thunder Wave (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack2": "[1L] Selfdestruct (40)\r\n<br>Does 10 damage to each Pokemon on each player's Bench. <i>(Don't apply Weakness and Resistance for Benched Pokemon.)</i> Magnemite does 40 damage to itself.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42392,
+          "name": "Drowzee",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "49",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42392_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Psychic"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Psychic",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[1] Pound (10)",
+          "attack2": "[PP] Confuse Ray (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Confused.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42376,
+          "name": "Machoke",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "34",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42376_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Fighting"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fighting",
+          "resistance": "None",
+          "weakness": "P",
+          "flavorText": "",
+          "attack1": "[1FF] Karate Chop (50-)\r\n<br>Does 50 damage minus 10 damage for each damage counter on Machoke.",
+          "attack2": "[2FF] Submission (60)\r\n<br>Machoke does 20 damage to itself.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42414,
+          "name": "Weedle",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "69",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42414_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[G] Poison Sting (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42354,
+          "name": "Raichu",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "14",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42354_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Lightning"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Lightning",
+          "resistance": "None",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[2L] Agility (20)\r\n<br>Flip a coin. If heads, during your opponent's next turn, prevent all effects of attacks, including damage, done to Raichu.",
+          "attack2": "[1LLL] Thunder (60)\r\n<br>Flip a coin. If tails, Raichu does 30 damage to itself.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42360,
+          "name": "Blastoise",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "2",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42360_200w.jpg",
+          "description": "<b>Pokemon Power: Rain Dance</b>\r\n<br>As often as you like during your turn <em>(before your attack)</em>, you may attach 1 Water Energy card to 1 of your Water Pokemon. <em>(This doesn't use up your 1 Energy card attachment for the turn.)</em> This power can't be used if Blastoise is Asleep, Confused, or Paralyzed.",
+          "stage": "Stage 2",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[WWW] Hydro Pump (40+)\r\n<br>Does 40 damage plus 10 more damage for each Water Energy attached to Blastoise but not to pay for this attack's Energy cost. Extra Water Energy after the 2nd doesn't count.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42355,
+          "name": "Venusaur",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "15",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42355_200w.jpg",
+          "description": "<b>Pokemon Power: Energy Trans</b>\r\n<br>As often as you like during your turn <em>(before your attack)</em>, you may take 1 Grass Energy card attached to 1 of your Pokemon and attach it to a different one. This power can't be used if Venusaur is Asleep, Confused, or Paralyzed.",
+          "stage": "Stage 2",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[GGGG] Solarbeam (60)",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42366,
+          "name": "Dewgong",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "25",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42366_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[1WW] Aurora Beam (50)",
+          "attack2": "[2WW] Ice Beam (30)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42368,
+          "name": "Farfetch'd",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "27",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42368_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "F-30",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[1] Leek Slap (30)\r\n<br>Flip a coin. If tails, this attack does nothing. Either way, you can't use this attack again as long as Farfetch'd stays in play <i>(even putting Farfetch'd on the Bench won't let you use it again).</i>",
+          "attack2": "[3] Pot Smash (30)",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42430,
+          "name": "PlusPower",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "84",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42430_200w.jpg",
+          "description": "Attach PlusPower to your Active Pokemon. At the end of your turn, discard PlusPower. If this Pokemon's attack does damage to the Defending Pokemon <em>(after applying Weakness and Resistance)</em>, the attack does 10 more damage to the Defending Pokemon.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42428,
+          "name": "Full Heal",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "82",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42428_200w.jpg",
+          "description": "Your Active Pokemon is no longer Asleep, Confused, Paralyzed, or Poisoned.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42362,
+          "name": "Electrode",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "21",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42362_200w.jpg",
+          "description": "<b>Pokemon Power: Buzzap</b>\r\n<br>At any time during your turn <em>(before your attack)</em>, you may Knock Out Electrode and attach it to 1 of your other Pokemon. If you do, choose a type of Energy. Electrode is now an Energy card <em>(instead of a Pokemon)</em> that provides 2 energy of that type. This power can't be used if Electrode is Asleep, Confused, or Paralyzed.",
+          "stage": "Stage 1",
+          "energyType": [
+            "Lightning"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Lightning",
+          "resistance": "None",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[LLL] Electric Shock (50)\r\n<br>Flip a coin. If tails, Electrode does 10 damage to itself.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42378,
+          "name": "Magmar",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "36",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42378_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "None",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[RR] Fire Punch (30)",
+          "attack2": "[1RR] Flamethrower (50)\r\n<br>Discard 1 Fire Energy card attached to Magmar in order to use this attack.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42369,
+          "name": "Growlithe",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "28",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42369_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "None",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[1R] Flare (20)",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 108646,
+          "name": "Pokemon Center",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "85",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/108646_200w.jpg",
+          "description": "Remove all damage counters from all of your own Pokemon with damage counters on them, then discard all Energy cards attached to those Pokemon.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42398,
+          "name": "Metapod",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "54",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42398_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[2] Stiffen\r\n<br>Flip a coin. If heads, prevent all damage done to Metapod during your opponent's next turn. <i>(Any other effects of attacks still happen.)</i>",
+          "attack2": "[GG] Stun Spore (20)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42412,
+          "name": "Voltorb",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "67",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42412_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Lightning"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Lightning",
+          "resistance": "None",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[1] Tackle (10)",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42401,
+          "name": "Pidgey",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "57",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42401_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "F-30",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[2] Whirlwind (10)\r\n<br>If your opponent has any Benched Pokemon, he or she chooses 1 of them and switches it with the Defending Pokemon. <i>(Do the damage before switching the Pokemon.)</i>",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42377,
+          "name": "Magikarp",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "35",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42377_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[1] Tackle (10)",
+          "attack2": "[W] Flail (10x)\r\n<br>Does 10 damage times the number of damage counters on Magikarp.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42384,
+          "name": "Seel",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "41",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42384_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[W] Headbutt (10)",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42423,
+          "name": "Scoop Up",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "78",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42423_200w.jpg",
+          "description": "Choose 1 of your Pokemon in play and return its Basic Pokemon card to your hand. <em>(Discard all cards attached to that card.)</em>",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42356,
+          "name": "Zapdos",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "16",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42356_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Lightning"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Lightning",
+          "resistance": "F-30",
+          "weakness": "None",
+          "flavorText": "",
+          "attack1": "[1LLL] Thunder (60)\r\n<br>Flip a coin. If tails, Zapdos does 30 damage to itself.",
+          "attack2": "[LLLL] Thunderbolt (100)\r\n<br>Discard all Energy cards attached to Zapdos in order to use this attack.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42426,
+          "name": "Defender",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "80",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42426_200w.jpg",
+          "description": "Attach Defender to 1 of your Pokemon. At the end of your opponent's next turn, discard Defender. Damage done to that Pokemon by attacks is reduced by 20 <em>(after applying Weakness and Resistance)</em>.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42391,
+          "name": "Doduo",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "48",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42391_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "F-30",
+          "weakness": "L",
+          "flavorText": "",
+          "attack1": "[1] Fury Attack (10x)\r\n<br>Flip 2 coins. This attack does 10 damage times the number of heads.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42422,
+          "name": "Pokemon Breeder",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "76",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42422_200w.jpg",
+          "description": "Put a Stage 2 Evolution card from your hand on the matching Basic Pokemon. You can only play this card when you would be allowed to evolve that Pokemon anyway.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42388,
+          "name": "Caterpie",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "45",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42388_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[G] String Shot (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42380,
+          "name": "Poliwhirl",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "38",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42380_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Water"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Water",
+          "resistance": "None",
+          "weakness": "G",
+          "flavorText": "",
+          "attack1": "[WW] Amnesia\r\n<br>Choose 1 of the Defending Pokemon's attacks. That Pokemon can't use that attack during your opponent's next turn.",
+          "attack2": "[1WW] Doubleslap (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42383,
+          "name": "Raticate",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "40",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42383_200w.jpg",
+          "description": "",
+          "stage": "Stage 1",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "P-30",
+          "weakness": "F",
+          "flavorText": "",
+          "attack1": "[1] Bite (20)",
+          "attack2": "[3] Super Fang (?)\r\n<br>Does damage to the Defending Pokemon equal to half the Defending Pokemon's remaining HP (rounded up to the nearest 10).",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 86271,
+          "name": "Imposter Professor Oak",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "73",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/86271_200w.jpg",
+          "description": "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42382,
+          "name": "Charizard",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "4",
+          "rarity": "Holo Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42382_200w.jpg",
+          "description": "<b>Pokemon Power: Burn</b>\r\n<br>As often as you like during your turn <em>(before your attack)</em>, you may turn all Energy attached to Charizard into Fire Energy for the rest of the turn. This power can't be used if Charizard is Asleep, Confused, or Paralyzed.",
+          "stage": "Stage 2",
+          "energyType": [
+            "Fire"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Fire",
+          "resistance": "F-30",
+          "weakness": "W",
+          "flavorText": "",
+          "attack1": "[RRRR] Fire Spin (100)\r\n<br>Discard 2 Energy cards attached to Charizard in order to use this attack.",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42418,
+          "name": "Devolution Spray",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "72",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42418_200w.jpg",
+          "description": "Choose 1 of your own Pokemon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokemon. That Pokemon is no longer Asleep, Confused, Paralyzed, Poisoned or anything else that might be the result of an attack (just as if you had evolved it).",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42367,
+          "name": "Dratini",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "26",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42367_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Colorless"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Colorless",
+          "resistance": "P-30",
+          "weakness": "None",
+          "flavorText": "",
+          "attack1": "[1] Pound (10)",
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42411,
+          "name": "Tangela",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "66",
+          "rarity": "Common",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42411_200w.jpg",
+          "description": "",
+          "stage": "Basic",
+          "energyType": [
+            "Grass"
+          ],
+          "cardType": [
+            "Pokemon"
+          ],
+          "cardTypeB": "Grass",
+          "resistance": "None",
+          "weakness": "R",
+          "flavorText": "",
+          "attack1": "[1G] Bind (20)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+          "attack2": "[GGG] Poisonpowder (20)\r\n<br>The Defending Pokemon is now Poisoned.",
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42416,
+          "name": "Clefairy Doll",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "70",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42416_200w.jpg",
+          "description": "Play Clefairy Doll as if it were a Basic Pokemon. While in play, Clefairy Doll counts as a Pokemon (instead of a Trainer card). Clefairy Doll has no attacks, can't retreat, and can't be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn't count as a Knocked Out Pokemon. At any time during your turn before your attack, you may discard Clefairy Doll.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 108647,
+          "name": "Pokemon Flute",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "86",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/108647_200w.jpg",
+          "description": "Choose 1 Basic Pokemon card from your opponent's discard pile and put it onto his or her Bench. <em>(You can't play Pokemon Flute if your opponent's Bench is full.)</em>",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42432,
+          "name": "Revive",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "89",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42432_200w.jpg",
+          "description": "Put 1 Basic Pokemon card from your discard pile onto your bench. Put damage counters on that Pokemon equal to half its HP (rounded down to the nearest 10). <em>(You can't play Revive if your Bench is full.)",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42420,
+          "name": "Item Finder",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "74",
+          "rarity": "Rare",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42420_200w.jpg",
+          "description": "Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        },
+        {
+          "idTCGP": 42429,
+          "name": "Maintenance",
+          "setIdTCGP": "Base Set",
+          "setName": "Base Set",
+          "setCardNumber": "83",
+          "rarity": "Uncommon",
+          "img": "https://tcgplayer-cdn.tcgplayer.com/product/42429_200w.jpg",
+          "description": "Shuffle 2 of the other cards from your hand into your deck in order to draw a card.",
+          "stage": null,
+          "energyType": [],
+          "cardType": [
+            "Trainer"
+          ],
+          "cardTypeB": "Trainer",
+          "resistance": null,
+          "weakness": null,
+          "flavorText": "",
+          "attack1": null,
+          "attack2": null,
+          "attack3": null,
+          "attack4": null
+        }
+      ]
+    }
+  ],
+  "cardTypes": [],
+  "rarities": []
+}

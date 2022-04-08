@@ -1,11 +1,16 @@
 export class Expansion{
     public name: string
+    public series: string
+    public tcgName: string = ""
+    public pokellectorSet: string = ""
     public count: number = 0
     public logoURL: string
     public symbolURL: string
+    public cards = new Array<string>()
 
-    constructor(name: string, logo: string, symbol: string){
+    constructor(name: string, series: string, logo: string, symbol: string){
         this.name = name
+        this.series = series
         this.logoURL = logo
         this.symbolURL = symbol
     }
@@ -13,18 +18,4 @@ export class Expansion{
     public getId(): string{
        return this.name.toLowerCase().replace(" ", "-")
     }
-}
-
-export class Series{
-    public name : string
-    public sets : Array<string> = new Array()
-
-    constructor(name: string){
-        this.name = name
-    }
-}
-
-export class MetaData{
-    public expansions: Array<Expansion> = new Array()
-    public series: Array<Series> = new Array()
 }
