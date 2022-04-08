@@ -47,29 +47,6 @@
       "attack4": null
     },
     {
-      "idTCGP": 42439,
-      "name": "Switch",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "95",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42439_200w.jpg",
-      "description": "Switch 1 of your Benched Pokemon with your Active  Pokemon.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
-      ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
       "idTCGP": 42404,
       "name": "Gyarados",
       "setIdTCGP": "Base Set",
@@ -95,45 +72,20 @@
       "attack4": null
     },
     {
-      "idTCGP": 42405,
-      "name": "Ponyta",
+      "idTCGP": 42439,
+      "name": "Switch",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "60",
+      "setCardNumber": "95",
       "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42405_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Fire"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Fire",
-      "resistance": "None",
-      "weakness": "W",
-      "flavorText": "",
-      "attack1": "[2] Smash Kick (20)",
-      "attack2": "[RR] Flame Tail (30)",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42349,
-      "name": "Psychic Energy",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "101",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42349_200w.jpg",
-      "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards</em>",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42439_200w.jpg",
+      "description": "Switch 1 of your Benched Pokemon with your Active  Pokemon.",
       "stage": null,
       "energyType": [],
       "cardType": [
-        "Energy"
+        "Trainer"
       ],
-      "cardTypeB": "Basic Psychic Energy",
+      "cardTypeB": "Trainer",
       "resistance": null,
       "weakness": null,
       "flavorText": "",
@@ -241,29 +193,6 @@
       "attack4": null
     },
     {
-      "idTCGP": 42443,
-      "name": "Grass Energy",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "99",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42443_200w.jpg",
-      "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Energy"
-      ],
-      "cardTypeB": "Basic Grass Energy",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
       "idTCGP": 42389,
       "name": "Charmander",
       "setIdTCGP": "Base Set",
@@ -289,45 +218,43 @@
       "attack4": null
     },
     {
-      "idTCGP": 42347,
-      "name": "Mewtwo",
+      "idTCGP": 42349,
+      "name": "Psychic Energy",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "10",
-      "rarity": "Holo Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42347_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Psychic"
-      ],
+      "setCardNumber": "101",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42349_200w.jpg",
+      "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards</em>",
+      "stage": null,
+      "energyType": [],
       "cardType": [
-        "Pokemon"
+        "Energy"
       ],
-      "cardTypeB": "Psychic",
-      "resistance": "None",
-      "weakness": "P",
+      "cardTypeB": "Basic Psychic Energy",
+      "resistance": null,
+      "weakness": null,
       "flavorText": "",
-      "attack1": "[1P] Psychic (10+)\r\n<br>Does 10 damage plus 10 more damage for each Energy card attached to the Defending Pokemon.",
-      "attack2": "[PP] Barrier\r\n<br>Discard 1 Psychic Energy card attached to Mewtwo in order to use this attack. During your opponent's next turn, prevent all effects of attacks, including damage, done to Mewtwo.",
+      "attack1": null,
+      "attack2": null,
       "attack3": null,
       "attack4": null
     },
     {
-      "idTCGP": 42442,
-      "name": "Fire Energy",
+      "idTCGP": 42443,
+      "name": "Grass Energy",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "98",
+      "setCardNumber": "99",
       "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42442_200w.jpg",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42443_200w.jpg",
       "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
       "stage": null,
       "energyType": [],
       "cardType": [
         "Energy"
       ],
-      "cardTypeB": "Basic Fire Energy",
+      "cardTypeB": "Basic Grass Energy",
       "resistance": null,
       "weakness": null,
       "flavorText": "",
@@ -362,6 +289,56 @@
       "attack4": null
     },
     {
+      "idTCGP": 42347,
+      "name": "Mewtwo",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "10",
+      "rarity": "Holo Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42347_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Psychic"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Psychic",
+      "resistance": "None",
+      "weakness": "P",
+      "flavorText": "",
+      "attack1": "[1P] Psychic (10+)\r\n<br>Does 10 damage plus 10 more damage for each Energy card attached to the Defending Pokemon.",
+      "attack2": "[PP] Barrier\r\n<br>Discard 1 Psychic Energy card attached to Mewtwo in order to use this attack. During your opponent's next turn, prevent all effects of attacks, including damage, done to Mewtwo.",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42405,
+      "name": "Ponyta",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "60",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42405_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Fire"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Fire",
+      "resistance": "None",
+      "weakness": "W",
+      "flavorText": "",
+      "attack1": "[2] Smash Kick (20)",
+      "attack2": "[RR] Flame Tail (30)",
+      "attack3": null,
+      "attack4": null
+    },
+    {
       "idTCGP": 42352,
       "name": "Ninetales",
       "setIdTCGP": "Base Set",
@@ -387,6 +364,29 @@
       "attack4": null
     },
     {
+      "idTCGP": 42442,
+      "name": "Fire Energy",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "98",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42442_200w.jpg",
+      "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Energy"
+      ],
+      "cardTypeB": "Basic Fire Energy",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
       "idTCGP": 42387,
       "name": "Bulbasaur",
       "setIdTCGP": "Base Set",
@@ -407,29 +407,6 @@
       "weakness": "R",
       "flavorText": "",
       "attack1": "[GG] Leech Seed (20)\r\n<br>Unless all damage from this attack is prevented, you may remove 1 damage counter from Bulbasaur.",
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42438,
-      "name": "Potion",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "94",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42438_200w.jpg",
-      "description": "<em><strong>(Old Card Text; Reference latest printing)</em></strong>\r\n<br>\r\n<br>Remove up to 2 damage counters from 1 of your Pokemon.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
-      ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
       "attack2": null,
       "attack3": null,
       "attack4": null
@@ -460,27 +437,25 @@
       "attack4": null
     },
     {
-      "idTCGP": 42390,
-      "name": "Diglett",
+      "idTCGP": 42438,
+      "name": "Potion",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "47",
+      "setCardNumber": "94",
       "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42390_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Fighting"
-      ],
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42438_200w.jpg",
+      "description": "<em><strong>(Old Card Text; Reference latest printing)</em></strong>\r\n<br>\r\n<br>Remove up to 2 damage counters from 1 of your Pokemon.",
+      "stage": null,
+      "energyType": [],
       "cardType": [
-        "Pokemon"
+        "Trainer"
       ],
-      "cardTypeB": "Fighting",
-      "resistance": "L-30",
-      "weakness": "G",
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
       "flavorText": "",
-      "attack1": "[F] Dig (10)",
-      "attack2": "[FF] Mud Slap (30)",
+      "attack1": null,
+      "attack2": null,
       "attack3": null,
       "attack4": null
     },
@@ -499,29 +474,6 @@
         "Trainer"
       ],
       "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42348,
-      "name": "Lightning Energy",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "100",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42348_200w.jpg",
-      "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Energy"
-      ],
-      "cardTypeB": "Basic Lightning Energy",
       "resistance": null,
       "weakness": null,
       "flavorText": "",
@@ -606,27 +558,27 @@
       "attack4": null
     },
     {
-      "idTCGP": 42394,
-      "name": "Gastly",
+      "idTCGP": 42410,
+      "name": "Staryu",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "50",
+      "setCardNumber": "65",
       "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42394_200w.jpg",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42410_200w.jpg",
       "description": "",
       "stage": "Basic",
       "energyType": [
-        "Psychic"
+        "Water"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Psychic",
-      "resistance": "F-30",
-      "weakness": "None",
+      "cardTypeB": "Water",
+      "resistance": "None",
+      "weakness": "L",
       "flavorText": "",
-      "attack1": "[P] Sleeping Gas\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Asleep.",
-      "attack2": "[1P] Destiny Bond \r\n<br>Discard 1 Psychic Energy card attached to Gastly in order to use this attack. If a Pokemon Knocks Out Gastly during your opponent's next turn, Knock Out that Pokemon.",
+      "attack1": "[W] Slap (20)",
+      "attack2": null,
       "attack3": null,
       "attack4": null
     },
@@ -654,20 +606,20 @@
       "attack4": null
     },
     {
-      "idTCGP": 42435,
-      "name": "Bill",
+      "idTCGP": 42348,
+      "name": "Lightning Energy",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "91",
+      "setCardNumber": "100",
       "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42435_200w.jpg",
-      "description": "Draw 2 cards.",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42348_200w.jpg",
+      "description": "<em>Copyright date: (c)1995, 96, 98 Nintendo, Creatures, GAMEFREAK (c)1999 Wizards",
       "stage": null,
       "energyType": [],
       "cardType": [
-        "Trainer"
+        "Energy"
       ],
-      "cardTypeB": "Trainer",
+      "cardTypeB": "Basic Lightning Energy",
       "resistance": null,
       "weakness": null,
       "flavorText": "",
@@ -702,26 +654,24 @@
       "attack4": null
     },
     {
-      "idTCGP": 42410,
-      "name": "Staryu",
+      "idTCGP": 42435,
+      "name": "Bill",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "65",
+      "setCardNumber": "91",
       "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42410_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Water"
-      ],
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42435_200w.jpg",
+      "description": "Draw 2 cards.",
+      "stage": null,
+      "energyType": [],
       "cardType": [
-        "Pokemon"
+        "Trainer"
       ],
-      "cardTypeB": "Water",
-      "resistance": "None",
-      "weakness": "L",
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
       "flavorText": "",
-      "attack1": "[W] Slap (20)",
+      "attack1": null,
       "attack2": null,
       "attack3": null,
       "attack4": null
@@ -752,25 +702,77 @@
       "attack4": null
     },
     {
-      "idTCGP": 42417,
-      "name": "Computer Search",
+      "idTCGP": 42351,
+      "name": "Nidoking",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "71",
-      "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42417_200w.jpg",
-      "description": "Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
+      "setCardNumber": "11",
+      "rarity": "Holo Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42351_200w.jpg",
+      "description": "",
+      "stage": "Stage 2",
+      "energyType": [
+        "Grass"
       ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Grass",
+      "resistance": "None",
+      "weakness": "P",
       "flavorText": "",
-      "attack1": null,
-      "attack2": null,
+      "attack1": "[2G] Thrash (30+)\r\n<br>Flip a coin. If heads, this attack does 30 damage plus 10 more damage; if tails, this attack does 30 damage and Nidoking does 10 damage to itself.",
+      "attack2": "[GGG] Toxic (20)\r\n<br>The Defending Pokemon is now Poisoned. It now takes 20 Poison damage instead of 10 after each player's turn <i>(even if it was already Poisoned)</i>.",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42390,
+      "name": "Diglett",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "47",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42390_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Fighting"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Fighting",
+      "resistance": "L-30",
+      "weakness": "G",
+      "flavorText": "",
+      "attack1": "[F] Dig (10)",
+      "attack2": "[FF] Mud Slap (30)",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42400,
+      "name": "Onix",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "56",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42400_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Fighting"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Fighting",
+      "resistance": "None",
+      "weakness": "G",
+      "flavorText": "",
+      "attack1": "[F] Rock Throw (10)",
+      "attack2": "[FF] Harden \r\n<br>During your opponent's next turn, whenever 30 or less damage is done to Onix <i>(after applying Weakness and Resistance)</i>, prevent that damage. <i>(Any other effects of attacks still happen.)</i>",
       "attack3": null,
       "attack4": null
     },
@@ -823,50 +825,27 @@
       "attack4": null
     },
     {
-      "idTCGP": 42351,
-      "name": "Nidoking",
+      "idTCGP": 42371,
+      "name": "Chansey",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "11",
+      "setCardNumber": "3",
       "rarity": "Holo Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42351_200w.jpg",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42371_200w.jpg",
       "description": "",
-      "stage": "Stage 2",
+      "stage": "Basic",
       "energyType": [
-        "Grass"
+        "Colorless"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Grass",
-      "resistance": "None",
-      "weakness": "P",
+      "cardTypeB": "Colorless",
+      "resistance": "P-30",
+      "weakness": "F",
       "flavorText": "",
-      "attack1": "[2G] Thrash (30+)\r\n<br>Flip a coin. If heads, this attack does 30 damage plus 10 more damage; if tails, this attack does 30 damage and Nidoking does 10 damage to itself.",
-      "attack2": "[GGG] Toxic (20)\r\n<br>The Defending Pokemon is now Poisoned. It now takes 20 Poison damage instead of 10 after each player's turn <i>(even if it was already Poisoned)</i>.",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42440,
-      "name": "Double Colorless Energy",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "96",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42440_200w.jpg",
-      "description": "Provides 2 Colorless energy.\r\n<br>Doesn't count as a basic Energy card.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Energy"
-      ],
-      "cardTypeB": "Special Colorless Energy",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
+      "attack1": "[2] Scrunch \r\n<br>Flip a coin. If heads, prevent all damage done to Chansey during your opponent's next turn. <i>(Any other effects of attacks still happen.)</i>",
+      "attack2": "[4] Double-edge (80)\r\n<br>Chansey does 80 damage to itself.",
       "attack3": null,
       "attack4": null
     },
@@ -896,14 +875,14 @@
       "attack4": null
     },
     {
-      "idTCGP": 42421,
-      "name": "Lass",
+      "idTCGP": 42417,
+      "name": "Computer Search",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "75",
+      "setCardNumber": "71",
       "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42421_200w.jpg",
-      "description": "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks.",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42417_200w.jpg",
+      "description": "Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward.",
       "stage": null,
       "energyType": [],
       "cardType": [
@@ -919,26 +898,26 @@
       "attack4": null
     },
     {
-      "idTCGP": 42407,
-      "name": "Sandshrew",
+      "idTCGP": 42346,
+      "name": "Alakazam",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "62",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42407_200w.jpg",
-      "description": "",
-      "stage": "Basic",
+      "setCardNumber": "1",
+      "rarity": "Holo Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42346_200w.jpg",
+      "description": "<b>Pokemon Power: Damage Swap</b>\r\n<br>As often as you like during your turn <em>(before your attack)</em>, you may move 1 damage counter from 1 of your Pokemon to another as long as you don't Knock Out that Pokemon. This power can't be used if Alakazam is Asleep, Confused, or Paralyzed.",
+      "stage": "Stage 2",
       "energyType": [
-        "Fighting"
+        "Psychic"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Fighting",
-      "resistance": "L-30",
-      "weakness": "G",
+      "cardTypeB": "Psychic",
+      "resistance": "None",
+      "weakness": "P",
       "flavorText": "",
-      "attack1": "[F] Sand-attack (10)\r\n<br>If the Defending Pokemon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing.",
+      "attack1": "[PPP] Confuse Ray (30)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Confused.",
       "attack2": null,
       "attack3": null,
       "attack4": null
@@ -965,79 +944,6 @@
       "flavorText": "",
       "attack1": "[1LL] Thunder Wave (30)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
       "attack2": "[2LL] Selfdestruct (80)\r\n<br>Does 20 damage to each Pokemon on each player's Bench. <i>(Don't apply Weakness and Resistance for Benched Pokemon.)</i> Magneton does 80 damage to itself.",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42400,
-      "name": "Onix",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "56",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42400_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Fighting"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Fighting",
-      "resistance": "None",
-      "weakness": "G",
-      "flavorText": "",
-      "attack1": "[F] Rock Throw (10)",
-      "attack2": "[FF] Harden \r\n<br>During your opponent's next turn, whenever 30 or less damage is done to Onix <i>(after applying Weakness and Resistance)</i>, prevent that damage. <i>(Any other effects of attacks still happen.)</i>",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42437,
-      "name": "Gust of Wind",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "93",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42437_200w.jpg",
-      "description": "Choose 1 of your opponent's Benched Pokemon and switch it with his or her Active Pokemon.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
-      ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42371,
-      "name": "Chansey",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "3",
-      "rarity": "Holo Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42371_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Colorless"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Colorless",
-      "resistance": "P-30",
-      "weakness": "F",
-      "flavorText": "",
-      "attack1": "[2] Scrunch \r\n<br>Flip a coin. If heads, prevent all damage done to Chansey during your opponent's next turn. <i>(Any other effects of attacks still happen.)</i>",
-      "attack2": "[4] Double-edge (80)\r\n<br>Chansey does 80 damage to itself.",
       "attack3": null,
       "attack4": null
     },
@@ -1092,40 +998,15 @@
       "attack4": null
     },
     {
-      "idTCGP": 42403,
-      "name": "Poliwag",
+      "idTCGP": 42394,
+      "name": "Gastly",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "59",
+      "setCardNumber": "50",
       "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42403_200w.jpg",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42394_200w.jpg",
       "description": "",
       "stage": "Basic",
-      "energyType": [
-        "Water"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Water",
-      "resistance": "None",
-      "weakness": "G",
-      "flavorText": "",
-      "attack1": "[W] Water Gun (10+)\r\n<br>Does 10 damage plus 10 more damage for each Water Energy attached to Poliwag but not used to pay for this attack's Energy cost. Extra Water Energy after the 2nd don't count.",
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42346,
-      "name": "Alakazam",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "1",
-      "rarity": "Holo Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42346_200w.jpg",
-      "description": "<b>Pokemon Power: Damage Swap</b>\r\n<br>As often as you like during your turn <em>(before your attack)</em>, you may move 1 damage counter from 1 of your Pokemon to another as long as you don't Knock Out that Pokemon. This power can't be used if Alakazam is Asleep, Confused, or Paralyzed.",
-      "stage": "Stage 2",
       "energyType": [
         "Psychic"
       ],
@@ -1133,10 +1014,104 @@
         "Pokemon"
       ],
       "cardTypeB": "Psychic",
-      "resistance": "None",
-      "weakness": "P",
+      "resistance": "F-30",
+      "weakness": "None",
       "flavorText": "",
-      "attack1": "[PPP] Confuse Ray (30)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Confused.",
+      "attack1": "[P] Sleeping Gas\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Asleep.",
+      "attack2": "[1P] Destiny Bond \r\n<br>Discard 1 Psychic Energy card attached to Gastly in order to use this attack. If a Pokemon Knocks Out Gastly during your opponent's next turn, Knock Out that Pokemon.",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42407,
+      "name": "Sandshrew",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "62",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42407_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Fighting"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Fighting",
+      "resistance": "L-30",
+      "weakness": "G",
+      "flavorText": "",
+      "attack1": "[F] Sand-attack (10)\r\n<br>If the Defending Pokemon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing.",
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42440,
+      "name": "Double Colorless Energy",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "96",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42440_200w.jpg",
+      "description": "Provides 2 Colorless energy.\r\n<br>Doesn't count as a basic Energy card.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Energy"
+      ],
+      "cardTypeB": "Special Colorless Energy",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42421,
+      "name": "Lass",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "75",
+      "rarity": "Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42421_200w.jpg",
+      "description": "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Trainer"
+      ],
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42437,
+      "name": "Gust of Wind",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "93",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42437_200w.jpg",
+      "description": "Choose 1 of your opponent's Benched Pokemon and switch it with his or her Active Pokemon.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Trainer"
+      ],
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
       "attack2": null,
       "attack3": null,
       "attack4": null
@@ -1167,27 +1142,27 @@
       "attack4": null
     },
     {
-      "idTCGP": 42357,
-      "name": "Beedrill",
+      "idTCGP": 42403,
+      "name": "Poliwag",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "17",
-      "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42357_200w.jpg",
+      "setCardNumber": "59",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42403_200w.jpg",
       "description": "",
-      "stage": "Stage 2",
+      "stage": "Basic",
       "energyType": [
-        "Grass"
+        "Water"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Grass",
-      "resistance": "F-30",
-      "weakness": "R",
+      "cardTypeB": "Water",
+      "resistance": "None",
+      "weakness": "G",
       "flavorText": "",
-      "attack1": "[3] Twineedle (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
-      "attack2": "[GGG] Poison Sting (40)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
+      "attack1": "[W] Water Gun (10+)\r\n<br>Does 10 damage plus 10 more damage for each Water Energy attached to Poliwag but not used to pay for this attack's Energy cost. Extra Water Energy after the 2nd don't count.",
+      "attack2": null,
       "attack3": null,
       "attack4": null
     },
@@ -1217,27 +1192,52 @@
       "attack4": null
     },
     {
-      "idTCGP": 42358,
-      "name": "Dragonair",
+      "idTCGP": 42365,
+      "name": "Charmeleon",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "18",
-      "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42358_200w.jpg",
+      "setCardNumber": "24",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42365_200w.jpg",
       "description": "",
       "stage": "Stage 1",
       "energyType": [
-        "Colorless"
+        "Fire"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Colorless",
-      "resistance": "P-30",
-      "weakness": "None",
+      "cardTypeB": "Fire",
+      "resistance": "None",
+      "weakness": "W",
       "flavorText": "",
-      "attack1": "[3] Slam (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
-      "attack2": "[4] Hyper Beam (20)\r\n<br>If the Defending Pokemon has any Energy cards attached to it, choose 1 of them and discard it.",
+      "attack1": "[3] Slash (30)",
+      "attack2": "[1RR] Flamethrower (50)\r\n<br>Discard 1 Fire Energy card attached to Charmeleon in order to use this attack.",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42373,
+      "name": "Jynx",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "31",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42373_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Psychic"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Psychic",
+      "resistance": "None",
+      "weakness": "P",
+      "flavorText": "",
+      "attack1": "[P] Doubleslap (10x)\r\n<br>Flip 2 coins. This attack does 10 damage times the number of heads.",
+      "attack2": "[1PP] Meditate (20+)\r\n<br>Does 20 damage plus 10 more damage for each damage counter on the Defending Pokemon.",
       "attack3": null,
       "attack4": null
     },
@@ -1267,27 +1267,52 @@
       "attack4": null
     },
     {
-      "idTCGP": 42373,
-      "name": "Jynx",
+      "idTCGP": 42357,
+      "name": "Beedrill",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "31",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42373_200w.jpg",
+      "setCardNumber": "17",
+      "rarity": "Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42357_200w.jpg",
       "description": "",
-      "stage": "Basic",
+      "stage": "Stage 2",
       "energyType": [
-        "Psychic"
+        "Grass"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Psychic",
-      "resistance": "None",
-      "weakness": "P",
+      "cardTypeB": "Grass",
+      "resistance": "F-30",
+      "weakness": "R",
       "flavorText": "",
-      "attack1": "[P] Doubleslap (10x)\r\n<br>Flip 2 coins. This attack does 10 damage times the number of heads.",
-      "attack2": "[1PP] Meditate (20+)\r\n<br>Does 20 damage plus 10 more damage for each damage counter on the Defending Pokemon.",
+      "attack1": "[3] Twineedle (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
+      "attack2": "[GGG] Poison Sting (40)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42358,
+      "name": "Dragonair",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "18",
+      "rarity": "Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42358_200w.jpg",
+      "description": "",
+      "stage": "Stage 1",
+      "energyType": [
+        "Colorless"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Colorless",
+      "resistance": "P-30",
+      "weakness": "None",
+      "flavorText": "",
+      "attack1": "[3] Slam (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
+      "attack2": "[4] Hyper Beam (20)\r\n<br>If the Defending Pokemon has any Energy cards attached to it, choose 1 of them and discard it.",
       "attack3": null,
       "attack4": null
     },
@@ -1340,56 +1365,6 @@
       "attack4": null
     },
     {
-      "idTCGP": 42359,
-      "name": "Dugtrio",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "19",
-      "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42359_200w.jpg",
-      "description": "",
-      "stage": "Stage 1",
-      "energyType": [
-        "Fighting"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Fighting",
-      "resistance": "L-30",
-      "weakness": "G",
-      "flavorText": "",
-      "attack1": "[1FF] Slash (40)",
-      "attack2": "[FFFF] Earthquake (70)\r\n<br>Does 10 damage to each of your own Benched Pokemon. <i>(Don't apply Weakness and Resistance for Benched Pokemon.)</i>",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42365,
-      "name": "Charmeleon",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "24",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42365_200w.jpg",
-      "description": "",
-      "stage": "Stage 1",
-      "energyType": [
-        "Fire"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Fire",
-      "resistance": "None",
-      "weakness": "W",
-      "flavorText": "",
-      "attack1": "[3] Slash (30)",
-      "attack2": "[1RR] Flamethrower (50)\r\n<br>Discard 1 Fire Energy card attached to Charmeleon in order to use this attack.",
-      "attack3": null,
-      "attack4": null
-    },
-    {
       "idTCGP": 42364,
       "name": "Arcanine",
       "setIdTCGP": "Base Set",
@@ -1411,31 +1386,6 @@
       "flavorText": "",
       "attack1": "[1RR] Flamethrower (50)\r\n<br>Discard 1 Fire Energy card attached to Arcanine in order to use this attack.",
       "attack2": "[2RR] Take Down (80)\r\n<br>Arcanine does 30 damage to itself.",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42375,
-      "name": "Kakuna",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "33",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42375_200w.jpg",
-      "description": "",
-      "stage": "Stage 1",
-      "energyType": [
-        "Grass"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Grass",
-      "resistance": "None",
-      "weakness": "R",
-      "flavorText": "",
-      "attack1": "[2] Stiffen\r\n<br>Flip a coin. If heads, prevent all damage done to Kakuna during your opponent's next turn. <i>(Any other effects of attacks still happen.)</i>",
-      "attack2": "[GG] Poisonpowder (20)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
       "attack3": null,
       "attack4": null
     },
@@ -1490,48 +1440,52 @@
       "attack4": null
     },
     {
-      "idTCGP": 108645,
-      "name": "Pokedex",
+      "idTCGP": 42359,
+      "name": "Dugtrio",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "87",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/108645_200w.jpg",
-      "description": "Look at up to 5 cards from the top of your deck and rearrange them as you like.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
+      "setCardNumber": "19",
+      "rarity": "Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42359_200w.jpg",
+      "description": "",
+      "stage": "Stage 1",
+      "energyType": [
+        "Fighting"
       ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Fighting",
+      "resistance": "L-30",
+      "weakness": "G",
       "flavorText": "",
-      "attack1": null,
-      "attack2": null,
+      "attack1": "[1FF] Slash (40)",
+      "attack2": "[FFFF] Earthquake (70)\r\n<br>Does 10 damage to each of your own Benched Pokemon. <i>(Don't apply Weakness and Resistance for Benched Pokemon.)</i>",
       "attack3": null,
       "attack4": null
     },
     {
-      "idTCGP": 108648,
-      "name": "Pokemon Trader",
+      "idTCGP": 42368,
+      "name": "Farfetch'd",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "77",
-      "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/108648_200w.jpg",
-      "description": "Trade 1 of the Basic Pokemon or Evolution cards in your hand for 1 of the Basic Pokemon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
+      "setCardNumber": "27",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42368_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Colorless"
       ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Colorless",
+      "resistance": "F-30",
+      "weakness": "L",
       "flavorText": "",
-      "attack1": null,
-      "attack2": null,
+      "attack1": "[1] Leek Slap (30)\r\n<br>Flip a coin. If tails, this attack does nothing. Either way, you can't use this attack again as long as Farfetch'd stays in play <i>(even putting Farfetch'd on the Bench won't let you use it again).</i>",
+      "attack2": "[3] Pot Smash (30)",
       "attack3": null,
       "attack4": null
     },
@@ -1561,6 +1515,54 @@
       "attack4": null
     },
     {
+      "idTCGP": 42414,
+      "name": "Weedle",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "69",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42414_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Grass"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Grass",
+      "resistance": "None",
+      "weakness": "R",
+      "flavorText": "",
+      "attack1": "[G] Poison Sting (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 108645,
+      "name": "Pokedex",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "87",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/108645_200w.jpg",
+      "description": "Look at up to 5 cards from the top of your deck and rearrange them as you like.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Trainer"
+      ],
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
       "idTCGP": 42392,
       "name": "Drowzee",
       "setIdTCGP": "Base Set",
@@ -1586,51 +1588,49 @@
       "attack4": null
     },
     {
-      "idTCGP": 42376,
-      "name": "Machoke",
+      "idTCGP": 42360,
+      "name": "Blastoise",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "34",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42376_200w.jpg",
-      "description": "",
-      "stage": "Stage 1",
+      "setCardNumber": "2",
+      "rarity": "Holo Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42360_200w.jpg",
+      "description": "<b>Pokemon Power: Rain Dance</b>\r\n<br>As often as you like during your turn <em>(before your attack)</em>, you may attach 1 Water Energy card to 1 of your Water Pokemon. <em>(This doesn't use up your 1 Energy card attachment for the turn.)</em> This power can't be used if Blastoise is Asleep, Confused, or Paralyzed.",
+      "stage": "Stage 2",
       "energyType": [
-        "Fighting"
+        "Water"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Fighting",
+      "cardTypeB": "Water",
       "resistance": "None",
-      "weakness": "P",
+      "weakness": "L",
       "flavorText": "",
-      "attack1": "[1FF] Karate Chop (50-)\r\n<br>Does 50 damage minus 10 damage for each damage counter on Machoke.",
-      "attack2": "[2FF] Submission (60)\r\n<br>Machoke does 20 damage to itself.",
+      "attack1": "[WWW] Hydro Pump (40+)\r\n<br>Does 40 damage plus 10 more damage for each Water Energy attached to Blastoise but not to pay for this attack's Energy cost. Extra Water Energy after the 2nd doesn't count.",
+      "attack2": null,
       "attack3": null,
       "attack4": null
     },
     {
-      "idTCGP": 42414,
-      "name": "Weedle",
+      "idTCGP": 108648,
+      "name": "Pokemon Trader",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "69",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42414_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Grass"
-      ],
+      "setCardNumber": "77",
+      "rarity": "Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/108648_200w.jpg",
+      "description": "Trade 1 of the Basic Pokemon or Evolution cards in your hand for 1 of the Basic Pokemon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward.",
+      "stage": null,
+      "energyType": [],
       "cardType": [
-        "Pokemon"
+        "Trainer"
       ],
-      "cardTypeB": "Grass",
-      "resistance": "None",
-      "weakness": "R",
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
       "flavorText": "",
-      "attack1": "[G] Poison Sting (10)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
+      "attack1": null,
       "attack2": null,
       "attack3": null,
       "attack4": null
@@ -1661,15 +1661,15 @@
       "attack4": null
     },
     {
-      "idTCGP": 42360,
-      "name": "Blastoise",
+      "idTCGP": 42366,
+      "name": "Dewgong",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "2",
-      "rarity": "Holo Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42360_200w.jpg",
-      "description": "<b>Pokemon Power: Rain Dance</b>\r\n<br>As often as you like during your turn <em>(before your attack)</em>, you may attach 1 Water Energy card to 1 of your Water Pokemon. <em>(This doesn't use up your 1 Energy card attachment for the turn.)</em> This power can't be used if Blastoise is Asleep, Confused, or Paralyzed.",
-      "stage": "Stage 2",
+      "setCardNumber": "25",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42366_200w.jpg",
+      "description": "",
+      "stage": "Stage 1",
       "energyType": [
         "Water"
       ],
@@ -1680,7 +1680,55 @@
       "resistance": "None",
       "weakness": "L",
       "flavorText": "",
-      "attack1": "[WWW] Hydro Pump (40+)\r\n<br>Does 40 damage plus 10 more damage for each Water Energy attached to Blastoise but not to pay for this attack's Energy cost. Extra Water Energy after the 2nd doesn't count.",
+      "attack1": "[1WW] Aurora Beam (50)",
+      "attack2": "[2WW] Ice Beam (30)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42369,
+      "name": "Growlithe",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "28",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42369_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Fire"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Fire",
+      "resistance": "None",
+      "weakness": "W",
+      "flavorText": "",
+      "attack1": "[1R] Flare (20)",
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42428,
+      "name": "Full Heal",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "82",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42428_200w.jpg",
+      "description": "Your Active Pokemon is no longer Asleep, Confused, Paralyzed, or Poisoned.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Trainer"
+      ],
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
       "attack2": null,
       "attack3": null,
       "attack4": null
@@ -1711,98 +1759,27 @@
       "attack4": null
     },
     {
-      "idTCGP": 42366,
-      "name": "Dewgong",
+      "idTCGP": 42378,
+      "name": "Magmar",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "25",
+      "setCardNumber": "36",
       "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42366_200w.jpg",
-      "description": "",
-      "stage": "Stage 1",
-      "energyType": [
-        "Water"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Water",
-      "resistance": "None",
-      "weakness": "L",
-      "flavorText": "",
-      "attack1": "[1WW] Aurora Beam (50)",
-      "attack2": "[2WW] Ice Beam (30)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42368,
-      "name": "Farfetch'd",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "27",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42368_200w.jpg",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42378_200w.jpg",
       "description": "",
       "stage": "Basic",
       "energyType": [
-        "Colorless"
+        "Fire"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Colorless",
-      "resistance": "F-30",
-      "weakness": "L",
+      "cardTypeB": "Fire",
+      "resistance": "None",
+      "weakness": "W",
       "flavorText": "",
-      "attack1": "[1] Leek Slap (30)\r\n<br>Flip a coin. If tails, this attack does nothing. Either way, you can't use this attack again as long as Farfetch'd stays in play <i>(even putting Farfetch'd on the Bench won't let you use it again).</i>",
-      "attack2": "[3] Pot Smash (30)",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42430,
-      "name": "PlusPower",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "84",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42430_200w.jpg",
-      "description": "Attach PlusPower to your Active Pokemon. At the end of your turn, discard PlusPower. If this Pokemon's attack does damage to the Defending Pokemon <em>(after applying Weakness and Resistance)</em>, the attack does 10 more damage to the Defending Pokemon.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
-      ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42428,
-      "name": "Full Heal",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "82",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42428_200w.jpg",
-      "description": "Your Active Pokemon is no longer Asleep, Confused, Paralyzed, or Poisoned.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
-      ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
+      "attack1": "[RR] Fire Punch (30)",
+      "attack2": "[1RR] Flamethrower (50)\r\n<br>Discard 1 Fire Energy card attached to Magmar in order to use this attack.",
       "attack3": null,
       "attack4": null
     },
@@ -1832,51 +1809,124 @@
       "attack4": null
     },
     {
-      "idTCGP": 42378,
-      "name": "Magmar",
+      "idTCGP": 42401,
+      "name": "Pidgey",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "36",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42378_200w.jpg",
+      "setCardNumber": "57",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42401_200w.jpg",
       "description": "",
       "stage": "Basic",
       "energyType": [
-        "Fire"
+        "Colorless"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Fire",
-      "resistance": "None",
-      "weakness": "W",
+      "cardTypeB": "Colorless",
+      "resistance": "F-30",
+      "weakness": "L",
       "flavorText": "",
-      "attack1": "[RR] Fire Punch (30)",
-      "attack2": "[1RR] Flamethrower (50)\r\n<br>Discard 1 Fire Energy card attached to Magmar in order to use this attack.",
+      "attack1": "[2] Whirlwind (10)\r\n<br>If your opponent has any Benched Pokemon, he or she chooses 1 of them and switches it with the Defending Pokemon. <i>(Do the damage before switching the Pokemon.)</i>",
+      "attack2": null,
       "attack3": null,
       "attack4": null
     },
     {
-      "idTCGP": 42369,
-      "name": "Growlithe",
+      "idTCGP": 42430,
+      "name": "PlusPower",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "28",
+      "setCardNumber": "84",
       "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42369_200w.jpg",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42430_200w.jpg",
+      "description": "Attach PlusPower to your Active Pokemon. At the end of your turn, discard PlusPower. If this Pokemon's attack does damage to the Defending Pokemon <em>(after applying Weakness and Resistance)</em>, the attack does 10 more damage to the Defending Pokemon.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Trainer"
+      ],
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42377,
+      "name": "Magikarp",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "35",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42377_200w.jpg",
       "description": "",
       "stage": "Basic",
       "energyType": [
-        "Fire"
+        "Water"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Fire",
+      "cardTypeB": "Water",
       "resistance": "None",
-      "weakness": "W",
+      "weakness": "L",
       "flavorText": "",
-      "attack1": "[1R] Flare (20)",
+      "attack1": "[1] Tackle (10)",
+      "attack2": "[W] Flail (10x)\r\n<br>Does 10 damage times the number of damage counters on Magikarp.",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42376,
+      "name": "Machoke",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "34",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42376_200w.jpg",
+      "description": "",
+      "stage": "Stage 1",
+      "energyType": [
+        "Fighting"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Fighting",
+      "resistance": "None",
+      "weakness": "P",
+      "flavorText": "",
+      "attack1": "[1FF] Karate Chop (50-)\r\n<br>Does 50 damage minus 10 damage for each damage counter on Machoke.",
+      "attack2": "[2FF] Submission (60)\r\n<br>Machoke does 20 damage to itself.",
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42384,
+      "name": "Seel",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "41",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42384_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Water"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Water",
+      "resistance": "None",
+      "weakness": "L",
+      "flavorText": "",
+      "attack1": "[W] Headbutt (10)",
       "attack2": null,
       "attack3": null,
       "attack4": null
@@ -1930,125 +1980,27 @@
       "attack4": null
     },
     {
-      "idTCGP": 42412,
-      "name": "Voltorb",
+      "idTCGP": 42375,
+      "name": "Kakuna",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "67",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42412_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Lightning"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Lightning",
-      "resistance": "None",
-      "weakness": "F",
-      "flavorText": "",
-      "attack1": "[1] Tackle (10)",
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42401,
-      "name": "Pidgey",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "57",
-      "rarity": "Common",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42401_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Colorless"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Colorless",
-      "resistance": "F-30",
-      "weakness": "L",
-      "flavorText": "",
-      "attack1": "[2] Whirlwind (10)\r\n<br>If your opponent has any Benched Pokemon, he or she chooses 1 of them and switches it with the Defending Pokemon. <i>(Do the damage before switching the Pokemon.)</i>",
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42377,
-      "name": "Magikarp",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "35",
+      "setCardNumber": "33",
       "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42377_200w.jpg",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42375_200w.jpg",
       "description": "",
-      "stage": "Basic",
+      "stage": "Stage 1",
       "energyType": [
-        "Water"
+        "Grass"
       ],
       "cardType": [
         "Pokemon"
       ],
-      "cardTypeB": "Water",
+      "cardTypeB": "Grass",
       "resistance": "None",
-      "weakness": "L",
+      "weakness": "R",
       "flavorText": "",
-      "attack1": "[1] Tackle (10)",
-      "attack2": "[W] Flail (10x)\r\n<br>Does 10 damage times the number of damage counters on Magikarp.",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42384,
-      "name": "Seel",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "41",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42384_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Water"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Water",
-      "resistance": "None",
-      "weakness": "L",
-      "flavorText": "",
-      "attack1": "[W] Headbutt (10)",
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42423,
-      "name": "Scoop Up",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "78",
-      "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42423_200w.jpg",
-      "description": "Choose 1 of your Pokemon in play and return its Basic Pokemon card to your hand. <em>(Discard all cards attached to that card.)</em>",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
-      ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
+      "attack1": "[2] Stiffen\r\n<br>Flip a coin. If heads, prevent all damage done to Kakuna during your opponent's next turn. <i>(Any other effects of attacks still happen.)</i>",
+      "attack2": "[GG] Poisonpowder (20)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Poisoned.",
       "attack3": null,
       "attack4": null
     },
@@ -2078,25 +2030,52 @@
       "attack4": null
     },
     {
-      "idTCGP": 42426,
-      "name": "Defender",
+      "idTCGP": 42412,
+      "name": "Voltorb",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "80",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42426_200w.jpg",
-      "description": "Attach Defender to 1 of your Pokemon. At the end of your opponent's next turn, discard Defender. Damage done to that Pokemon by attacks is reduced by 20 <em>(after applying Weakness and Resistance)</em>.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
+      "setCardNumber": "67",
+      "rarity": "Common",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42412_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Lightning"
       ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Lightning",
+      "resistance": "None",
+      "weakness": "F",
       "flavorText": "",
-      "attack1": null,
+      "attack1": "[1] Tackle (10)",
       "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42380,
+      "name": "Poliwhirl",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "38",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42380_200w.jpg",
+      "description": "",
+      "stage": "Stage 1",
+      "energyType": [
+        "Water"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Water",
+      "resistance": "None",
+      "weakness": "G",
+      "flavorText": "",
+      "attack1": "[WW] Amnesia\r\n<br>Choose 1 of the Defending Pokemon's attacks. That Pokemon can't use that attack during your opponent's next turn.",
+      "attack2": "[1WW] Doubleslap (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
       "attack3": null,
       "attack4": null
     },
@@ -2126,14 +2105,37 @@
       "attack4": null
     },
     {
-      "idTCGP": 42422,
-      "name": "Pokemon Breeder",
+      "idTCGP": 42426,
+      "name": "Defender",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "76",
+      "setCardNumber": "80",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42426_200w.jpg",
+      "description": "Attach Defender to 1 of your Pokemon. At the end of your opponent's next turn, discard Defender. Damage done to that Pokemon by attacks is reduced by 20 <em>(after applying Weakness and Resistance)</em>.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Trainer"
+      ],
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42423,
+      "name": "Scoop Up",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "78",
       "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42422_200w.jpg",
-      "description": "Put a Stage 2 Evolution card from your hand on the matching Basic Pokemon. You can only play this card when you would be allowed to evolve that Pokemon anyway.",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42423_200w.jpg",
+      "description": "Choose 1 of your Pokemon in play and return its Basic Pokemon card to your hand. <em>(Discard all cards attached to that card.)</em>",
       "stage": null,
       "energyType": [],
       "cardType": [
@@ -2174,31 +2176,6 @@
       "attack4": null
     },
     {
-      "idTCGP": 42380,
-      "name": "Poliwhirl",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "38",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42380_200w.jpg",
-      "description": "",
-      "stage": "Stage 1",
-      "energyType": [
-        "Water"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Water",
-      "resistance": "None",
-      "weakness": "G",
-      "flavorText": "",
-      "attack1": "[WW] Amnesia\r\n<br>Choose 1 of the Defending Pokemon's attacks. That Pokemon can't use that attack during your opponent's next turn.",
-      "attack2": "[1WW] Doubleslap (30x)\r\n<br>Flip 2 coins. This attack does 30 damage times the number of heads.",
-      "attack3": null,
-      "attack4": null
-    },
-    {
       "idTCGP": 42383,
       "name": "Raticate",
       "setIdTCGP": "Base Set",
@@ -2224,14 +2201,62 @@
       "attack4": null
     },
     {
-      "idTCGP": 86271,
-      "name": "Imposter Professor Oak",
+      "idTCGP": 42367,
+      "name": "Dratini",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "73",
+      "setCardNumber": "26",
+      "rarity": "Uncommon",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42367_200w.jpg",
+      "description": "",
+      "stage": "Basic",
+      "energyType": [
+        "Colorless"
+      ],
+      "cardType": [
+        "Pokemon"
+      ],
+      "cardTypeB": "Colorless",
+      "resistance": "P-30",
+      "weakness": "None",
+      "flavorText": "",
+      "attack1": "[1] Pound (10)",
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42422,
+      "name": "Pokemon Breeder",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "76",
       "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/86271_200w.jpg",
-      "description": "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards.",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42422_200w.jpg",
+      "description": "Put a Stage 2 Evolution card from your hand on the matching Basic Pokemon. You can only play this card when you would be allowed to evolve that Pokemon anyway.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Trainer"
+      ],
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42418,
+      "name": "Devolution Spray",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "72",
+      "rarity": "Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42418_200w.jpg",
+      "description": "Choose 1 of your own Pokemon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokemon. That Pokemon is no longer Asleep, Confused, Paralyzed, Poisoned or anything else that might be the result of an attack (just as if you had evolved it).",
       "stage": null,
       "energyType": [],
       "cardType": [
@@ -2272,14 +2297,14 @@
       "attack4": null
     },
     {
-      "idTCGP": 42418,
-      "name": "Devolution Spray",
+      "idTCGP": 86271,
+      "name": "Imposter Professor Oak",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "72",
+      "setCardNumber": "73",
       "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42418_200w.jpg",
-      "description": "Choose 1 of your own Pokemon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokemon. That Pokemon is no longer Asleep, Confused, Paralyzed, Poisoned or anything else that might be the result of an attack (just as if you had evolved it).",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/86271_200w.jpg",
+      "description": "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards.",
       "stage": null,
       "energyType": [],
       "cardType": [
@@ -2290,31 +2315,6 @@
       "weakness": null,
       "flavorText": "",
       "attack1": null,
-      "attack2": null,
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42367,
-      "name": "Dratini",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "26",
-      "rarity": "Uncommon",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42367_200w.jpg",
-      "description": "",
-      "stage": "Basic",
-      "energyType": [
-        "Colorless"
-      ],
-      "cardType": [
-        "Pokemon"
-      ],
-      "cardTypeB": "Colorless",
-      "resistance": "P-30",
-      "weakness": "None",
-      "flavorText": "",
-      "attack1": "[1] Pound (10)",
       "attack2": null,
       "attack3": null,
       "attack4": null
@@ -2341,29 +2341,6 @@
       "flavorText": "",
       "attack1": "[1G] Bind (20)\r\n<br>Flip a coin. If heads, the Defending Pokemon is now Paralyzed.",
       "attack2": "[GGG] Poisonpowder (20)\r\n<br>The Defending Pokemon is now Poisoned.",
-      "attack3": null,
-      "attack4": null
-    },
-    {
-      "idTCGP": 42416,
-      "name": "Clefairy Doll",
-      "setIdTCGP": "Base Set",
-      "setName": "Base Set",
-      "setCardNumber": "70",
-      "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42416_200w.jpg",
-      "description": "Play Clefairy Doll as if it were a Basic Pokemon. While in play, Clefairy Doll counts as a Pokemon (instead of a Trainer card). Clefairy Doll has no attacks, can't retreat, and can't be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn't count as a Knocked Out Pokemon. At any time during your turn before your attack, you may discard Clefairy Doll.",
-      "stage": null,
-      "energyType": [],
-      "cardType": [
-        "Trainer"
-      ],
-      "cardTypeB": "Trainer",
-      "resistance": null,
-      "weakness": null,
-      "flavorText": "",
-      "attack1": null,
-      "attack2": null,
       "attack3": null,
       "attack4": null
     },
@@ -2414,14 +2391,14 @@
       "attack4": null
     },
     {
-      "idTCGP": 42420,
-      "name": "Item Finder",
+      "idTCGP": 42416,
+      "name": "Clefairy Doll",
       "setIdTCGP": "Base Set",
       "setName": "Base Set",
-      "setCardNumber": "74",
+      "setCardNumber": "70",
       "rarity": "Rare",
-      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42420_200w.jpg",
-      "description": "Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand.",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42416_200w.jpg",
+      "description": "Play Clefairy Doll as if it were a Basic Pokemon. While in play, Clefairy Doll counts as a Pokemon (instead of a Trainer card). Clefairy Doll has no attacks, can't retreat, and can't be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn't count as a Knocked Out Pokemon. At any time during your turn before your attack, you may discard Clefairy Doll.",
       "stage": null,
       "energyType": [],
       "cardType": [
@@ -2445,6 +2422,29 @@
       "rarity": "Uncommon",
       "img": "https://tcgplayer-cdn.tcgplayer.com/product/42429_200w.jpg",
       "description": "Shuffle 2 of the other cards from your hand into your deck in order to draw a card.",
+      "stage": null,
+      "energyType": [],
+      "cardType": [
+        "Trainer"
+      ],
+      "cardTypeB": "Trainer",
+      "resistance": null,
+      "weakness": null,
+      "flavorText": "",
+      "attack1": null,
+      "attack2": null,
+      "attack3": null,
+      "attack4": null
+    },
+    {
+      "idTCGP": 42420,
+      "name": "Item Finder",
+      "setIdTCGP": "Base Set",
+      "setName": "Base Set",
+      "setCardNumber": "74",
+      "rarity": "Rare",
+      "img": "https://tcgplayer-cdn.tcgplayer.com/product/42420_200w.jpg",
+      "description": "Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand.",
       "stage": null,
       "energyType": [],
       "cardType": [

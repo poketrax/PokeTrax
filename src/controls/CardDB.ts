@@ -258,6 +258,15 @@ export class CardDB {
         .replaceAll(`diamondpearl`, `dp`)
         .replaceAll('bestofgame', 'bestof')
     }
+    
+    public getSeries(): string[]{
+        return this.metaDB.get('series').value()
+    }
+
+    public getExpantions(): Expansion[]{
+        return this.metaDB.get('expansions').value()
+    }
+
 }
 
 
