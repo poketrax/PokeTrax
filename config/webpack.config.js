@@ -330,10 +330,7 @@ module.exports = function (webpackEnv) {
           babelRuntimeEntry,
           babelRuntimeEntryHelpers,
           babelRuntimeRegenerator,
-        ]),
-        new webpack.IgnorePlugin({
-          resourceRegExp: /canvas/,
-          contextRegExp: /jsdom$/,})
+        ])
       ],
     },
     module: {
