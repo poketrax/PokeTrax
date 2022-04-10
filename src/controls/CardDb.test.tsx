@@ -1,8 +1,6 @@
 import React from 'react';
 import { CardDB } from "./CardDB"
 import { firstValueFrom } from 'rxjs'
-
-
 test(`Test generalize`, () => {
   let tcgsets = `diamond-and-pearl-promo`
   let names = `DP Black Star Promos`
