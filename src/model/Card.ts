@@ -1,34 +1,25 @@
 export class Card {
+    public cardId: string
     public idTCGP: string
     public name : string
-    public setIdTCGP: string
-    public setName: string
-    public setCardNumber : string
+    public expIdTCGP: string
+    public expName: string
+    public expCardNumber : string
     public rarity: string
     public img: string
-    public description: string    
-    public releaseDate: string
-    public stage?: null
-    public energyType: string[] = new Array()
-    public cardType: string[] = new Array()
-    public cardTypeB?: string
-    public resistance?: string
-    public weakness?: string
-    public flavorText?: string
-    public attack1?: string
-    public attack2?: string
-    public attack3?: string
-    public attack4?: string
+    public description?: string    
+    public releaseDate?: string
+    public energyType?: string
+    public cardType?: string
 
-    constructor(id: string, name:string, setId:string, setName:string, setCardNumber:string, rarity:string, img:string, description:string, releaseDate:string){
-        this.idTCGP = id
+    constructor(cardId: string, idTCGP: string, name:string, expId:string, expName:string, expCardNumber:string, rarity:string, img:string){
+        this.cardId = cardId
+        this.idTCGP = idTCGP
         this.name = name
-        this.setIdTCGP = setId
-        this.setName = setName
-        this.setCardNumber = setCardNumber
+        this.expIdTCGP = expId
+        this.expName = expName
+        this.expCardNumber = expCardNumber
         this.rarity = rarity
         this.img = img
-        this.description = description
-        this.releaseDate = releaseDate
     }
 }

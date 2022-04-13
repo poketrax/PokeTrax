@@ -186,7 +186,7 @@ module.exports = function (webpackEnv) {
   };
 
   return {
-    target: ['node'],
+    target: ['web'],
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     // Stop compilation early in production
     bail: isEnvProduction,

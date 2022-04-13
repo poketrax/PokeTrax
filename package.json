@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "main": "src/main.js",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@headlessui/react": "^1.5.0",
@@ -66,6 +67,8 @@
     "sass-loader": "^12.3.0",
     "semver": "^7.3.5",
     "source-map-loader": "^3.0.0",
+    "sqlite": "^4.0.25",
+    "sqlite3": "^5.0.2",
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.0.2",
     "terser-webpack-plugin": "^5.2.5",
@@ -81,7 +84,7 @@
   "scripts": {
     "start": "export BROWSER=none && node scripts/start.js",
     "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && electron .",
-    "build": "node scripts/build.js",
+    "build": "./node_modules/.bin/electron-rebuild & node scripts/build.js",
     "test": "node scripts/test.js --env=./test/custom-env.js"
   },
   "eslintConfig": {
@@ -157,5 +160,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "electron-rebuild": "^3.2.7"
   }
 }
