@@ -131,7 +131,7 @@ app.get("/series", async (req, res) => {
 })
 
 app.get("/cards/:page", async (req, res) => {
-    let limit = req.query.limit ?? 25
+    let limit = 25
     let nameFilter = req.query.name != null ? decodeURIComponent(req.query.name).replaceAll(" ", "-") : ""
     let FILTER_EXP = ""
     if (req.query.expansion != null) {
@@ -139,7 +139,7 @@ app.get("/cards/:page", async (req, res) => {
         FILTER_EXP = `AND expName in ${expFilter}`
     }
     let count = `SELECT count(cardId) FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP}`
-    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} LIMIT ${limit} OFFSET ${(req.params.page - 1) * 25}`
+    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
     console.log(sql)
     db.get(count, (err1, row) => {
         db.all(sql, (err2, rows) => {
