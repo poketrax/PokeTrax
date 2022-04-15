@@ -1,14 +1,20 @@
+import { CardSearch } from "../model/Card";
+import axios from 'axios'
+import { baseURL } from "../index";
 
-//used to slow down requests as to not get us banned from tcgPlaye
-export class DBMessage {
-    public message: string
-    public progress: number
 
-    constructor(message: string, progress: number) {
-        this.message = message
-        this.progress = progress
-    }
+export function search(page: number, term?: string, sets?: string[], rarity?: string[]): Promise<CardSearch> {
+    return new Promise<CardSearch>(
+        (resolve, reject) => {
+            axios.get(`${baseURL}/cards/${page ?? 0}/?name=${term ?? ""}`).then(
+                (res) => {
+                    resolve(res.data)
+                },
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
 }
-export class CardDB {
 
-}

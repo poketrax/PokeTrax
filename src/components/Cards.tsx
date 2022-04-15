@@ -1,12 +1,10 @@
 import React from 'react';
 import { Card } from '../model/Card'
-import axios from 'axios'
-import { baseURL } from '../index'
 import { CardCase } from './CardCase'
 import { Subject } from 'rxjs'
 import TablePagination from '@mui/material/TablePagination';
 import TextField from '@mui/material/TextField';
-
+import {search} from '../controls/CardDB'
 class State {
     sets: string[] = []
     rarities: string[] = []
@@ -32,9 +30,9 @@ export class CardSearch extends React.Component<{}, State> {
     };
 
     private search(page?: number) {
-        axios.get(`${baseURL}/cards/${page ?? this.state.page}/?name=${this.searchTerm}`).then(
+        search(page ?? this.state.page, this.searchTerm).then(
             (res) => {
-                this.setState({ ...this.state, cards: res.data.cards, page: (page ?? this.state.page), count: res.data.total})
+                this.setState({ ...this.state, cards: res.cards, page: (page ?? this.state.page), count: res.total})
             },
             (err) => {
                 console.log(err)
@@ -47,7 +45,7 @@ export class CardSearch extends React.Component<{}, State> {
             <div>
                 <div className='w-full h-full'>
                     <div className='w-full h-20 bg-gray-200 flex justify-items-center items-center pl-2'>
-                        <TextField 
+                        <TextField className='w-96'
                         id="outlined-basic" 
                         label="Search" 
                         variant="outlined"
