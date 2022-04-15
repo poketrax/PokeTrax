@@ -2,7 +2,6 @@ import * as jsdom from 'jsdom'
 import axios from 'axios'
 import sqlite3 from 'sqlite3'
 import * as fs from 'fs'
-import { Console } from 'console'
 
 export const cardCreateDb =
     `CREATE TABLE IF NOT EXISTS cards (
@@ -99,8 +98,6 @@ const db = new sqlite3.Database('./public/sql/data.sqlite3', sqlite3.OPEN_READWR
     if (err) console.error('Database opening error: ', err);
 });
 
-dataInit()
-
 async function dataInit() {
     console.log("tables")
     await createTables()
@@ -171,7 +168,7 @@ async function getPokellectorSeries() {
                         let exp = {
                             $name: expName,
                             $series: series_name,
-                            $tcgName: findTcgSetName(expName, tcgPlayerSets),
+                            $tcgName: findTcgSetName(expName, series_name, tcgPlayerSets),
                             $pokellectorSet: null,
                             $numberOfCards: 0,
                             $logoURL: imgs[0].src,
@@ -181,10 +178,10 @@ async function getPokellectorSeries() {
                         if (found.length == 0) {
                             await dbRun(addExpSql, exp)
                             console.log(`Pulling ${exp.$name} `)
-                            if (exp.$tcgName === 'N/A') {
+                            if (exp.$tcgName[0] === 'N/A') {
                                 pullCardsPokellecotor(exp)
                             } else {
-                                await pullCardsTCGP(exp)
+                              await pullCardsTCGP(exp)
                             }
                         }
                     }
@@ -202,7 +199,7 @@ function pullCardsPokellecotor(expantion) {
 //Pull cards from tcg player
 async function pullCardsTCGP(expantion) {
     let request = JSON.parse(tcgRequest)
-    request.filters.term.setName.concat(JSON.parse(expantion.$tcgName))
+    request.filters.term.setName = JSON.parse(expantion.$tcgName)
     let res = await axios.post(`https://mpapi.tcgplayer.com/v2/search/request?q=&isList=false`, request)
     let count = 0
     let releaseDate
@@ -212,7 +209,7 @@ async function pullCardsTCGP(expantion) {
         if (name.includes("Code Card") === false) {
             let cardNum = card.customAttributes.number.split("/")[0]
             let newCard = {
-                "$cardId": `${expantion.$name.replaceAll(" ", "-")}-${name}-${cardNum}`,
+                "$cardId": `${expantion.$name.replaceAll(" ", "-")}-${name.replaceAll(" ", "-")}-${cardNum}`,
                 "$idTCGP": card.productId,
                 "$name": name,
                 "$expIdTCGP": card.setUrlName,
@@ -252,19 +249,42 @@ async function pullCardsTCGP(expantion) {
     console.log(`Added ${count} ${expantion.$name} cards`)
 }
 
-function findTcgSetName(expName, tcgSets) {
-    let expNameNorm = normalize(expName)
-    let name = tcgSets.filter((value) => { return normalize(value) === expNameNorm })
+function findTcgSetName(expName,  series, tcgSets) {
+    let expNameNorm = (series === expName) ? normalizePOKE(expName)+"baseset" : normalizePOKE(expName)
+    let name = searchNameMap(expName)
+
     if (name.length == 0) {
-        name = tcgSets.filter((value) => normalize(value).includes(expNameNorm))
+        name = tcgSets.filter((value) => normalizeTCG(value).includes(expNameNorm))
     }
     if (name.length == 0) {
-        name = tcgSets.find((value) => expNameNorm.includes(normalize(value)))
+        name = tcgSets.filter((value) => expNameNorm.includes(normalizeTCG(value)))
     }
-    return name.length != 0 ? name : "N/A" 
+    return (name != null && name.length != 0) ? JSON.stringify(name) : ["N/A"]
 }
 
-function normalize(name) {
+function searchNameMap(name){
+    let newName = missingData.tcgNameMap.find((value) => value.name === name)
+    return newName != null ? newName.tcgName : []
+}
+
+function normalizePOKE(name){
+    return name.toLowerCase()
+    .replaceAll(' ', '')
+    .replaceAll('-', '')
+    .replaceAll('&', '')
+    .replaceAll(`'`, ``)
+    .replaceAll('(', '')
+    .replaceAll(')', '')
+    .replaceAll('and', '')
+    .replaceAll(`mcdonaldscollection`, 'mcdonaldspromos')
+    .replaceAll('promocards', 'promos')
+    .replaceAll('wizardsofthecoast', 'wotc')
+    .replaceAll('blackstarpromos', 'promos')
+    .replaceAll(`diamondpearl`, `dp`)
+    .replaceAll('bestofgame', 'bestof')
+}
+
+function normalizeTCG(name) {
     return name.toLowerCase()
         .replaceAll(' ', '')
         .replaceAll('-', '')
@@ -273,13 +293,9 @@ function normalize(name) {
         .replaceAll('(', '')
         .replaceAll(')', '')
         .replaceAll('and', '')
-        .replaceAll(`sm`, `sunmoon`)
-        .replaceAll(`mcdonaldscollection`, 'mcdonaldspromos')
         .replaceAll('promocards', 'promos')
-        .replaceAll('wizardsofthecoast', 'wotc')
         .replaceAll('blackstarpromos', 'promos')
         .replaceAll(`diamondpearl`, `dp`)
-        .replaceAll('bestofgame', 'bestof')
 }
 
 function dbRun(statement, args) {

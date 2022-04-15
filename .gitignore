@@ -11,6 +11,9 @@
 # production
 /build
 /data
+/expLogo
+/expImg
+/cardImg
 
 # misc
 .DS_Store

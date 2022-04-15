@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+export const baseURL: string = "http://localhost:3030"
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

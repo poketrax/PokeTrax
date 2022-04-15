@@ -1,4 +1,200 @@
 {
+    "tcgNameMap": [
+        {
+            "name": "Pokemon Futsal Promos",
+            "tcgName": ["N/A"]
+        },
+        {
+            "name": "McDonald's Collection (2016)",
+            "tcgName": ["N/A"]
+        },
+        {
+            "name": "Sun & Moon Promos",
+            "tcgName": [
+                "sm-promos"
+            ]
+        },
+        {
+            "name": "Sun & Moon",
+            "tcgName": [
+                "sm-base-set"
+            ]
+        },
+        {
+            "name": "Diamond & Pearl",
+            "tcgName": [
+                "diamond-and-pearl"
+            ]
+        },
+        {
+            "name": "Generations",
+            "tcgName": [
+                "generations",
+                "generations-radiant-collection"
+            ]
+        },
+        {
+            "name": "Radiant Collection",
+            "tcgName": [
+                "N/A"
+            ]
+        },
+        {
+            "name": "Legendary Treasures",
+            "tcgName": [
+                "legendary-treasures",
+                "legendary-treasures-radiant-collection"
+            ]
+        },
+        {
+            "name": "Black & White",
+            "tcgName": [
+                "black-and-white"
+            ]
+        },
+        {
+            "name": "McDonald's Collection (2013)",
+            "tcgName": ["N/A"]
+        },
+        {
+            "name": "Black & White Promos",
+            "tcgName": [
+                "black-and-white"
+            ]
+        },
+        {
+            "name": "Call of Legends",
+            "tcgName": [
+                "call-of-legends"
+            ]
+        },
+        {
+            "name": "HS Triumphant",
+            "tcgName": [
+                "triumphant"
+            ]
+        },
+        {
+            "name": "HS Undaunted",
+            "tcgName": [
+                "undaunted"
+            ]
+        },
+        {
+            "name": "HS Unleashed",
+            "tcgName": [
+                "unleashed"
+            ]
+        },
+        {
+            "name": "HeartGold SoulSilver Promos",
+            "tcgName": [
+                "hgss-promos"
+            ]
+        },
+        {
+            "name": "HeartGold SoulSilver",
+            "tcgName": [
+                "heartgold-soulsilver"
+            ]
+        },
+        {
+            "name": "Pokemon Rumble",
+            "tcgName": [
+                "rumble"
+            ]
+        },
+        {
+            "name": "Platinum - Arceus",
+            "tcgName": [
+                "arceus"
+            ]
+        },
+        {
+            "name": "Platinum - Supreme Victors",
+            "tcgName": [
+                "supreme-victors"
+            ]
+        },
+        {
+            "name": "Platinum - Rising Rivals",
+            "tcgName": [
+                "rising-rivals"
+            ]
+        },
+        {
+            "name": "Platinum",
+            "tcgName": [
+                "base-set"
+            ]
+        },
+        {
+            "name": "POP Series 9",
+            "tcgName": [
+                "pop-series-9"
+            ]
+        },
+        {
+            "name": "Nintendo Promos",
+            "tcgName": [
+                "nintendo-promos"
+            ]
+        },
+        {
+            "name": "EX Dragon Frontiers",
+            "tcgName": [
+                "dragon-frontiers"
+            ]
+        },
+        {
+            "name": "EX Unseen Forces Unown Collection",
+            "tcgName": [
+                "N/A"
+            ]
+        },
+        {
+            "name": "EX Unseen Forces",
+            "tcgName": [
+                "unseen-forces"
+            ]
+        },
+        {
+            "name": "EX Team Rocket Returns",
+            "tcgName": [
+                "team-rocket-returns"
+            ]
+        },
+        {
+            "name": "EX Ruby & Sapphire",
+            "tcgName": [
+                "ruby-and-sapphire"
+            ]
+        },
+        {
+            "name": "Legendary Collection",
+            "tcgName": [
+                "legendary-collection"
+            ]
+        },
+        {
+            "name": "Team Rocket",
+            "tcgName": [
+                "team-rocket"
+            ]
+        },
+        {
+            "name": "Neo Genesis",
+            "tcgName": [
+                "neo-genesis"
+            ]
+        },
+        {
+            "name": "Gym Heroes",
+            "tcgName": [
+                "gym-heroes"
+            ]
+        }
+    ],
     "seriesRelDate": [
         {
             "name": "Sword & Shield",

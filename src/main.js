@@ -1,9 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
-let mainWindow;
+const mw = require("./middleware")
 
-ipcMain 
+let mainWindow;
 
 function createWindow () {
   const startUrl = process.env.ELECTRON_START_URL || url.format({
@@ -17,12 +17,18 @@ function createWindow () {
     mainWindow = null;
   });
 }
+
+mw.start()
+
+//Electron starts
 app.on('ready', createWindow);
+
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
+
 app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
