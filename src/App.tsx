@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import pokeball from "./static/pokeball.svg"
 import Cards from "./components/Cards"
+import {Expansions} from "./components/Expansions"
 class State {
     page: string = "cards"
 }
@@ -20,7 +21,7 @@ export class App extends React.Component<{}, State> {
       if (this.state.page === "cards") {
           content = (<Cards></Cards>)
       }else if(this.state.page === "sets"){
-          content = <div>Sets</div>
+          content = (<Expansions></Expansions>)
       }else if(this.state.page === "collections"){
           content = <div>Collections</div>
       }

@@ -4,7 +4,7 @@ import { CardCase } from './CardCase'
 import { Subject } from 'rxjs'
 import TablePagination from '@mui/material/TablePagination';
 import TextField from '@mui/material/TextField';
-import {search} from '../controls/CardDB'
+import { search } from '../controls/CardDB'
 class State {
     sets: string[] = []
     rarities: string[] = []
@@ -23,8 +23,7 @@ export class CardSearch extends React.Component<{}, State> {
         this.search(0)
     }
 
-    private handleChangePage = ( _event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => 
-    {
+    private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
         console.log(newPage)
         this.search(newPage)
     };
@@ -32,7 +31,7 @@ export class CardSearch extends React.Component<{}, State> {
     private search(page?: number) {
         search(page ?? this.state.page, this.searchTerm).then(
             (res) => {
-                this.setState({ ...this.state, cards: res.cards, page: (page ?? this.state.page), count: res.total})
+                this.setState({ ...this.state, cards: res.cards, page: (page ?? this.state.page), count: res.total })
             },
             (err) => {
                 console.log(err)
@@ -46,15 +45,15 @@ export class CardSearch extends React.Component<{}, State> {
                 <div className='w-full h-full'>
                     <div className='w-full h-20 bg-gray-200 flex justify-items-center items-center pl-2'>
                         <TextField className='w-96'
-                        id="outlined-basic" 
-                        label="Search" 
-                        variant="outlined"
-                        onChange={(e) => this.searchTerm = e.target.value}
-                        onKeyPress={(e) => {
-                            if (e.key === "Enter") {
-                              this.search(0)
-                            }
-                          }}/>
+                            id="outlined-basic"
+                            label="Search"
+                            variant="outlined"
+                            onChange={(e) => this.searchTerm = e.target.value}
+                            onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                    this.search(0)
+                                }
+                            }} />
                     </div>
                     <TablePagination
                         component="div"
@@ -64,8 +63,12 @@ export class CardSearch extends React.Component<{}, State> {
                         rowsPerPageOptions={[25]}
                         onPageChange={this.handleChangePage}
                     />
-                    <div className='grid w-full h-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 mt-4'>
-                        {this.renderCards()}
+                    <div className='flex'>
+                        <div className='flex-grow'></div>
+                        <div className='grid h-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4'>
+                            {this.renderCards()}
+                        </div>
+                        <div className='flex-grow'></div>
                     </div>
                     <TablePagination
                         component="div"

@@ -1,9 +1,8 @@
 import React from 'react';
 import { Card, Price } from '../model/Card'
 import { baseURL } from '../index'
-import { BsFillCircleFill, BsDiamondFill } from "react-icons/bs"
+import { BsFillCircleFill, BsDiamondFill, BsStars} from "react-icons/bs"
 import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
-import { BsStars } from "react-icons/bs"
 
 class Props {
     public card: Card | null = null
@@ -21,9 +20,9 @@ export class CardCase extends React.Component<Props, State> {
     render() {
         return (
             <div className='flex justify-center'>
-                <div className='rounded-md border-grey-600 border-2 w-64 h-fit bg-gray-100 hover:shadow-2xl'>
+                <div className='rounded-md border-gray-500 border-2 w-64 h-fit bg-gray-100 hover:shadow-2xl hover:hover:bg-red-600 hover:text-white'>
                     <div className='h-8'>
-                        <span className='pl-2 '>{this.props.card?.name}</span>
+                        <span className='pl-2 truncate' >{this.props.card?.name}</span>
                     </div>
                     <div className='flex justify-items-center'>
                         <img className='w-64' src={baseURL + "/cardImg/" + this.props.card?.cardId} />
@@ -33,7 +32,9 @@ export class CardCase extends React.Component<Props, State> {
                             <img className='h-6' src={baseURL + "/expSymbol/" + this.props.card?.expName} />
                         </div>
                         <div className='grow'></div>
-                        <a className='text-blue-600 visited:text-red-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}>TCG Player</a>
+                        <a className='text-blue-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}>$123</a>
+                        <div className='grow'></div>
+                        <div>{this.props.card?.expCardNumber}</div>
                         <div className='grow'></div>
                         <div className='flex justify-items-center items-center h-8 w-8'>
                             {this.getRarity(this.props.card?.rarity ?? "")}
@@ -65,7 +66,7 @@ export class CardCase extends React.Component<Props, State> {
             case "Secret Rare":
                 return (<div className='flex justify-items-center items-center'><div>S</div><IoStarOutline></IoStarOutline></div>)
             case "Amazing Rare":
-                return [<img className='w-5 h-5' src={`./assests/amazing.svg`}></img>]
+                return (<img className='w-5 h-5' src={`./assests/amazing.svg`}></img>)
             case "Shiny Holo Rare":
                 return (<div className='flex justify-items-center items-center'><BsStars></BsStars><IoStarSharp></IoStarSharp></div>)
             case "Prism Rare":
@@ -76,6 +77,8 @@ export class CardCase extends React.Component<Props, State> {
                 return (<IoStarHalfSharp></IoStarHalfSharp>)
             case "Rare Ace":
                 return (<IoStarSharp></IoStarSharp>)
+            case "Promo":
+                return (<img className='w-5 h-5' src={`${baseURL}/expSymbol/Sword%20&%20Shield%20Promos`}></img>)
             default:
                 return (<BsFillCircleFill></BsFillCircleFill>)
         }

@@ -18,3 +18,13 @@ export class Expansion{
        return this.name.toLowerCase().replace(" ", "-")
     }
 }
+
+export class Series {
+    public name: string
+    public releaseDate: string
+
+    constructor(name: string, releaseDate: string){
+        this.name =  name
+        this.releaseDate = releaseDate
+    }
+}

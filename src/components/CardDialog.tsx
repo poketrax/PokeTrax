@@ -5,6 +5,6 @@ interface Props {
     card: Card
 }
 
-export class CardCase extends React.Component<Props> {
-    
+export class CardDialog extends React.Component<Props> {
+
 }
