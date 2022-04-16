@@ -2,8 +2,8 @@ import React from 'react';
 import { Card, Price } from '../model/Card'
 import { baseURL } from '../index'
 import { BsFillCircleFill, BsDiamondFill } from "react-icons/bs"
-import { ImStarFull } from "react-icons/im"
-import axios from 'axios'
+import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
+import { BsStars } from "react-icons/bs"
 
 class Props {
     public card: Card | null = null
@@ -33,7 +33,7 @@ export class CardCase extends React.Component<Props, State> {
                             <img className='h-6' src={baseURL + "/expSymbol/" + this.props.card?.expName} />
                         </div>
                         <div className='grow'></div>
-                            <a className='text-blue-600 visited:text-red-600' href={'https://tcgplayer.com/product/'+this.props.card?.idTCGP}>TCG Player</a>
+                        <a className='text-blue-600 visited:text-red-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}>TCG Player</a>
                         <div className='grow'></div>
                         <div className='flex justify-items-center items-center h-8 w-8'>
                             {this.getRarity(this.props.card?.rarity ?? "")}
@@ -44,10 +44,10 @@ export class CardCase extends React.Component<Props, State> {
         )
     }
 
-    private getPrice(): string{
-        if(this.state.prices.length != 0){
-             return this.state.prices[0].marketPrice.toString()
-        }else{
+    private getPrice(): string {
+        if (this.state.prices.length != 0) {
+            return this.state.prices[0].marketPrice.toString()
+        } else {
             return '-.--'
         }
     }
@@ -55,11 +55,27 @@ export class CardCase extends React.Component<Props, State> {
     private getRarity(rarity: string) {
         switch (rarity) {
             case "Rare":
-                return (<ImStarFull></ImStarFull>)
+                return (<IoStarSharp></IoStarSharp>)
             case "Holo Rare":
-                return (<div className='flex justify-items-center items-center'><div>H</div><ImStarFull></ImStarFull></div>)
+                return (<div className='flex justify-items-center items-center'><div>H</div><IoStarSharp></IoStarSharp></div>)
             case "Uncommon":
                 return (<BsDiamondFill></BsDiamondFill>)
+            case "Ultra Rare":
+                return (<IoStarHalfSharp></IoStarHalfSharp>)
+            case "Secret Rare":
+                return (<div className='flex justify-items-center items-center'><div>S</div><IoStarOutline></IoStarOutline></div>)
+            case "Amazing Rare":
+                return [<img className='w-5 h-5' src={`./assests/amazing.svg`}></img>]
+            case "Shiny Holo Rare":
+                return (<div className='flex justify-items-center items-center'><BsStars></BsStars><IoStarSharp></IoStarSharp></div>)
+            case "Prism Rare":
+                return (<IoStarSharp></IoStarSharp>)
+            case "Rare BREAK":
+                return (<IoStarHalfSharp></IoStarHalfSharp>)
+            case "Classic Collection":
+                return (<IoStarHalfSharp></IoStarHalfSharp>)
+            case "Rare Ace":
+                return (<IoStarSharp></IoStarSharp>)
             default:
                 return (<BsFillCircleFill></BsFillCircleFill>)
         }
