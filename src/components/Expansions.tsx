@@ -32,7 +32,7 @@ export class Expansions extends React.Component<{}, State> {
 
     render(): React.ReactNode {
         return (
-            <div className='container'>
+            <div className='w-full h-full'>
                 {this.renderSeries()}
             </div>
         )
@@ -50,19 +50,24 @@ export class Expansions extends React.Component<{}, State> {
             }
     }
 
+    private getYear(dateString: string){
+        let date = new Date(dateString)
+        return date.getFullYear()
+    }
+
     private renderSeries() {
         let items = []
         this.state.series.sort((a,b) => this.revOrderDate(a.releaseDate,b.releaseDate))
         for (let series of this.state.series) {
             items.push(
                 <div>
-                    <div className='flex flex-row w-full h-16'>
-                        <img src={`${baseURL}/seriesImg/${series.name}`}></img>
+                    <div className='flex w-full h-16 bg-red-600 items-center'>
+                        <img className='m-2 h-12' src={`${baseURL}/seriesImg/${series.name}`}></img>
                         <div className='flex-grow'></div>
-                        <span>{series.releaseDate}</span>
+                        <span className='text-white p-4'>{this.getYear(series.releaseDate)}</span>
                     </div>
-                    <div className='grid grid-cols-8 gap-4 m-4'>
-                    {this.renderExp(series.name)}
+                    <div className='grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 xl:grid-cols-15 gap-4 p-4'>
+                        {this.renderExp(series.name)}
                     </div>
                 </div>
             )
@@ -74,8 +79,8 @@ export class Expansions extends React.Component<{}, State> {
         let items = []
         for(let exp of filtered){
             items.push(
-                <div className='h-24 shadow-md hover:shadow-2xl hover:bg-red-600 border-gray-500 bg-gray-100 border-2 rounded-md flex justify-items-center items-center'>
-                    <img  src={`${baseURL}/expLogo/${exp.name}`}/>
+                <div className='flex justify-items-center items-center h-24 hover:shadow-2xl hover:bg-red-600 border-gray-500 bg-gray-100 border-2 rounded-md '>
+                    <img src={`${baseURL}/expLogo/${exp.name}`}/>
                 </div>
             )
         }

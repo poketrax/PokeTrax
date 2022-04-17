@@ -133,13 +133,22 @@ app.get("/series", async (req, res) => {
 app.get("/cards/:page", async (req, res) => {
     let limit = 25
     let nameFilter = req.query.name != null ? decodeURIComponent(req.query.name).replaceAll(" ", "-") : ""
+    // Expansions 
+    let exps = JSON.parse(decodeURIComponent(req.query.expansions))
     let FILTER_EXP = ""
-    if (req.query.expansion != null) {
-        let expFilter = decodeURIComponent(req.query.expansion).replaceAll("[", "(").replaceAll("]", ")")
+    if (exps != null && exps.length ) {
+        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")")
         FILTER_EXP = `AND expName in ${expFilter}`
     }
-    let count = `SELECT count(cardId) FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP}`
-    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+    // Rarities
+    let rarities = req.query.rarities != null ? JSON.parse(decodeURIComponent(req.query.rarities)) : []
+    let FILTER_RARE = ""
+    if(rarities != null && rarities.length != 0){
+        let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")")
+        FILTER_RARE = `AND rarity in ${rareFilter}`
+    }
+    let count = `SELECT count(cardId) FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
+    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
     console.log(sql)
     db.get(count, (err1, row) => {
         db.all(sql, (err2, rows) => {
@@ -147,7 +156,6 @@ app.get("/cards/:page", async (req, res) => {
                 res.status(500).send('sqlerr: ' + err2)
                 console.log(err2)
             } else {
-                
                 if (err2) {
                     res.status(500).send('sqlerr: ' + err2)
                     console.log(err2)
@@ -155,7 +163,6 @@ app.get("/cards/:page", async (req, res) => {
                     res.send({total: row['count(cardId)'], cards: rows})
                 }
             }
-
         })
     })
 
