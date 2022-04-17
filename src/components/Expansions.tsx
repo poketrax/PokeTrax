@@ -2,12 +2,12 @@ import React from 'react';
 import { Series, Expansion } from '../model/Meta'
 import axios from 'axios'
 import { baseURL } from '../index'
+import { AppControl, AppController } from '../App'
 
 class State {
     series = new Array<Series>()
     exps = new Array<Expansion>()
 }
-
 export class Expansions extends React.Component<{}, State> {
     constructor(props: any) {
         super(props)
@@ -38,26 +38,26 @@ export class Expansions extends React.Component<{}, State> {
         )
     }
 
-    private revOrderDate(a : string, b:string): number{
+    private revOrderDate(a: string, b: string): number {
         let aD = new Date(a)
-            let bD = new Date(b)
-            if(aD < bD){
-                return 1
-            }else if(aD > bD){
-                return -1
-            }else{
-                return 0
-            }
+        let bD = new Date(b)
+        if (aD < bD) {
+            return 1
+        } else if (aD > bD) {
+            return -1
+        } else {
+            return 0
+        }
     }
 
-    private getYear(dateString: string){
+    private getYear(dateString: string) {
         let date = new Date(dateString)
         return date.getFullYear()
     }
 
     private renderSeries() {
         let items = []
-        this.state.series.sort((a,b) => this.revOrderDate(a.releaseDate,b.releaseDate))
+        this.state.series.sort((a, b) => this.revOrderDate(a.releaseDate, b.releaseDate))
         for (let series of this.state.series) {
             items.push(
                 <div>
@@ -74,13 +74,17 @@ export class Expansions extends React.Component<{}, State> {
         }
         return items
     }
+
     private renderExp(series: string) {
         let filtered = this.state.exps.filter((val) => val.series === series)
         let items = []
-        for(let exp of filtered){
+        for (let exp of filtered) {
             items.push(
-                <div className='flex justify-items-center items-center h-24 hover:shadow-2xl hover:bg-red-600 border-gray-500 bg-gray-100 border-2 rounded-md '>
-                    <img src={`${baseURL}/expLogo/${exp.name}`}/>
+                <div className='flex justify-items-center items-center h-24 hover:shadow-2xl hover:bg-red-600 border-gray-500 bg-gray-100 border-2 rounded-md '
+                    onClick={() => {
+                        AppController.next({page: "cards", sets: [exp]})
+                    }}>
+                    <img src={`${baseURL}/expLogo/${exp.name}`} />
                 </div>
             )
         }

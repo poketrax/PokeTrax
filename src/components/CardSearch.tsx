@@ -23,7 +23,7 @@ class State {
 }
 
 class Props {
-    sets: string[] = []
+    sets: Expansion[] = []
 }
 
 export const setFilter = new Subject<string[]>()
@@ -33,7 +33,7 @@ export class CardSearch extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        this.search(0)
+        this.search(0, props.sets)
         expansions().then(
             (data) => {
                 this.setState({ ...this.state, sets: data })
