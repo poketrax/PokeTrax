@@ -26,7 +26,7 @@ export class CardCase extends React.Component<Props, State> {
                         <span className='pl-2 truncate' >{this.props.card?.name}</span>
                     </div>
                     <div className='flex justify-items-center'>
-                        <img className='w-64' src={baseURL + "/cardImg/" + this.props.card?.cardId} />
+                        <img className='w-64' src={baseURL + "/cardImg/" + this.props.card?.cardId} onError={(ev) => {if(ev.target instanceof HTMLImageElement) ev.target.src ='./assests/pokemon-back.png'}}/>
                     </div>
                     <div className='h-8 flex justify-items-center items-center'>
                         <div className='flex justify-items-center items-center h-8 w-8 ml-2'>
