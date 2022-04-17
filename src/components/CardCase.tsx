@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, Price } from '../model/Card'
 import { baseURL } from '../index'
-import { BsFillCircleFill, BsDiamondFill, BsStars} from "react-icons/bs"
-import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
+import { getRarity } from '../controls/CardDB';
+import { CgPokemon } from "react-icons/cg"
+import Paper from '@mui/material/Paper';
 
 class Props {
     public card: Card | null = null
@@ -16,12 +17,12 @@ export class CardCase extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
     }
-
     render() {
         return (
             <div className='flex justify-center'>
-                <div className='rounded-md border-gray-500 border-2 w-64 h-fit bg-gray-100 hover:shadow-2xl hover:hover:bg-red-600 hover:text-white'>
-                    <div className='h-8'>
+                <Paper elevation={3} className='rounded-md w-64 h-fit hover:shadow-2xl hover:hover:bg-red-600 hover:text-white'>
+                    <div className='h-8 flex items-center'>
+                        {this.getEnergy(this.props.card?.energyType ?? "")}
                         <span className='pl-2 truncate' >{this.props.card?.name}</span>
                     </div>
                     <div className='flex justify-items-center'>
@@ -32,15 +33,15 @@ export class CardCase extends React.Component<Props, State> {
                             <img className='h-6' src={baseURL + "/expSymbol/" + this.props.card?.expName} />
                         </div>
                         <div className='grow'></div>
-                        <a className='text-blue-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}>$123</a>
+                        <a className='text-blue-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}></a>
                         <div className='grow'></div>
                         <div>{this.props.card?.expCardNumber}</div>
                         <div className='grow'></div>
                         <div className='flex justify-items-center items-center h-8 w-8'>
-                            {this.getRarity(this.props.card?.rarity ?? "")}
+                            {getRarity(this.props.card?.rarity ?? "")}
                         </div>
                     </div>
-                </div>
+                </Paper>
             </div>
         )
     }
@@ -53,34 +54,35 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    private getRarity(rarity: string) {
-        switch (rarity) {
-            case "Rare":
-                return (<IoStarSharp></IoStarSharp>)
-            case "Holo Rare":
-                return (<div className='flex justify-items-center items-center'><div>H</div><IoStarSharp></IoStarSharp></div>)
-            case "Uncommon":
-                return (<BsDiamondFill></BsDiamondFill>)
-            case "Ultra Rare":
-                return (<IoStarHalfSharp></IoStarHalfSharp>)
-            case "Secret Rare":
-                return (<div className='flex justify-items-center items-center'><div>S</div><IoStarOutline></IoStarOutline></div>)
-            case "Amazing Rare":
-                return (<img className='w-5 h-5' src={`./assests/amazing.svg`}></img>)
-            case "Shiny Holo Rare":
-                return (<div className='flex justify-items-center items-center'><BsStars></BsStars><IoStarSharp></IoStarSharp></div>)
-            case "Prism Rare":
-                return (<IoStarSharp></IoStarSharp>)
-            case "Rare BREAK":
-                return (<IoStarHalfSharp></IoStarHalfSharp>)
-            case "Classic Collection":
-                return (<IoStarHalfSharp></IoStarHalfSharp>)
-            case "Rare Ace":
-                return (<IoStarSharp></IoStarSharp>)
-            case "Promo":
-                return (<img className='w-5 h-5' src={`${baseURL}/expSymbol/Sword%20&%20Shield%20Promos`}></img>)
+    private getEnergy(energyType: string) {
+        let _class = 'w-5 h-5 ml-2'
+        switch (energyType) {
+            case "Fire":
+                return (<img className={_class} src={`./assests/fire.png`}></img>)
+            case "Water":
+                return (<img className={_class} src={`./assests/water.png`}></img>)
+            case "Grass":
+                return (<img className={_class} src={`./assests/grass.png`}></img>)
+            case "Fighting":
+                return (<img className={_class} src={`./assests/fighting.png`}></img>)
+            case "Psychic":
+                return (<img className={_class} src={`./assests/Psychic.png`}></img>)
+            case "Lightning":
+                return (<img className={_class} src={`./assests/electric.png`}></img>)
+            case "Colorless":
+                return (<img className={_class} src={`./assests/colorless.png`}></img>)
+            case "Darkness":
+                return (<img className={_class} src={`./assests/dark.png`}></img>)
+            case "Metal":
+                return (<img className={_class} src={`./assests/steel.png`}></img>)
+            case "Dragon":
+                return (<img className={_class} src={`./assests/dragon.png`}></img>)
+            case "Fairy":
+                return (<img className={_class} src={`./assests/fairy.png`}></img>)
             default:
-                return (<BsFillCircleFill></BsFillCircleFill>)
+                return (<CgPokemon className={_class}></CgPokemon>)
         }
     }
+
+
 }
