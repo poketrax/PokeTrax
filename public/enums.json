@@ -1,0 +1,27 @@
+{
+    "rarities" :[
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Promo",
+        "Holo Rare",
+        "Ultra Rare",
+        "Secret Rare",
+        "Code Card",
+        "Shiny Holo Rare",
+        "Prism Rare",
+        "Rare BREAK",
+        "Classic Collection",
+        "Rare Ace",
+        "Amazing Rare"
+      ],
+      "cardType":[
+        "Pokemon",
+        "Supporter",
+        "Energy",
+        "Item",
+        "Trainer",
+        "Stadium",
+        "Tool"
+      ]
+}

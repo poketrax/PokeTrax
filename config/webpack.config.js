@@ -186,7 +186,7 @@ module.exports = function (webpackEnv) {
   };
 
   return {
-    target: ['node'],
+    target: ['web'],
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     // Stop compilation early in production
     bail: isEnvProduction,
@@ -342,6 +342,10 @@ module.exports = function (webpackEnv) {
           exclude: /@babel(?:\/|\\{1,2})runtime/,
           test: /\.(js|mjs|jsx|ts|tsx|css)$/,
           loader: require.resolve('source-map-loader'),
+        },
+        {
+          test: /\.(png|jpg|jpeg|gif)$/i,
+          type: "asset/resource",
         },
         {
           // "oneOf" will traverse all following loaders until one will

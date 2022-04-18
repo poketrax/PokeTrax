@@ -3,10 +3,9 @@ export class Expansion{
     public series: string
     public tcgName: string = ""
     public pokellectorSet: string = ""
-    public count: number = 0
+    public numberOfCards: number = 0
     public logoURL: string
     public symbolURL: string
-    public cards = new Array<string>()
 
     constructor(name: string, series: string, logo: string, symbol: string){
         this.name = name
@@ -17,5 +16,15 @@ export class Expansion{
 
     public getId(): string{
        return this.name.toLowerCase().replace(" ", "-")
+    }
+}
+
+export class Series {
+    public name: string
+    public releaseDate: string
+
+    constructor(name: string, releaseDate: string){
+        this.name =  name
+        this.releaseDate = releaseDate
     }
 }

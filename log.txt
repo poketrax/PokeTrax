@@ -1,0 +1,301 @@
+tables
+meta
+[
+  'Common',
+  'Uncommon',
+  'Rare',
+  'Promo',
+  'Holo Rare',
+  'Ultra Rare',
+  'Secret Rare',
+  'Code Card',
+  'Shiny Holo Rare',
+  'Prism Rare',
+  'Rare BREAK',
+  'Classic Collection',
+  'Rare Ace',
+  'Amazing Rare'
+]
+[
+  'Pokemon',
+  'Supporter',
+  'Energy',
+  'Item',
+  'Trainer',
+  'Stadium',
+  'Tool'
+]
+sets
+Pulling Brilliant Stars 
+Added 225 Brilliant Stars cards
+Pulling Fusion Strike 
+Added 284 Fusion Strike cards
+Pulling Celebrations 
+Added 50 Celebrations cards
+Pulling Evolving Skies 
+Added 237 Evolving Skies cards
+Pulling Chilling Reign 
+Added 233 Chilling Reign cards
+Pulling Battle Styles 
+Added 183 Battle Styles cards
+Pulling Shining Fates 
+Added 195 Shining Fates cards
+Pulling McDonald's 25th Anniversary 
+Added 25 McDonald's 25th Anniversary cards
+Pulling Vivid Voltage 
+Added 203 Vivid Voltage cards
+Pulling Champion's Path 
+Added 80 Champion's Path cards
+Pulling Pokemon Futsal Promos 
+Added 336 Pokemon Futsal Promos cards
+Pulling Darkness Ablaze 
+Added 201 Darkness Ablaze cards
+Pulling Rebel Clash 
+Added 209 Rebel Clash cards
+Pulling Sword & Shield Promos 
+Added 238 Sword & Shield Promos cards
+Pulling Sword & Shield 
+Added 225 Sword & Shield cards
+Pulling Cosmic Eclipse 
+Added 271 Cosmic Eclipse cards
+Pulling McDonald's Collection (2019 FR) 
+Added 12 McDonald's Collection (2019 FR) cards
+Pulling McDonald's Collection (2019) 
+Added 12 McDonald's Collection (2019) cards
+Pulling Hidden Fates 
+Added 163 Hidden Fates cards
+Pulling Unified Minds 
+Added 258 Unified Minds cards
+Pulling Unbroken Bonds 
+Added 234 Unbroken Bonds cards
+Pulling Detective Pikachu 
+Added 18 Detective Pikachu cards
+Pulling Team Up 
+Added 205 Team Up cards
+Pulling Lost Thunder 
+Added 236 Lost Thunder cards
+Pulling McDonald's Collection (2018) 
+Added 12 McDonald's Collection (2018) cards
+Pulling Dragon Majesty 
+Added 78 Dragon Majesty cards
+Pulling Celestial Storm 
+Added 183 Celestial Storm cards
+Pulling Forbidden Light 
+Added 146 Forbidden Light cards
+Pulling Ultra Prism 
+Added 173 Ultra Prism cards
+Pulling Crimson Invasion 
+Added 124 Crimson Invasion cards
+Pulling Shining Legends 
+Added 78 Shining Legends cards
+Pulling Burning Shadows 
+Added 169 Burning Shadows cards
+Pulling McDonald's Collection (2017) 
+Added 12 McDonald's Collection (2017) cards
+Pulling Guardians Rising 
+Added 169 Guardians Rising cards
+Pulling Sun & Moon Promos 
+Added 332 Sun & Moon Promos cards
+Pulling Sun & Moon 
+Added 172 Sun & Moon cards
+Pulling Evolutions 
+Added 113 Evolutions cards
+Pulling McDonald's Collection (2016) 
+Added 336 McDonald's Collection (2016) cards
+Pulling Steam Siege 
+Added 116 Steam Siege cards
+Pulling Fates Collide 
+Added 125 Fates Collide cards
+Pulling Generations 
+Added 115 Generations cards
+Pulling BREAKPoint 
+Added 123 BREAKPoint cards
+Pulling McDonald's Collection (2015) 
+Added 12 McDonald's Collection (2015) cards
+Pulling XY BREAKthrough 
+Added 164 XY BREAKthrough cards
+Pulling Ancient Origins 
+Added 100 Ancient Origins cards
+Pulling Roaring Skies 
+Added 110 Roaring Skies cards
+Pulling Double Crisis 
+Added 34 Double Crisis cards
+Pulling Primal Clash 
+Added 164 Primal Clash cards
+Pulling Phantom Forces 
+Added 122 Phantom Forces cards
+Pulling Furious Fists 
+Added 113 Furious Fists cards
+Pulling McDonald's Collection (2014) 
+Added 12 McDonald's Collection (2014) cards
+Pulling XY Flashfire 
+Added 109 XY Flashfire cards
+Pulling Kalos Starter Set 
+Added 45 Kalos Starter Set cards
+Pulling XY Promos 
+Added 271 XY Promos cards
+Pulling XY 
+Added 147 XY cards
+Pulling Radiant Collection 
+Added 336 Radiant Collection cards
+Pulling Legendary Treasures 
+Added 140 Legendary Treasures cards
+Pulling Plasma Blast 
+Added 105 Plasma Blast cards
+Pulling Plasma Freeze 
+Added 122 Plasma Freeze cards
+Pulling Plasma Storm 
+Added 138 Plasma Storm cards
+Pulling Boundaries Crossed 
+Added 153 Boundaries Crossed cards
+Pulling Dragon Vault 
+Added 21 Dragon Vault cards
+Pulling Dragons Exalted 
+Added 128 Dragons Exalted cards
+Pulling Dark Explorers 
+Added 111 Dark Explorers cards
+Pulling Next Destinies 
+Added 103 Next Destinies cards
+Pulling Noble Victories 
+Added 102 Noble Victories cards
+Pulling Emerging Powers 
+Added 98 Emerging Powers cards
+Pulling Black & White 
+Added 116 Black & White cards
+Pulling McDonald's Collection (2013) 
+Added 336 McDonald's Collection (2013) cards
+Pulling McDonald's Collection (2012) 
+Added 12 McDonald's Collection (2012) cards
+Pulling McDonald's Collection (2011) 
+Added 12 McDonald's Collection (2011) cards
+Pulling Black & White Promos 
+Added 116 Black & White Promos cards
+Pulling Call of Legends 
+Added 106 Call of Legends cards
+Pulling HS Triumphant 
+Added 103 HS Triumphant cards
+Pulling HS Undaunted 
+Added 91 HS Undaunted cards
+Pulling HS Unleashed 
+Added 96 HS Unleashed cards
+Pulling HeartGold SoulSilver Promos 
+Added 37 HeartGold SoulSilver Promos cards
+Pulling HeartGold SoulSilver 
+Added 124 HeartGold SoulSilver cards
+Pulling Pokemon Rumble 
+Added 16 Pokemon Rumble cards
+Pulling Platinum - Arceus 
+Added 111 Platinum - Arceus cards
+Pulling Platinum - Supreme Victors 
+Added 153 Platinum - Supreme Victors cards
+Pulling Platinum - Rising Rivals 
+Added 120 Platinum - Rising Rivals cards
+Pulling Platinum 
+Added 101 Platinum cards
+Pulling POP Series 9 
+Added 17 POP Series 9 cards
+Pulling POP Series 8 
+Added 17 POP Series 8 cards
+Pulling POP Series 7 
+Added 17 POP Series 7 cards
+Pulling POP Series 6 
+Added 17 POP Series 6 cards
+Pulling POP Series 5 
+Added 17 POP Series 5 cards
+Pulling POP Series 4 
+Added 17 POP Series 4 cards
+Pulling POP Series 3 
+Added 18 POP Series 3 cards
+Pulling POP Series 2 
+Added 18 POP Series 2 cards
+Pulling POP Series 1 
+Added 19 POP Series 1 cards
+Pulling Nintendo Promos 
+Added 91 Nintendo Promos cards
+Pulling Stormfront 
+Added 106 Stormfront cards
+Pulling Legends Awakened 
+Added 147 Legends Awakened cards
+Pulling Majestic Dawn 
+Added 100 Majestic Dawn cards
+Pulling Great Encounters 
+Added 106 Great Encounters cards
+Pulling Secret Wonders 
+Added 132 Secret Wonders cards
+Pulling Mysterious Treasures 
+Added 124 Mysterious Treasures cards
+Pulling DP Black Star Promos 
+Added 65 DP Black Star Promos cards
+Pulling Diamond & Pearl 
+Added 130 Diamond & Pearl cards
+Pulling EX Power Keepers 
+Added 108 EX Power Keepers cards
+Pulling EX Dragon Frontiers 
+Added 101 EX Dragon Frontiers cards
+Pulling EX Crystal Guardians 
+Added 100 EX Crystal Guardians cards
+Pulling EX Holon Phantoms 
+Added 111 EX Holon Phantoms cards
+Pulling EX Legend Maker 
+Added 93 EX Legend Maker cards
+Pulling EX Delta Species 
+Added 114 EX Delta Species cards
+Pulling EX Unseen Forces Unown Collection 
+Added 336 EX Unseen Forces Unown Collection cards
+Pulling EX Unseen Forces 
+Added 145 EX Unseen Forces cards
+Pulling EX Emerald 
+Added 107 EX Emerald cards
+Pulling EX Deoxys 
+Added 108 EX Deoxys cards
+Pulling EX Team Rocket Returns 
+Added 111 EX Team Rocket Returns cards
+Pulling EX FireRed & LeafGreen 
+Added 116 EX FireRed & LeafGreen cards
+Pulling EX Hidden Legends 
+Added 102 EX Hidden Legends cards
+Pulling EX Team Magma vs Team Aqua 
+Added 97 EX Team Magma vs Team Aqua cards
+Pulling EX Dragon 
+Added 100 EX Dragon cards
+Pulling EX Sandstorm 
+Added 100 EX Sandstorm cards
+Pulling EX Ruby & Sapphire 
+Added 109 EX Ruby & Sapphire cards
+Pulling Skyridge 
+Added 182 Skyridge cards
+Pulling Aquapolis 
+Added 186 Aquapolis cards
+Pulling Best of Game 
+Added 15 Best of Game cards
+Pulling Expedition 
+Added 165 Expedition cards
+Pulling Legendary Collection 
+Added 110 Legendary Collection cards
+Pulling Neo Destiny 
+Added 113 Neo Destiny cards
+Pulling Neo Revelation 
+Added 66 Neo Revelation cards
+Pulling Southern Islands 
+Added 18 Southern Islands cards
+Pulling Neo Discovery 
+Added 75 Neo Discovery cards
+Pulling Neo Genesis 
+Added 111 Neo Genesis cards
+Pulling Gym Challenge 
+Added 133 Gym Challenge cards
+Pulling Gym Heroes 
+Added 132 Gym Heroes cards
+Pulling Team Rocket 
+Added 83 Team Rocket cards
+Pulling Base Set 2 
+Added 130 Base Set 2 cards
+Pulling Fossil 
+Added 62 Fossil cards
+Pulling Wizards of the Coast Promos 
+Added 67 Wizards of the Coast Promos cards
+Pulling Jungle 
+Added 64 Jungle cards
+Pulling Base Set 
+Added 101 Base Set cards
+close
