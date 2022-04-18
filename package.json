@@ -172,8 +172,10 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.63",
     "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.63",
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-wix": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "electron": "^17.4.0",
     "electron-rebuild": "^3.2.7"
@@ -185,6 +187,7 @@
         {
           "name": "@electron-forge/maker-wix",
           "config": {
+            "name": "poketrax",
             "language": 1033,
             "manufacturer": "Poketrax"
           }
