@@ -1,5 +1,5 @@
 
-import { CardSearch } from "../model/Card";
+import { CardSearch, Price } from "../model/Card";
 import axios from 'axios'
 import { baseURL } from "../index";
 import { Expansion } from "../model/Meta";
@@ -23,6 +23,21 @@ export function search(page: number, term?: string, sets?: Expansion[], rarity?:
             axios.get(url.toString()).then(
                 (res) => {
                     resolve(res.data)
+                },
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
+export function getTCGPprice(id: number): Promise<Price[]>{
+    return new Promise(
+        (reslove, reject) => {
+            axios.get(`${baseURL}/price/${id}`).then(
+                (res) => {
+                    reslove(res.data)
                 },
                 (err) => {
                     reject(err)

@@ -1,21 +1,40 @@
 const express = require("express");
 const cors = require('cors')
+const path = require('path')
 const sqlite3 = require("sqlite3")
 const axios = require('axios')
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const app = express();
-
-const db = new sqlite3.Database('./public/sql/data.sqlite3', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
-    if (err) console.error('Database opening error: ', err);
-});
+const os = require("os");
+const { timer } = require("rxjs");
 
 var start = function start() {
     app.listen(3030)
 }
 
-app.use(cors())
+var pwd = function pwd() {
+    if (process.env.NODE_ENV === 'development') {
+        return "./"
+    }
+    switch (os.platform()) {
+        case 'darwin': return '/Applications/PokeTrax.app/Contents/'
+        case 'win32': return ''
+        default: return "./"
+    }
+}
 
+module.exports.pwd = pwd
 module.exports.start = start
+
+const db = new sqlite3.Database(
+    path.join(pwd(), './sql/data.sqlite3'),
+    sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+    (err) => {
+        if (err) console.error('Database opening error: ', err);
+    }
+);
+
+app.use(cors())
 /*Card Img*/
 app.get("/cardImg/:asset_id",
     async (req, res, next) => {
@@ -29,7 +48,7 @@ app.get("/cardImg/:asset_id",
             }
         })
     },
-    fileCacheMiddleware({ cacheDir: "./cardImg", maxSize: 10 * 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./cardImg"), maxSize: 1024 * 1024 * 1024 }),
     (req, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -51,7 +70,7 @@ app.get("/seriesImg/:asset_id",
             }
         })
     },
-    fileCacheMiddleware({ cacheDir: "./seriesImg", maxSize: 10 * 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./seriesImg"), maxSize: 1024 * 1024 * 1024 }),
     (req, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -74,7 +93,7 @@ app.get("/expLogo/:asset_id",
             }
         })
     },
-    fileCacheMiddleware({ cacheDir: "./expLogo", maxSize: 10 * 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./expLogo"), maxSize: 1024 * 1024 * 1024 }),
     (req, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -98,7 +117,7 @@ app.get("/expSymbol/:asset_id",
             }
         })
     },
-    fileCacheMiddleware({ cacheDir: "./expLogo", maxSize: 10 * 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./expSymbol"), maxSize: 1024 * 1024 * 1024 }),
     (req, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -136,14 +155,14 @@ app.get("/cards/:page", async (req, res) => {
     // Expansions 
     let exps = JSON.parse(decodeURIComponent(req.query.expansions))
     let FILTER_EXP = ""
-    if (exps != null && exps.length ) {
+    if (exps != null && exps.length) {
         let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")")
         FILTER_EXP = `AND expName in ${expFilter}`
     }
     // Rarities
     let rarities = req.query.rarities != null ? JSON.parse(decodeURIComponent(req.query.rarities)) : []
     let FILTER_RARE = ""
-    if(rarities != null && rarities.length != 0){
+    if (rarities != null && rarities.length != 0) {
         let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")")
         FILTER_RARE = `AND rarity in ${rareFilter}`
     }
@@ -160,7 +179,7 @@ app.get("/cards/:page", async (req, res) => {
                     res.status(500).send('sqlerr: ' + err2)
                     console.log(err2)
                 } else {
-                    res.send({total: row['count(cardId)'], cards: rows})
+                    res.send({ total: row['count(cardId)'], cards: rows })
                 }
             }
         })
@@ -169,7 +188,29 @@ app.get("/cards/:page", async (req, res) => {
 })
 
 app.get("/price/:productId", async (req, res) => {
-    axios.get(`https://mpapi.tcgplayer.com/v2/product/${req.params.productId}/pricepoints`).then(
+    let rando = (Math.random() * req.params.productId) % 5
+    let delay = 0
+    switch(rando){
+        case 0 :
+            delay = 0
+            break
+        case 1 :
+            delay = 50
+            break
+        case 2 :
+            delay = 100
+            break;
+        case 3 :
+            delay = 200
+            break;
+        case 4 :
+            delay = 300
+            break;
+        default:
+            delay = 50
+    }
+    timer(delay).subscribe(
+        axios.get(`https://mpapi.tcgplayer.com/v2/product/${req.params.productId}/pricepoints`).then(
         (api) => {
             res.send(api.data)
         },

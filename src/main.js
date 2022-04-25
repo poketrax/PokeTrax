@@ -1,17 +1,19 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const mw = require("./middleware")
 
+
 let mainWindow;
 
 function createWindow () {
-  const startUrl = process.env.ELECTRON_START_URL || url.format({
-    pathname: path.join(__dirname, '../index.html'),
-    protocol: 'file:',
-    slashes: true,
-  });
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  console.log(path.join(mw.pwd(), '/index.html'))
+  const startUrl = process.env.ELECTRON_START_URL ||url.format({
+        pathname: path.join(mw.pwd(), '/index.html'),
+        protocol: 'file:',
+        slashes: true,
+      });
+  mainWindow = new BrowserWindow({ width: 1200, height: 800 });
   mainWindow.loadURL(startUrl);
   mainWindow.on('closed', function () {
     mainWindow = null;

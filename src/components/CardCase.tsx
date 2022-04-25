@@ -3,6 +3,7 @@ import { Card, Price } from '../model/Card'
 import { baseURL } from '../index'
 import { getRarity } from '../controls/CardDB';
 import { CgPokemon } from "react-icons/cg"
+import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 
 class Props {
@@ -16,6 +17,8 @@ class State {
 export class CardCase extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
+        this.state = new State()
+        
     }
     render() {
         return (
@@ -33,7 +36,7 @@ export class CardCase extends React.Component<Props, State> {
                             <img className='h-6' src={baseURL + "/expSymbol/" + this.props.card?.expName} />
                         </div>
                         <div className='grow'></div>
-                        <a className='text-blue-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}></a>
+                        <a className='text-blue-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}>{this.getPrice() }</a>
                         <div className='grow'></div>
                         <div>{this.props.card?.expCardNumber}</div>
                         <div className='grow'></div>
@@ -46,11 +49,11 @@ export class CardCase extends React.Component<Props, State> {
         )
     }
 
-    private getPrice(): string {
-        if (this.state.prices.length != 0) {
+    private getPrice(): string | JSX.Element {
+        if (this.state.prices.length != 0) {    
             return this.state.prices[0].marketPrice.toString()
         } else {
-            return '-.--'
+            return (<CircularProgress size="1rem"/>)
         }
     }
 
