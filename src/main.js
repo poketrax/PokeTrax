@@ -3,11 +3,9 @@ const path = require('path');
 const url = require('url');
 const mw = require("./middleware")
 
-
 let mainWindow;
 
 function createWindow () {
-  console.log(path.join(mw.pwd(), '/index.html'))
   const startUrl = process.env.ELECTRON_START_URL ||url.format({
         pathname: path.join(mw.pwd(), '/index.html'),
         protocol: 'file:',

@@ -1,5 +1,5 @@
 
-import { CardSearch, Price } from "../model/Card";
+import { CardSearch, Price, Card } from "../model/Card";
 import axios from 'axios'
 import { baseURL } from "../index";
 import { Expansion } from "../model/Meta";
@@ -32,10 +32,10 @@ export function search(page: number, term?: string, sets?: Expansion[], rarity?:
     )
 }
 
-export function getTCGPprice(id: number): Promise<Price[]>{
+export function getTCGPprice(card: Card): Promise<Price[]>{
     return new Promise(
         (reslove, reject) => {
-            axios.get(`${baseURL}/price/${id}`).then(
+            axios.post(`${baseURL}/price`, card).then(
                 (res) => {
                     reslove(res.data)
                 },

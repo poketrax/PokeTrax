@@ -6,7 +6,9 @@ const axios = require('axios')
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const app = express();
 const os = require("os");
-const { timer } = require("rxjs");
+const lodash = require("lodash");
+const hash = require('object-hash');
+const bodyParser = require('body-parser');
 
 var start = function start() {
     app.listen(3030)
@@ -34,7 +36,18 @@ const db = new sqlite3.Database(
     }
 );
 
+const pricesdb = new sqlite3.Database(
+    path.join(pwd(), './sql/prices.sqlite3'),
+    sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+    (err) => {
+        if (err) console.error('Database opening error: ', err);
+    }
+)
+
+pricesdb.run(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date INTEGER, cardId TEXT, variant TEXT, vendor TEXT, price REAL)`)
+
 app.use(cors())
+
 /*Card Img*/
 app.get("/cardImg/:asset_id",
     async (req, res, next) => {
@@ -168,7 +181,6 @@ app.get("/cards/:page", async (req, res) => {
     }
     let count = `SELECT count(cardId) FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
     let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
-    console.log(sql)
     db.get(count, (err1, row) => {
         db.all(sql, (err2, rows) => {
             if (err1) {
@@ -187,35 +199,95 @@ app.get("/cards/:page", async (req, res) => {
 
 })
 
-app.get("/price/:productId", async (req, res) => {
-    let rando = (Math.random() * req.params.productId) % 5
-    let delay = 0
-    switch(rando){
-        case 0 :
-            delay = 0
-            break
-        case 1 :
-            delay = 50
-            break
-        case 2 :
-            delay = 100
-            break;
-        case 3 :
-            delay = 200
-            break;
-        case 4 :
-            delay = 300
-            break;
-        default:
-            delay = 50
-    }
-    timer(delay).subscribe(
-        axios.get(`https://mpapi.tcgplayer.com/v2/product/${req.params.productId}/pricepoints`).then(
-        (api) => {
-            res.send(api.data)
-        },
+function getTcgpPrice(card, callback) {
+    let bounce = lodash.debounce(
+        () => {
+            let prices = []
+            axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`).then((api) => {
+                for (let result of api.data.result) {
+                    let date = Date.parse(result.date)
+                    result.variants.forEach(
+                        (variant) => {
+                            let price = {
+                                "date": date,
+                                "cardId": card.cardId,
+                                "variant": variant.variant,
+                                "vendor": "tcgp",
+                                "price": parseFloat(variant.marketPrice)
+                            }
+                            prices.push(price)
+                            let sql = `INSERT OR IGNORE INTO prices 
+                                        (id, date, cardId, variant, vendor, price) 
+                                        VALUES ($id, $date, $cardId, $variant, $vendor, $price)
+                                        `
+                            pricesdb.run(sql,
+                                {
+                                    "$id": hash(price),
+                                    "$date": price.date,
+                                    "$cardId": price.cardId,
+                                    "$variant": price.variant,
+                                    "$vendor": price.vendor,
+                                    "$price": price.price
+                                }, (err) => {
+                                    if (err) {
+                                        console.log("err: " + err)
+                                    }
+                                })
+                        }
+                    )
+                }
+                callback(prices)
+            }).catch((err) => {
+                callback(err)
+            })
+        }, 300)
+    bounce()
+}
+
+async function getPrices(cardId, _start, _end, variant) {
+    return new Promise(
+        (resolve, reject) => {
+            let now = new Date();
+            now.setTime(Date.now())
+
+            let then = new Date()
+            then.setTime(Date.now())
+            then.setDate(now.getDate() - 1)
+
+            let endDate = _end != null ? new Date(_end) : now
+            let startDate = _start != null ? new Date(_start) : then
+            let sql = `SELECT * FROM prices WHERE cardId = $cardId AND date > $start AND date < $end ORDER BY date DESC`
+
+            pricesdb.all(sql, { "$cardId": cardId, "$start": startDate.getTime(), "$end": endDate.getTime() }, (err, rows) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(rows)
+                }
+            })
+        }
+    )
+}
+
+app.post("/price", bodyParser.json(), async (req, res) => {
+    getPrices(req.body.cardId, req.query.start, req.query.end, req.query.variant).then(
+        (value) => {
+            if (value.length) {
+                res.send(value)
+            } else {
+                getTcgpPrice(req.body, (prices) => {
+                    if (prices.length) {
+                        res.send(prices)
+                    } else {
+                        res.status(500).send(prices)
+                    }
+                })
+            }
+        }
+    ).catch(
         (err) => {
-            res.send(err)
+            res.status(500).send('sqlerr: ' + err)
+            console.log(err)
         }
     )
 })
