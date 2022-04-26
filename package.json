@@ -3,6 +3,7 @@
   "productName": "PokeTrax",
   "version": "0.1.0",
   "main": "src/main.js",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -28,6 +29,7 @@
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-preset-react-app": "^10.0.1",
     "bfj": "^7.0.2",
+    "body-parser": "^1.20.0",
     "browserslist": "^4.18.1",
     "camelcase": "^6.2.1",
     "canvas": "^2.9.1",
@@ -53,8 +55,11 @@
     "jest-resolve": "^27.4.2",
     "jest-watch-typeahead": "^1.0.0",
     "jsdom": "^19.0.0",
+    "lodash": "^4.17.21",
     "lowdb": "^1.0.0",
     "mini-css-extract-plugin": "^2.4.5",
+    "object-hash": "^3.0.0",
+    "os": "^0.1.2",
     "postcss": "^8.4.4",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^6.2.1",
@@ -88,12 +93,11 @@
     "xhr2": "^0.2.1"
   },
   "scripts": {
-    "start": "electron-forge start",
-    "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && electron .",
-    "build": "./node_modules/.bin/electron-rebuild & node scripts/build.js",
+    "start": "export BROWSER=none && node scripts/start.js",
+    "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && export NODE_ENV=development && electron .",
+    "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=./test/custom-env.js",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "node scripts/build.js && electron-builder"
   },
   "eslintConfig": {
     "extends": [
@@ -170,44 +174,17 @@
     ]
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.63",
-    "@electron-forge/maker-deb": "^6.0.0-beta.63",
-    "@electron-forge/maker-dmg": "^6.0.0-beta.63",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
-    "@electron-forge/maker-wix": "^6.0.0-beta.63",
-    "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "electron": "^17.4.0",
-    "electron-rebuild": "^3.2.7"
+    "electron-builder": "^23.0.3"
   },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-wix",
-          "config": {
-            "name": "poketrax",
-            "language": 1033,
-            "manufacturer": "Poketrax"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-dmg",
-          "config": {
-            "background": "./public/assests/colorless.png",
-            "format": "ULFO"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
+  "build": {
+    "appId": "github.com/jgunzelman88/PokeTrax",
+    "extraFiles": {
+      "from": "./build",
+      "to": "./"
+    },
+    "dmg": {
+      "icon": "./assests/poketrax.png"
     }
   }
 }

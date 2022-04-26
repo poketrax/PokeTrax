@@ -23,14 +23,18 @@ export class Card {
 }
 
 export class Price {
-    public printingType: string
-    public marketPrice: number
-    public buylistMarketPrice?: number 
-    public listedMedianPrice?: number
+    public date: number
+    public cardId: string
+    public variant: string 
+    public vendor: string
+    public price: number
 
-    constructor(printingType: string, marketPrice: number){
-        this.printingType = printingType
-        this.marketPrice = marketPrice
+    constructor(date: number, cardId: string, variant: string, vendor: string, price: number){
+        this.date = date
+        this.cardId = cardId
+        this.variant = variant
+        this.vendor = vendor
+        this.price = price
     }
 }
 

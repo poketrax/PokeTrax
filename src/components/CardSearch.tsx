@@ -10,7 +10,9 @@ import { CgPokemon } from "react-icons/cg"
 import { MdOutlineCatchingPokemon } from "react-icons/md"
 import { search, expansions, rarities, getRarity } from '../controls/CardDB'
 import { Expansion } from '../model/Meta';
+import { Observable } from 'rxjs';
 
+const tcgpRequest = new Observable()
 const icon = <CgPokemon />;
 const checkedIcon = <MdOutlineCatchingPokemon />;
 class State {

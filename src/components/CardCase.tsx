@@ -1,12 +1,13 @@
 import React from 'react';
 import { Card, Price } from '../model/Card'
 import { baseURL } from '../index'
-import { getRarity } from '../controls/CardDB';
+import { getRarity, getTCGPprice } from '../controls/CardDB';
 import { CgPokemon } from "react-icons/cg"
+import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 
-class Props {
-    public card: Card | null = null
+interface Props {
+    card: Card
 }
 
 class State {
@@ -16,6 +17,12 @@ class State {
 export class CardCase extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
+        this.state = new State()
+        getTCGPprice(props.card).then(
+            (value) => {
+                this.setState({...this.state, prices: value})
+            }
+        )
     }
     render() {
         return (
@@ -26,14 +33,14 @@ export class CardCase extends React.Component<Props, State> {
                         <span className='pl-2 truncate' >{this.props.card?.name}</span>
                     </div>
                     <div className='flex justify-items-center'>
-                        <img className='w-64' src={baseURL + "/cardImg/" + this.props.card?.cardId} onError={(ev) => {if(ev.target instanceof HTMLImageElement) ev.target.src ='./assests/pokemon-back.png'}}/>
+                        <img className='w-64' src={baseURL + "/cardImg/" + this.props.card?.cardId} onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }} />
                     </div>
                     <div className='h-8 flex justify-items-center items-center'>
                         <div className='flex justify-items-center items-center h-8 w-8 ml-2'>
                             <img className='h-6' src={baseURL + "/expSymbol/" + this.props.card?.expName} />
                         </div>
                         <div className='grow'></div>
-                        <a className='text-blue-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}></a>
+                        <a className='text-blue-600' href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}>{this.getPrice()}</a>
                         <div className='grow'></div>
                         <div>{this.props.card?.expCardNumber}</div>
                         <div className='grow'></div>
@@ -46,11 +53,27 @@ export class CardCase extends React.Component<Props, State> {
         )
     }
 
-    private getPrice(): string {
-        if (this.state.prices.length != 0) {
-            return this.state.prices[0].marketPrice.toString()
+    componentWillReceiveProps(props: Props){
+        if(props.card.cardId !== this.props.card.cardId){
+            getTCGPprice(props.card).then(
+                (data) => {
+                   this.setState({...this.state, prices: data})
+                }
+            )
+        }
+    }
+
+    private getPrice(): string | JSX.Element {
+        if (this.state.prices?.length !== 0) {
+            let val = "-.--"
+            this.state.prices.forEach((price) => {
+                if (price.price != null) {
+                    val = `$${price.price.toFixed(2).toString()}`
+                }
+            })
+            return val
         } else {
-            return '-.--'
+            return (<CircularProgress size="1rem" />)
         }
     }
 
@@ -83,6 +106,4 @@ export class CardCase extends React.Component<Props, State> {
                 return (<CgPokemon className={_class}></CgPokemon>)
         }
     }
-
-
 }
