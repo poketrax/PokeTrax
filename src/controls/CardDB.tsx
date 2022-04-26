@@ -6,7 +6,7 @@ import { Expansion } from "../model/Meta";
 import { BsFillCircleFill, BsDiamondFill, BsStars } from "react-icons/bs"
 import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
 
-export function search(page: number, term?: string, sets?: Expansion[], rarity?: string[]): Promise<CardSearch> {
+export function search(page: number, term?: string, sets?: Expansion[], rarity?: string[], sort?: string): Promise<CardSearch> {
     return new Promise<CardSearch>(
         (resolve, reject) => {
             let exps = JSON.stringify(sets?.map((value) => value.name) ?? [])
@@ -16,6 +16,9 @@ export function search(page: number, term?: string, sets?: Expansion[], rarity?:
             }
             if (term != null) {
                 url.searchParams.set(`name`, term)
+            }
+            if(sort != null) {
+                url.searchParams.set('sort', sort)
             }
             if(rarity != null && rarity.length != 0){
                 url.searchParams.set(`rarities`, JSON.stringify(rarity))

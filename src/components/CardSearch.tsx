@@ -6,13 +6,13 @@ import TablePagination from '@mui/material/TablePagination';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { CgPokemon } from "react-icons/cg"
 import { MdOutlineCatchingPokemon } from "react-icons/md"
 import { search, expansions, rarities, getRarity } from '../controls/CardDB'
 import { Expansion } from '../model/Meta';
-import { Observable } from 'rxjs';
 
-const tcgpRequest = new Observable()
 const icon = <CgPokemon />;
 const checkedIcon = <MdOutlineCatchingPokemon />;
 class State {
@@ -22,6 +22,7 @@ class State {
     cards: Card[] = []
     page: number = 0
     count: number = 0
+    sort: string = ""
 }
 
 class Props {
@@ -35,7 +36,7 @@ export class CardSearch extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        this.search(0, props.sets)
+        this.setSearch(0, props.sets)
         expansions().then(
             (data) => {
                 this.setState({ ...this.state, sets: data })
@@ -45,16 +46,17 @@ export class CardSearch extends React.Component<Props, State> {
 
     private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
         console.log(newPage)
-        this.search(newPage)
+        this.setSearch(newPage)
     };
 
-    private search(page?: number, sets?: Expansion[], rareSelected?: string[]) {
-        search(page ?? this.state.page, this.searchTerm, sets ?? this.state.setsSelected, rareSelected ?? this.state.rareSelected).then(
+    private setSearch(page?: number, sets?: Expansion[], rareSelected?: string[], sort?: string) {
+        search(page ?? this.state.page, this.searchTerm, sets ?? this.state.setsSelected, rareSelected ?? this.state.rareSelected, sort ?? this.state.sort).then(
             (res) => {
                 this.setState(
                     {
                         ...this.state,
                         cards: res.cards,
+                        sort: (sort ?? this.state.sort),
                         page: (page ?? this.state.page),
                         setsSelected: (sets ?? this.state.setsSelected),
                         rareSelected: (rareSelected ?? this.state.rareSelected),
@@ -71,7 +73,7 @@ export class CardSearch extends React.Component<Props, State> {
         return (
             <div>
                 <div className='w-full h-full'>
-                    <div className='w-full h-20 bg-gray-200 flex justify-items-center items-center pl-2'>
+                    <div className='w-full h-20 bg-gray-200 flex justify-items-center items-center pl-2 pr-2'>
                         <TextField className='w-96'
                             id="outlined-basic"
                             label="Search"
@@ -79,7 +81,7 @@ export class CardSearch extends React.Component<Props, State> {
                             onChange={(e) => this.searchTerm = e.target.value}
                             onKeyPress={(e) => {
                                 if (e.key === "Enter") {
-                                    this.search(0)
+                                    this.setSearch(0)
                                 }
                             }} />
                         <Autocomplete
@@ -105,7 +107,7 @@ export class CardSearch extends React.Component<Props, State> {
                             onChange={
                                 (_, value) => {
                                     console.log(value)
-                                    this.search(0, value)
+                                    this.setSearch(0, value)
                                 }
                             }
                             renderInput={(params) => (
@@ -143,7 +145,7 @@ export class CardSearch extends React.Component<Props, State> {
                             )}
                             onChange={
                                 (_, value) => {
-                                    this.search(0, this.state.setsSelected, value)
+                                    this.setSearch(0, this.state.setsSelected, value)
                                 }
                             }
                             renderInput={(params) => (
@@ -155,6 +157,21 @@ export class CardSearch extends React.Component<Props, State> {
                                 />
                             )}
                         />
+                        <div className='flex-grow'></div>
+                        <ToggleButtonGroup
+                            value={this.state.sort}
+                            exclusive
+                            onChange={(_, value) => {
+                                this.setSearch(0, this.state.setsSelected, this.state.rareSelected, value)}
+                            }
+                        >
+                            <ToggleButton value="name" aria-label="centered">
+                                <div>Name</div>
+                            </ToggleButton>
+                            <ToggleButton value="setNumber" aria-label="right aligned">
+                                <div>Set #</div>
+                            </ToggleButton>
+                        </ToggleButtonGroup>
                     </div>
                     <TablePagination
                         component="div"

@@ -179,8 +179,21 @@ app.get("/cards/:page", async (req, res) => {
         let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")")
         FILTER_RARE = `AND rarity in ${rareFilter}`
     }
+
+    let order
+    switch(req.query.sort){
+        case "name":
+            order = `ORDER BY cardId ASC`
+            break
+        case "setNumber":
+            order = `ORDER BY expCardNumber ASC`
+            break
+        default:
+            order = ``
+    }
+
     let count = `SELECT count(cardId) FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
-    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
     db.get(count, (err1, row) => {
         db.all(sql, (err2, rows) => {
             if (err1) {
