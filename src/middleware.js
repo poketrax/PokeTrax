@@ -10,10 +10,12 @@ const lodash = require("lodash");
 const hash = require('object-hash');
 const bodyParser = require('body-parser');
 
+//Start web server
 var start = function start() {
     app.listen(3030)
 }
 
+/* Print the working directory for the application to get date files */
 var pwd = function pwd() {
     if (process.env.NODE_ENV === 'development') {
         return "./"
@@ -24,9 +26,10 @@ var pwd = function pwd() {
         default: return "./"
     }
 }
-
+//exports for main
 module.exports.pwd = pwd
 module.exports.start = start
+
 
 const db = new sqlite3.Database(
     path.join(pwd(), './sql/data.sqlite3'),
@@ -48,7 +51,7 @@ pricesdb.run(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date INTEGER, c
 
 app.use(cors())
 
-/*Card Img*/
+/*Card images gets card imgs from the web or local cache*/
 app.get("/cardImg/:asset_id",
     async (req, res, next) => {
         db.get('SELECT img FROM cards WHERE cardId = $id', { "$id": req.params.asset_id }, (err, row) => {
@@ -70,7 +73,8 @@ app.get("/cardImg/:asset_id",
         res.end(res.locals.buffer, "binary");
     }
 );
-/* Series Image */
+
+/* Series Image: from local cache or the web */
 app.get("/seriesImg/:asset_id",
     async (req, res, next) => {
         db.get('SELECT icon FROM series WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
