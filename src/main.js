@@ -18,6 +18,7 @@ function createWindow () {
   });
 }
 
+mw.checkForDbUpdate()
 mw.start()
 
 //Electron starts

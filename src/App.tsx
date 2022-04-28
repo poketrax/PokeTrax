@@ -2,12 +2,15 @@ import React from 'react';
 import './App.css';
 import Cards from "./components/CardSearch"
 import { Expansions } from "./components/Expansions"
-import { Subject } from 'rxjs'
+import LinearProgress from '@mui/material/LinearProgress';
+import { Subject, timer } from 'rxjs'
 import { Expansion } from './model/Meta';
+import { DbState, getDbState } from './controls/CardDB';
 
 class State {
-    page: string = "cards"
+    page: string = ""
     sets: Expansion[] = []
+    dbState: DbState = new DbState
 }
 export interface AppControl {
     page: string
@@ -15,6 +18,7 @@ export interface AppControl {
 }
 export const AppController = new Subject<AppControl>()
 export class App extends React.Component<{}, State> {
+
     constructor(props: object) {
         super(props)
         this.state = new State()
@@ -23,24 +27,57 @@ export class App extends React.Component<{}, State> {
                 this.setPage(msg.page, msg.sets)
             }
         )
+        //checks to see if update is happing
+        let dbcheck = timer(0,100).subscribe( () =>
+            {
+                getDbState().then(
+                    (state) => {
+                        this.setState({...this.state, dbState: state })
+                        if(state.ready){
+                            this.setPage('cards')
+                            dbcheck.unsubscribe()
+                        }
+                    }
+                )
+        })
+        
     }
 
     setPage(page: string, sets?: Expansion[]) {
-        this.setState({
-            ...this.state,
-            page: page ?? this.state.page,
-            sets: sets ?? this.state.sets 
-        })
+        if(this.state.dbState.ready !== false){
+            this.setState({
+                ...this.state,
+                page: page ?? this.state.page,
+                sets: sets ?? this.state.sets
+            })
+        }
     }
 
     render() {
         let content;
-        if (this.state.page === "cards") {
-            content = (<Cards sets={this.state.sets}></Cards>)
-        } else if (this.state.page === "sets") {
-            content = (<Expansions></Expansions>)
-        } else if (this.state.page === "collections") {
-            content = <div>Collections</div>
+        switch (this.state.page) {
+            case 'cards':
+                content = (<Cards sets={this.state.sets}></Cards>)
+                break
+            case 'sets':
+                content = (<Expansions></Expansions>)
+                break
+            case 'collections':
+                content = <div>Collections</div>
+                break
+            default: 
+                content = (
+                    <div className='absolute justify-items-center items-center w-full'>
+                        <LinearProgress ></LinearProgress>
+                        <div className='h-16'></div>
+                        <div className='flex'>
+                            <div className='grow'></div>
+                            <span className='text-2xl'>Loading Database ...</span>
+                            <div className='grow'></div>
+                        </div>
+
+                    </div>
+                )
         }
         return (
             <div>
@@ -55,9 +92,7 @@ export class App extends React.Component<{}, State> {
                         </span>
                     </div>
                 </div>
-                <div className=''>
-                    {content}
-                </div>
+                {content}
             </div>
         )
     }

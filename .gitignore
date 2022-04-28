@@ -17,6 +17,7 @@
 /seriesImg
 /out
 /dist
+/sql
 
 # misc
 .DS_Store
