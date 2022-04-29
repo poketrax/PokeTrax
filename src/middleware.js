@@ -13,7 +13,7 @@ const hash = require('object-hash');
 const bodyParser = require('body-parser');
 const compver = require('compare-version')
 
-const DB_META = "./sql"
+const DB_META = "./sql/meta.json"
 const CARD_DB_FILE = "./sql/data.sqlite3"
 const PRICE_DB_FILE = "./sql/prices.sqlite3"
 
@@ -60,7 +60,7 @@ const checkForDbUpdate = () => {
         async (resolve, reject) => {
             let meta = await pullDbMeta()
             //if new and no meta file exists
-            if (fs.existsSync(path.join(pwd(), DB_META))) {
+            if (fs.existsSync(path.join(pwd(), DB_META)) === false) {
                 dbUpdate = { ready: false, updated: true }
                 try {
                     await pullDb(meta)
