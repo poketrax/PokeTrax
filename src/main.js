@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+const fs = require('fs')
 const path = require('path');
 const url = require('url');
 const mw = require("./middleware")
@@ -16,6 +17,10 @@ function createWindow () {
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
+}
+
+if(fs.existsSync(path.join(mw.pwd(),"sql/")) === false){
+  fs.mkdirSync(path.join(mw.pwd(),'sql/'))
 }
 
 mw.checkForDbUpdate()
