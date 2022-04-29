@@ -181,7 +181,11 @@
       "to": "./"
     },
     "dmg": {
-      "icon": "./assests/poketrax.png"
+      "icon": "icon.icns"
+    },
+    "directories": {
+      "buildResources": "buildResources",
+      "output": "build"
     }
   }
 }
