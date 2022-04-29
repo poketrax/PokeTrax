@@ -40,7 +40,6 @@ export class App extends React.Component<{}, State> {
                     }
                 )
         })
-        
     }
 
     setPage(page: string, sets?: Expansion[]) {
@@ -55,6 +54,7 @@ export class App extends React.Component<{}, State> {
 
     render() {
         let content;
+        let message;
         switch (this.state.page) {
             case 'cards':
                 content = (<Cards sets={this.state.sets}></Cards>)
@@ -66,13 +66,14 @@ export class App extends React.Component<{}, State> {
                 content = <div>Collections</div>
                 break
             default: 
+                message = this.state.dbState.updated ? "Downloading New Data" : "Loading Data base"
                 content = (
                     <div className='absolute justify-items-center items-center w-full'>
                         <LinearProgress ></LinearProgress>
                         <div className='h-16'></div>
                         <div className='flex'>
                             <div className='grow'></div>
-                            <span className='text-2xl'>Loading Database ...</span>
+                            <span className='text-2xl'>{message} ...</span>
                             <div className='grow'></div>
                         </div>
 
