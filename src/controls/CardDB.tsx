@@ -13,7 +13,6 @@ export class DbState {
     public updated: boolean = false
 }
 
-
 export function search(page: number, term?: string, sets?: Expansion[], rarity?: string[], sort?: string): Promise<CardSearch> {
     return new Promise<CardSearch>(
         (resolve, reject) => {
