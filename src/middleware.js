@@ -72,7 +72,6 @@ const checkForDbUpdate = () => {
                 }
             } else { // look for update
                 let current = JSON.parse(fs.readFileSync(path.join(pwd(), DB_META), { encoding: 'utf8', flag: 'r' }))
-                console.log(`curr: ${current.version}\nlate: ${meta.version} comp: ${compver(current.version, meta.version)}`)
                 if (compver(meta.version, current.version) > 0) {
                     dbUpdate = { ready: false, updated: true }
                     try {
