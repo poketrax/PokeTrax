@@ -74,7 +74,7 @@ export class CardSearch extends React.Component<Props, State> {
             <div>
                 <div className='w-full h-full'>
                     <div className='w-full h-20 bg-gray-200 flex justify-items-center items-center pl-2 pr-2'>
-                        <TextField className='w-96'
+                        <TextField className='min-w-fit w-72'
                             id="outlined-basic"
                             label="Search"
                             variant="outlined"
@@ -84,43 +84,45 @@ export class CardSearch extends React.Component<Props, State> {
                                     this.setSearch(0)
                                 }
                             }} />
-                        <Autocomplete
-                            className='w-96 pl-4'
-                            multiple
-                            limitTags={1}
-                            id="expantions"
-                            options={this.state.sets}
-                            getOptionLabel={(option) => option.name}
-                            defaultValue={[]}
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                                <li {...props}>
-                                    <Checkbox
-                                        icon={icon}
-                                        checkedIcon={checkedIcon}
-                                        style={{ marginRight: 8 }}
-                                        checked={selected}
-                                    />
-                                    {option.name}
-                                </li>
-                            )}
-                            onChange={
-                                (_, value) => {
-                                    console.log(value)
-                                    this.setSearch(0, value)
+                        <div className='pl-4 min-w-min w-72'>
+                            <Autocomplete
+                                multiple
+                                limitTags={1}
+                                id="expantions"
+                                options={this.state.sets}
+                                getOptionLabel={(option) => option.name}
+                                defaultValue={[]}
+                                disableCloseOnSelect
+                                renderOption={(props, option, { selected }) => (
+                                    <li {...props}>
+                                        <Checkbox
+                                            icon={icon}
+                                            checkedIcon={checkedIcon}
+                                            style={{ marginRight: 8 }}
+                                            checked={selected}
+                                        />
+                                        {option.name}
+                                    </li>
+                                )}
+                                onChange={
+                                    (_, value) => {
+                                        console.log(value)
+                                        this.setSearch(0, value)
+                                    }
                                 }
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    className='focus:bg-slate-400'
-                                    {...params}
-                                    label="Expansions"
-                                    placeholder="Expansions"
-                                />
-                            )}
-                        />
+                                renderInput={(params) => (
+                                    <TextField
+                                        className='focus:bg-slate-400'
+                                        {...params}
+                                        label="Expansions"
+                                        placeholder="Expansions"
+                                    />
+                                )}
+                            />
+                        </div>
+
                         <Autocomplete
-                            className='pl-4 w-72'
+                            className='pl-4 min-w-min w-72'
                             multiple
                             limitTags={1}
                             id="expantions"
@@ -157,12 +159,14 @@ export class CardSearch extends React.Component<Props, State> {
                                 />
                             )}
                         />
-                        <div className='flex-grow'></div>
+                        <div className='flex-grow w-6'></div>
                         <ToggleButtonGroup
+                            className='h-14'
                             value={this.state.sort}
                             exclusive
                             onChange={(_, value) => {
-                                this.setSearch(0, this.state.setsSelected, this.state.rareSelected, value)}
+                                this.setSearch(0, this.state.setsSelected, this.state.rareSelected, value)
+                            }
                             }
                         >
                             <ToggleButton value="name" aria-label="centered">
