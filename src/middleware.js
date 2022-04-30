@@ -71,8 +71,9 @@ const checkForDbUpdate = () => {
                     reject()
                 }
             } else { // look for update
-                let current = fs.readFileSync(path.join(pwd(), DB_META), { encoding: 'utf8', flag: 'r' })
-                if (compver(current.version, meta.version) > 0) {
+                let current = JSON.parse(fs.readFileSync(path.join(pwd(), DB_META), { encoding: 'utf8', flag: 'r' }))
+                console.log(`curr: ${current.version}\nlate: ${meta.version} comp: ${compver(current.version, meta.version)}`)
+                if (compver(meta.version, current.version) > 0) {
                     dbUpdate = { ready: false, updated: true }
                     try {
                         await pullDb(meta)
@@ -97,7 +98,8 @@ async function pullDbMeta() {
             try {
                 let release = await axios.get('https://api.github.com/repos/jgunzelman88/pokepull/releases/latest')
                 let asset = release.data.assets.find((value) => value.name === "data.sqlite3")
-                resolve({ version: release.data.name, asset: asset.browser_download_url })
+                let meta = { 'version': release.data.name, 'asset': asset.browser_download_url }
+                resolve(meta)
             } catch (err) {
                 reject(err)
             }
@@ -337,49 +339,47 @@ app.get("/cards/:page", async (req, res) => {
  * @param {*} card 
  * @param {*} callback 
  */
-function getTcgpPrice(card, callback) {
-    let bounce = lodash.debounce(
-        () => {
-            let prices = []
-            axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`).then((api) => {
-                for (let result of api.data.result) {
-                    let date = Date.parse(result.date)
-                    result.variants.forEach(
-                        (variant) => {
-                            let price = {
-                                "date": date,
-                                "cardId": card.cardId,
-                                "variant": variant.variant,
-                                "vendor": "tcgp",
-                                "price": parseFloat(variant.marketPrice)
-                            }
-                            prices.push(price)
-                            let sql = `INSERT OR IGNORE INTO prices 
-                                        (id, date, cardId, variant, vendor, price) 
-                                        VALUES ($id, $date, $cardId, $variant, $vendor, $price)
-                                        `
-                            pricesdb.run(sql,
-                                {
-                                    "$id": hash(price),
-                                    "$date": price.date,
-                                    "$cardId": price.cardId,
-                                    "$variant": price.variant,
-                                    "$vendor": price.vendor,
-                                    "$price": price.price
-                                }, (err) => {
-                                    if (err) {
-                                        console.log("err: " + err)
-                                    }
-                                })
+function getTcgpPrice(card) {
+    return new Promise((resolve, reject) => {
+        let prices = []
+        axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`).then((api) => {
+            for (let result of api.data.result) {
+                let date = Date.parse(result.date)
+                result.variants.forEach(
+                    (variant) => {
+                        let price = {
+                            "date": date,
+                            "cardId": card.cardId,
+                            "variant": variant.variant,
+                            "vendor": "tcgp",
+                            "price": parseFloat(variant.marketPrice)
                         }
-                    )
-                }
-                callback(prices)
-            }).catch((err) => {
-                callback(err)
-            })
-        }, 300)
-    bounce()
+                        prices.push(price)
+                        let sql = `INSERT OR IGNORE INTO prices 
+                                (id, date, cardId, variant, vendor, price) 
+                                VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
+                        pricesdb.run(sql,
+                            {
+                                "$id": hash(price),
+                                "$date": price.date,
+                                "$cardId": price.cardId,
+                                "$variant": price.variant,
+                                "$vendor": price.vendor,
+                                "$price": price.price
+                            }, (err) => {
+                                if (err) {
+                                    console.log("err: " + err)
+                                }
+                            })
+                    }
+                )
+                resolve(prices)
+            }
+        }).catch((err) => {
+            reject(err)
+        })
+    })
+
 }
 
 /**
@@ -428,13 +428,17 @@ app.post("/price", bodyParser.json(), async (req, res) => {
             if (value.length) {
                 res.send(value)
             } else {
-                getTcgpPrice(req.body, (prices) => {
-                    if (prices.length) {
+                getTcgpPrice(req.body).then(
+                    (prices) => {
                         res.send(prices)
-                    } else {
-                        res.status(500).send(prices)
                     }
-                })
+                ).catch(
+                    (err) => {
+                        res.status(500).send(err)
+                        console.log(err)
+                    }
+                )
+
             }
         }
     ).catch(
