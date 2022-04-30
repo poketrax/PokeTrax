@@ -5,11 +5,14 @@ import { baseURL } from "../index";
 import { Expansion } from "../model/Meta";
 import { BsFillCircleFill, BsDiamondFill, BsStars } from "react-icons/bs"
 import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
+import { from, delay, firstValueFrom } from 'rxjs';
 
+let DELAY = 100
 export class DbState {
     public ready: boolean = false
     public updated: boolean = false
 }
+
 
 export function search(page: number, term?: string, sets?: Expansion[], rarity?: string[], sort?: string): Promise<CardSearch> {
     return new Promise<CardSearch>(
@@ -43,7 +46,7 @@ export function search(page: number, term?: string, sets?: Expansion[], rarity?:
 export function getDbState(): Promise<DbState> {
     return new Promise(
         (resolve, reject) => {
-            axios.get(`${baseURL}/dbstatus`).then(
+            from(axios.get(`${baseURL}/dbstatus`).then(
                 (res) => {
                     resolve(res.data)
                 }
@@ -51,23 +54,32 @@ export function getDbState(): Promise<DbState> {
                 (err) => {
                     reject(err)
                 })
+            )
         }
     )
 }
 
 export function getTCGPprice(card: Card): Promise<Price[]> {
-    return new Promise(
-        (reslove, reject) => {
-            axios.post(`${baseURL}/price`, card).then(
-                (res) => {
-                    reslove(res.data)
-                },
-                (err) => {
-                    reject(err)
-                }
-            )
-        }
+    DELAY += 100
+    let sub = from(
+        new Promise<Price[]>(
+            (reslove, reject) => {
+                axios.post(`${baseURL}/price`, card).then(
+                    (res) => {
+                        reslove(res.data)
+                    },
+                    (err) => {
+                        reject(err)
+                    }
+                ).finally(
+                    () => {
+                        DELAY -= 100
+                    }
+                )
+            }
+        )
     )
+    return firstValueFrom(sub.pipe(delay(DELAY)))
 }
 
 export function expansions(): Promise<Expansion[]> {
