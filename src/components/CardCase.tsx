@@ -29,21 +29,23 @@ export class CardCase extends React.Component<Props, State> {
     render() {
         return (
             <div className='flex justify-center'>
-                <Paper elevation={3} className='rounded-md w-64 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
-                    <div className='h-8 flex items-center'>
+                <Paper elevation={3} className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
+                    <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center '>
                         {this.getEnergy(this.props.card?.energyType ?? "")}
-                        <span className='pl-2 truncate' >{this.props.card?.name}</span>
+                        <span className='pl-2 text-lg truncate' >{this.props.card?.name}</span>
                     </div>
-                    <div style={{ position: 'relative', }}>
+                    <div style={{ position: 'relative' }}>
                         {this.imgSpinner()}
-                        <img className='w-64'
-                            style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
-                            src={baseURL + "/cardImg/" + this.props.card?.cardId}
-                            onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
-                            onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
-                        />
+                        <div className="flex justify-center align-middle">
+                            <img className='w-64 h-[357px] rounded-xl'
+                                style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
+                                src={baseURL + "/cardImg/" + this.props.card?.cardId}
+                                onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
+                                onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
+                            />
+                        </div>
                     </div>
-                    <div className='h-8 flex justify-items-center items-center'>
+                    <div className='h-8 pl-2 pr-2 flex justify-center items-center'>
                         <div className='flex justify-items-center items-center h-8 w-8 ml-2'>
                             <Tooltip title={this.props.card.expName}>
                                 <img className='h-6' src={baseURL + "/expSymbol/" + this.props.card?.expName} />
