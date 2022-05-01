@@ -285,7 +285,7 @@ app.get("/cards/:page", async (req, res) => {
     let limit = 25
     let nameFilter = req.query.name != null ? decodeURIComponent(req.query.name).replaceAll(" ", "-") : ""
     // Expansions 
-    let exps = JSON.parse(decodeURIComponent(req.query.expansions))
+    let exps = req.query.expansions != null && req.query.expansions !== "%5B%22%22%5D" ? JSON.parse(decodeURIComponent(req.query.expansions)) : []
     let FILTER_EXP = ""
     if (exps != null && exps.length) {
         let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")")

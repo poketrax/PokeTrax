@@ -13,13 +13,12 @@ export class DbState {
     public updated: boolean = false
 }
 
-export function search(page: number, term?: string, sets?: Expansion[], rarity?: string[], sort?: string): Promise<CardSearch> {
+export function search(page: number, term?: string, sets?: string[], rarity?: string[], sort?: string): Promise<CardSearch> {
     return new Promise<CardSearch>(
         (resolve, reject) => {
-            let exps = JSON.stringify(sets?.map((value) => value.name) ?? [])
             let url = new URL(`${baseURL}/cards/${page ?? 0}`)
-            if (exps.length != 0) {
-                url.searchParams.set(`expansions`, exps)
+            if (sets && sets.length != 0) {
+                url.searchParams.set(`expansions`, encodeURI(JSON.stringify(sets)))
             }
             if (term != null) {
                 url.searchParams.set(`name`, term)

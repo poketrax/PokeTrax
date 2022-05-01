@@ -4,32 +4,31 @@ import Cards from "./components/CardSearch"
 import { Expansions } from "./components/Expansions"
 import LinearProgress from '@mui/material/LinearProgress';
 import { Subject, timer } from 'rxjs'
-import { Expansion } from './model/Meta';
 import { DbState, getDbState } from './controls/CardDB';
 
 class State {
     page: string = ""
-    sets: Expansion[] = []
+    selectedSet: string = ""
     dbState: DbState = new DbState
 }
 export interface AppControl {
     page: string
-    sets: Expansion[]
+    selectedSet: string
 }
+
 export const AppController = new Subject<AppControl>()
 export class App extends React.Component<{}, State> {
-
     constructor(props: object) {
         super(props)
         this.state = new State()
         AppController.subscribe(
             (msg) => {
-                this.setPage(msg.page, msg.sets)
+                this.setPage(msg.page, msg.selectedSet)
             }
         )
         //checks to see if update is happing
-        let dbcheck = timer(0,100).subscribe( () =>
-            {
+        let dbcheck = timer(0,100).subscribe( 
+            () => {
                 getDbState().then(
                     (state) => {
                         this.setState({...this.state, dbState: state })
@@ -42,12 +41,12 @@ export class App extends React.Component<{}, State> {
         })
     }
 
-    setPage(page: string, sets?: Expansion[]) {
+    setPage(page: string, selectedSet?: string) {
         if(this.state.dbState.ready !== false){
             this.setState({
                 ...this.state,
                 page: page ?? this.state.page,
-                sets: sets ?? this.state.sets
+                selectedSet: selectedSet ?? this.state.selectedSet
             })
         }
     }
@@ -57,7 +56,7 @@ export class App extends React.Component<{}, State> {
         let message;
         switch (this.state.page) {
             case 'cards':
-                content = (<Cards sets={this.state.sets}></Cards>)
+                content = (<Cards selectedSet={this.state.selectedSet}></Cards>)
                 break
             case 'sets':
                 content = (<Expansions></Expansions>)
@@ -76,7 +75,6 @@ export class App extends React.Component<{}, State> {
                             <span className='text-2xl'>{message} ...</span>
                             <div className='grow'></div>
                         </div>
-
                     </div>
                 )
         }

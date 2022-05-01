@@ -16,17 +16,16 @@ import { Expansion } from '../model/Meta';
 const icon = <CgPokemon />;
 const checkedIcon = <MdOutlineCatchingPokemon />;
 class State {
-    sets: Expansion[] = []
-    setsSelected: Expansion[] = []
+    sets: string[] = []
+    setsSelected: string[] = []
     rareSelected: string[] = []
     cards: Card[] = []
     page: number = 0
     count: number = 0
     sort: string = ""
 }
-
 class Props {
-    sets: Expansion[] = []
+    selectedSet?: string
 }
 
 export const setFilter = new Subject<string[]>()
@@ -36,10 +35,14 @@ export class CardSearch extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        this.setSearch(0, props.sets)
+        if (typeof props.selectedSet === 'string') {
+            this.setSearch(0, [props.selectedSet])
+        } else {
+            this.setSearch(0)
+        }
         expansions().then(
             (data) => {
-                this.setState({ ...this.state, sets: data })
+                this.setState({ ...this.state, sets: data.map((exp) => exp.name) })
             }
         )
     }
@@ -49,7 +52,7 @@ export class CardSearch extends React.Component<Props, State> {
         this.setSearch(newPage)
     };
 
-    private setSearch(page?: number, sets?: Expansion[], rareSelected?: string[], sort?: string) {
+    private setSearch(page?: number, sets?: string[], rareSelected?: string[], sort?: string) {
         search(page ?? this.state.page, this.searchTerm, sets ?? this.state.setsSelected, rareSelected ?? this.state.rareSelected, sort ?? this.state.sort).then(
             (res) => {
                 this.setState(
@@ -61,14 +64,14 @@ export class CardSearch extends React.Component<Props, State> {
                         setsSelected: (sets ?? this.state.setsSelected),
                         rareSelected: (rareSelected ?? this.state.rareSelected),
                         count: res.total
-                    })
+                    }
+                )
             },
             (err) => {
                 console.log(err)
             }
         )
     }
-
     render() {
         return (
             <div>
@@ -90,8 +93,8 @@ export class CardSearch extends React.Component<Props, State> {
                                 limitTags={1}
                                 id="expantions"
                                 options={this.state.sets}
-                                getOptionLabel={(option) => option.name}
-                                defaultValue={[]}
+                                getOptionLabel={(option) => option}
+                                defaultValue={this.state.setsSelected}
                                 disableCloseOnSelect
                                 renderOption={(props, option, { selected }) => (
                                     <li {...props}>
@@ -101,7 +104,7 @@ export class CardSearch extends React.Component<Props, State> {
                                             style={{ marginRight: 8 }}
                                             checked={selected}
                                         />
-                                        {option.name}
+                                        {option}
                                     </li>
                                 )}
                                 onChange={
@@ -120,7 +123,6 @@ export class CardSearch extends React.Component<Props, State> {
                                 )}
                             />
                         </div>
-
                         <Autocomplete
                             className='pl-4 min-w-min w-72'
                             multiple
@@ -128,7 +130,7 @@ export class CardSearch extends React.Component<Props, State> {
                             id="expantions"
                             options={rarities}
                             getOptionLabel={(option) => option}
-                            defaultValue={[]}
+                            defaultValue={this.state.setsSelected}
                             disableCloseOnSelect
                             renderOption={(props, option, { selected }) => (
                                 <li {...props} className="flex justify-items-center items-center">
@@ -166,8 +168,7 @@ export class CardSearch extends React.Component<Props, State> {
                             exclusive
                             onChange={(_, value) => {
                                 this.setSearch(0, this.state.setsSelected, this.state.rareSelected, value)
-                            }
-                            }
+                            }}
                         >
                             <ToggleButton value="name" aria-label="centered">
                                 <div>Name</div>
@@ -212,7 +213,6 @@ export class CardSearch extends React.Component<Props, State> {
         }
         return items
     }
-
 }
 
 export default CardSearch

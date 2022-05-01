@@ -82,7 +82,7 @@ export class Expansions extends React.Component<{}, State> {
             items.push(
                 <div className='flex justify-items-center items-center h-24 hover:shadow-2xl hover:bg-red-600 border-gray-500 bg-gray-100 border-2 rounded-md '
                     onClick={() => {
-                        AppController.next({page: "cards", sets: [exp]})
+                        AppController.next({page: "cards", selectedSet: exp.name})
                     }}>
                     <img src={`${baseURL}/expLogo/${exp.name}`} />
                 </div>
