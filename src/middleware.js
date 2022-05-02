@@ -472,7 +472,7 @@ app.post("/price", bodyParser.json(), async (req, res) => {
  */
 app.get("/collections", (_, res) => {
     collectiondb.all(`SELECT * FROM collections`,
-        (rows, err) => {
+        (err, rows) => {
             if(err){
                 res.status(500).send(err)
             }else{
