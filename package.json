@@ -61,7 +61,7 @@
     "start": "export BROWSER=none && node scripts/start.js",
     "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && export NODE_ENV=development && electron .",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=./test/custom-env.js",
+    "test": "export NODE_ENV=test && mocha",
     "make": "node scripts/build.js && electron-builder"
   },
   "eslintConfig": {
