@@ -42,9 +42,13 @@ describe(
 describe(
     'Collection Rest Tests',
     () => {
+        it('Add Collection', async () => {
+            let res =  await axios.put("http://localhost:3030/collections", {'name': 'My collection'})
+            assert(res.status === 201)
+        })
         it('Get Collections', async () => {
             let collections = await axios.get("http://localhost:3030/collections")
-            assert(collections)
+            assert(collections.data.find((value) => value.name === 'My collection'), `Did not find collection ${collections.data}`)
         })
     }
 )
@@ -52,6 +56,6 @@ describe(
 after(
     () => {
         mw.stop()
-        fs.rmSync(path(mw.pwd(), "./sql/collections.sqlite3"))
+        fs.rmSync(path.join(mw.pwd(), "./sql/collections.sqlite3"))
     }
 )

@@ -485,9 +485,16 @@ app.get("/collections", (_, res) => {
  * PUT COllections
  * body: see model/Collection.ts
  */
-app.put("/collections", bodyParser.json(), (req, res) => {
+app.put("/collections", bodyParser.json(), async (req, res) => {
     if(req.body.name != null ){
-            collectiondb.run('INSERT INTO collections (name, img) values ($name, $img)', {'name': req.body.name, 'img': req.body.name})
+            collectiondb.run('INSERT INTO collections (name, img) values ($name, $img)', {'$name': req.body.name, '$img': req.body.name}, 
+            (err, row) =>{
+                if(err){
+                    res.status(500).send(err)
+                    console.log(err)
+                }
+                res.status(201).send()
+            })
         }else{
             res.status(403).send()
         }
