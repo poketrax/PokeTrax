@@ -11,7 +11,6 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { CgPokemon } from "react-icons/cg"
 import { MdOutlineCatchingPokemon } from "react-icons/md"
 import { search, expansions, rarities, getRarity } from '../controls/CardDB'
-import { Expansion } from '../model/Meta';
 
 const icon = <CgPokemon />;
 const checkedIcon = <MdOutlineCatchingPokemon />;

@@ -8,7 +8,6 @@ const axios = require('axios')
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const app = express();
 const os = require("os");
-const lodash = require("lodash");
 const hash = require('object-hash');
 const bodyParser = require('body-parser');
 const compver = require('compare-version')
@@ -16,16 +15,24 @@ const compver = require('compare-version')
 const DB_META = "./sql/meta.json"
 const CARD_DB_FILE = "./sql/data.sqlite3"
 const PRICE_DB_FILE = "./sql/prices.sqlite3"
+const COLLECTION_DB_FILE = "./sql/collections.sqlite3"
 
+let server
 //Start web server
 const start = () => {
-    app.listen(3030)
+    server = app.listen(3030)
+}
+
+const stop = () => {
+    server.close()
 }
 
 /* Print the working directory for the application to get date files */
 const pwd = () => {
     if (process.env.NODE_ENV === 'development') {
         return "./"
+    } else if (process.env.NODE_ENV === 'test') {
+        return "./test/data"
     }
     switch (os.platform()) {
         case 'darwin': return '/Applications/PokeTrax.app/Contents/'
@@ -52,6 +59,17 @@ let pricesdb = new sqlite3.Database(
     }
 )
 pricesdb.run(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date INTEGER, cardId TEXT, variant TEXT, vendor TEXT, price REAL)`)
+
+//init collections database
+let collectiondb = new sqlite3.Database(
+    path.join(pwd(), COLLECTION_DB_FILE),
+    sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+    (err) => {
+        if (err) console.error('Database opening error: ', err);
+    }
+)
+collectiondb.run(`CREATE TABLE IF NOT EXISTS collections (name TEXT UNIQUE, img TEXT)`)
+collectiondb.run(`CREATE TABLE IF NOT EXISTS collectionCards (cardId TEXT, collection TEXT UNIQUE, variant TEXT, paid REAL)`)
 
 //Check for card Updates
 let dbUpdate = { ready: false, updated: false }
@@ -135,6 +153,7 @@ async function pullDb(meta) {
 //exports for main
 module.exports.pwd = pwd
 module.exports.start = start
+module.exports.stop = stop
 module.exports.checkForDbUpdate = checkForDbUpdate
 
 app.use(cors())
@@ -211,7 +230,7 @@ app.get("/expLogo/:asset_id",
         })
     },
     fileCacheMiddleware({ cacheDir: path.join(pwd(), "./expLogo"), maxSize: 1024 * 1024 * 1024 }),
-    (req, res) => {
+    (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
             "Content-Length": res.locals.contentLength
@@ -447,3 +466,30 @@ app.post("/price", bodyParser.json(), async (req, res) => {
         }
     )
 })
+
+/**
+ * Get Collections
+ */
+app.get("/collections", (_, res) => {
+    collectiondb.all(`SELECT * FROM collections`,
+        (rows, err) => {
+            if(err){
+                res.status(500).send(err)
+            }else{
+                res.send(rows)
+            }
+        })
+})
+
+/**
+ * PUT COllections
+ * body: see model/Collection.ts
+ */
+app.put("/collections", bodyParser.json(), (req, res) => {
+    if(req.body.name != null ){
+            collectiondb.run('INSERT INTO collections (name, img) values ($name, $img)', {'name': req.body.name, 'img': req.body.name})
+        }else{
+            res.status(403).send()
+        }
+})
+

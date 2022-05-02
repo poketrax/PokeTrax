@@ -5,6 +5,7 @@ import { Expansions } from "./components/Expansions"
 import LinearProgress from '@mui/material/LinearProgress';
 import { Subject, timer } from 'rxjs'
 import { DbState, getDbState } from './controls/CardDB';
+import { Collections } from './components/Collections';
 
 class State {
     page: string = ""
@@ -62,7 +63,7 @@ export class App extends React.Component<{}, State> {
                 content = (<Expansions></Expansions>)
                 break
             case 'collections':
-                content = <div>Collections</div>
+                content = <Collections></Collections>
                 break
             default: 
                 message = this.state.dbState.updated ? "Downloading New Data" : "Loading Data base"
