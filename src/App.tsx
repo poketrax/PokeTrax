@@ -2,17 +2,20 @@ import React from 'react';
 import './App.css';
 import Cards from "./components/CardSearch"
 import { Expansions } from "./components/Expansions"
-import { Subject } from 'rxjs'
-import { Expansion } from './model/Meta';
+import LinearProgress from '@mui/material/LinearProgress';
+import { Subject, timer } from 'rxjs'
+import { DbState, getDbState } from './controls/CardDB';
 
 class State {
-    page: string = "cards"
-    sets: Expansion[] = []
+    page: string = ""
+    selectedSet: string = ""
+    dbState: DbState = new DbState
 }
 export interface AppControl {
     page: string
-    sets: Expansion[]
+    selectedSet: string
 }
+
 export const AppController = new Subject<AppControl>()
 export class App extends React.Component<{}, State> {
     constructor(props: object) {
@@ -20,27 +23,60 @@ export class App extends React.Component<{}, State> {
         this.state = new State()
         AppController.subscribe(
             (msg) => {
-                this.setPage(msg.page, msg.sets)
+                this.setPage(msg.page, msg.selectedSet)
             }
         )
+        //checks to see if update is happing
+        let dbcheck = timer(0,100).subscribe( 
+            () => {
+                getDbState().then(
+                    (state) => {
+                        this.setState({...this.state, dbState: state })
+                        if(state.ready){
+                            this.setPage('cards')
+                            dbcheck.unsubscribe()
+                        }
+                    }
+                )
+        })
     }
 
-    setPage(page: string, sets?: Expansion[]) {
-        this.setState({
-            ...this.state,
-            page: page ?? this.state.page,
-            sets: sets ?? this.state.sets 
-        })
+    setPage(page: string, selectedSet?: string) {
+        if(this.state.dbState.ready !== false){
+            this.setState({
+                ...this.state,
+                page: page ?? this.state.page,
+                selectedSet: selectedSet ?? this.state.selectedSet
+            })
+        }
     }
 
     render() {
         let content;
-        if (this.state.page === "cards") {
-            content = (<Cards sets={this.state.sets}></Cards>)
-        } else if (this.state.page === "sets") {
-            content = (<Expansions></Expansions>)
-        } else if (this.state.page === "collections") {
-            content = <div>Collections</div>
+        let message;
+        switch (this.state.page) {
+            case 'cards':
+                content = (<Cards selectedSet={this.state.selectedSet}></Cards>)
+                break
+            case 'sets':
+                content = (<Expansions></Expansions>)
+                break
+            case 'collections':
+                content = <div>Collections</div>
+                break
+            default: 
+                message = this.state.dbState.updated ? "Downloading New Data" : "Loading Data base"
+                content = (
+                    <div className='absolute justify-items-center items-center w-full'>
+                        <LinearProgress ></LinearProgress>
+                        <div className='h-16'></div>
+                        <div className='flex'>
+                            <div className='grow'></div>
+                            <span className='text-2xl'>{message} ...</span>
+                            <div className='grow'></div>
+                        </div>
+                    </div>
+                )
         }
         return (
             <div>
@@ -49,15 +85,13 @@ export class App extends React.Component<{}, State> {
                         <img className="h-16 w-16 p-1 " src={"./assests/poketrax.png"} />
                         <span className="font-sans text-3xl pt-3 pl-2">PokéTrax</span>
                         <span className="pl-6 grid grid-cols-3">
-                            <button className='hover:text-red-600' onClick={() => this.setPage("cards")}>Cards</button>
-                            <button className='hover:text-red-600' onClick={() => this.setPage("sets")}>Sets</button>
-                            <button className='hover:text-red-600' onClick={() => this.setPage("collections")}>Collections</button>
+                            <button className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
+                            <button className='hover:text-blue-700' onClick={() => this.setPage("sets")}>Sets</button>
+                            <button className='hover:text-blue-700' onClick={() => this.setPage("collections")}>Collections</button>
                         </span>
                     </div>
                 </div>
-                <div className=''>
-                    {content}
-                </div>
+                {content}
             </div>
         )
     }

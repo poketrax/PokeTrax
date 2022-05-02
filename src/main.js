@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+const fs = require('fs')
 const path = require('path');
 const url = require('url');
 const mw = require("./middleware")
@@ -7,7 +8,7 @@ let mainWindow;
 
 function createWindow () {
   const startUrl = process.env.ELECTRON_START_URL ||url.format({
-        pathname: path.join(mw.pwd(), '/index.html'),
+        pathname: path.join(mw.pwd(), './index.html'),
         protocol: 'file:',
         slashes: true,
       });
@@ -18,6 +19,11 @@ function createWindow () {
   });
 }
 
+if(fs.existsSync(path.join(mw.pwd(),"sql/")) === false){
+  fs.mkdirSync(path.join(mw.pwd(),'sql/'))
+}
+
+mw.checkForDbUpdate()
 mw.start()
 
 //Electron starts

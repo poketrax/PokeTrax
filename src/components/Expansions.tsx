@@ -61,7 +61,7 @@ export class Expansions extends React.Component<{}, State> {
         for (let series of this.state.series) {
             items.push(
                 <div>
-                    <div className='flex w-full h-16 bg-red-600 items-center'>
+                    <div className='flex w-full h-16 bg-blue-800 items-center'>
                         <img className='m-2 h-12' src={`${baseURL}/seriesImg/${series.name}`}></img>
                         <div className='flex-grow'></div>
                         <span className='text-white p-4'>{this.getYear(series.releaseDate)}</span>
@@ -82,7 +82,7 @@ export class Expansions extends React.Component<{}, State> {
             items.push(
                 <div className='flex justify-items-center items-center h-24 hover:shadow-2xl hover:bg-red-600 border-gray-500 bg-gray-100 border-2 rounded-md '
                     onClick={() => {
-                        AppController.next({page: "cards", sets: [exp]})
+                        AppController.next({page: "cards", selectedSet: exp.name})
                     }}>
                     <img src={`${baseURL}/expLogo/${exp.name}`} />
                 </div>

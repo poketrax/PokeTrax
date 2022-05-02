@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require('cors')
 const path = require('path')
 const sqlite3 = require("sqlite3")
+const https = require("follow-redirects").https
+const fs = require('fs')
 const axios = require('axios')
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const app = express();
@@ -9,12 +11,19 @@ const os = require("os");
 const lodash = require("lodash");
 const hash = require('object-hash');
 const bodyParser = require('body-parser');
+const compver = require('compare-version')
 
-var start = function start() {
+const DB_META = "./sql/meta.json"
+const CARD_DB_FILE = "./sql/data.sqlite3"
+const PRICE_DB_FILE = "./sql/prices.sqlite3"
+
+//Start web server
+const start = () => {
     app.listen(3030)
 }
 
-var pwd = function pwd() {
+/* Print the working directory for the application to get date files */
+const pwd = () => {
     if (process.env.NODE_ENV === 'development') {
         return "./"
     }
@@ -25,33 +34,123 @@ var pwd = function pwd() {
     }
 }
 
-module.exports.pwd = pwd
-module.exports.start = start
-
-const db = new sqlite3.Database(
-    path.join(pwd(), './sql/data.sqlite3'),
+//Init card Database
+let carddb = new sqlite3.Database(
+    path.join(pwd(), CARD_DB_FILE),
     sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
     (err) => {
         if (err) console.error('Database opening error: ', err);
     }
 );
 
-const pricesdb = new sqlite3.Database(
-    path.join(pwd(), './sql/prices.sqlite3'),
+//Init prices database
+let pricesdb = new sqlite3.Database(
+    path.join(pwd(), PRICE_DB_FILE),
     sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
     (err) => {
         if (err) console.error('Database opening error: ', err);
     }
 )
-
 pricesdb.run(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date INTEGER, cardId TEXT, variant TEXT, vendor TEXT, price REAL)`)
+
+//Check for card Updates
+let dbUpdate = { ready: false, updated: false }
+const checkForDbUpdate = () => {
+    return new Promise(
+        async (resolve, reject) => {
+            let meta = await pullDbMeta()
+            //if new and no meta file exists
+            if (fs.existsSync(path.join(pwd(), DB_META)) === false) {
+                dbUpdate = { ready: false, updated: true }
+                try {
+                    await pullDb(meta)
+                    resolve()
+                } catch (err) {
+                    dbUpdate = { ready: false, updated: false, error: err }
+                    console.log(err)
+                    reject()
+                }
+            } else { // look for update
+                let current = JSON.parse(fs.readFileSync(path.join(pwd(), DB_META), { encoding: 'utf8', flag: 'r' }))
+                if (compver(meta.version, current.version) > 0) {
+                    dbUpdate = { ready: false, updated: true }
+                    try {
+                        await pullDb(meta)
+                        resolve()
+                    } catch (err) {
+                        dbUpdate = { ready: false, updated: false, error: err }
+                        console.log(err)
+                        reject()
+                    }
+                } else {
+                    dbUpdate = { ready: true, updated: false }
+                }
+            }
+        }
+    )
+}
+
+//pull release info from database repo
+async function pullDbMeta() {
+    return new Promise(
+        async (resolve, reject) => {
+            try {
+                let release = await axios.get('https://api.github.com/repos/jgunzelman88/pokepull/releases/latest')
+                let asset = release.data.assets.find((value) => value.name === "data.sqlite3")
+                let meta = { 'version': release.data.name, 'asset': asset.browser_download_url }
+                resolve(meta)
+            } catch (err) {
+                reject(err)
+            }
+        }
+    )
+}
+
+//Pull new database file and reinitialize database
+async function pullDb(meta) {
+    return new Promise(
+        async (resolve, reject) => {
+            https.get(meta.asset, (stream) => {
+                //write database file
+                let writer = fs.createWriteStream(path.join(pwd(), CARD_DB_FILE))
+                stream.pipe(writer)
+                writer.on('finish', () => {
+                    fs.writeFileSync(path.join(pwd(), "./sql/meta.json"), JSON.stringify(meta))
+                    dbUpdate = { ready: true, updated: true }
+                    carddb = new sqlite3.Database(
+                        path.join(pwd(), CARD_DB_FILE),
+                        sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+                        (err) => {
+                            if (err) console.error('Database opening error: ', err);
+                        }
+                    );
+                    resolve()
+                })
+                writer.on('error', () => { reject() })
+            })
+        }
+    )
+}
+
+//exports for main
+module.exports.pwd = pwd
+module.exports.start = start
+module.exports.checkForDbUpdate = checkForDbUpdate
 
 app.use(cors())
 
-/*Card Img*/
+app.get("/dbstatus",
+    (_, res) => {
+        res.send(dbUpdate)
+    }
+)
+
+/**
+ * Get Card Img assest.  Will pull from local cache or the interwebz
+ */
 app.get("/cardImg/:asset_id",
     async (req, res, next) => {
-        db.get('SELECT img FROM cards WHERE cardId = $id', { "$id": req.params.asset_id }, (err, row) => {
+        carddb.get('SELECT img FROM cards WHERE cardId = $id', { "$id": req.params.asset_id }, (err, row) => {
             if (err) {
                 res.status(500).send('sqlerr: ' + err)
             } else {
@@ -70,10 +169,13 @@ app.get("/cardImg/:asset_id",
         res.end(res.locals.buffer, "binary");
     }
 );
-/* Series Image */
+
+/**
+ * Get Series Img assest.  Will pull from local cache or the interwebz
+ */
 app.get("/seriesImg/:asset_id",
     async (req, res, next) => {
-        db.get('SELECT icon FROM series WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
+        carddb.get('SELECT icon FROM series WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
             if (err) {
                 res.status(500).send('sqlerr: ' + err)
             } else {
@@ -93,10 +195,12 @@ app.get("/seriesImg/:asset_id",
     }
 );
 
-/* Expansion Image */
+/**
+ * Get Exp Img assest.  Will pull from local cache or the interwebz
+ */
 app.get("/expLogo/:asset_id",
     async (req, res, next) => {
-        db.get('SELECT logoURL FROM expansions WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
+        carddb.get('SELECT logoURL FROM expansions WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
             if (err) {
                 res.status(500).send('sqlerr: ' + err)
             } else {
@@ -116,10 +220,12 @@ app.get("/expLogo/:asset_id",
     }
 );
 
-/* Symbol Image */
+/**
+ * Get Symbol Img assest.  Will pull from local cache or the interwebz
+ */
 app.get("/expSymbol/:asset_id",
     async (req, res, next) => {
-        db.get('SELECT symbolURL FROM expansions WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
+        carddb.get('SELECT symbolURL FROM expansions WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
             if (err) {
                 res.status(500).send('sqlerr: ' + err)
                 console.log('sqlerr: ' + err)
@@ -140,9 +246,11 @@ app.get("/expSymbol/:asset_id",
     }
 );
 
-/* Get Expansions */
+/**
+ *  Get Expansions 
+ */
 app.get("/expansions", async (req, res) => {
-    db.all(`SELECT name, series, tcgName, numberOfCards, releaseDate FROM expansions`, (err, rows) => {
+    carddb.all(`SELECT name, series, tcgName, numberOfCards, releaseDate FROM expansions`, (err, rows) => {
         if (err) {
             res.status(500).send('sqlerr: ' + err)
         } else {
@@ -151,9 +259,11 @@ app.get("/expansions", async (req, res) => {
     })
 })
 
-/* Get Series */
+/** 
+* Get Series
+*/
 app.get("/series", async (req, res) => {
-    db.all(`SELECT name, releaseDate FROM series`, (err, rows) => {
+    carddb.all(`SELECT name, releaseDate FROM series`, (err, rows) => {
         if (err) {
             res.status(500).send('sqlerr: ' + err)
         } else {
@@ -162,11 +272,20 @@ app.get("/series", async (req, res) => {
     })
 })
 
+/**
+ * Search for card
+ * /cards/{page number}
+ * query vars:
+ * name: searcn value
+ * rarities: rarity filter
+ * expansions: expantions filter
+ * sort: [name, setNumber]
+ */
 app.get("/cards/:page", async (req, res) => {
     let limit = 25
     let nameFilter = req.query.name != null ? decodeURIComponent(req.query.name).replaceAll(" ", "-") : ""
     // Expansions 
-    let exps = JSON.parse(decodeURIComponent(req.query.expansions))
+    let exps = req.query.expansions != null && req.query.expansions !== "%5B%22%22%5D" ? JSON.parse(decodeURIComponent(req.query.expansions)) : []
     let FILTER_EXP = ""
     if (exps != null && exps.length) {
         let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")")
@@ -179,10 +298,23 @@ app.get("/cards/:page", async (req, res) => {
         let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")")
         FILTER_RARE = `AND rarity in ${rareFilter}`
     }
+
+    let order
+    switch (req.query.sort) {
+        case "name":
+            order = `ORDER BY cardId ASC`
+            break
+        case "setNumber":
+            order = `ORDER BY expCardNumber ASC`
+            break
+        default:
+            order = ``
+    }
+
     let count = `SELECT count(cardId) FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
-    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
-    db.get(count, (err1, row) => {
-        db.all(sql, (err2, rows) => {
+    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+    carddb.get(count, (err1, row) => {
+        carddb.all(sql, (err2, rows) => {
             if (err1) {
                 res.status(500).send('sqlerr: ' + err2)
                 console.log(err2)
@@ -199,51 +331,64 @@ app.get("/cards/:page", async (req, res) => {
 
 })
 
-function getTcgpPrice(card, callback) {
-    let bounce = lodash.debounce(
-        () => {
-            let prices = []
-            axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`).then((api) => {
-                for (let result of api.data.result) {
-                    let date = Date.parse(result.date)
-                    result.variants.forEach(
-                        (variant) => {
-                            let price = {
-                                "date": date,
-                                "cardId": card.cardId,
-                                "variant": variant.variant,
-                                "vendor": "tcgp",
-                                "price": parseFloat(variant.marketPrice)
-                            }
-                            prices.push(price)
-                            let sql = `INSERT OR IGNORE INTO prices 
-                                        (id, date, cardId, variant, vendor, price) 
-                                        VALUES ($id, $date, $cardId, $variant, $vendor, $price)
-                                        `
-                            pricesdb.run(sql,
-                                {
-                                    "$id": hash(price),
-                                    "$date": price.date,
-                                    "$cardId": price.cardId,
-                                    "$variant": price.variant,
-                                    "$vendor": price.vendor,
-                                    "$price": price.price
-                                }, (err) => {
-                                    if (err) {
-                                        console.log("err: " + err)
-                                    }
-                                })
+/**
+ * Debounced function for retrieving TCP Player price data.
+ * Prevents being locked out for too many requests.  
+ * Also caches price data in price database
+ * @param {*} card 
+ * @param {*} callback 
+ */
+function getTcgpPrice(card) {
+    return new Promise((resolve, reject) => {
+        let prices = []
+        axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`).then((api) => {
+            for (let result of api.data.result) {
+                let date = Date.parse(result.date)
+                result.variants.forEach(
+                    (variant) => {
+                        let price = {
+                            "date": date,
+                            "cardId": card.cardId,
+                            "variant": variant.variant,
+                            "vendor": "tcgp",
+                            "price": parseFloat(variant.marketPrice)
                         }
-                    )
-                }
-                callback(prices)
-            }).catch((err) => {
-                callback(err)
-            })
-        }, 300)
-    bounce()
+                        prices.push(price)
+                        let sql = `INSERT OR IGNORE INTO prices 
+                                (id, date, cardId, variant, vendor, price) 
+                                VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
+                        pricesdb.run(sql,
+                            {
+                                "$id": hash(price),
+                                "$date": price.date,
+                                "$cardId": price.cardId,
+                                "$variant": price.variant,
+                                "$vendor": price.vendor,
+                                "$price": price.price
+                            }, (err) => {
+                                if (err) {
+                                    console.log("err: " + err)
+                                }
+                            })
+                    }
+                )
+                resolve(prices)
+            }
+        }).catch((err) => {
+            reject(err)
+        })
+    })
+
 }
 
+/**
+ * Get prices from database
+ * @param {*} cardId 
+ * @param {*} _start 
+ * @param {*} _end 
+ * @param {*} variant 
+ * @returns 
+ */
 async function getPrices(cardId, _start, _end, variant) {
     return new Promise(
         (resolve, reject) => {
@@ -269,19 +414,30 @@ async function getPrices(cardId, _start, _end, variant) {
     )
 }
 
+/**
+ * Get prices of a posted card
+ * body card object see Card.tsx
+ * query:
+ * start?: start time ISO string
+ * end?: end time ISO string 
+ */
 app.post("/price", bodyParser.json(), async (req, res) => {
     getPrices(req.body.cardId, req.query.start, req.query.end, req.query.variant).then(
         (value) => {
             if (value.length) {
                 res.send(value)
             } else {
-                getTcgpPrice(req.body, (prices) => {
-                    if (prices.length) {
+                getTcgpPrice(req.body).then(
+                    (prices) => {
                         res.send(prices)
-                    } else {
-                        res.status(500).send(prices)
                     }
-                })
+                ).catch(
+                    (err) => {
+                        res.status(500).send(err)
+                        console.log(err)
+                    }
+                )
+
             }
         }
     ).catch(
