@@ -129,6 +129,9 @@ async function getTcgpPrice(card) {
     let prices = []
     let db = pricesDB()
     let api = await axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`);
+    if(api.data.count === 0){
+        return []
+    }
     for (let result of api.data.result) {
         let date = Date.parse(result.date)
         result.variants.forEach(
@@ -154,7 +157,6 @@ async function getTcgpPrice(card) {
                 })
             }
         )
-
         return (prices)
     }
 }
@@ -181,8 +183,15 @@ const getPrices = async (card, _start, _end) => {
     try {
         let rows = db.prepare(sql).all({ "cardId": card.cardId, "start": startDate.getTime(), "end": endDate.getTime() })
         if (rows.length === 0) {
-            let cardPrices = await getTcgpPrice(card)
-            return cardPrices.filter((price) => (price.date > _start && price.date < _end))
+            getTcgpPrice(card).then(
+                (cardPrices) => {
+                    return cardPrices.filter((price) => (price.date > _start && price.date < _end))
+                }
+            ).catch(
+                (error) => {
+                    return []
+                }
+            )
         } else {
             return rows
         }
@@ -214,5 +223,6 @@ module.exports.pwd = pwd
 module.exports.pricesDB = pricesDB
 module.exports.collectionDB = collectionDB
 module.exports.cardDB = cardDB
+module.exports.CARD_DB_FILE = CARD_DB_FILE
 module.exports.checkForDbUpdate = checkForDbUpdate
 module.exports.getPrices = getPrices

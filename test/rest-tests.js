@@ -114,7 +114,12 @@ describe(
         it('Add Cards', async () => {
             let cards = JSON.parse(fs.readFileSync('./test/data/testCollection.json'))
             for (let card of cards) {
-                await axios.put("http://localhost:3030/collections/card", card)
+                try{
+                    await axios.put("http://localhost:3030/collections/card", card)
+                }catch(err){
+                    return new Error(err)
+                }
+
             }
         })
         it('Test Get Cards', async () => {
@@ -129,15 +134,14 @@ describe(
                 {
                     "cardId": "Brilliant-Stars-Choice-Belt-135",
                     "collection": "collection2",
-                    "variant": "",
+                    "variant": "Normal",
                     "paid": 1.0,
                     "count": 2,
                     "grade": "CGC 10"
                 })
             let res = await axios.get("http://localhost:3030/collections/collection2/cards/0")
             let cards = res.data
-            console.log(cards)
-            assert.ok(cards[0].variant === "Normal", `variant not set ${cards}`)
+            assert.ok(cards[0].variant === "Normal", `variant not set ${JSON.stringify(cards[0],null, 1)}`)
             assert.ok(cards[0].paid === 1.0, `Paid not set ${cards}`)
             assert.ok(cards[0].count === 2, `Count not set ${cards}`)
         })

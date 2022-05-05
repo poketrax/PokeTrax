@@ -95,11 +95,12 @@ export class CardCase extends React.Component<Props, State> {
     private getPrice(): string | JSX.Element {
         if (this.state.prices?.length !== 0) {
             let val = "-.--"
-            this.state.prices.forEach((price) => {
+            console.log(JSON.stringify(this.state.prices))
+            for(let price of this.state.prices){
                 if (price.price != null) {
                     val = `$${price.price.toFixed(2).toString()}`
                 }
-            })
+            }
             return val
         } else {
             return (<CircularProgress size="1rem" />)

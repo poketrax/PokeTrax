@@ -129,10 +129,10 @@ app.get("/expSymbol/:asset_id",
     async (req, res, next) => {
         let db = DB.cardDB()
         try {
-            let exp = db.prepare('SELECT logoURL FROM expansions WHERE name = $name').get({ "name": decodeURIComponent(req.params.asset_id) })
+            let exp = db.prepare('SELECT symbolURL FROM expansions WHERE name = $name').get({ "name": decodeURIComponent(req.params.asset_id) })
             if (exp != null) {
                 res.locals.fetchUrl = exp.symbolURL;
-                res.locals.cacheKey = req.params.asset_id + "sym";
+                res.locals.cacheKey = req.params.asset_id;
                 next();
             } else {
                 res.status(403).send(`No expantion with id: ${req.params.asset_id}`)
@@ -199,14 +199,14 @@ app.get("/cards/:page", async (req, res) => {
     let exps = req.query.expansions != null && req.query.expansions !== "%5B%22%22%5D" ? JSON.parse(decodeURIComponent(req.query.expansions)) : []
     let FILTER_EXP = ""
     if (exps != null && exps.length) {
-        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")")
+        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")").replaceAll("\"","\'")
         FILTER_EXP = `AND expName in ${expFilter}`
     }
     // Rarities
     let rarities = req.query.rarities != null ? JSON.parse(decodeURIComponent(req.query.rarities)) : []
     let FILTER_RARE = ""
     if (rarities != null && rarities.length != 0) {
-        let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")")
+        let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")").replaceAll("\"","\'")
         FILTER_RARE = `AND rarity in ${rareFilter}`
     }
 
@@ -223,10 +223,15 @@ app.get("/cards/:page", async (req, res) => {
     }
     let db = DB.cardDB()
     try {
-        let countRes = db.prepare(`SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`).get()
-        let results = db.prepare(`SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`).all()
+        let countSQL = `SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
+        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+       // console.log(countSQL)
+       /// console.log(sql)
+        let countRes = db.prepare(countSQL).get()
+        let results = db.prepare(sql).all()
         res.send({ "total": countRes.cardCount, "cards": results })
     } catch (err) {
+        console.log(err)
         res.status(500).send(err)
     } finally {
         db.close()
@@ -244,7 +249,6 @@ app.post("/price", bodyParser.json(), async (req, res) => {
     DB.getPrices(req.body, req.query.start, req.query.end, req.query.variant).then(
         (value) => {
                 res.send(value)
-            
         }
     ).catch(
         (err) => {
@@ -290,21 +294,25 @@ app.put("/collections", bodyParser.json(),
  * 
  */
 app.put("/collections/card", bodyParser.json(),
-    async (req, res) => {
+     (req, res) => {
         let db = DB.collectionDB()
         let card = req.body
         try {
             let findSql = "SELECT * from collectionCards WHERE cardId = $cardId AND variant = $variant AND collection = $collection AND grade = $grade"
-            let found = db.prepare(findSql).get({ 'cardId': card.cardId, 'variant': card.variant, 'collection': card.collection, 'grade': card.grade })
+            let params = { 'cardId': card.cardId, 'variant': card.variant, 'collection': card.collection, 'grade': card.grade }
+            let found = db.prepare(findSql).get(params)
             if (found != null) {
                 db.prepare("UPDATE collectionCards SET count = $count, grade = $grade, paid = $paid WHERE cardId = $cardId AND variant = $variant AND grade = $grade")
-                    .run({ 'count': card.count, 'grade': card.grade, 'paid': card.paid, 'cardId': card.cardId, 'variant': card.variant, 'grade': card.grade })
+                    .run({ 'count': card.count, 'grade': card.grade, 'paid': card.paid, 'cardId': card.cardId, 'variant': card.variant })
+                res.status(201).send()
             } else {
-                db.prepare('collections', "INSERT INTO collectionCards (cardId, collection, variant, paid, count, grade) VALUES ($cardId, $collection, $variant, $paid, $count, $grade)")
+                db.prepare("INSERT INTO collectionCards (cardId, collection, variant, paid, count, grade) VALUES ($cardId, $collection, $variant, $paid, $count, $grade)")
                     .run({ 'cardId': card.cardId, 'collection': card.collection, 'variant': card.variant, 'paid': card.paid, 'count': card.count, 'grade': card.grade })
+                res.status(201).send()
             }
         } catch (err) {
-            res.status(500).send(err)
+            console.log(err)
+            res.status(500).send(JSON.stringify(err))
         } finally {
             db.close()
         }
@@ -323,10 +331,9 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
     let sqlAttach = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB; `
     let sql = `SELECT * FROM collectionCards colCards INNER JOIN cardDB.cards cards ON cards.cardId = colCards.cardId ` +
         `WHERE colCards.collection = '${req.params.collection}' ${nameFilter} LIMIT 25 OFFSET ${req.params.page * 25}`
-
     try{
         db.prepare(sqlAttach).run()
-        let cards = db.prepare(sql).get()
+        let cards = db.prepare(sql).all()
         res.send(cards)
     }catch(err){
         res.status(500).send(err)
