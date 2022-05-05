@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path');
 const url = require('url');
 const mw = require("./middleware")
+const DB = require("./database")
 
 let mainWindow;
 
@@ -19,11 +20,11 @@ function createWindow () {
   });
 }
 
-if(fs.existsSync(path.join(mw.pwd(),"sql/")) === false){
-  fs.mkdirSync(path.join(mw.pwd(),'sql/'))
+if(fs.existsSync(path.join(DB.pwd(),"sql/")) === false){
+  fs.mkdirSync(path.join(DB.pwd(),'sql/'))
 }
 
-mw.checkForDbUpdate()
+DB.checkForDbUpdate()
 mw.start()
 
 //Electron starts

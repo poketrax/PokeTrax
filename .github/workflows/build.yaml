@@ -1,4 +1,4 @@
-name: build
+name: test
 on: push
 jobs:
   release:
@@ -14,4 +14,5 @@ jobs:
         with:
           node-version: 17
       - run: npm install
+      - run: npm test
       - run: npm run make

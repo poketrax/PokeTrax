@@ -1,12 +1,65 @@
-const assert = require('assert')
 const mw = require('../src/middleware')
 const axios = require('axios')
 const fs = require('fs')
 const path = require('path')
+const assert = require('assert');
+const DB = require('../src/database')
 
 before(
-    () => {
+    async () => {
         mw.start()
+        DB.init()
+    }
+)
+
+describe(
+    'Test Image retreival',
+    () => {
+ it('Test pull card img', async () => {
+            await axios.get("http://localhost:3030/cardImg/Brilliant-Stars-Ultra-Ball-150").then(
+                (res) => {
+                    assert.ok(res.status === 200)
+                }
+            ).catch(
+                (err) => {
+                    fail(err)
+                }
+            )
+        })
+        it('Test pull series img', async () => {
+            await axios.get(`http://localhost:3030/seriesImg/Sword%20&%20Shield`).then(
+                (res) => {
+                    assert.ok(res.status === 200)
+                }
+            ).catch(
+                (err) => {
+                    fail(err)
+             
+                }
+            )
+        })
+        it('Test pull expLogo img', async () => {
+            await axios.get(`http://localhost:3030/expLogo/Brilliant%20Stars`).then(
+                (res) => {
+                    assert.ok(res.status === 200)
+                }
+            ).catch(
+                (err) => {
+                    fail(err)
+                }
+            )
+        })
+        it('Test pull expSymbol img', async () => {
+            await axios.get(`http://localhost:3030/expSymbol/Brilliant%20Stars`).then(
+                (res) => {
+                    assert.ok(res.status === 200)
+                }
+            ).catch(
+                (err) => {
+                    throw new Error(err)
+                }
+            )
+        })
     }
 )
 
@@ -15,11 +68,11 @@ describe(
     () => {
         it('Test Pull series', async () => {
             let series = await axios.get("http://localhost:3030/series")
-            assert(series.data.find((value) => value.name === 'Sword & Shield'), "Cound not find series")
+            assert.ok(series.data.find((value) => value.name === 'Sword & Shield'), "Cound not find series")
         });
         it('Test Pull Expansions', async () => {
             let exps = await axios.get("http://localhost:3030/expansions")
-            assert(exps.data.find((value) => value.name === 'Brilliant Stars'), "Could not find expansion")
+            assert.ok(exps.data.find((value) => value.name === 'Brilliant Stars'), "Could not find expansion")
         });
     }
 )
@@ -29,12 +82,12 @@ describe(
     () => {
         it('Search all cards', async () => {
             let cards = await axios.get("http://localhost:3030/cards/0")
-            assert(cards.data.total != 0, `No results found ${cards.data}`)
+            assert.ok(cards.data.total != 0, `No results found ${cards.data}`)
         });
         it('Search for 1 card', async () => {
             let cards = await axios.get("http://localhost:3030/cards/0?name=Brilliant-Stars-Ultra-Ball-150")
-            assert(cards.data.total === 1, `number of results not right ${JSON.stringify(cards.data)}`)
-            assert(cards.data.cards[0].cardId === 'Brilliant-Stars-Ultra-Ball-150', `Name is not right ${JSON.stringify(cards.data)}`)
+            assert.ok(cards.data.total === 1, `number of results not right ${JSON.stringify(cards.data)}`)
+            assert.ok(cards.data.cards[0].cardId === 'Brilliant-Stars-Ultra-Ball-150', `Name is not right ${JSON.stringify(cards.data)}`)
         });
     }
 )
@@ -42,13 +95,51 @@ describe(
 describe(
     'Collection Rest Tests',
     () => {
+
         it('Add Collection', async () => {
-            let res =  await axios.put("http://localhost:3030/collections", {'name': 'My collection'})
-            assert(res.status === 201)
+            let res = await axios.put("http://localhost:3030/collections", { 'name': 'collection1' })
+            assert.ok(res.status === 201)
         })
         it('Get Collections', async () => {
-            let collections = await axios.get("http://localhost:3030/collections")
-            assert(collections.data.find((value) => value.name === 'My collection'), `Did not find collection ${collections.data}`)
+            return axios.get("http://localhost:3030/collections").then(
+                (res) => {
+                    assert.ok(res.data.find((value) => value.name === 'collection1'), `Did not find collection ${res.data}`)
+                }
+            ).catch(
+                (err) => {
+                    console.log(err)
+                }
+            )
+        })
+        it('Add Cards', async () => {
+            let cards = JSON.parse(fs.readFileSync('./test/data/testCollection.json'))
+            for (let card of cards) {
+                await axios.put("http://localhost:3030/collections/card", card)
+            }
+        })
+        it('Test Get Cards', async () => {
+            let resCol1 = await axios.get("http://localhost:3030/collections/collection1/cards/0")
+            let resCol2 = await axios.get("http://localhost:3030/collections/collection2/cards/0")
+
+            assert.equal(resCol1.data.length, 3, `Number of cards in Collection 1 not right ${JSON.stringify(resCol1.data)}`)
+            assert.equal(resCol2.data.length, 1, `Number of cards in Collection 2 not right ${JSON.stringify(resCol2.data)}`)
+        })
+        it('Update cards', async () => {
+            await axios.put("http://localhost:3030/collections/card",
+                {
+                    "cardId": "Brilliant-Stars-Choice-Belt-135",
+                    "collection": "collection2",
+                    "variant": "",
+                    "paid": 1.0,
+                    "count": 2,
+                    "grade": "CGC 10"
+                })
+            let res = await axios.get("http://localhost:3030/collections/collection2/cards/0")
+            let cards = res.data
+            console.log(cards)
+            assert.ok(cards[0].variant === "Normal", `variant not set ${cards}`)
+            assert.ok(cards[0].paid === 1.0, `Paid not set ${cards}`)
+            assert.ok(cards[0].count === 2, `Count not set ${cards}`)
         })
     }
 )
@@ -56,6 +147,6 @@ describe(
 after(
     () => {
         mw.stop()
-        fs.rmSync(path.join(mw.pwd(), "./sql/collections.sqlite3"))
+        fs.rmSync(path.join(DB.pwd(), "./sql/collections.sqlite3"))
     }
 )
