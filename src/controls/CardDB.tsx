@@ -5,9 +5,10 @@ import { baseURL } from "../index";
 import { Expansion } from "../model/Meta";
 import { BsFillCircleFill, BsDiamondFill, BsStars } from "react-icons/bs"
 import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
-import { from, delay, firstValueFrom } from 'rxjs';
+import { from } from 'rxjs';
+import { Collection } from "../model/Collection";
 
-let DELAY = 100
+let DELAY = 0
 export class DbState {
     public ready: boolean = false
     public updated: boolean = false
@@ -25,7 +26,7 @@ export function search(page: number, term?: string, sets?: string[], rarity?: st
             }
             if (sort != null) {
                 url.searchParams.set('sort', sort)
-            }
+            } 
             if (rarity != null && rarity.length != 0) {
                 url.searchParams.set(`rarities`, JSON.stringify(rarity))
             }
@@ -57,10 +58,56 @@ export function getDbState(): Promise<DbState> {
     )
 }
 
+export function getCollections(): Promise<Array<Collection>> {
+    return new Promise<Array<Collection>>(
+        (resolve, reject) => {
+            axios.get(`${baseURL}/collections`).then(
+                (res) => {
+                    resolve(res.data)
+                } 
+            ).catch(
+                (err) => {
+                    reject(err.body)
+                }
+            )
+        }
+    )
+}
+
+export function addCollection(name: string) : Promise<any> {
+    return new Promise<any>(
+        (resolve, reject) => {
+            axios.put(`${baseURL}/collections`, {name : name}).then(
+                (_) => {
+                    resolve("")
+                }
+            ).catch(
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
+export function deleteCollection(name: string) : Promise<any> {
+    return new Promise<any>(
+        (resolve, reject) => {
+            axios.delete(`${baseURL}/collections`, {data: {name: name}}).then(
+                (_) => {
+                    resolve("")
+                }
+            ).catch(
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
 export function getTCGPprice(card: Card): Promise<Price[]> {
-    DELAY += 100
-    let sub = from(
-        new Promise<Price[]>(
+    return new Promise<Price[]>(
             (reslove, reject) => {
                 axios.post(`${baseURL}/price`, card).then(
                     (res) => {
@@ -71,13 +118,11 @@ export function getTCGPprice(card: Card): Promise<Price[]> {
                     }
                 ).finally(
                     () => {
-                        DELAY -= 100
+                        DELAY -= 50
                     }
                 )
             }
-        )
     )
-    return firstValueFrom(sub.pipe(delay(DELAY)))
 }
 
 export function expansions(): Promise<Expansion[]> {

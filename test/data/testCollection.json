@@ -2,7 +2,7 @@
     {
         "cardId" : "Brilliant-Stars-Ultra-Ball-150",
         "collection" : "collection1",
-        "variant" : "",
+        "variant" : "Normal",
         "paid" : 0.0,
         "count" : 1,
         "grade" : "PSA 10"
@@ -10,7 +10,7 @@
     {
         "cardId" : "Brilliant-Stars-Double-Turbo-Energy-151",
         "collection" : "collection1",
-        "variant" : "",
+        "variant" : "Normal",
         "paid" : 0.0,
         "count" : 1,
         "grade" : "PSA 10"
@@ -18,7 +18,7 @@
     {
         "cardId" : "Brilliant-Stars-Choice-Belt-135",
         "collection" : "collection1",
-        "variant" : "",
+        "variant" : "Normal",
         "paid" : 0.0,
         "count" : 1,
         "grade" : "PSA 10"

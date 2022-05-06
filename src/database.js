@@ -13,6 +13,7 @@ const COLLECTION_DB_FILE = "./sql/collections.sqlite3"
 const Database = require('better-sqlite3')
 
 
+
 /* Print the working directory for the application to get date files */
 const pwd = () => {
     if (process.env.NODE_ENV === 'development') {
@@ -125,40 +126,49 @@ async function pullDb(meta) {
  * @param {Card} card 
  * @returns 
  */
-async function getTcgpPrice(card) {
-    let prices = []
+function getTcgpPrice(card) {
+    console.log("pulling price data from tcpg")
     let db = pricesDB()
-    let api = await axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`);
-    if(api.data.count === 0){
-        return []
-    }
-    for (let result of api.data.result) {
-        let date = Date.parse(result.date)
-        result.variants.forEach(
-            (variant) => {
-                let price = {
-                    "date": date,
-                    "cardId": card.cardId,
-                    "variant": variant.variant,
-                    "vendor": "tcgp",
-                    "price": parseFloat(variant.marketPrice)
-                }
-                prices.push(price)
-                let sql = `INSERT OR IGNORE INTO prices 
+    return new Promise(
+        (resolve, reject) => {
+            axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`).then(
+                (res) => {
+                    let prices = []
+                    if (res.data.count === 0) {
+                        resolve(prices)
+                    }
+                    for (let result of res.data.result) {
+                        let date = Date.parse(result.date)
+                        for (let variant of result.variants) {
+                            let price = {
+                                "date": date,
+                                "cardId": card.cardId,
+                                "variant": variant.variant,
+                                "vendor": "tcgp",
+                                "price": parseFloat(variant.marketPrice)
+                            }
+                            prices.push(price)
+                            let sql = `INSERT OR IGNORE INTO prices 
                                 (id, date, cardId, variant, vendor, price) 
                                 VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
-                db.prepare(sql).run({
-                    "id": hash(price),
-                    "date": price.date,
-                    "cardId": price.cardId,
-                    "variant": price.variant,
-                    "vendor": price.vendor,
-                    "price": price.price
-                })
+                            db.prepare(sql).run({
+                                "id": hash(price),
+                                "date": price.date,
+                                "cardId": price.cardId,
+                                "variant": price.variant,
+                                "vendor": price.vendor,
+                                "price": price.price
+                            })
+                        }
+                    }
+                    resolve(prices)
+                }
+            ).catch((err) => {
+                reject(err)
             }
-        )
-        return (prices)
-    }
+            )
+        }
+    )
 }
 
 /**
@@ -168,38 +178,43 @@ async function getTcgpPrice(card) {
  * @param {number} _end 
  * @returns 
  */
-const getPrices = async (card, _start, _end) => {
-    let now = new Date();
-    now.setTime(Date.now())
+const getPrices = (card, _start, _end) => {
+    return new Promise(
+        (resolve, reject) => {
+            let yesterday = new Date(Date.now())
+            yesterday.setDate(yesterday.getDate() - 1)
 
-    let then = new Date()
-    then.setTime(Date.now())
-    then.setDate(now.getDate() - 1)
-
-    let endDate = _end != null ? new Date(_end) : now
-    let startDate = _start != null ? new Date(_start) : then
-    let sql = `SELECT * FROM prices WHERE cardId = $cardId AND date > $start AND date < $end ORDER BY date DESC`
-    let db = pricesDB()
-    try {
-        let rows = db.prepare(sql).all({ "cardId": card.cardId, "start": startDate.getTime(), "end": endDate.getTime() })
-        if (rows.length === 0) {
-            getTcgpPrice(card).then(
-                (cardPrices) => {
-                    return cardPrices.filter((price) => (price.date > _start && price.date < _end))
+            let timeFilter = ``
+            let limit = ``
+            if (_start != null && _end != null) {
+                timeFilter = `AND date > $start AND date < $end`
+            }else{
+                limit = "LIMIT 1"
+            }
+            let sql = `SELECT * FROM prices WHERE cardId = $cardId ${timeFilter} ORDER BY date DESC ${limit}`
+            let db = pricesDB()
+            try {
+                let rows = db.prepare(sql).all({ "cardId": card.cardId, "start": _start, "end": _end })
+                if (rows.length === 0 || rows[0].date < yesterday.getTime()) {
+                    getTcgpPrice(card).then(
+                        (value) => {
+                            resolve(value)
+                        }
+                    ).catch(
+                        (err) => {
+                            reject(err)
+                        }
+                    )
+                } else {
+                    resolve(rows)
                 }
-            ).catch(
-                (error) => {
-                    return []
-                }
-            )
-        } else {
-            return rows
+            } catch (err) {
+                reject(err)
+            } finally {
+                db.close()
+            }
         }
-    } catch (err) {
-        return new Error(err)
-    } finally {
-        db.close()
-    }
+    )
 }
 
 const init = async () => {
@@ -207,7 +222,6 @@ const init = async () => {
         let prices = pricesDB()
         prices.prepare(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date INTEGER, cardId TEXT, variant TEXT, vendor TEXT, price REAL)`).run()
         prices.close()
-
         let collections = collectionDB()
         collections.prepare(`CREATE TABLE IF NOT EXISTS collections (name TEXT UNIQUE, img TEXT)`).run()
         collections.prepare(`CREATE TABLE IF NOT EXISTS collectionCards (cardId TEXT, collection TEXT, variant TEXT, paid REAL, count INTEGER, grade TEXT)`).run()

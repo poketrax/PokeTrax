@@ -25,6 +25,7 @@ if(fs.existsSync(path.join(DB.pwd(),"sql/")) === false){
 }
 
 DB.checkForDbUpdate()
+DB.init()
 mw.start()
 
 //Electron starts

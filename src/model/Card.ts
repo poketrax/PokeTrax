@@ -10,6 +10,11 @@ export class Card {
     public releaseDate?: string
     public energyType?: string
     public cardType?: string
+    public collection?: string
+    public variant?: string
+    public paid?: number
+    public count? : number
+    public grade? : string
 
     constructor(cardId: string, idTCGP: string, name:string, expId:string, expName:string, expCardNumber:string, rarity:string){
         this.cardId = cardId

@@ -15,7 +15,7 @@ before(
 describe(
     'Test Image retreival',
     () => {
- it('Test pull card img', async () => {
+        it('Test pull card img', async () => {
             await axios.get("http://localhost:3030/cardImg/Brilliant-Stars-Ultra-Ball-150").then(
                 (res) => {
                     assert.ok(res.status === 200)
@@ -34,7 +34,7 @@ describe(
             ).catch(
                 (err) => {
                     fail(err)
-             
+
                 }
             )
         })
@@ -98,6 +98,7 @@ describe(
 
         it('Add Collection', async () => {
             let res = await axios.put("http://localhost:3030/collections", { 'name': 'collection1' })
+            await axios.put("http://localhost:3030/collections", { 'name': 'collection2' })
             assert.ok(res.status === 201)
         })
         it('Get Collections', async () => {
@@ -114,9 +115,9 @@ describe(
         it('Add Cards', async () => {
             let cards = JSON.parse(fs.readFileSync('./test/data/testCollection.json'))
             for (let card of cards) {
-                try{
+                try {
                     await axios.put("http://localhost:3030/collections/card", card)
-                }catch(err){
+                } catch (err) {
                     return new Error(err)
                 }
 
@@ -125,9 +126,8 @@ describe(
         it('Test Get Cards', async () => {
             let resCol1 = await axios.get("http://localhost:3030/collections/collection1/cards/0")
             let resCol2 = await axios.get("http://localhost:3030/collections/collection2/cards/0")
-
-            assert.equal(resCol1.data.length, 3, `Number of cards in Collection 1 not right ${JSON.stringify(resCol1.data)}`)
-            assert.equal(resCol2.data.length, 1, `Number of cards in Collection 2 not right ${JSON.stringify(resCol2.data)}`)
+            assert.equal(resCol1.data.count, 3, `Number of cards in Collection 1 not right ${JSON.stringify(resCol1.data)}`)
+            assert.equal(resCol2.data.count, 1, `Number of cards in Collection 2 not right ${JSON.stringify(resCol2.data)}`)
         })
         it('Update cards', async () => {
             await axios.put("http://localhost:3030/collections/card",
@@ -140,10 +140,49 @@ describe(
                     "grade": "CGC 10"
                 })
             let res = await axios.get("http://localhost:3030/collections/collection2/cards/0")
-            let cards = res.data
-            assert.ok(cards[0].variant === "Normal", `variant not set ${JSON.stringify(cards[0],null, 1)}`)
-            assert.ok(cards[0].paid === 1.0, `Paid not set ${cards}`)
-            assert.ok(cards[0].count === 2, `Count not set ${cards}`)
+            assert.equal(res.data.count, 1)
+            let cards = res.data.cards
+            assert.equal(cards[0].variant, "Normal", `variant not set ${JSON.stringify(cards[0], null, 1)}`)
+            assert.equal(cards[0].paid, 1.0, `Paid not set ${cards}`)
+            assert.equal(cards[0].count, 2, `Count not set ${cards}`)
+            await axios.put("http://localhost:3030/collections/card",
+                {
+                    "cardId": "Brilliant-Stars-Choice-Belt-135",
+                    "collection": "collection2",
+                    "variant": "Reverse Holo",
+                    "paid": 1.0,
+                    "count": 1,
+                    "grade": "CGC 10"
+                })
+            let res2 = await axios.get("http://localhost:3030/collections/collection2/cards/0")
+            assert.equal(res2.data.count, 2)
+        })
+
+        it('Delete card', async () => {
+            await axios.delete("http://localhost:3030/collections/card",
+                {
+                    "data":
+                    {
+                        "cardId": "Brilliant-Stars-Choice-Belt-135",
+                        "collection": "collection2",
+                        "variant": "Normal",
+                        "paid": 1.0,
+                        "count": 2,
+                        "grade": "CGC 10"
+                    }
+                })
+            let res = await axios.get("http://localhost:3030/collections/collection2/cards/0")
+            assert.equal(res.data.count, 1)
+        })
+
+        it("Delete collection", async () => {
+            await axios.delete("http://localhost:3030/collections",
+                { 'data': { 'name': 'collection2' } }
+            )
+            let colls = await axios.get("http://localhost:3030/collections/")
+            let res = await axios.get("http://localhost:3030/collections/collection2/cards/0")
+            assert.equal(colls.data.length, 1, "collection not deleted")
+            assert.equal(res.data.count, 0, "cards not deleted")
         })
     }
 )

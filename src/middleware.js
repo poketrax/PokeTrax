@@ -38,7 +38,7 @@ app.get("/cardImg/:asset_id",
             let card = db.prepare('SELECT img FROM cards WHERE cardId = $id').get({ "id": req.params.asset_id })
             if (card != null) {
                 res.locals.fetchUrl = card.img;
-                res.locals.cacheKey = req.params.asset_id ;
+                res.locals.cacheKey = req.params.asset_id;
                 next();
             } else {
                 res.status(403).send(`No card with id: ${req.params.asset_id}`)
@@ -199,14 +199,14 @@ app.get("/cards/:page", async (req, res) => {
     let exps = req.query.expansions != null && req.query.expansions !== "%5B%22%22%5D" ? JSON.parse(decodeURIComponent(req.query.expansions)) : []
     let FILTER_EXP = ""
     if (exps != null && exps.length) {
-        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")").replaceAll("\"","\'")
+        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")").replaceAll("'","''").replaceAll("\"", "\'")
         FILTER_EXP = `AND expName in ${expFilter}`
     }
     // Rarities
     let rarities = req.query.rarities != null ? JSON.parse(decodeURIComponent(req.query.rarities)) : []
     let FILTER_RARE = ""
     if (rarities != null && rarities.length != 0) {
-        let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")").replaceAll("\"","\'")
+        let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")").replaceAll("\"", "\'")
         FILTER_RARE = `AND rarity in ${rareFilter}`
     }
 
@@ -225,8 +225,8 @@ app.get("/cards/:page", async (req, res) => {
     try {
         let countSQL = `SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
         let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
-       // console.log(countSQL)
-       /// console.log(sql)
+        // console.log(countSQL)
+        /// console.log(sql)
         let countRes = db.prepare(countSQL).get()
         let results = db.prepare(sql).all()
         res.send({ "total": countRes.cardCount, "cards": results })
@@ -248,12 +248,12 @@ app.get("/cards/:page", async (req, res) => {
 app.post("/price", bodyParser.json(), async (req, res) => {
     DB.getPrices(req.body, req.query.start, req.query.end, req.query.variant).then(
         (value) => {
-                res.send(value)
+            res.send(value)
         }
     ).catch(
         (err) => {
             res.status(500).send('sqlerr: ' + err)
-            console.log(err)
+            //console.log(err)
         }
     )
 })
@@ -290,17 +290,30 @@ app.put("/collections", bodyParser.json(),
         }
     })
 
+app.delete("/collections", bodyParser.json(),
+    (req, res) => {
+        let db = DB.collectionDB()
+        let collection = req.body
+        try {
+            db.prepare('DELETE FROM collections WHERE name = $name').run(collection)
+            db.prepare("DELETE FROM collectionCards WHERE collection = $name").run(collection)
+            res.send()
+        }catch(err){
+            res.status(500).send()
+        }
+    }
+)
+
 /**
- * 
+ * Update Collection card
  */
 app.put("/collections/card", bodyParser.json(),
-     (req, res) => {
+    (req, res) => {
         let db = DB.collectionDB()
         let card = req.body
         try {
             let findSql = "SELECT * from collectionCards WHERE cardId = $cardId AND variant = $variant AND collection = $collection AND grade = $grade"
-            let params = { 'cardId': card.cardId, 'variant': card.variant, 'collection': card.collection, 'grade': card.grade }
-            let found = db.prepare(findSql).get(params)
+            let found = db.prepare(findSql).get(card)
             if (found != null) {
                 db.prepare("UPDATE collectionCards SET count = $count, grade = $grade, paid = $paid WHERE cardId = $cardId AND variant = $variant AND grade = $grade")
                     .run({ 'count': card.count, 'grade': card.grade, 'paid': card.paid, 'cardId': card.cardId, 'variant': card.variant })
@@ -316,7 +329,25 @@ app.put("/collections/card", bodyParser.json(),
         } finally {
             db.close()
         }
-    })
+    }
+)
+/**
+ * Delete Collection Card
+ */
+app.delete("/collections/card", bodyParser.json(),  
+    (req, res) => {
+        let card = req.body
+        let db = DB.collectionDB()
+        try{
+            let del = "DELETE FROM collectionCards WHERE cardId = $cardId AND variant = $variant AND collection = $collection AND grade = $grade"
+            db.prepare(del).run(card)
+            res.send()
+        }catch (err) {
+            console.log(err)
+            res.status(500).send()
+        }
+    }
+)
 
 /**
  * Get Collection cards
@@ -326,16 +357,20 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
     if (req.query.name != null && req.query.name != '') {
         nameFilter = `AND colCards.cardId like '%${decodeURI(req.query.name)}%'`
     }
-
     let db = DB.collectionDB()
-    let sqlAttach = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB; `
+    let sqlCount = `SELECT count(cardId) as count FROM collectionCards colCards WHERE colCards.collection = '${req.params.collection}' ${nameFilter}`
+    let sqlAttach = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
     let sql = `SELECT * FROM collectionCards colCards INNER JOIN cardDB.cards cards ON cards.cardId = colCards.cardId ` +
         `WHERE colCards.collection = '${req.params.collection}' ${nameFilter} LIMIT 25 OFFSET ${req.params.page * 25}`
-    try{
+    try {
+        let count = db.prepare(sqlCount).get()
         db.prepare(sqlAttach).run()
         let cards = db.prepare(sql).all()
-        res.send(cards)
-    }catch(err){
+        res.send({ "count": count.count, "cards": cards })
+    } catch (err) {
+        console.log(err)
         res.status(500).send(err)
+    } finally {
+        db.close()
     }
 })
