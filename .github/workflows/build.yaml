@@ -6,7 +6,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v1
@@ -14,11 +14,4 @@ jobs:
         with:
           node-version: 17
       - run: npm install
-      - run: npm test
       - run: npm run make
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            build/PokeTrak-*.dmg
-            build/PokeTrak-*.exe
