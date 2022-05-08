@@ -127,7 +127,6 @@ async function pullDb(meta) {
  * @returns 
  */
 function getTcgpPrice(card) {
-    console.log("pulling price data from tcpg")
     let db = pricesDB()
     return new Promise(
         (resolve, reject) => {

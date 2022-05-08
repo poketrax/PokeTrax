@@ -1,13 +1,12 @@
 import React from 'react';
 import { Card, Price } from '../model/Card'
-import  Paper  from '@mui/material/Paper';
 
 interface Props {
     card: Card
 }
 
 class State {
-    public prices = new Array<Price>()
+    public inProg = false
 }
 
 export class CardDialog extends React.Component<Props, State> {
@@ -18,10 +17,9 @@ export class CardDialog extends React.Component<Props, State> {
 
     render() {
         return (
-            <div>
-                <Paper>
-                    
-                </Paper>
+            <div className='w-96'>
+                <div>Add {this.props.card.name}</div>
+                
             </div>
         )
     }

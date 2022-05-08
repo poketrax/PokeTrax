@@ -213,7 +213,7 @@ export class CardSearch extends React.Component<Props, State> {
     renderCards() {
         let items = []
         for (let card of this.state.cards) {
-            items.push(<CardCase card={card}></CardCase>)
+            items.push(<CardCase card={card} onDelete={() => {}}></CardCase>)
         }
         return items
     }

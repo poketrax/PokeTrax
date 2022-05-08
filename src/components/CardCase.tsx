@@ -1,19 +1,38 @@
 import React from 'react';
 import { Card, Price } from '../model/Card'
 import { baseURL } from '../index'
-import { getRarity, getTCGPprice } from '../controls/CardDB';
+import {
+    getRarity,
+    getTCGPprice,
+    deleteCardFromCollection
+} from '../controls/CardDB';
 import { CgPokemon } from "react-icons/cg"
-import CircularProgress from '@mui/material/CircularProgress';
-import Paper from '@mui/material/Paper';
-import { Tooltip } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ClearIcon from '@mui/icons-material/Clear';
+import { AddCardCollection } from './AddCardCollection';
+import {
+    Dialog,
+    DialogTitle,
+    IconButton,
+    CircularProgress,
+    Button,
+    Paper,
+    Tooltip,
+    Fab,
+    ButtonGroup
+} from '@mui/material';
 
 interface Props {
     card: Card
+    onDelete: () => void
 }
 
 class State {
     public prices = new Array<Price>()
     public imgLoaded = false
+    public addDialogShow = false
 }
 
 export class CardCase extends React.Component<Props, State> {
@@ -33,6 +52,16 @@ export class CardCase extends React.Component<Props, State> {
                     <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center '>
                         {this.getEnergy(this.props.card?.energyType ?? "")}
                         <span className='pl-2 text-lg truncate' >{this.props.card?.name}</span>
+                        <div className='flex-grow'></div>
+                        {
+                            this.getCornerButton()
+                        }
+                    </div>
+                    <div className="flex w-full items-center justify-center ">
+
+                        {
+                            this.getCollectionButtons()
+                        }
                     </div>
                     <div style={{ position: 'relative' }}>
                         {this.imgSpinner()}
@@ -63,20 +92,53 @@ export class CardCase extends React.Component<Props, State> {
                         </Tooltip>
                     </div>
                 </Paper>
+                <Dialog open={this.state.addDialogShow} onClose={() => this.setState({ ...this.state, addDialogShow: false })}>
+                    <div className='flex justify-center items-center w-96 p-2 pr-4'>
+                        <DialogTitle>Add {this.props.card.name}</DialogTitle>
+                        <div className="flex-grow"></div>
+                        <IconButton className="w-8 h-8" size="large" onClick={() => this.setState({ ...this.state, addDialogShow: false })}>
+                            <ClearIcon />
+                        </IconButton>
+                    </div>
+                    <AddCardCollection card={this.props.card} close={() => this.setState({ ...this.state, addDialogShow: false })}></AddCardCollection>
+                </Dialog>
             </div>
         )
     }
 
+    getCollectionButtons() {
+        if (this.props.card.collection != null) {
+            return (
+                <ButtonGroup className="w-full mb-2 ml-4 mr-4 bg-white" variant="outlined">
+                    <Button className="w-full" startIcon={<DeleteIcon />} onClick={(ev) => {this.deleteCard()}}>Delete</Button>
+                    <Button className="w-full" startIcon={<EditIcon />}>Edit</Button>
+                </ButtonGroup>
+            )
+        }
+    }
+
+    deleteCard() {
+        deleteCardFromCollection(this.props.card)
+        this.props.onDelete()
+    }
+
+    getCornerButton() {
+        if (this.props.card.collection == null) {
+            return (
+                <Fab aria-label="add" size="small" onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
+                    <AddIcon />
+                </Fab>)
+        }
+    }
+
     imgSpinner() {
         if (this.state.imgLoaded === false) {
-            console.log('spin to win')
             return (
                 <div className="h-full" style={{ position: 'absolute' }}>
                     <div className='flex items-center justify-center w-64 h-full'>
                         <CircularProgress className="flex" size={100} ></CircularProgress>
                     </div>
                 </div>
-
             )
         }
     }
@@ -95,8 +157,7 @@ export class CardCase extends React.Component<Props, State> {
     private getPrice(): string | JSX.Element {
         if (this.state.prices?.length !== 0) {
             let val = "-.--"
-            console.log(JSON.stringify(this.state.prices))
-            for(let price of this.state.prices){
+            for (let price of this.state.prices) {
                 if (price.price != null) {
                     val = `$${price.price.toFixed(2).toString()}`
                 }
