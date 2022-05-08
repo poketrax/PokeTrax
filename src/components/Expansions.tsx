@@ -2,7 +2,7 @@ import React from 'react';
 import { Series, Expansion } from '../model/Meta'
 import axios from 'axios'
 import { baseURL } from '../index'
-import { AppControl, AppController } from '../App'
+import { AppController } from '../App'
 
 class State {
     series = new Array<Series>()
@@ -62,7 +62,7 @@ export class Expansions extends React.Component<{}, State> {
             items.push(
                 <div>
                     <div className='flex w-full h-16 bg-blue-800 items-center'>
-                        <img className='m-2 h-12' src={`${baseURL}/seriesImg/${series.name}`}></img>
+                        <img className='m-2 h-12' alt="" src={`${baseURL}/seriesImg/${series.name}`}></img>
                         <div className='flex-grow'></div>
                         <span className='text-white p-4'>{this.getYear(series.releaseDate)}</span>
                     </div>
@@ -84,7 +84,7 @@ export class Expansions extends React.Component<{}, State> {
                     onClick={() => {
                         AppController.next({page: "cards", selectedSet: exp.name})
                     }}>
-                    <img src={`${baseURL}/expLogo/${exp.name}`} />
+                    <img alt="" src={`${baseURL}/expLogo/${exp.name}`} />
                 </div>
             )
         }

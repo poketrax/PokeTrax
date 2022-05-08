@@ -2,7 +2,6 @@ import React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper'
 import CloseIcon from '@mui/icons-material/Close';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
@@ -117,7 +116,7 @@ export class Collections extends React.Component<{}, State> {
         getCollections().then(
             (value) => {
                 let selected = ""
-                if (value.length != 0 && this.state.collection === "") {
+                if (value.length !== 0 && this.state.collection === "") {
                     selected = value[0].name
                 } else {
                     selected = this.state.collection

@@ -107,7 +107,7 @@ export class CardSearch extends React.Component<Props, State> {
                                             />
                                             <span>{option}</span>
                                             <div className='flex-grow'></div>
-                                            <img className='h-6' src={baseURL + "/expSymbol/" + option} />
+                                            <img className='h-6' alt="" src={baseURL + "/expSymbol/" + option} />
                                         </div>
                                     </li>
                                 )}

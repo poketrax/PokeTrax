@@ -69,6 +69,7 @@ export class CardCase extends React.Component<Props, State> {
                             <img className='w-64 h-[357px] rounded-xl'
                                 style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
                                 src={baseURL + "/cardImg/" + this.props.card?.cardId}
+                                alt=""
                                 onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                                 onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
                             />
@@ -77,7 +78,7 @@ export class CardCase extends React.Component<Props, State> {
                     <div className='h-8 pl-2 pr-2 flex justify-center items-center'>
                         <div className='flex justify-items-center items-center h-8 w-8 ml-2'>
                             <Tooltip title={this.props.card.expName}>
-                                <img className='h-6' src={baseURL + "/expSymbol/" + this.props.card?.expName} />
+                                <img className='h-6' alt="" src={baseURL + "/expSymbol/" + this.props.card?.expName} />
                             </Tooltip>
                         </div>
                         <div className='grow'></div>
@@ -172,27 +173,27 @@ export class CardCase extends React.Component<Props, State> {
         let _class = 'w-5 h-5 ml-2'
         switch (energyType) {
             case "Fire":
-                return (<img className={_class} src={`./assests/fire.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/fire.png`}></img>)
             case "Water":
-                return (<img className={_class} src={`./assests/water.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/water.png`}></img>)
             case "Grass":
-                return (<img className={_class} src={`./assests/grass.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/grass.png`}></img>)
             case "Fighting":
-                return (<img className={_class} src={`./assests/fighting.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/fighting.png`}></img>)
             case "Psychic":
-                return (<img className={_class} src={`./assests/Psychic.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/Psychic.png`}></img>)
             case "Lightning":
-                return (<img className={_class} src={`./assests/electric.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/electric.png`}></img>)
             case "Colorless":
-                return (<img className={_class} src={`./assests/colorless.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/colorless.png`}></img>)
             case "Darkness":
-                return (<img className={_class} src={`./assests/dark.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/dark.png`}></img>)
             case "Metal":
-                return (<img className={_class} src={`./assests/steel.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/steel.png`}></img>)
             case "Dragon":
-                return (<img className={_class} src={`./assests/dragon.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/dragon.png`}></img>)
             case "Fairy":
-                return (<img className={_class} src={`./assests/fairy.png`}></img>)
+                return (<img className={_class} alt="" src={`./assests/fairy.png`}></img>)
             default:
                 return (<CgPokemon className={_class}></CgPokemon>)
         }

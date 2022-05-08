@@ -16,7 +16,7 @@ export function search(page: number, term?: string, sets?: string[], rarity?: st
     return new Promise<CardSearch>(
         (resolve, reject) => {
             let url = new URL(`${baseURL}/cards/${page ?? 0}`)
-            if (sets && sets.length != 0) {
+            if (sets && sets.length !== 0) {
                 url.searchParams.set(`expansions`, encodeURI(JSON.stringify(sets)))
             }
             if (term != null) {
@@ -25,7 +25,7 @@ export function search(page: number, term?: string, sets?: string[], rarity?: st
             if (sort != null) {
                 url.searchParams.set('sort', sort)
             } 
-            if (rarity != null && rarity.length != 0) {
+            if (rarity != null && rarity.length !== 0) {
                 url.searchParams.set(`rarities`, JSON.stringify(rarity))
             }
             axios.get(url.toString()).then(
@@ -222,7 +222,7 @@ export function getRarity(rarity: string) {
         case "Secret Rare":
             return (<div className='flex justify-items-center items-center'><div>S</div><IoStarOutline></IoStarOutline></div>)
         case "Amazing Rare":
-            return (<img className='w-5 h-5' src={`./assests/amazing.svg`}></img>)
+            return (<img className='w-5 h-5' alt="" src={`./assests/amazing.svg`}></img>)
         case "Shiny Holo Rare":
             return (<div className='flex justify-items-center items-center'><BsStars></BsStars><IoStarSharp></IoStarSharp></div>)
         case "Prism Rare":
@@ -234,7 +234,7 @@ export function getRarity(rarity: string) {
         case "Rare Ace":
             return (<IoStarSharp></IoStarSharp>)
         case "Promo":
-            return (<img className='w-5 h-5' src={`${baseURL}/expSymbol/Sword%20&%20Shield%20Promos`}></img>)
+            return (<img className='w-5 h-5' alt="" src={`${baseURL}/expSymbol/Sword%20&%20Shield%20Promos`}></img>)
         default:
             return (<BsFillCircleFill></BsFillCircleFill>)
     }
