@@ -6,10 +6,18 @@ on:
 jobs:
   release:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: '*.snap'
+            asset_name: poketrax.snap
+          - os: windows-latest
+            artifact_name: '*.exe'
+            asset_name: poketrax.exe
+          - os: macos-latest
+            artifact_name: '*.dmg'
+            asset_name: poketrax.dmg
     env:
       GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
     steps:
@@ -18,14 +26,14 @@ jobs:
         with:
           node-version: 16
       - run: npm install
-      - run: npm run make
-      - name: Release-DMG
-        uses: softprops/action-gh-release@v1
-        if: runner.os == 'macOS'
+      - name: build
+        run: npm run make
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          files: ./build/*.dmg
-      - name: Release-EXE
-        uses: softprops/action-gh-release@v1
-        if: runner.os == 'Windows'
-        with:
-          files: ./build/*.exe
+          repo_token: ${{ secrets.JPG_ACTION_TOKEN }}
+          file: build/${{ matrix.artifact_name }}
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
