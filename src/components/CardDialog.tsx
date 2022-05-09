@@ -74,7 +74,7 @@ export class CardDialog extends React.Component<Props, State> {
         }
     }
 
-    private getDataSet(){
+    private getDataSet() {
         if (this.state.prices.length != 0) {
             if (this.state.prices[0].variant === this.state.prices[1].variant) {
                 return [{
@@ -121,6 +121,7 @@ export class CardDialog extends React.Component<Props, State> {
                     <div className=''> </div>
                 </div>
                 <div className='p-4 pl-2'>
+                    <div className="text-2xl" >Prices</div>
                     <div className='w-96'>
                         <Line
                             data={{
