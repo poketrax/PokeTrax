@@ -4,7 +4,7 @@ on:
     tags:
       - '*'
 jobs:
-  release:
+  test_build:
     runs-on: ${{ matrix.os }}
 
     strategy:
