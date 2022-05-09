@@ -1,147 +1,30 @@
 const express = require("express");
 const cors = require('cors')
 const path = require('path')
-const sqlite3 = require("sqlite3")
-const https = require("follow-redirects").https
-const fs = require('fs')
-const axios = require('axios')
-const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const app = express();
-const os = require("os");
-const lodash = require("lodash");
-const hash = require('object-hash');
+const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const bodyParser = require('body-parser');
-const compver = require('compare-version')
+const DB = require('./database');
 
-const DB_META = "./sql/meta.json"
-const CARD_DB_FILE = "./sql/data.sqlite3"
-const PRICE_DB_FILE = "./sql/prices.sqlite3"
+let server
 
 //Start web server
 const start = () => {
-    app.listen(3030)
+    server = app.listen(3030)
 }
 
-/* Print the working directory for the application to get date files */
-const pwd = () => {
-    if (process.env.NODE_ENV === 'development') {
-        return "./"
-    }
-    switch (os.platform()) {
-        case 'darwin': return '/Applications/PokeTrax.app/Contents/'
-        case 'win32': return ''
-        default: return "./"
-    }
+const stop = () => {
+    server.close()
 }
-
-//Init card Database
-let carddb = new sqlite3.Database(
-    path.join(pwd(), CARD_DB_FILE),
-    sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-    (err) => {
-        if (err) console.error('Database opening error: ', err);
-    }
-);
-
-//Init prices database
-let pricesdb = new sqlite3.Database(
-    path.join(pwd(), PRICE_DB_FILE),
-    sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-    (err) => {
-        if (err) console.error('Database opening error: ', err);
-    }
-)
-pricesdb.run(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date INTEGER, cardId TEXT, variant TEXT, vendor TEXT, price REAL)`)
-
-//Check for card Updates
-let dbUpdate = { ready: false, updated: false }
-const checkForDbUpdate = () => {
-    return new Promise(
-        async (resolve, reject) => {
-            let meta = await pullDbMeta()
-            //if new and no meta file exists
-            if (fs.existsSync(path.join(pwd(), DB_META)) === false) {
-                dbUpdate = { ready: false, updated: true }
-                try {
-                    await pullDb(meta)
-                    resolve()
-                } catch (err) {
-                    dbUpdate = { ready: false, updated: false, error: err }
-                    console.log(err)
-                    reject()
-                }
-            } else { // look for update
-                let current = JSON.parse(fs.readFileSync(path.join(pwd(), DB_META), { encoding: 'utf8', flag: 'r' }))
-                if (compver(meta.version, current.version) > 0) {
-                    dbUpdate = { ready: false, updated: true }
-                    try {
-                        await pullDb(meta)
-                        resolve()
-                    } catch (err) {
-                        dbUpdate = { ready: false, updated: false, error: err }
-                        console.log(err)
-                        reject()
-                    }
-                } else {
-                    dbUpdate = { ready: true, updated: false }
-                }
-            }
-        }
-    )
-}
-
-//pull release info from database repo
-async function pullDbMeta() {
-    return new Promise(
-        async (resolve, reject) => {
-            try {
-                let release = await axios.get('https://api.github.com/repos/jgunzelman88/pokepull/releases/latest')
-                let asset = release.data.assets.find((value) => value.name === "data.sqlite3")
-                let meta = { 'version': release.data.name, 'asset': asset.browser_download_url }
-                resolve(meta)
-            } catch (err) {
-                reject(err)
-            }
-        }
-    )
-}
-
-//Pull new database file and reinitialize database
-async function pullDb(meta) {
-    return new Promise(
-        async (resolve, reject) => {
-            https.get(meta.asset, (stream) => {
-                //write database file
-                let writer = fs.createWriteStream(path.join(pwd(), CARD_DB_FILE))
-                stream.pipe(writer)
-                writer.on('finish', () => {
-                    fs.writeFileSync(path.join(pwd(), "./sql/meta.json"), JSON.stringify(meta))
-                    dbUpdate = { ready: true, updated: true }
-                    carddb = new sqlite3.Database(
-                        path.join(pwd(), CARD_DB_FILE),
-                        sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-                        (err) => {
-                            if (err) console.error('Database opening error: ', err);
-                        }
-                    );
-                    resolve()
-                })
-                writer.on('error', () => { reject() })
-            })
-        }
-    )
-}
-
 //exports for main
-module.exports.pwd = pwd
 module.exports.start = start
-module.exports.checkForDbUpdate = checkForDbUpdate
+module.exports.stop = stop
 
 app.use(cors())
 
 app.get("/dbstatus",
     (_, res) => {
-        res.send(dbUpdate)
+        res.send(DB.dbStatus())
     }
 )
 
@@ -149,19 +32,26 @@ app.get("/dbstatus",
  * Get Card Img assest.  Will pull from local cache or the interwebz
  */
 app.get("/cardImg/:asset_id",
-    async (req, res, next) => {
-        carddb.get('SELECT img FROM cards WHERE cardId = $id', { "$id": req.params.asset_id }, (err, row) => {
-            if (err) {
-                res.status(500).send('sqlerr: ' + err)
-            } else {
-                res.locals.fetchUrl = row.img;
-                res.locals.cacheKey = row.asset_id;
+    (req, res, next) => {
+        let db = DB.cardDB()
+        try {
+            let card = db.prepare('SELECT img FROM cards WHERE cardId = $id').get({ "id": req.params.asset_id })
+            if (card != null) {
+                res.locals.fetchUrl = card.img;
+                res.locals.cacheKey = req.params.asset_id;
                 next();
+            } else {
+                res.status(403).send(`No card with id: ${req.params.asset_id}`)
             }
-        })
+        } catch (err) {
+            console.error(err)
+            res.status(500).send('sqlerr: ' + err)
+        } finally {
+            db.close()
+        }
     },
-    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./cardImg"), maxSize: 1024 * 1024 * 1024 }),
-    (req, res) => {
+    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./cardImg"), maxSize: 1024 * 1024 * 1024 }),
+    (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
             "Content-Length": res.locals.contentLength,
@@ -175,18 +65,24 @@ app.get("/cardImg/:asset_id",
  */
 app.get("/seriesImg/:asset_id",
     async (req, res, next) => {
-        carddb.get('SELECT icon FROM series WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
-            if (err) {
-                res.status(500).send('sqlerr: ' + err)
-            } else {
-                res.locals.fetchUrl = row.icon;
-                res.locals.cacheKey = row.asset_id;
+        let db = DB.cardDB()
+        try {
+            let series = db.prepare('SELECT icon FROM series WHERE name = $name').get({ "name": decodeURIComponent(req.params.asset_id) })
+            if (series != null) {
+                res.locals.fetchUrl = series.icon;
+                res.locals.cacheKey = req.params.asset_id;
                 next();
+            } else {
+                res.status(403).send(`No series with id: ${req.params.asset_id}`)
             }
-        })
+        } catch (err) {
+            res.status(500).send('sqlerr: ' + err)
+        } finally {
+            db.close()
+        }
     },
-    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./seriesImg"), maxSize: 1024 * 1024 * 1024 }),
-    (req, res) => {
+    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./seriesImg"), maxSize: 1024 * 1024 * 1024 }),
+    (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
             "Content-Length": res.locals.contentLength
@@ -200,18 +96,24 @@ app.get("/seriesImg/:asset_id",
  */
 app.get("/expLogo/:asset_id",
     async (req, res, next) => {
-        carddb.get('SELECT logoURL FROM expansions WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
-            if (err) {
-                res.status(500).send('sqlerr: ' + err)
-            } else {
-                res.locals.fetchUrl = row.logoURL;
-                res.locals.cacheKey = row.asset_id;
+        let db = DB.cardDB()
+        try {
+            let exp = db.prepare('SELECT logoURL FROM expansions WHERE name = $name').get({ "name": decodeURIComponent(req.params.asset_id) })
+            if (exp != null) {
+                res.locals.fetchUrl = exp.logoURL;
+                res.locals.cacheKey = req.params.asset_id;
                 next();
+            } else {
+                res.status(403).send(`No expantion with id: ${req.params.asset_id}`)
             }
-        })
+        } catch (err) {
+            res.status(500).send('sqlerr: ' + err)
+        } finally {
+            db.close()
+        }
     },
-    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./expLogo"), maxSize: 1024 * 1024 * 1024 }),
-    (req, res) => {
+    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./expLogo"), maxSize: 1024 * 1024 * 1024 }),
+    (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
             "Content-Length": res.locals.contentLength
@@ -225,19 +127,24 @@ app.get("/expLogo/:asset_id",
  */
 app.get("/expSymbol/:asset_id",
     async (req, res, next) => {
-        carddb.get('SELECT symbolURL FROM expansions WHERE name = $name', { "$name": decodeURIComponent(req.params.asset_id) }, (err, row) => {
-            if (err) {
-                res.status(500).send('sqlerr: ' + err)
-                console.log('sqlerr: ' + err)
-            } else {
-                res.locals.fetchUrl = row.symbolURL;
-                res.locals.cacheKey = row.asset_id;
+        let db = DB.cardDB()
+        try {
+            let exp = db.prepare('SELECT symbolURL FROM expansions WHERE name = $name').get({ "name": decodeURIComponent(req.params.asset_id) })
+            if (exp != null) {
+                res.locals.fetchUrl = exp.symbolURL;
+                res.locals.cacheKey = req.params.asset_id;
                 next();
+            } else {
+                res.status(403).send(`No expantion with id: ${req.params.asset_id}`)
             }
-        })
+        } catch (err) {
+            res.status(500).send('sqlerr: ' + err)
+        } finally {
+            db.close()
+        }
     },
-    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./expSymbol"), maxSize: 1024 * 1024 * 1024 }),
-    (req, res) => {
+    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./expSymbol"), maxSize: 1024 * 1024 * 1024 }),
+    (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
             "Content-Length": res.locals.contentLength
@@ -249,27 +156,31 @@ app.get("/expSymbol/:asset_id",
 /**
  *  Get Expansions 
  */
-app.get("/expansions", async (req, res) => {
-    carddb.all(`SELECT name, series, tcgName, numberOfCards, releaseDate FROM expansions`, (err, rows) => {
-        if (err) {
-            res.status(500).send('sqlerr: ' + err)
-        } else {
-            res.send(rows)
-        }
-    })
+app.get("/expansions", async (_, res) => {
+    let db = DB.cardDB()
+    try {
+        let exps = db.prepare(`SELECT name, series, tcgName, numberOfCards, releaseDate FROM expansions`).all()
+        res.send(exps)
+    } catch (err) {
+        res.status(500).send('sqlerr: ' + err)
+    } finally {
+        db.close()
+    }
 })
 
 /** 
 * Get Series
 */
-app.get("/series", async (req, res) => {
-    carddb.all(`SELECT name, releaseDate FROM series`, (err, rows) => {
-        if (err) {
-            res.status(500).send('sqlerr: ' + err)
-        } else {
-            res.send(rows)
-        }
-    })
+app.get("/series", async (_, res) => {
+    let db = DB.cardDB()
+    try {
+        let series = db.prepare(`SELECT name, releaseDate FROM series`).all()
+        res.send(series)
+    } catch (err) {
+        res.status(500).send('sqlerr: ' + err)
+    } finally {
+        db.close()
+    }
 })
 
 /**
@@ -288,14 +199,14 @@ app.get("/cards/:page", async (req, res) => {
     let exps = req.query.expansions != null && req.query.expansions !== "%5B%22%22%5D" ? JSON.parse(decodeURIComponent(req.query.expansions)) : []
     let FILTER_EXP = ""
     if (exps != null && exps.length) {
-        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")")
+        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")").replaceAll("'","''").replaceAll("\"", "\'")
         FILTER_EXP = `AND expName in ${expFilter}`
     }
     // Rarities
     let rarities = req.query.rarities != null ? JSON.parse(decodeURIComponent(req.query.rarities)) : []
     let FILTER_RARE = ""
     if (rarities != null && rarities.length != 0) {
-        let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")")
+        let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")").replaceAll("\"", "\'")
         FILTER_RARE = `AND rarity in ${rareFilter}`
     }
 
@@ -310,109 +221,22 @@ app.get("/cards/:page", async (req, res) => {
         default:
             order = ``
     }
-
-    let count = `SELECT count(cardId) FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
-    let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
-    carddb.get(count, (err1, row) => {
-        carddb.all(sql, (err2, rows) => {
-            if (err1) {
-                res.status(500).send('sqlerr: ' + err2)
-                console.log(err2)
-            } else {
-                if (err2) {
-                    res.status(500).send('sqlerr: ' + err2)
-                    console.log(err2)
-                } else {
-                    res.send({ total: row['count(cardId)'], cards: rows })
-                }
-            }
-        })
-    })
-
+    let db = DB.cardDB()
+    try {
+        let countSQL = `SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
+        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+        // console.log(countSQL)
+        /// console.log(sql)
+        let countRes = db.prepare(countSQL).get()
+        let results = db.prepare(sql).all()
+        res.send({ "total": countRes.cardCount, "cards": results })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    } finally {
+        db.close()
+    }
 })
-
-/**
- * Debounced function for retrieving TCP Player price data.
- * Prevents being locked out for too many requests.  
- * Also caches price data in price database
- * @param {*} card 
- * @param {*} callback 
- */
-function getTcgpPrice(card) {
-    return new Promise((resolve, reject) => {
-        let prices = []
-        axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`).then((api) => {
-            for (let result of api.data.result) {
-                let date = Date.parse(result.date)
-                result.variants.forEach(
-                    (variant) => {
-                        let price = {
-                            "date": date,
-                            "cardId": card.cardId,
-                            "variant": variant.variant,
-                            "vendor": "tcgp",
-                            "price": parseFloat(variant.marketPrice)
-                        }
-                        prices.push(price)
-                        let sql = `INSERT OR IGNORE INTO prices 
-                                (id, date, cardId, variant, vendor, price) 
-                                VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
-                        pricesdb.run(sql,
-                            {
-                                "$id": hash(price),
-                                "$date": price.date,
-                                "$cardId": price.cardId,
-                                "$variant": price.variant,
-                                "$vendor": price.vendor,
-                                "$price": price.price
-                            }, (err) => {
-                                if (err) {
-                                    console.log("err: " + err)
-                                }
-                            })
-                    }
-                )
-                resolve(prices)
-            }
-        }).catch((err) => {
-            reject(err)
-        })
-    })
-
-}
-
-/**
- * Get prices from database
- * @param {*} cardId 
- * @param {*} _start 
- * @param {*} _end 
- * @param {*} variant 
- * @returns 
- */
-async function getPrices(cardId, _start, _end, variant) {
-    return new Promise(
-        (resolve, reject) => {
-            let now = new Date();
-            now.setTime(Date.now())
-
-            let then = new Date()
-            then.setTime(Date.now())
-            then.setDate(now.getDate() - 1)
-
-            let endDate = _end != null ? new Date(_end) : now
-            let startDate = _start != null ? new Date(_start) : then
-            let sql = `SELECT * FROM prices WHERE cardId = $cardId AND date > $start AND date < $end ORDER BY date DESC`
-
-            pricesdb.all(sql, { "$cardId": cardId, "$start": startDate.getTime(), "$end": endDate.getTime() }, (err, rows) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(rows)
-                }
-            })
-        }
-    )
-}
 
 /**
  * Get prices of a posted card
@@ -422,28 +246,131 @@ async function getPrices(cardId, _start, _end, variant) {
  * end?: end time ISO string 
  */
 app.post("/price", bodyParser.json(), async (req, res) => {
-    getPrices(req.body.cardId, req.query.start, req.query.end, req.query.variant).then(
+    DB.getPrices(req.body, req.query.start, req.query.end, req.query.variant).then(
         (value) => {
-            if (value.length) {
-                res.send(value)
-            } else {
-                getTcgpPrice(req.body).then(
-                    (prices) => {
-                        res.send(prices)
-                    }
-                ).catch(
-                    (err) => {
-                        res.status(500).send(err)
-                        console.log(err)
-                    }
-                )
-
-            }
+            res.send(value)
         }
     ).catch(
         (err) => {
             res.status(500).send('sqlerr: ' + err)
-            console.log(err)
+            //console.log(err)
         }
     )
+})
+
+/**
+ * Get Collections
+ */
+app.get("/collections", (_, res) => {
+    let db = DB.collectionDB()
+    try {
+        let collections = db.prepare(`SELECT * FROM collections`).all()
+        res.send(collections)
+    } catch {
+        console.log(err)
+        res.status(500).send(err)
+    } finally {
+        db.close()
+    }
+})
+
+/**
+ * PUT Collections
+ * body: see model/Collection.ts
+ */
+app.put("/collections", bodyParser.json(),
+    async (req, res) => {
+        let db = DB.collectionDB()
+        try {
+            db.prepare('INSERT INTO collections (name, img) values ($name, $img)').run({ 'name': req.body.name, 'img': req.body.name })
+            res.status(201).send()
+        } catch {
+            res.status(500).send(err)
+            console.log(err)
+        }
+    })
+
+app.delete("/collections", bodyParser.json(),
+    (req, res) => {
+        let db = DB.collectionDB()
+        let collection = req.body
+        try {
+            db.prepare('DELETE FROM collections WHERE name = $name').run(collection)
+            db.prepare("DELETE FROM collectionCards WHERE collection = $name").run(collection)
+            res.send()
+        }catch(err){
+            res.status(500).send()
+        }
+    }
+)
+
+/**
+ * Update Collection card
+ */
+app.put("/collections/card", bodyParser.json(),
+    (req, res) => {
+        let db = DB.collectionDB()
+        let card = req.body
+        try {
+            let findSql = "SELECT * from collectionCards WHERE cardId = $cardId AND variant = $variant AND collection = $collection AND grade = $grade"
+            let found = db.prepare(findSql).get(card)
+            if (found != null) {
+                db.prepare("UPDATE collectionCards SET count = $count, grade = $grade, paid = $paid WHERE cardId = $cardId AND variant = $variant AND grade = $grade")
+                    .run({ 'count': card.count, 'grade': card.grade, 'paid': card.paid, 'cardId': card.cardId, 'variant': card.variant })
+                res.status(201).send()
+            } else {
+                db.prepare("INSERT INTO collectionCards (cardId, collection, variant, paid, count, grade) VALUES ($cardId, $collection, $variant, $paid, $count, $grade)")
+                    .run({ 'cardId': card.cardId, 'collection': card.collection, 'variant': card.variant, 'paid': card.paid, 'count': card.count, 'grade': card.grade })
+                res.status(201).send()
+            }
+        } catch (err) {
+            console.log(err)
+            res.status(500).send(JSON.stringify(err))
+        } finally {
+            db.close()
+        }
+    }
+)
+/**
+ * Delete Collection Card
+ */
+app.delete("/collections/card", bodyParser.json(),  
+    (req, res) => {
+        let card = req.body
+        let db = DB.collectionDB()
+        try{
+            let del = "DELETE FROM collectionCards WHERE cardId = $cardId AND variant = $variant AND collection = $collection AND grade = $grade"
+            db.prepare(del).run(card)
+            res.send()
+        }catch (err) {
+            console.log(err)
+            res.status(500).send()
+        }
+    }
+)
+
+/**
+ * Get Collection cards
+ */
+app.get("/collections/:collection/cards/:page", (req, res) => {
+    let nameFilter = ``
+    if (req.query.name != null && req.query.name != '') {
+        nameFilter = `AND colCards.cardId like '%${decodeURI(req.query.name)}%'`
+    }
+    let db = DB.collectionDB()
+    let sqlCount = `SELECT count(cardId) as count FROM collectionCards colCards WHERE colCards.collection = '${req.params.collection}' ${nameFilter}`
+    let sqlAttach = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
+    let sql = `SELECT * FROM collectionCards colCards INNER JOIN cardDB.cards cards ON cards.cardId = colCards.cardId ` +
+        `WHERE colCards.collection = '${req.params.collection}' ${nameFilter} LIMIT 25 OFFSET ${req.params.page * 25}`
+    try {
+        let count = db.prepare(sqlCount).get()
+        db.prepare(sqlAttach).run()
+        let cards = db.prepare(sql).all()
+        res.send({ "count": count.count, "cards": cards })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    } finally {
+        db.close()
+    }
 })

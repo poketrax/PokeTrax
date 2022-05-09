@@ -5,9 +5,8 @@ import { baseURL } from "../index";
 import { Expansion } from "../model/Meta";
 import { BsFillCircleFill, BsDiamondFill, BsStars } from "react-icons/bs"
 import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
-import { from, delay, firstValueFrom } from 'rxjs';
-
-let DELAY = 100
+import { from } from 'rxjs';
+import { Collection } from "../model/Collection";
 export class DbState {
     public ready: boolean = false
     public updated: boolean = false
@@ -17,7 +16,7 @@ export function search(page: number, term?: string, sets?: string[], rarity?: st
     return new Promise<CardSearch>(
         (resolve, reject) => {
             let url = new URL(`${baseURL}/cards/${page ?? 0}`)
-            if (sets && sets.length != 0) {
+            if (sets && sets.length !== 0) {
                 url.searchParams.set(`expansions`, encodeURI(JSON.stringify(sets)))
             }
             if (term != null) {
@@ -25,8 +24,8 @@ export function search(page: number, term?: string, sets?: string[], rarity?: st
             }
             if (sort != null) {
                 url.searchParams.set('sort', sort)
-            }
-            if (rarity != null && rarity.length != 0) {
+            } 
+            if (rarity != null && rarity.length !== 0) {
                 url.searchParams.set(`rarities`, JSON.stringify(rarity))
             }
             axios.get(url.toString()).then(
@@ -57,10 +56,114 @@ export function getDbState(): Promise<DbState> {
     )
 }
 
+export function getCollections(): Promise<Array<Collection>> {
+    return new Promise<Array<Collection>>(
+        (resolve, reject) => {
+            axios.get(`${baseURL}/collections`).then(
+                (res) => {
+                    resolve(res.data)
+                } 
+            ).catch(
+                (err) => {
+                    reject(err.body)
+                }
+            )
+        }
+    )
+}
+
+export function getCollectionCards(collection: string, searchVal: string, page:number): Promise<CardSearch> {
+    return new Promise<CardSearch>(
+        (resolve, reject) => {
+            axios.get(`${baseURL}/collections/${collection}/cards/${page}?page=${encodeURI(searchVal)}`)
+            .then(
+                (res) => {
+                    resolve(res.data)
+                }
+            ).catch(
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
+export function addCollection(name: string) : Promise<any> {
+    return new Promise<any>(
+        (resolve, reject) => {
+            axios.put(`${baseURL}/collections`, {name : name}).then(
+                (_) => {
+                    resolve("")
+                }
+            ).catch(
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
+export function deleteCollection(name: string) : Promise<any> {
+    return new Promise<any>(
+        (resolve, reject) => {
+            axios.delete(`${baseURL}/collections`, {data: {name: name}}).then(
+                (_) => {
+                    resolve("")
+                }
+            ).catch(
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
+export function deleteCardFromCollection(card: Card){
+    return new Promise<void>(
+        (resolve, reject) => {
+            axios.delete(
+                `${baseURL}/collections/card`,
+                {data: card}
+            ).then(
+                (res) => {
+                    resolve()
+                }
+            ).catch(
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
+export function addCardToCollection(card: Card){
+    return new Promise<void>(
+        (resolve, reject) => {
+            if(card.collection != null &&
+                card.variant != null &&
+                card.count != null){
+                    axios.put(`${baseURL}/collections/card`, card).then(
+                        (res) => {
+                            resolve()
+                        }
+                    ).catch(
+                        (err) => {
+                            reject(err)
+                        }
+                    )
+                }else{
+                    reject("missing data")
+                }
+        }
+    )
+}
+
 export function getTCGPprice(card: Card): Promise<Price[]> {
-    DELAY += 100
-    let sub = from(
-        new Promise<Price[]>(
+    return new Promise<Price[]>(
             (reslove, reject) => {
                 axios.post(`${baseURL}/price`, card).then(
                     (res) => {
@@ -69,15 +172,9 @@ export function getTCGPprice(card: Card): Promise<Price[]> {
                     (err) => {
                         reject(err)
                     }
-                ).finally(
-                    () => {
-                        DELAY -= 100
-                    }
                 )
             }
-        )
     )
-    return firstValueFrom(sub.pipe(delay(DELAY)))
 }
 
 export function expansions(): Promise<Expansion[]> {
@@ -125,7 +222,7 @@ export function getRarity(rarity: string) {
         case "Secret Rare":
             return (<div className='flex justify-items-center items-center'><div>S</div><IoStarOutline></IoStarOutline></div>)
         case "Amazing Rare":
-            return (<img className='w-5 h-5' src={`./assests/amazing.svg`}></img>)
+            return (<img className='w-5 h-5' alt="" src={`./assests/amazing.svg`}></img>)
         case "Shiny Holo Rare":
             return (<div className='flex justify-items-center items-center'><BsStars></BsStars><IoStarSharp></IoStarSharp></div>)
         case "Prism Rare":
@@ -137,7 +234,7 @@ export function getRarity(rarity: string) {
         case "Rare Ace":
             return (<IoStarSharp></IoStarSharp>)
         case "Promo":
-            return (<img className='w-5 h-5' src={`${baseURL}/expSymbol/Sword%20&%20Shield%20Promos`}></img>)
+            return (<img className='w-5 h-5' alt="" src={`${baseURL}/expSymbol/Sword%20&%20Shield%20Promos`}></img>)
         default:
             return (<BsFillCircleFill></BsFillCircleFill>)
     }

@@ -1,5 +1,8 @@
-name: test
-on: push
+name: Release
+on:
+  push:
+    tags:
+      - '*'
 jobs:
   release:
     runs-on: ${{ matrix.os }}
@@ -7,12 +10,15 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-    env:
-      GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
+
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 17
+          node-version: 16
       - run: npm install
       - run: npm run make
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build

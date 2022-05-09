@@ -11,7 +11,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { CgPokemon } from "react-icons/cg"
 import { MdOutlineCatchingPokemon } from "react-icons/md"
 import { search, expansions, rarities, getRarity } from '../controls/CardDB'
-import { Expansion } from '../model/Meta';
+import { baseURL } from "../index";
 
 const icon = <CgPokemon />;
 const checkedIcon = <MdOutlineCatchingPokemon />;
@@ -98,13 +98,17 @@ export class CardSearch extends React.Component<Props, State> {
                                 disableCloseOnSelect
                                 renderOption={(props, option, { selected }) => (
                                     <li {...props}>
-                                        <Checkbox
-                                            icon={icon}
-                                            checkedIcon={checkedIcon}
-                                            style={{ marginRight: 8 }}
-                                            checked={selected}
-                                        />
-                                        {option}
+                                        <div className='flex justify-center items-center w-full'>
+                                            <Checkbox
+                                                icon={icon}
+                                                checkedIcon={checkedIcon}
+                                                style={{ marginRight: 8 }}
+                                                checked={selected}
+                                            />
+                                            <span>{option}</span>
+                                            <div className='flex-grow'></div>
+                                            <img className='h-6' alt="" src={baseURL + "/expSymbol/" + option} />
+                                        </div>
                                     </li>
                                 )}
                                 onChange={
@@ -127,7 +131,7 @@ export class CardSearch extends React.Component<Props, State> {
                             className='pl-4 min-w-min w-72'
                             multiple
                             limitTags={1}
-                            id="expantions"
+                            id="rarities"
                             options={rarities}
                             getOptionLabel={(option) => option}
                             defaultValue={this.state.setsSelected}
@@ -209,7 +213,7 @@ export class CardSearch extends React.Component<Props, State> {
     renderCards() {
         let items = []
         for (let card of this.state.cards) {
-            items.push(<CardCase card={card}></CardCase>)
+            items.push(<CardCase card={card} onDelete={() => {}}></CardCase>)
         }
         return items
     }

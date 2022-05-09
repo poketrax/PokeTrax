@@ -5,11 +5,12 @@ import { Expansions } from "./components/Expansions"
 import LinearProgress from '@mui/material/LinearProgress';
 import { Subject, timer } from 'rxjs'
 import { DbState, getDbState } from './controls/CardDB';
+import { Collections } from './components/Collections';
 
 class State {
     page: string = ""
     selectedSet: string = ""
-    dbState: DbState = new DbState
+    dbState: DbState = new DbState()
 }
 export interface AppControl {
     page: string
@@ -62,7 +63,7 @@ export class App extends React.Component<{}, State> {
                 content = (<Expansions></Expansions>)
                 break
             case 'collections':
-                content = <div>Collections</div>
+                content = <Collections></Collections>
                 break
             default: 
                 message = this.state.dbState.updated ? "Downloading New Data" : "Loading Data base"
@@ -82,7 +83,7 @@ export class App extends React.Component<{}, State> {
             <div>
                 <div className="w-full h-16 bg-gray-400 flex flex-row" >
                     <div className="h-16 flex-none flex flex-row">
-                        <img className="h-16 w-16 p-1 " src={"./assests/poketrax.png"} />
+                        <img className="h-16 w-16 p-1" src={"./assests/poketrax.png"} alt=""/>
                         <span className="font-sans text-3xl pt-3 pl-2">PokéTrax</span>
                         <span className="pl-6 grid grid-cols-3">
                             <button className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
