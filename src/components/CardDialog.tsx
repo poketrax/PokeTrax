@@ -54,7 +54,7 @@ export class CardDialog extends React.Component<Props, State> {
             )
     }
     private getLabels() {
-        if (this.state.prices.length != 0) {
+        if (this.state.prices.length !== 0) {
             let variant = this.state.prices[0].variant
             if (variant === this.state.prices[1].variant) {
                 return this.state.prices.map((price) => {
@@ -75,7 +75,7 @@ export class CardDialog extends React.Component<Props, State> {
     }
 
     private getDataSet() {
-        if (this.state.prices.length != 0) {
+        if (this.state.prices.length !== 0) {
             if (this.state.prices[0].variant === this.state.prices[1].variant) {
                 return [{
                     label: this.state.prices[0].variant,
