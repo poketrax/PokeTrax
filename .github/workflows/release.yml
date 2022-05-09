@@ -18,7 +18,18 @@ jobs:
           node-version: 16
       - run: npm install
       - run: npm run make
-      - name: Release
+      - name: Release-DMG
         uses: softprops/action-gh-release@v1
+        if: runner.os == 'macOS'
         with:
-          files: build
+          files: ./build/*.dmg
+      - name: Release-EXE
+        uses: softprops/action-gh-release@v1
+        if: runner.os == 'Windows'
+        with:
+          files: ./build/*.exe
+      - name: Release-Deb
+        uses: softprops/action-gh-release@v1
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          files: ./build/*.deb
