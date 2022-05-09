@@ -12,8 +12,6 @@ const PRICE_DB_FILE = "./sql/prices.sqlite3"
 const COLLECTION_DB_FILE = "./sql/collections.sqlite3"
 const Database = require('better-sqlite3')
 
-
-
 /* Print the working directory for the application to get date files */
 const pwd = () => {
     if (process.env.NODE_ENV === 'development') {
