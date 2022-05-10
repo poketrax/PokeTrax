@@ -50,11 +50,10 @@ export class CardCase extends React.Component<Props, State> {
     }
     render() {
         return (
-            <div className='flex justify-center'>
+            <div className='flex justify-center' id={`card-case-${this.props.card.name.replaceAll(" ","-")}`}>
                 <Paper
                     elevation={3}
-                    className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'
-                    onClick={() => this.setState({...this.state, cardDialogShow: true})}>
+                    className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
                     <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center '>
                         {getEnergy(this.props.card?.energyType ?? "")}
                         <span className='pl-2 text-lg truncate' >{this.props.card?.name}</span>
@@ -64,10 +63,7 @@ export class CardCase extends React.Component<Props, State> {
                         }
                     </div>
                     <div className="flex w-full items-center justify-center ">
-
-                        {
-                            this.getCollectionButtons()
-                        }
+                        {this.getCollectionButtons()}
                     </div>
                     <div style={{ position: 'relative' }}>
                         {this.imgSpinner()}
