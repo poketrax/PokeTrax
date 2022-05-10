@@ -50,28 +50,30 @@ export class CardCase extends React.Component<Props, State> {
     }
     render() {
         return (
-            <div className='flex justify-center' id={`card-case-${this.props.card.name.replaceAll(" ","-")}`}>
+            <div className='flex justify-center' >
                 <Paper
                     elevation={3}
                     className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
-                    <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center '>
+                    <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
                         {getEnergy(this.props.card?.energyType ?? "")}
-                        <span className='pl-2 text-lg truncate' >{this.props.card?.name}</span>
+                        <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
                         <div className='flex-grow'></div>
                         {
                             this.getCornerButton()
                         }
                     </div>
-                    <div className="flex w-full items-center justify-center ">
+                    <div id="collection-buttons" className="flex w-full items-center justify-center ">
                         {this.getCollectionButtons()}
                     </div>
                     <div style={{ position: 'relative' }}>
                         {this.imgSpinner()}
                         <div className="flex justify-center align-middle">
-                            <img className='w-64 h-[357px] rounded-xl'
+                            <img className='w-64 h-[357px] rounded-xl cursor-pointer'
+                                id={`card-img`}
                                 style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
                                 src={baseURL + "/cardImg/" + this.props.card?.cardId}
-                                alt=""
+                                alt={this.props.card.name}
+                                onClick={() => this.setState({ ...this.state, cardDialogShow: true })}
                                 onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                                 onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
                             />
@@ -99,24 +101,33 @@ export class CardCase extends React.Component<Props, State> {
                     <div className='flex justify-center items-center w-96 p-2 pr-4'>
                         <DialogTitle>Add {this.props.card.name}</DialogTitle>
                         <div className="flex-grow"></div>
-                        <IconButton className="w-8 h-8" size="large" onClick={() => this.setState({ ...this.state, addDialogShow: false })}>
+                        <IconButton
+                            id="close-card-add"
+                            className="w-8 h-8"
+                            size="large"
+                            onClick={() => this.setState({ ...this.state, addDialogShow: false })}>
                             <ClearIcon />
                         </IconButton>
                     </div>
                     <AddCardCollection card={this.props.card} close={() => this.setState({ ...this.state, addDialogShow: false })}></AddCardCollection>
                 </Dialog>
-                <Dialog 
+                <Dialog
+                    id="card-dialog"
                     maxWidth='xl'
-                    open={this.state.cardDialogShow} 
+                    open={this.state.cardDialogShow}
                     onClose={() => this.setState({ ...this.state, cardDialogShow: false })}>
                     <div className='flex justify-center items-center w-full p-2 pr-4'>
                         <DialogTitle className='flex items-center'>
                             {getEnergy(this.props.card?.energyType ?? "")}
                             <div className='w-2'></div>
-                             {this.props.card.name}
-                            </DialogTitle>
+                            {this.props.card.name}
+                        </DialogTitle>
                         <div className="flex-grow"></div>
-                        <IconButton className="w-8 h-8" size="large" onClick={() => this.setState({ ...this.state, cardDialogShow: false })}>
+                        <IconButton
+                            id="close-card-dialog"
+                            className="w-8 h-8"
+                            size="large"
+                            onClick={() => this.setState({ ...this.state, cardDialogShow: false })}>
                             <ClearIcon />
                         </IconButton>
                     </div>
@@ -145,7 +156,11 @@ export class CardCase extends React.Component<Props, State> {
     getCornerButton() {
         if (this.props.card.collection == null) {
             return (
-                <Fab aria-label="add" size="small" onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
+                <Fab 
+                    id="add-card-button"
+                    aria-label="add" 
+                    size="small" 
+                    onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
                     <AddIcon />
                 </Fab>)
         }
@@ -188,5 +203,5 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    
+
 }

@@ -108,7 +108,7 @@ export class CardDialog extends React.Component<Props, State> {
 
     render() {
         return (
-            <div className='flex'>
+            <div className='flex' id='card-dialog-root'>
                 <div className='p-4 pr-2'>
                     <img className='rounded-xl w-96'
                         style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
@@ -117,7 +117,6 @@ export class CardDialog extends React.Component<Props, State> {
                         onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                         onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
                     />
-
                     <div className=''> </div>
                 </div>
                 <div className='p-4 pl-2'>
@@ -130,23 +129,23 @@ export class CardDialog extends React.Component<Props, State> {
                             }}
                         />
                     </div>
-                    <div className="text-2xl" >Details</div>
+                    <div className="text-2xl">Details</div>
                     <table className='w-96 border-2'>
                         <tr className="bg-slate-200">
                             <td>Expansion</td>
-                            <td>{this.props.card.expName} - {this.props.card.expCardNumber}</td>
+                            <td id="td-expantion">{this.props.card.expName} - {this.props.card.expCardNumber}</td>
                         </tr>
                         <tr>
                             <td>Rarity</td>
-                            <td>{this.props.card.rarity}</td>
+                            <td id="td-rarity">{this.props.card.rarity}</td>
                         </tr>
                         <tr className="bg-slate-200">
                             <td>Card Type</td>
-                            <td>{this.props.card.cardType}</td>
+                            <td id="td-card-type">{this.props.card.cardType}</td>
                         </tr>
                         <tr>
                             <td>Energy Type</td>
-                            <td>{this.props.card.energyType}</td>
+                            <td id="td-energy">{this.props.card.energyType}</td>
                         </tr>
                     </table>
                 </div>

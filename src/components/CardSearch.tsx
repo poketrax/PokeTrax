@@ -182,6 +182,7 @@ export class CardSearch extends React.Component<Props, State> {
                         </ToggleButtonGroup>
                     </div>
                     <TablePagination
+                        id="card-search-pagination"
                         component="div"
                         count={this.state.count}
                         page={this.state.page}
