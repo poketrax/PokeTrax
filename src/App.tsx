@@ -69,11 +69,11 @@ export class App extends React.Component<{}, State> {
                 message = this.state.dbState.updated ? "Downloading New Data" : "Loading Data base"
                 content = (
                     <div className='absolute justify-items-center items-center w-full'>
-                        <LinearProgress ></LinearProgress>
+                        <LinearProgress id="app-loading-bar"></LinearProgress>
                         <div className='h-16'></div>
                         <div className='flex'>
                             <div className='grow'></div>
-                            <span className='text-2xl'>{message} ...</span>
+                            <span className='text-2xl' id="loading-message">{message} ...</span>
                             <div className='grow'></div>
                         </div>
                     </div>

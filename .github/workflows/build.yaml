@@ -2,11 +2,7 @@ name: test
 on: push
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
     env:
       GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
     steps:
@@ -15,4 +11,4 @@ jobs:
         with:
           node-version: 17
       - run: npm install
-      - run: npm run make
+      - run: npm test

@@ -67,6 +67,7 @@
     "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && export NODE_ENV=development && electron .",
     "build": "node scripts/build.js",
     "test": "export NODE_ENV=test && mocha",
+    "test-cypress": "",
     "make": "node scripts/build.js && electron-builder"
   },
   "eslintConfig": {
@@ -149,6 +150,7 @@
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-preset-react-app": "^10.0.1",
+    "cypress": "^9.6.1",
     "electron": "^17.4.0",
     "electron-builder": "^23.0.3",
     "electron-squirrel-startup": "^1.0.0",
