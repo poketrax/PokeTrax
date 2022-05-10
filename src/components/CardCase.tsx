@@ -4,9 +4,10 @@ import { baseURL } from '../index'
 import {
     getRarity,
     getTCGPprice,
-    deleteCardFromCollection
+    deleteCardFromCollection,
+    getEnergy
 } from '../controls/CardDB';
-import { CgPokemon } from "react-icons/cg"
+
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -23,6 +24,7 @@ import {
     Fab,
     ButtonGroup
 } from '@mui/material';
+import { CardDialog } from './CardDialog';
 
 interface Props {
     card: Card
@@ -33,6 +35,7 @@ class State {
     public prices = new Array<Price>()
     public imgLoaded = false
     public addDialogShow = false
+    public cardDialogShow = false
 }
 
 export class CardCase extends React.Component<Props, State> {
@@ -48,9 +51,12 @@ export class CardCase extends React.Component<Props, State> {
     render() {
         return (
             <div className='flex justify-center'>
-                <Paper elevation={3} className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
+                <Paper
+                    elevation={3}
+                    className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'
+                    onClick={() => this.setState({...this.state, cardDialogShow: true})}>
                     <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center '>
-                        {this.getEnergy(this.props.card?.energyType ?? "")}
+                        {getEnergy(this.props.card?.energyType ?? "")}
                         <span className='pl-2 text-lg truncate' >{this.props.card?.name}</span>
                         <div className='flex-grow'></div>
                         {
@@ -103,6 +109,23 @@ export class CardCase extends React.Component<Props, State> {
                     </div>
                     <AddCardCollection card={this.props.card} close={() => this.setState({ ...this.state, addDialogShow: false })}></AddCardCollection>
                 </Dialog>
+                <Dialog 
+                    maxWidth='xl'
+                    open={this.state.cardDialogShow} 
+                    onClose={() => this.setState({ ...this.state, cardDialogShow: false })}>
+                    <div className='flex justify-center items-center w-full p-2 pr-4'>
+                        <DialogTitle className='flex items-center'>
+                            {getEnergy(this.props.card?.energyType ?? "")}
+                            <div className='w-2'></div>
+                             {this.props.card.name}
+                            </DialogTitle>
+                        <div className="flex-grow"></div>
+                        <IconButton className="w-8 h-8" size="large" onClick={() => this.setState({ ...this.state, cardDialogShow: false })}>
+                            <ClearIcon />
+                        </IconButton>
+                    </div>
+                    <CardDialog card={this.props.card}></CardDialog>
+                </Dialog>
             </div>
         )
     }
@@ -111,7 +134,7 @@ export class CardCase extends React.Component<Props, State> {
         if (this.props.card.collection != null) {
             return (
                 <ButtonGroup className="w-full mb-2 ml-4 mr-4 bg-white" variant="outlined">
-                    <Button className="w-full" startIcon={<DeleteIcon />} onClick={(ev) => {this.deleteCard()}}>Delete</Button>
+                    <Button className="w-full" startIcon={<DeleteIcon />} onClick={(ev) => { this.deleteCard() }}>Delete</Button>
                     <Button className="w-full" startIcon={<EditIcon />}>Edit</Button>
                 </ButtonGroup>
             )
@@ -169,33 +192,5 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    private getEnergy(energyType: string) {
-        let _class = 'w-5 h-5 ml-2'
-        switch (energyType) {
-            case "Fire":
-                return (<img className={_class} alt="" src={`./assests/fire.png`}></img>)
-            case "Water":
-                return (<img className={_class} alt="" src={`./assests/water.png`}></img>)
-            case "Grass":
-                return (<img className={_class} alt="" src={`./assests/grass.png`}></img>)
-            case "Fighting":
-                return (<img className={_class} alt="" src={`./assests/fighting.png`}></img>)
-            case "Psychic":
-                return (<img className={_class} alt="" src={`./assests/Psychic.png`}></img>)
-            case "Lightning":
-                return (<img className={_class} alt="" src={`./assests/electric.png`}></img>)
-            case "Colorless":
-                return (<img className={_class} alt="" src={`./assests/colorless.png`}></img>)
-            case "Darkness":
-                return (<img className={_class} alt="" src={`./assests/dark.png`}></img>)
-            case "Metal":
-                return (<img className={_class} alt="" src={`./assests/steel.png`}></img>)
-            case "Dragon":
-                return (<img className={_class} alt="" src={`./assests/dragon.png`}></img>)
-            case "Fairy":
-                return (<img className={_class} alt="" src={`./assests/fairy.png`}></img>)
-            default:
-                return (<CgPokemon className={_class}></CgPokemon>)
-        }
-    }
+    
 }
