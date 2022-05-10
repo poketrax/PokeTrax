@@ -67,7 +67,7 @@
     "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && export NODE_ENV=development && electron .",
     "build": "node scripts/build.js",
     "test": "export NODE_ENV=test && mocha",
-    "test-cypress": "",
+    "test-cypress": "npx cypress open",
     "make": "node scripts/build.js && electron-builder"
   },
   "eslintConfig": {
