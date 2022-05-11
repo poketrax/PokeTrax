@@ -48,7 +48,6 @@ export class CardSearch extends React.Component<Props, State> {
     }
 
     private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
-        console.log(newPage)
         this.setSearch(newPage)
     };
 

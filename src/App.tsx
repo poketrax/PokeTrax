@@ -88,7 +88,7 @@ export class App extends React.Component<{}, State> {
                         <span className="pl-6 grid grid-cols-3">
                             <button className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
                             <button className='hover:text-blue-700' onClick={() => this.setPage("sets")}>Sets</button>
-                            <button className='hover:text-blue-700' onClick={() => this.setPage("collections")}>Collections</button>
+                            <button id="collection-page" className='hover:text-blue-700' onClick={() => this.setPage("collections")}>Collections</button>
                         </span>
                     </div>
                 </div>

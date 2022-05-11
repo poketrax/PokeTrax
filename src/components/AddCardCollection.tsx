@@ -184,6 +184,7 @@ export class AddCardCollection extends React.Component<Props, State> {
         return (
             <div className='w-96 p-8'>
                 <Autocomplete
+                    id="collection-input"
                     className='w-full'
                     options={this.state.displayCollections}
                     getOptionLabel={(option) => option}
@@ -209,6 +210,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                 />
                 <div className='h-4'></div>
                 <Autocomplete
+                    id="variant-select"
                     className='w-full'
                     options={this.variants}
                     getOptionLabel={(option) => option}
@@ -230,6 +232,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                 />
                 <div className='h-4'></div>
                 <TextField
+                    id="price-input"
                     className='w-full'
                     label="Price Paid (optional)"
                     value={this.state.price}
@@ -238,7 +241,6 @@ export class AddCardCollection extends React.Component<Props, State> {
                     }
                     }
                     name="numberformat"
-                    id="formatted-numberformat-input"
                     InputProps={{
                         inputComponent: this.PriceFormat as any,
                     }}
@@ -246,13 +248,13 @@ export class AddCardCollection extends React.Component<Props, State> {
                 />
                 <div className='h-4'></div>
                 <TextField
+                    id="count-input"
                     className='w-full'
                     label="Count"
                     error={this.state.countErr}
                     value={this.state.count}
                     onChange={(ev) => this.setState({...this.state, count : Number.parseFloat(ev.target.value)})}
                     name="numberformat"
-                    id="formatted-numberformat-input"
                     InputProps={{
                         inputComponent: this.CountFormat as any,
                     }}
@@ -260,12 +262,12 @@ export class AddCardCollection extends React.Component<Props, State> {
                 />
                 <div className='h-4'></div>
                 <div className="w-full pt-2 pb-2 flex items-center justify-center">
-                    <Button className="w-full" variant='contained' onClick={() => {this.addCard()}} startIcon={<AddIcon />}>Add</Button>
+                    <Button id="confirm-add-button" className="w-full" variant='contained' onClick={() => {this.addCard()}} startIcon={<AddIcon />}>Add</Button>
                 </div>
                 {
                     this.state.errorText !== "" && 
                     (
-                        <div>{this.state.errorText}</div>
+                        <div id="add-card-error">{this.state.errorText}</div>
                     )
                 }
             </div>

@@ -141,8 +141,15 @@ export class CardCase extends React.Component<Props, State> {
         if (this.props.card.collection != null) {
             return (
                 <ButtonGroup className="w-full mb-2 ml-4 mr-4 bg-white" variant="outlined">
-                    <Button className="w-full" startIcon={<DeleteIcon />} onClick={(ev) => { this.deleteCard() }}>Delete</Button>
-                    <Button className="w-full" startIcon={<EditIcon />}>Edit</Button>
+                    <Button
+                        id="card-case-delete-button"
+                        className="w-full"
+                        startIcon={<DeleteIcon />}
+                        onClick={(ev) => { this.deleteCard() }}>Delete</Button>
+                    <Button
+                        id="card-case-edit-button"
+                        className="w-full"
+                        startIcon={<EditIcon />}>Edit</Button>
                 </ButtonGroup>
             )
         }
@@ -156,10 +163,10 @@ export class CardCase extends React.Component<Props, State> {
     getCornerButton() {
         if (this.props.card.collection == null) {
             return (
-                <Fab 
+                <Fab
                     id="add-card-button"
-                    aria-label="add" 
-                    size="small" 
+                    aria-label="add"
+                    size="small"
                     onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
                     <AddIcon />
                 </Fab>)
