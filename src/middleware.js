@@ -366,7 +366,7 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
         let count = db.prepare(sqlCount).get()
         db.prepare(sqlAttach).run()
         let cards = db.prepare(sql).all()
-        res.send({ "count": count.count, "cards": cards })
+        res.send({ "total": count.count, "cards": cards })
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
