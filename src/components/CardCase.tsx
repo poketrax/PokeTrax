@@ -27,6 +27,7 @@ import {
 import { CardDialog } from './CardDialog';
 
 interface Props {
+    id?: string
     card: Card
     onDelete: () => void
 }
@@ -50,7 +51,7 @@ export class CardCase extends React.Component<Props, State> {
     }
     render() {
         return (
-            <div className='flex justify-center' >
+            <div id={`card-case${this.props.id}`} className='flex justify-center' >
                 <Paper
                     elevation={3}
                     className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
@@ -69,7 +70,7 @@ export class CardCase extends React.Component<Props, State> {
                         {this.imgSpinner()}
                         <div className="flex justify-center align-middle">
                             <img className='w-64 h-[357px] rounded-xl cursor-pointer'
-                                id={`card-img`}
+                                id={`card-img${this.props.id}`}
                                 style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
                                 src={baseURL + "/cardImg/" + this.props.card?.cardId}
                                 alt={this.props.card.name}
@@ -164,7 +165,7 @@ export class CardCase extends React.Component<Props, State> {
         if (this.props.card.collection == null) {
             return (
                 <Fab
-                    id="add-card-button"
+                    id={`add-card-button${this.props.id}`}
                     aria-label="add"
                     size="small"
                     onClick={() => this.setState({ ...this.state, addDialogShow: true })}>

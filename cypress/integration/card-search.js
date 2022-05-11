@@ -51,18 +51,18 @@ describe('Card Serach tests', () => {
         cy.get('#expantions-sel').click();
         cy.get('#option-Brilliant-Stars').click();
         cy.get('#card-test-search-bar').type('Ultra Ball').type("{enter}");
-        cy.get("#add-card-button")
+        cy.get("#add-card-button0")
         cy.get('#rarities-sel').click();
         cy.get('#option-Ultra-Rare').click();
         cy.get('#card-grid').children().should('have.length', 1)
-        cy.get('#card-img').click()
+        cy.get('#card-img0').click()
         cy.get('#td-expantion').should('have.text', 'Brilliant Stars - 186')
         cy.get('#td-rarity').should('have.text', 'Ultra Rare')
         cy.get('#td-card-type').should('have.text', 'Item')
     })
 
     it('Test Close button', () => {
-        cy.get('#card-img').click()
+        cy.get('#card-img0').click()
         cy.get('#close-card-dialog').click()
         cy.get('#card-dialog').should('not.exist');
     })

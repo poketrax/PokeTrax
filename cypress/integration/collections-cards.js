@@ -1,3 +1,4 @@
+
 describe('Collection Meta Tests', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/')
@@ -9,7 +10,7 @@ describe('Collection Meta Tests', () => {
         cy.get('#option-Brilliant-Stars').click();
         cy.get('#sort-set-number').click();
         //click add card
-        cy.get('#add-card-button').first().click();
+        cy.get('#add-card-button0').click();
         cy.get('#collection-input').click().type('TEST1');
         cy.get('#price-input').click().type('1')
         cy.get('#confirm-add-button').click();
@@ -22,13 +23,13 @@ describe('Collection Meta Tests', () => {
         cy.get('#delete-confirm-button').click();
     })
 
-    it('Test one card', () => {
+    it('Test one regular card', () => {
         //search for know card
         cy.get('#expantions-sel').click();
         cy.get('#option-Brilliant-Stars').click();
         cy.get('#sort-set-number').click();
         //click add card
-        cy.get('#add-card-button').first().click();
+        cy.get('#add-card-button0').click();
         cy.get('#collection-input').click().type('TEST1');
         cy.get('#price-input').click().type('1')
         cy.get('#confirm-add-button').click();
@@ -36,7 +37,36 @@ describe('Collection Meta Tests', () => {
         cy.get('#collection-page').click();
         //look for card
         cy.contains("VSTAR Token")
-        cy.contains("1-1 of 1")
+        cy.contains("1–1 of 1")
+        //clean up
+        cy.get('#delete-collection-button').click();
+        cy.get('#delete-confirm-button').click();
+    })
+    
+    it('Test pagination', () => {
+        //search for know card
+        cy.get('#expantions-sel').click();
+        cy.get('#option-Brilliant-Stars').click();
+        cy.get('#sort-set-number').click();
+        //click add card
+        for (let i = 0; i < 25; i++) {
+            cy.get(`#add-card-button${i}`).click();
+            cy.get('#collection-input').click().type('TEST1');
+            cy.get('#price-input').click().type('1')
+            cy.get('#confirm-add-button').click();
+        }
+        cy.get('[data-testid=KeyboardArrowRightIcon]').first().click();
+        cy.get(`#add-card-button0`).click();
+        cy.get('#collection-input').click().type('TEST1');
+        cy.get('#price-input').click().type('1')
+        cy.get('#confirm-add-button').click();
+        //goto collections
+        cy.get('#collection-page').click();
+        //look for card
+        cy.contains("VSTAR Token")
+        cy.contains("1–25 of 26")
+        cy.get('[data-testid=KeyboardArrowRightIcon]').first().click();
+        cy.contains("Monferno")
         //clean up
         cy.get('#delete-collection-button').click();
         cy.get('#delete-confirm-button').click();
