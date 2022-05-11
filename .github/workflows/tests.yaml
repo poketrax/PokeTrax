@@ -1,0 +1,30 @@
+name: test
+on: push
+jobs:
+  rest-test:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 17
+      - run: npm install
+      - run: npm test
+  cypress-test:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: setup
+        uses: actions/setup-node@v1
+        with:
+          node-version: 17
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm start
+          start-electron: npm run start-electron
