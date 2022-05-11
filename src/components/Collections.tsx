@@ -188,7 +188,7 @@ export class Collections extends React.Component<{}, State> {
             this._getCollections()
         }
 
-        getCollectionCards(collection, this.state.searchValue, this.state.page)
+        getCollectionCards(collection, this.state.searchValue, page)
             .then(
                 (search) => {
                     this.setState(
@@ -197,7 +197,7 @@ export class Collections extends React.Component<{}, State> {
                             total: search.total,
                             collectionCards: search.cards,
                             collection: collection,
-                            page: page ?? this.state.page
+                            page: page
                         }
                     )
                     console.log(search.total)
@@ -219,15 +219,17 @@ export class Collections extends React.Component<{}, State> {
         this._getCollections()
     }
 
-    private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
+    private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
         this.setCollection(this.state.collection, newPage)
     };
 
     renderCards() {
         let items = []
-        for (let card of this.state.collectionCards) {
+        for (let i = 0; i < this.state.collectionCards.length; i++) {
+            let card = this.state.collectionCards[i]
             items.push(
                 <CardCase
+                    id={`card-case-${i}`} 
                     card={card}
                     onDelete={() => {
                         this.setCollection(this.state.collection, this.state.page)
