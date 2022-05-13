@@ -86,8 +86,8 @@ export class App extends React.Component<{}, State> {
                         <img className="h-16 w-16 p-1" src={"./assests/poketrax.png"} alt=""/>
                         <span className="font-sans text-3xl pt-3 pl-2">PokéTrax</span>
                         <span className="pl-6 grid grid-cols-3">
-                            <button className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
-                            <button className='hover:text-blue-700' onClick={() => this.setPage("sets")}>Sets</button>
+                            <button id="cards-page" className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
+                            <button id="sets-page" className='hover:text-blue-700' onClick={() => this.setPage("sets")}>Sets</button>
                             <button id="collection-page" className='hover:text-blue-700' onClick={() => this.setPage("collections")}>Collections</button>
                         </span>
                     </div>

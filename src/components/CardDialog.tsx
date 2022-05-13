@@ -1,32 +1,19 @@
 import React from 'react';
 import { baseURL } from '../index'
 import { Card, Price } from '../model/Card'
-import { Line } from 'react-chartjs-2'
-import { getTCGPprices } from "../controls/CardDB"
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-);
+    VictoryChart,
+    VictoryLine,
+    VictoryScatter,
+    VictoryTheme,
+    VictoryTooltip,
+    VictoryZoomContainer
+} from 'victory'
+import { getTCGPprices, getVariants } from "../controls/CardDB"
 interface Props {
     card: Card
+    price?: string | JSX.Element
 }
-
 class State {
     public inProg = false
     public imgLoaded = false
@@ -53,57 +40,39 @@ export class CardDialog extends React.Component<Props, State> {
                 }
             )
     }
-    private getLabels() {
+
+    private getLine(variant: string, color: string) : JSX.Element[] {
+        let items = new Array<JSX.Element>()
         if (this.state.prices.length !== 0) {
-            let variant = this.state.prices[0].variant
-            if (variant === this.state.prices[1].variant) {
-                return this.state.prices.map((price) => {
-                    let date = new Date(price.date)
-                    return `${date.getMonth()}/${date.getDate()}`
-                })
-            } else {
-                return this.state.prices
-                    .filter((price) => price.variant === variant)
-                    .map((price) => {
-                        let date = new Date(price.date)
-                        return `${date.getMonth()}/${date.getDate()}`
-                    })
-            }
-        } else {
-            return []
+            let data = this.state.prices
+                .filter((val) => val.variant === variant)
+                .map((value) => { return { x: new Date(value.date), y: value.price, label: `${variant}: $${value.price.toFixed(2)}` } })
+            items.push(
+                <VictoryLine
+                    style={{ 
+                        data: { stroke: color },
+                        parent: { border: "1px solid #ccc" }
+                    }}
+                    interpolation="natural"
+                    data={data}
+                    labelComponent={<VictoryTooltip/>}
+                />
+            )
+            items.push(
+                <VictoryScatter data={data} labelComponent={<VictoryTooltip/>}/>
+            )
         }
+        return items
     }
 
-    private getDataSet() {
-        if (this.state.prices.length !== 0) {
-            if (this.state.prices[0].variant === this.state.prices[1].variant) {
-                return [{
-                    label: this.state.prices[0].variant,
-                    data: this.state.prices.map((price) => price.price),
-                    borderColor: 'rgb(255, 0, 0)',
-                    backgroundColor: 'rgb(255, 0, 0)',
-                }]
-            } else {
-                return [
-                    this.getSubDataSet(0, 'rgb(255, 0, 0)'),
-                    this.getSubDataSet(1, 'rgb(0, 0, 255)')
-                ]
-            }
-        } else {
-            return []
+    private getLines() {
+        let colors = ["#ff0000", "#0000ff", "#00ff00"]
+        let variants = getVariants(this.props.card)
+        let items = []
+        for (let i = 0; i < variants.length; i++) {
+            items.push(this.getLine(variants[i], colors[i]))
         }
-    }
-
-    private getSubDataSet(set: number, color: string) {
-        let variant = this.state.prices[set].variant
-        return {
-            label: variant,
-            data: this.state.prices
-                .filter((price) => price.variant === variant)
-                .map((price) => price.price),
-            borderColor: color,
-            backgroundColor: color,
-        }
+        return items
     }
 
     private getTableRows() {
@@ -120,7 +89,7 @@ export class CardDialog extends React.Component<Props, State> {
             )
             bg = !bg
         }
-        if(this.props.card.variant != null &&
+        if (this.props.card.variant != null &&
             this.props.card.variant !== "") {
             items.push(
                 <tr className={`${bg ? 'bg-slate-200' : ''}`}>
@@ -130,7 +99,7 @@ export class CardDialog extends React.Component<Props, State> {
             )
             bg = !bg
         }
-        if(this.props.card.paid != null &&
+        if (this.props.card.paid != null &&
             this.props.card.paid !== 0) {
             items.push(
                 <tr className={`${bg ? 'bg-slate-200' : ''}`}>
@@ -140,7 +109,7 @@ export class CardDialog extends React.Component<Props, State> {
             )
             bg = !bg
         }
-        if(this.props.card.grade != null &&
+        if (this.props.card.grade != null &&
             this.props.card.grade !== '') {
             items.push(
                 <tr className={`${bg ? 'bg-slate-200' : ''}`}>
@@ -166,18 +135,25 @@ export class CardDialog extends React.Component<Props, State> {
                     />
                     <div className=''> </div>
                 </div>
-                <div className='p-4 pl-2'>
-                    <div className="text-2xl" >Prices</div>
-                    <div className='w-96'>
-                        <Line
-                            data={{
-                                labels: this.getLabels(),
-                                datasets: this.getDataSet(),
-                            }}
-                        />
+                <div className='w-[42rem] p-4 pl-2'>
+                    <div className="flex w-full justify-center items-center">
+                        <div className="text-2xl" >Prices</div>
+                        <div className="flex-grow"></div>
+                        <div>Market Price: {this.props.price}</div>
+                    </div>
+                    <div className='h-80'>
+                        <VictoryChart
+                            domainPadding={{ y: 3 }}
+                            containerComponent={
+                                <VictoryZoomContainer/>
+                              }
+                            width={700}
+                            theme={VictoryTheme.material}>
+                            {this.getLines()}
+                        </VictoryChart>
                     </div>
                     <div className="text-2xl">Details</div>
-                    <table className='w-96 border-2'>
+                    <table className='w-full border-2'>
                         <tr className="bg-slate-200">
                             <td>Expansion</td>
                             <td id="td-expantion">{this.props.card.expName} - {this.props.card.expCardNumber}</td>

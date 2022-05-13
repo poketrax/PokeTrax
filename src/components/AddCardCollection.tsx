@@ -3,8 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import NumberFormat from 'react-number-format';
 import { TextField, Autocomplete, Button } from '@mui/material'
 import { Card, Price } from '../model/Card'
-import { getCollections, addCardToCollection, addCollection } from "../controls/CardDB"
-import { cp } from 'original-fs';
+import { getCollections, addCardToCollection, addCollection, getVariants} from "../controls/CardDB"
 
 interface Props {
     card: Card
@@ -31,28 +30,9 @@ export class AddCardCollection extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        if (this.old_sets.indexOf(props.card.expName) === -1) {
-            this.variants = this.new_variants
-            this.selectedVariant = "Normal"
-            if (props.card.rarity === "Holo Rare") {
-                this.selectedVariant = "Holofoil"
-                this.variants.shift()
-            } else if (props.card.rarity === "Common" ||
-                props.card.rarity === "Uncommon" ||
-                props.card.rarity === "Rare"
-            ) {
-                this.variants.pop()
-            } else if (props.card.rarity === "Ultra Rare" ||
-                props.card.rarity === "Secret Rare"
-            ) {
-                this.selectedVariant = "Holofoil"
-                this.variants.shift()
-                this.variants.shift()
-            }
-        } else {
-            this.variants = this.old_variants
-            this.selectedVariant = "Unlimited"
-        }
+        this.variants = getVariants(this.props.card)
+        console.log(getVariants(this.props.card))
+        this.selectedVariant = this.variants[0]
         getCollections().then(
             (value) => {
                 this.setState({ ...this.state,
@@ -66,33 +46,6 @@ export class AddCardCollection extends React.Component<Props, State> {
     private selectedVariant: string = ""
     private selectedColl: string = ""
 
-    private new_variants =
-        [
-            "Normal",
-            "Reverse Holofoil",
-            "Holofoil"
-        ]
-
-    private old_sets =
-        [
-            "Base Set",
-            "Jungle",
-            "Fossil",
-            "Team Rocket",
-            "Gym Heroes",
-            "Gym Challenge",
-            "Neo Genesis",
-            "Neo Discovery",
-            "Southern Islands",
-            "Neo Revelation",
-            "Neo Destiny"
-        ]
-
-    private old_variants =
-        [
-            "1st Edition",
-            "Unlimited"
-        ]
 
     private PriceFormat = React.forwardRef<NumberFormat<string>, FormatProps>(
         function NumberFormatCustom(props, ref) {

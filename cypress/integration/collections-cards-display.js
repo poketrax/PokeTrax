@@ -2,13 +2,12 @@
 describe('Collection Card Tests display', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/')
-    })
-
-    it('Test add collection from Card', () => {
-        //search for know card
         cy.get('#expantions-sel').click();
         cy.get('#option-Brilliant-Stars').click();
         cy.get('#sort-set-number').click();
+    })
+
+    it('Test add collection from Card', () => {
         //click add card
         cy.get('#add-card-button0').click();
         cy.get('#collection-input').click().type('TEST1');
@@ -24,10 +23,6 @@ describe('Collection Card Tests display', () => {
     })
 
     it('Test one regular card', () => {
-        //search for know card
-        cy.get('#expantions-sel').click();
-        cy.get('#option-Brilliant-Stars').click();
-        cy.get('#sort-set-number').click();
         //click add card
         cy.get('#add-card-button0').click();
         cy.get('#collection-input').click().type('TEST1');
@@ -44,10 +39,6 @@ describe('Collection Card Tests display', () => {
     })
 
     it('Test add failure conditions', () => {
-        //search for know card
-        cy.get('#expantions-sel').click();
-        cy.get('#option-Brilliant-Stars').click();
-        cy.get('#sort-set-number').click();
         //click add card
         cy.get('#add-card-button0').click();
         // test no collection
@@ -64,14 +55,6 @@ describe('Collection Card Tests display', () => {
     })
 
     it('Test variants card', () => {
-        //search for know card
-        cy.get('#expantions-sel').click();
-        cy.get('#option-Brilliant-Stars').click();
-        cy.get('#sort-set-number').click();
-        //add normal card
-        cy.get('#add-card-button1').click();
-        cy.get('#collection-input').click().type('TEST1');
-        cy.get('#confirm-add-button').click();
         //add rev holo card
         cy.get('#add-card-button1').click();
         cy.get('#collection-input').click().type('TEST1')
@@ -90,11 +73,29 @@ describe('Collection Card Tests display', () => {
         cy.get('#delete-confirm-button').click();
     })
 
+    it('Test count logic', () => {
+        //click add card
+        cy.get('#add-card-button1').click();
+        cy.get('#collection-input').click().type('TEST1');
+        cy.get('#price-input').click().type('1')
+        cy.get('#confirm-add-button').click();
+        //goto collections
+        cy.get('#collection-page').click();
+        //make sure minus is disabled
+        cy.get('#card-case-sub-count').should('be.disabled')
+        //increment count
+        cy.get('#card-case-add-count').click()
+        cy.contains("Count: 2")
+        cy.get("#cards-page").click()
+        cy.get('#collection-page').click();
+        cy.contains("Count: 2")
+        cy.get('#card-case-sub-count').click()
+        cy.contains("Count: 1")
+        cy.get('#delete-collection-button').click();
+        cy.get('#delete-confirm-button').click();
+    })
+
     it('Test delete card', () => {
-        //search for know card
-        cy.get('#expantions-sel').click();
-        cy.get('#option-Brilliant-Stars').click();
-        cy.get('#sort-set-number').click();
         //add normal card
         cy.get('#add-card-button1').click();
         cy.get('#collection-input').click().type('TEST1');
@@ -110,10 +111,6 @@ describe('Collection Card Tests display', () => {
     })
 
     it('Test pagination', () => {
-        //search for know card
-        cy.get('#expantions-sel').click();
-        cy.get('#option-Brilliant-Stars').click();
-        cy.get('#sort-set-number').click();
         //click add card
         for (let i = 0; i < 25; i++) {
             cy.get(`#add-card-button${i}`).click();

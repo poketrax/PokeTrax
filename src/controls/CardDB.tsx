@@ -228,6 +228,59 @@ export const rarities = [
     "Amazing Rare"
 ]
 
+
+const new_variants =
+[
+    "Normal",
+    "Reverse Holofoil",
+    "Holofoil"
+]
+
+const old_sets =
+[
+    "Base Set",
+    "Jungle",
+    "Fossil",
+    "Team Rocket",
+    "Gym Heroes",
+    "Gym Challenge",
+    "Neo Genesis",
+    "Neo Discovery",
+    "Southern Islands",
+    "Neo Revelation",
+    "Neo Destiny"
+]
+
+const old_variants =
+[
+    "1st Edition",
+    "Unlimited"
+]
+
+export function getVariants(card: Card) : string[]{
+    let variants = []
+    if(old_sets.indexOf(card.expName) === -1) {
+        variants = JSON.parse(JSON.stringify(new_variants))
+        console.log(`start: ${JSON.stringify(variants)}`)
+        if (card.rarity === "Holo Rare") {
+            variants.shift()
+        } else if (card.rarity === "Common" ||
+            card.rarity === "Uncommon" ||
+            card.rarity === "Rare"
+        ) {
+            variants.pop()
+        } else if (card.rarity === "Ultra Rare" ||
+            card.rarity === "Secret Rare"
+        ) {
+            variants.shift()
+            variants.shift()
+        }
+    } else {
+        variants = JSON.parse(JSON.stringify(old_variants)) 
+    }
+    return variants
+}
+
 export function getRarity(rarity: string) {
     switch (rarity) {
         case "Rare":

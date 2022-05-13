@@ -5,11 +5,12 @@ import {
     getRarity,
     getTCGPprice,
     deleteCardFromCollection,
-    getEnergy
+    getEnergy,
+    addCardToCollection
 } from '../controls/CardDB';
 
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
 import { AddCardCollection } from './AddCardCollection';
@@ -37,12 +38,17 @@ class State {
     public imgLoaded = false
     public addDialogShow = false
     public cardDialogShow = false
+    public count
+
+    constructor(count: number) {
+        this.count = count
+    }
 }
 
 export class CardCase extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
-        this.state = new State()
+        this.state = new State(props.card.count ?? 0)
         getTCGPprice(props.card).then(
             (value) => {
                 this.setState({ ...this.state, prices: value })
@@ -57,7 +63,14 @@ export class CardCase extends React.Component<Props, State> {
                     className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
                     {this.getTitle()}
                     <div id="collection-buttons" className="flex w-full items-center justify-center ">
-                        {this.getCollectionButtons()}
+                        {
+                            this.props.card.collection != null &&
+                            CollectionButtons(
+                                this.state.count,
+                                () => { this.deleteCard() },
+                                (add) => this.updateCount(add)
+                            )
+                        }
                     </div>
                     <div style={{ position: 'relative' }}>
                         {this.imgSpinner()}
@@ -125,7 +138,7 @@ export class CardCase extends React.Component<Props, State> {
                             <ClearIcon />
                         </IconButton>
                     </div>
-                    <CardDialog card={this.props.card}></CardDialog>
+                    <CardDialog card={this.props.card} price={this.getPrice()}></CardDialog>
                 </Dialog>
             </div>
         )
@@ -230,30 +243,17 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    getCollectionButtons() {
-        if (this.props.card.collection != null) {
-            return (
-                <ButtonGroup className="w-full mb-2 ml-4 mr-4 bg-white" variant="outlined">
-                    <div className="flex justify-center items-center w-full border-2 rounded-md mr-2"
-                        id="count display"
-                    >
-                        <span>Count: {this.props.card.count}</span>
-                    </div>
-                    <Button
-                        id="card-case-edit-button"
-                        className="w-4"
-                    >+</Button>
-                    <Button
-                        id="card-case-edit-button"
-                        className="w-4"
-                    >-</Button>
-                    <Button
-                        id="card-case-delete-button"
-                        className="w-4"
-                        onClick={(ev) => { this.deleteCard() }}>
-                        <DeleteIcon color="error" />
-                    </Button>
-                </ButtonGroup>
+    updateCount(add: boolean) {
+        let card: Card = JSON.parse(JSON.stringify(this.props.card))
+        if (this.state.count != null) {
+            if (add)
+                card.count = this.state.count + 1
+            else
+                card.count = this.state.count - 1
+            addCardToCollection(card).then(
+                (_) => {
+                    this.setState({ ...this.state, count: card.count ?? 0 })
+                }
             )
         }
     }
@@ -290,7 +290,7 @@ export class CardCase extends React.Component<Props, State> {
 
     componentWillReceiveProps(props: Props) {
         if (props.card.cardId !== this.props.card.cardId) {
-            this.setState(new State())
+            this.setState(new State(props.card.count ?? 0))
             getTCGPprice(props.card).then(
                 (data) => {
                     this.setState({ ...this.state, prices: data })
@@ -312,6 +312,35 @@ export class CardCase extends React.Component<Props, State> {
             return (<CircularProgress size="1rem" />)
         }
     }
+}
 
-
+export function CollectionButtons(count: number, onDelete: () => void, onUpdate: (add: boolean) => void) {
+    return (
+        <div className="flex justify-center items-top w-full mb-2 ml-4 mr-4 ">
+            <div className="flex justify-center items-center w-full h-9 border-2 rounded-md mr-2">
+                <span id="count-display">Count: {count}</span>
+            </div>
+            <ButtonGroup className="w-full bg-white" variant="outlined">
+                <Button
+                    id="card-case-add-count"
+                    className="w-4"
+                    onClick={() => onUpdate(true)}>
+                    <AddIcon />
+                </Button>
+                <Button
+                    id="card-case-sub-count"
+                    className="w-4"
+                    onClick={() => onUpdate(false)}
+                    disabled={count === 1 ? true : false}>
+                    <RemoveIcon />
+                </Button>
+                <Button
+                    id="card-case-delete-button"
+                    className="w-4"
+                    onClick={(ev) => { onDelete() }}>
+                    <DeleteIcon color="error" />
+                </Button>
+            </ButtonGroup>
+        </div>
+    )
 }

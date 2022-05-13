@@ -149,7 +149,7 @@ function getTcgpPrice(card) {
                                 (id, date, cardId, variant, vendor, price) 
                                 VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
                             db.prepare(sql).run({
-                                "id": hash(price),
+                                "id": hash(date+card.cardId+variant.variant+"tcgp"),
                                 "date": price.date,
                                 "cardId": price.cardId,
                                 "variant": price.variant,
