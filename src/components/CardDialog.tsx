@@ -106,6 +106,53 @@ export class CardDialog extends React.Component<Props, State> {
         }
     }
 
+    private getTableRows() {
+        let items = []
+        let bg = false // used to create interlaced pattern 
+
+        if (this.props.card.energyType != null &&
+            this.props.card.energyType !== "") {
+            items.push(
+                <tr className={`${bg ? 'bg-slate-200' : ''}`}>
+                    <td>Energy Type</td>
+                    <td id="td-energy">{this.props.card.energyType}</td>
+                </tr>
+            )
+            bg = !bg
+        }
+        if(this.props.card.variant != null &&
+            this.props.card.variant !== "") {
+            items.push(
+                <tr className={`${bg ? 'bg-slate-200' : ''}`}>
+                    <td>Variant</td>
+                    <td id="td-variant">{this.props.card.variant}</td>
+                </tr>
+            )
+            bg = !bg
+        }
+        if(this.props.card.paid != null &&
+            this.props.card.paid !== 0) {
+            items.push(
+                <tr className={`${bg ? 'bg-slate-200' : ''}`}>
+                    <td>Price Paid</td>
+                    <td id="td-paid">{this.props.card.paid}</td>
+                </tr>
+            )
+            bg = !bg
+        }
+        if(this.props.card.grade != null &&
+            this.props.card.grade !== '') {
+            items.push(
+                <tr className={`${bg ? 'bg-slate-200' : ''}`}>
+                    <td>Grade</td>
+                    <td id="td-paid">{this.props.card.grade}</td>
+                </tr>
+            )
+            bg = !bg
+        }
+        return items
+    }
+
     render() {
         return (
             <div className='flex' id='card-dialog-root'>
@@ -143,10 +190,7 @@ export class CardDialog extends React.Component<Props, State> {
                             <td>Card Type</td>
                             <td id="td-card-type">{this.props.card.cardType}</td>
                         </tr>
-                        <tr>
-                            <td>Energy Type</td>
-                            <td id="td-energy">{this.props.card.energyType}</td>
-                        </tr>
+                        {this.getTableRows()}
                     </table>
                 </div>
             </div>

@@ -140,7 +140,7 @@ export class CardCase extends React.Component<Props, State> {
                         {getEnergy(this.props.card?.energyType ?? "")}
                     </div>
                     <div className='absolute w-64 h-16 rounded-md flex items-center '
-                        >
+                    >
                         {getEnergy(this.props.card?.energyType ?? "")}
                         <div className='pl-2 text-lg truncate' id="card-case-title">
                             <span>{this.props.card?.name}</span></div>
@@ -149,11 +149,12 @@ export class CardCase extends React.Component<Props, State> {
                     </div>
                 </div>
             )
-        }else if(this.props.card.variant === 'Holofoil'){
+        } else if (this.props.card.variant === 'Holofoil') {
             return (
                 <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
                     <div className='absolute w-64 h-16 rounded-md flex items-center opacity-25'
-                        style={{background: `linear-gradient(
+                        style={{
+                            background: `linear-gradient(
                             90deg,
                             rgba(255, 0, 0, 1) 0%,
                             rgba(255, 154, 0, 1) 10%,
@@ -166,10 +167,10 @@ export class CardCase extends React.Component<Props, State> {
                             rgba(186, 12, 248, 1) 80%,
                             rgba(251, 7, 217, 1) 90%,
                             rgba(255, 0, 0, 1) 100%` }}
-                      >
+                    >
                     </div>
                     <div className='absolute w-64 h-16 rounded-md flex items-center '
-                        >
+                    >
                         {getEnergy(this.props.card?.energyType ?? "")}
                         <div className='pl-2 text-lg truncate' id="card-case-title">
                             <span>{this.props.card?.name}</span></div>
@@ -178,17 +179,17 @@ export class CardCase extends React.Component<Props, State> {
                     </div>
                 </div>
             )
-        }else if(this.props.card.variant === "1st Edition"){
+        } else if (this.props.card.variant === "1st Edition") {
             return (
                 <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
                     {getEnergy(this.props.card?.energyType ?? "")}
                     <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
                     <div className='flex-grow'></div>
-                    <img className="w-8" src='assests/1st-edition.png'/>
+                    <img className="w-8" src='assests/1st-edition.png' />
                     {this.getCornerButton()}
                 </div>
             )
-        } else{
+        } else {
             return (
                 <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
                     {getEnergy(this.props.card?.energyType ?? "")}
@@ -201,7 +202,7 @@ export class CardCase extends React.Component<Props, State> {
     }
 
     getVariantBG() {
-        switch(this.props.card.energyType){
+        switch (this.props.card.energyType) {
             case 'Grass':
                 return `url("assests/grass-rev.png")`
             case 'Fire':
@@ -233,15 +234,25 @@ export class CardCase extends React.Component<Props, State> {
         if (this.props.card.collection != null) {
             return (
                 <ButtonGroup className="w-full mb-2 ml-4 mr-4 bg-white" variant="outlined">
-                    <Button
-                        id="card-case-delete-button"
-                        className="w-full"
-                        startIcon={<DeleteIcon />}
-                        onClick={(ev) => { this.deleteCard() }}>Delete</Button>
+                    <div className="flex justify-center items-center w-full border-2 rounded-md mr-2"
+                        id="count display"
+                    >
+                        <span>Count: {this.props.card.count}</span>
+                    </div>
                     <Button
                         id="card-case-edit-button"
-                        className="w-full"
-                        startIcon={<EditIcon />}>Edit</Button>
+                        className="w-4"
+                    >+</Button>
+                    <Button
+                        id="card-case-edit-button"
+                        className="w-4"
+                    >-</Button>
+                    <Button
+                        id="card-case-delete-button"
+                        className="w-4"
+                        onClick={(ev) => { this.deleteCard() }}>
+                        <DeleteIcon color="error" />
+                    </Button>
                 </ButtonGroup>
             )
         }
