@@ -200,8 +200,6 @@ export class Collections extends React.Component<{}, State> {
                             page: page
                         }
                     )
-                    console.log(search.total)
-                    console.log(JSON.stringify(this.state))
                 }
             )
     }

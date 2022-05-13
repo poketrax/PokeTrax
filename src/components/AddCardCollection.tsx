@@ -4,6 +4,7 @@ import NumberFormat from 'react-number-format';
 import { TextField, Autocomplete, Button } from '@mui/material'
 import { Card, Price } from '../model/Card'
 import { getCollections, addCardToCollection, addCollection } from "../controls/CardDB"
+import { cp } from 'original-fs';
 
 interface Props {
     card: Card
@@ -143,23 +144,27 @@ export class AddCardCollection extends React.Component<Props, State> {
     );
 
     private addCard(){
-        this.setState({...this.state, errorText: "Collection must be set", collErr: false, countErr: false})
         let err = ""
         let collError = false
         let countError = false
+
+        console.log(`count ${this.state.count}`)
         if(this.selectedColl === ""){
-            err = "Collection must be set, "
+            err = "Collection must be set "
             collError = true
         }
         if(isNaN(this.state.count)){
-            err +="Count must be set"
+            err +="Count must be set "
             countError = true
         }
         if(this.state.count === 0){
             err +="Count must be greater than 0"
             countError = true
         }
-        this.setState({...this.state, errorText: err, collErr: collError, countErr: countError})
+        if(collError === true || countError === true ){
+            this.setState({...this.state, errorText: err, collErr: collError, countErr: countError})
+            return 
+        }
         let add = JSON.parse(JSON.stringify(this.props.card)) //deep copy
         add.collection = this.selectedColl
         add.count = this.state.count
@@ -218,7 +223,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                     disableCloseOnSelect
                     onChange={
                         (_, value) => {
-                            console.log(value)
+                            this.selectedVariant = value ?? this.selectedVariant
                         }
                     }
                     renderInput={(params) => (

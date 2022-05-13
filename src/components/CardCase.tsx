@@ -55,14 +55,7 @@ export class CardCase extends React.Component<Props, State> {
                 <Paper
                     elevation={3}
                     className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
-                    <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
-                        {getEnergy(this.props.card?.energyType ?? "")}
-                        <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
-                        <div className='flex-grow'></div>
-                        {
-                            this.getCornerButton()
-                        }
-                    </div>
+                    {this.getTitle()}
                     <div id="collection-buttons" className="flex w-full items-center justify-center ">
                         {this.getCollectionButtons()}
                     </div>
@@ -136,6 +129,104 @@ export class CardCase extends React.Component<Props, State> {
                 </Dialog>
             </div>
         )
+    }
+
+    getTitle() {
+        if (this.props.card.variant === 'Reverse Holofoil') {
+            return (
+                <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
+                    <div className='absolute w-64 h-16 rounded-md flex items-center opacity-50'
+                        style={{ backgroundImage: `${this.getVariantBG()}` }}>
+                        {getEnergy(this.props.card?.energyType ?? "")}
+                    </div>
+                    <div className='absolute w-64 h-16 rounded-md flex items-center '
+                        >
+                        {getEnergy(this.props.card?.energyType ?? "")}
+                        <div className='pl-2 text-lg truncate' id="card-case-title">
+                            <span>{this.props.card?.name}</span></div>
+                        <div className='flex-grow'></div>
+                        {this.getCornerButton()}
+                    </div>
+                </div>
+            )
+        }else if(this.props.card.variant === 'Holofoil'){
+            return (
+                <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
+                    <div className='absolute w-64 h-16 rounded-md flex items-center opacity-25'
+                        style={{background: `linear-gradient(
+                            90deg,
+                            rgba(255, 0, 0, 1) 0%,
+                            rgba(255, 154, 0, 1) 10%,
+                            rgba(208, 222, 33, 1) 20%,
+                            rgba(79, 220, 74, 1) 30%,
+                            rgba(63, 218, 216, 1) 40%,
+                            rgba(47, 201, 226, 1) 50%,
+                            rgba(28, 127, 238, 1) 60%,
+                            rgba(95, 21, 242, 1) 70%,
+                            rgba(186, 12, 248, 1) 80%,
+                            rgba(251, 7, 217, 1) 90%,
+                            rgba(255, 0, 0, 1) 100%` }}
+                      >
+                    </div>
+                    <div className='absolute w-64 h-16 rounded-md flex items-center '
+                        >
+                        {getEnergy(this.props.card?.energyType ?? "")}
+                        <div className='pl-2 text-lg truncate' id="card-case-title">
+                            <span>{this.props.card?.name}</span></div>
+                        <div className='flex-grow'></div>
+                        {this.getCornerButton()}
+                    </div>
+                </div>
+            )
+        }else if(this.props.card.variant === "1st Edition"){
+            return (
+                <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
+                    {getEnergy(this.props.card?.energyType ?? "")}
+                    <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
+                    <div className='flex-grow'></div>
+                    <img className="w-8" src='assests/1st-edition.png'/>
+                    {this.getCornerButton()}
+                </div>
+            )
+        } else{
+            return (
+                <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
+                    {getEnergy(this.props.card?.energyType ?? "")}
+                    <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
+                    <div className='flex-grow'></div>
+                    {this.getCornerButton()}
+                </div>
+            )
+        }
+    }
+
+    getVariantBG() {
+        switch(this.props.card.energyType){
+            case 'Grass':
+                return `url("assests/grass-rev.png")`
+            case 'Fire':
+                return `url("assests/fire-rev.png")`
+            case 'Water':
+                return `url("assests/water-rev.png")`
+            case 'Psychic':
+                return `url("assests/psychic-rev.png")`
+            case 'Lightning':
+                return `url("assests/lightning-rev.png")`
+            case 'Fighting':
+                return `url("assests/fighting-rev.png")`
+            case 'Colorless':
+                return `url("assests/colorless-rev.png")`
+            case 'Darkness':
+                return `url("assests/dark-rev.png")`
+            case 'Metal':
+                return `url("assests/steel-rev.png")`
+            case 'Fairy':
+                return `url("assests/fairy-rev.png")`
+            case 'Dragon':
+                return `url("assests/dragon-rev.png")`
+            default:
+                return `url("assests/trainer-rev.png")`
+        }
     }
 
     getCollectionButtons() {
