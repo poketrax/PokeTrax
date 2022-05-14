@@ -12,6 +12,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 17
+      - name: install
+        run: npm install
       - name: Start web server
         run: npm start
       - name: Start electron
