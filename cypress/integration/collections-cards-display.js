@@ -63,6 +63,11 @@ describe('Collection Card Tests display', () => {
         cy.get('#variant-select-option-1').click();
         cy.get('.pr-4').click()
         cy.get('#confirm-add-button').click();
+        //add regular card
+        cy.get('#add-card-button1').click();
+        cy.get('#collection-input').click().type('TEST1')
+        cy.get('.pr-4').click()
+        cy.get('#confirm-add-button').click();
         //goto collections
         cy.get('#collection-page').click();
         //look for card
@@ -81,16 +86,25 @@ describe('Collection Card Tests display', () => {
         cy.get('#confirm-add-button').click();
         //goto collections
         cy.get('#collection-page').click();
-        //make sure minus is disabled
-        cy.get('#card-case-sub-count').should('be.disabled')
         //increment count
         cy.get('#card-case-add-count').click()
         cy.contains("Count: 2")
+        //leave page and come back
         cy.get("#cards-page").click()
         cy.get('#collection-page').click();
+        //check it is still 2
         cy.contains("Count: 2")
+        //test wishlist and decrement
         cy.get('#card-case-sub-count').click()
-        cy.contains("Count: 1")
+        cy.get('#card-case-sub-count').click()
+        cy.contains("Wishlist")
+        //make sure minus is disabled
+        cy.get('#card-case-sub-count').should('be.disabled')
+        cy.get("#cards-page").click()
+        cy.get('#collection-page').click();
+        //verify changes 
+        cy.contains("Wishlist")
+        //clean up
         cy.get('#delete-collection-button').click();
         cy.get('#delete-confirm-button').click();
     })

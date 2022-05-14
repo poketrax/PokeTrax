@@ -155,7 +155,18 @@ export class Collections extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props)
         this.state = new State()
-        this._getCollections()
+        getCollections().then(
+            (value) => {
+                let selected = ""
+                if (value.length !== 0 && this.state.collection === "") {
+                    selected = value[0].name
+                } else {
+                    selected = this.state.collection
+                }
+                this.setState({ ...this.state, collections: value })
+                this.setCollection(selected, this.state.page)
+            }
+        )
     }
 
     public searchTerm = ""
@@ -163,15 +174,7 @@ export class Collections extends React.Component<{}, State> {
     private _getCollections() {
         getCollections().then(
             (value) => {
-                let selected = ""
-                if (value.length !== 0 && this.state.collection === "") {
-                    selected = value[0].name
-                    
-                } else {
-                    selected = this.state.collection
-                }
                 this.setState({ ...this.state, collections: value })
-                this.setCollection(selected, this.state.page)
             }
         )
     }
@@ -186,9 +189,12 @@ export class Collections extends React.Component<{}, State> {
             if (this.state.collections.length !== 0) {
                 collection = this.state.collections[0].name
             }
-            this.setState({...this.state, collections: this.state.collections.filter((value) => value.name !== _collection)})
+            this.setState({
+                ...this.state,
+                collection: collection,
+                collections: this.state.collections.filter((value) => value.name !== _collection)
+            })
         }
-
         getCollectionCards(collection, this.state.searchValue, page)
             .then(
                 (search) => {
@@ -228,7 +234,7 @@ export class Collections extends React.Component<{}, State> {
             let card = this.state.collectionCards[i]
             items.push(
                 <CardCase
-                    id={`card-case-${i}`} 
+                    id={`card-case-${i}`}
                     card={card}
                     onDelete={() => {
                         this.setCollection(this.state.collection, this.state.page)
