@@ -15,6 +15,7 @@ export class Card {
     public paid?: number
     public count? : number
     public grade? : string
+    public variants? : string
 
     constructor(cardId: string, idTCGP: string, name:string, expId:number, expName:string, expCardNumber:string, rarity:string){
         this.cardId = cardId

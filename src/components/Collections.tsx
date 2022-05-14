@@ -166,6 +166,7 @@ export class Collections extends React.Component<{}, State> {
                 let selected = ""
                 if (value.length !== 0 && this.state.collection === "") {
                     selected = value[0].name
+                    
                 } else {
                     selected = this.state.collection
                 }
@@ -185,7 +186,7 @@ export class Collections extends React.Component<{}, State> {
             if (this.state.collections.length !== 0) {
                 collection = this.state.collections[0].name
             }
-            this._getCollections()
+            this.setState({...this.state, collections: this.state.collections.filter((value) => value.name !== _collection)})
         }
 
         getCollectionCards(collection, this.state.searchValue, page)
@@ -327,7 +328,7 @@ export class Collections extends React.Component<{}, State> {
                     name={this.state.collection}
                     collections={this.state.collections}
                     onConfirm={() => {
-                        this.setCollection("", 0, true)
+                        this.setCollection(this.state.collection, 0, true)
                     }}
                     onClose={() => {
                         this.closeDialog()

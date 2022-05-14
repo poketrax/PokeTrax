@@ -257,30 +257,6 @@ const old_variants =
     "Unlimited"
 ]
 
-export function getVariants(card: Card) : string[]{
-    let variants = []
-    if(old_sets.indexOf(card.expName) === -1) {
-        variants = JSON.parse(JSON.stringify(new_variants))
-        console.log(`start: ${JSON.stringify(variants)}`)
-        if (card.rarity === "Holo Rare") {
-            variants.shift()
-        } else if (card.rarity === "Common" ||
-            card.rarity === "Uncommon" ||
-            card.rarity === "Rare"
-        ) {
-            variants.pop()
-        } else if (card.rarity === "Ultra Rare" ||
-            card.rarity === "Secret Rare"
-        ) {
-            variants.shift()
-            variants.shift()
-        }
-    } else {
-        variants = JSON.parse(JSON.stringify(old_variants)) 
-    }
-    return variants
-}
-
 export function getRarity(rarity: string) {
     switch (rarity) {
         case "Rare":

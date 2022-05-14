@@ -9,7 +9,7 @@ import {
     VictoryTooltip,
     VictoryZoomContainer
 } from 'victory'
-import { getTCGPprices, getVariants } from "../controls/CardDB"
+import { getTCGPprices } from "../controls/CardDB"
 interface Props {
     card: Card
     price?: string | JSX.Element
@@ -43,10 +43,10 @@ export class CardDialog extends React.Component<Props, State> {
 
     private getLine(variant: string, color: string) : JSX.Element[] {
         let items = new Array<JSX.Element>()
-        if (this.state.prices.length !== 0) {
-            let data = this.state.prices
-                .filter((val) => val.variant === variant)
-                .map((value) => { return { x: new Date(value.date), y: value.price, label: `${variant}: $${value.price.toFixed(2)}` } })
+        let _prices = this.state.prices
+        .filter((val) => val.variant === variant)
+        if (_prices.length !== 0) {
+            let data = _prices.map((value) => { return { x: new Date(value.date), y: value.price, label: `${variant}: $${value.price.toFixed(2)}` } })
             items.push(
                 <VictoryLine
                     style={{ 
@@ -67,7 +67,7 @@ export class CardDialog extends React.Component<Props, State> {
 
     private getLines() {
         let colors = ["#ff0000", "#0000ff", "#00ff00"]
-        let variants = getVariants(this.props.card)
+        let variants = JSON.parse(this.props.card.variants ?? '[]')
         let items = []
         for (let i = 0; i < variants.length; i++) {
             items.push(this.getLine(variants[i], colors[i]))

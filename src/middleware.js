@@ -224,7 +224,7 @@ app.get("/cards/:page", async (req, res) => {
     let db = DB.cardDB()
     try {
         let countSQL = `SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
-        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType, variants FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
         // console.log(countSQL)
         /// console.log(sql)
         let countRes = db.prepare(countSQL).get()

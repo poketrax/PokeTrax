@@ -6,7 +6,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { TextField, Autocomplete, Button } from '@mui/material'
 import { Card, Price } from '../model/Card'
-import { getCollections, addCardToCollection, addCollection, getVariants } from "../controls/CardDB"
+import { getCollections, addCardToCollection, addCollection } from "../controls/CardDB"
 
 interface Props {
     card: Card
@@ -34,9 +34,9 @@ export class AddCardCollection extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        this.variants = getVariants(this.props.card)
-        console.log(getVariants(this.props.card))
-        this.selectedVariant = this.variants[0]
+        this.variants = JSON.parse(props.card.variants ?? '[]')
+        console.log(this.variants)
+        this.selectedVariant = this.variants ? this.variants[0] : ""
         getCollections().then(
             (value) => {
                 this.setState({
