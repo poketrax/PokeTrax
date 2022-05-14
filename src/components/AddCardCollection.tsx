@@ -1,9 +1,12 @@
 import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import NumberFormat from 'react-number-format';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { TextField, Autocomplete, Button } from '@mui/material'
 import { Card, Price } from '../model/Card'
-import { getCollections, addCardToCollection, addCollection, getVariants} from "../controls/CardDB"
+import { getCollections, addCardToCollection, addCollection, getVariants } from "../controls/CardDB"
 
 interface Props {
     card: Card
@@ -13,7 +16,7 @@ interface Props {
 interface FormatProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
-  }
+}
 
 class State {
     public prices = new Array<Price>()
@@ -24,6 +27,7 @@ class State {
     public collErr = false
     public countErr = false
     public errorText = ""
+    public wishlist = false
 }
 
 export class AddCardCollection extends React.Component<Props, State> {
@@ -35,9 +39,11 @@ export class AddCardCollection extends React.Component<Props, State> {
         this.selectedVariant = this.variants[0]
         getCollections().then(
             (value) => {
-                this.setState({ ...this.state,
-                     collections: value.map((val) => val.name),
-                     displayCollections: value.map((val) => val.name) })
+                this.setState({
+                    ...this.state,
+                    collections: value.map((val) => val.name),
+                    displayCollections: value.map((val) => val.name)
+                })
             }
         )
     }
@@ -49,19 +55,19 @@ export class AddCardCollection extends React.Component<Props, State> {
 
     private PriceFormat = React.forwardRef<NumberFormat<string>, FormatProps>(
         function NumberFormatCustom(props, ref) {
-            const {onChange, ...other } = props;
+            const { onChange, ...other } = props;
             return (
                 <NumberFormat
                     {...other}
                     getInputRef={ref}
                     onValueChange={(values) => {
                         onChange({
-                          target: {
-                            name: props.name,
-                            value: values.value,
-                          },
+                            target: {
+                                name: props.name,
+                                value: values.value,
+                            },
                         });
-                      }}
+                    }}
                     thousandSeparator
                     allowNegative={false}
                     isNumericString
@@ -74,19 +80,19 @@ export class AddCardCollection extends React.Component<Props, State> {
 
     private CountFormat = React.forwardRef<NumberFormat<string>, FormatProps>(
         function NumberFormatCustom(props, ref) {
-            const {onChange, ...other } = props;
+            const { onChange, ...other } = props;
             return (
                 <NumberFormat
                     {...other}
                     getInputRef={ref}
                     onValueChange={(values) => {
                         onChange({
-                          target: {
-                            name: props.name,
-                            value: values.value,
-                          },
+                            target: {
+                                name: props.name,
+                                value: values.value,
+                            },
                         });
-                      }}
+                    }}
                     isNumericString
                     decimalScale={0}
                     allowNegative={false}
@@ -96,44 +102,44 @@ export class AddCardCollection extends React.Component<Props, State> {
         },
     );
 
-    private addCard(){
+    private addCard() {
         let err = ""
         let collError = false
         let countError = false
 
         console.log(`count ${this.state.count}`)
-        if(this.selectedColl === ""){
+        if (this.selectedColl === "") {
             err = "Collection must be set "
             collError = true
         }
-        if(isNaN(this.state.count)){
-            err +="Count must be set "
+        if (isNaN(this.state.count)) {
+            err += "Count must be set "
             countError = true
         }
-        if(this.state.count === 0){
-            err +="Count must be greater than 0"
+        if (this.state.count === 0) {
+            err += "Count must be greater than 0"
             countError = true
         }
-        if(collError === true || countError === true ){
-            this.setState({...this.state, errorText: err, collErr: collError, countErr: countError})
-            return 
+        if (collError === true || countError === true) {
+            this.setState({ ...this.state, errorText: err, collErr: collError, countErr: countError })
+            return
         }
         let add = JSON.parse(JSON.stringify(this.props.card)) //deep copy
         add.collection = this.selectedColl
-        add.count = this.state.count
+        add.count = this.state.wishlist ? 0 : this.state.count
         add.variant = this.selectedVariant
         add.paid = this.state.price
         add.grade = ""
-        if(this.state.collections.indexOf(this.selectedColl) === -1){
+        if (this.state.collections.indexOf(this.selectedColl) === -1) {
             addCollection(this.selectedColl)
         }
         addCardToCollection(add).then(
             () => {
-                 this.props.close()
+                this.props.close()
             }
         ).catch(
             () => {
-                this.setState({...this.state, errorText: "Failed to add :("})
+                this.setState({ ...this.state, errorText: "Failed to add :(" })
             }
         )
     }
@@ -195,7 +201,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                     label="Price Paid (optional)"
                     value={this.state.price}
                     onChange={(ev) => {
-                        this.setState({...this.state, price :Number.parseFloat(ev.target.value)})
+                        this.setState({ ...this.state, price: Number.parseFloat(ev.target.value) })
                     }
                     }
                     name="numberformat"
@@ -205,13 +211,18 @@ export class AddCardCollection extends React.Component<Props, State> {
                     variant="outlined"
                 />
                 <div className='h-4'></div>
+                <FormGroup>
+                    <FormControlLabel control={<Switch onChange={(ev) => {this.setState({...this.state, wishlist: ev.target.checked})}}/>} label="Wishlist" />
+                </FormGroup>
+                <div className='h-4'></div>
                 <TextField
                     id="count-input"
                     className='w-full'
                     label="Count"
                     error={this.state.countErr}
                     value={this.state.count}
-                    onChange={(ev) => this.setState({...this.state, count : Number.parseFloat(ev.target.value)})}
+                    disabled={this.state.wishlist}
+                    onChange={(ev) => this.setState({ ...this.state, count: Number.parseFloat(ev.target.value) })}
                     name="numberformat"
                     InputProps={{
                         inputComponent: this.CountFormat as any,
@@ -220,10 +231,10 @@ export class AddCardCollection extends React.Component<Props, State> {
                 />
                 <div className='h-4'></div>
                 <div className="w-full pt-2 pb-2 flex items-center justify-center">
-                    <Button id="confirm-add-button" className="w-full" variant='contained' onClick={() => {this.addCard()}} startIcon={<AddIcon />}>Add</Button>
+                    <Button id="confirm-add-button" className="w-full" variant='contained' onClick={() => { this.addCard() }} startIcon={<AddIcon />}>Add</Button>
                 </div>
                 {
-                    this.state.errorText !== "" && 
+                    this.state.errorText !== "" &&
                     (
                         <div id="add-card-error">{this.state.errorText}</div>
                     )

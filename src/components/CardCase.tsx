@@ -75,7 +75,7 @@ export class CardCase extends React.Component<Props, State> {
                     <div style={{ position: 'relative' }}>
                         {this.imgSpinner()}
                         <div className="flex justify-center align-middle">
-                            <img className='w-64 h-[357px] rounded-xl cursor-pointer'
+                            <img className={`w-64 h-[357px] rounded-xl cursor-pointer ${(this.props.card.collection != null && this.state.count <= 0) ? "opacity-40" : ""}`}
                                 id={`card-img${this.props.id}`}
                                 style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
                                 src={baseURL + "/cardImg/" + this.props.card?.cardId}
@@ -246,10 +246,12 @@ export class CardCase extends React.Component<Props, State> {
     updateCount(add: boolean) {
         let card: Card = JSON.parse(JSON.stringify(this.props.card))
         if (this.state.count != null) {
-            if (add)
+            if (add){
                 card.count = this.state.count + 1
-            else
+            }else{
                 card.count = this.state.count - 1
+            }
+                
             addCardToCollection(card).then(
                 (_) => {
                     this.setState({ ...this.state, count: card.count ?? 0 })
@@ -318,9 +320,16 @@ export function CollectionButtons(count: number, onDelete: () => void, onUpdate:
     return (
         <div className="flex justify-center items-top w-full mb-2 ml-4 mr-4 ">
             <div className="flex justify-center items-center w-full h-9 border-2 rounded-md mr-2">
-                <span id="count-display">Count: {count}</span>
+                {
+                    count > 0 &&
+                    <span id="count-display">Count: {count}</span>
+                }
+                {
+                    count <= 0 &&
+                    <span id="count-display">Wishlist</span>
+                }
             </div>
-            <ButtonGroup className="w-full bg-white" variant="outlined">
+            <ButtonGroup className="w-fit bg-white" variant="outlined">
                 <Button
                     id="card-case-add-count"
                     className="w-4"
@@ -331,7 +340,7 @@ export function CollectionButtons(count: number, onDelete: () => void, onUpdate:
                     id="card-case-sub-count"
                     className="w-4"
                     onClick={() => onUpdate(false)}
-                    disabled={count === 1 ? true : false}>
+                    disabled={count < 1 ? true : false}>
                     <RemoveIcon />
                 </Button>
                 <Button
