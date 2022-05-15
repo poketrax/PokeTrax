@@ -65,7 +65,7 @@
   "scripts": {
     "start": "export BROWSER=none && node scripts/start.js",
     "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && export NODE_ENV=development && electron .",
-    "start-electron-actions" : "export NODE_ENV=ci-test && electron .",
+    "start-test-server": "node src/test-server.js",
     "build": "node scripts/build.js",
     "test": "export NODE_ENV=test && mocha",
     "test-cypress": "npx cypress open",

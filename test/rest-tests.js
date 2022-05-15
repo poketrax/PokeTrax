@@ -8,7 +8,6 @@ const DB = require('../src/database')
 before(
     async () => {
         mw.start()
-        DB.init()
     }
 )
 

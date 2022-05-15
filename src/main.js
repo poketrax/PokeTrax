@@ -20,12 +20,11 @@ function createWindow () {
   });
 }
 
+//Start
 if(fs.existsSync(path.join(DB.pwd(),"sql/")) === false){
   fs.mkdirSync(path.join(DB.pwd(),'sql/'))
 }
 
-DB.checkForDbUpdate()
-DB.init()
 mw.start()
 
 //Electron starts
