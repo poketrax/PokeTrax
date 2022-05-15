@@ -198,7 +198,7 @@ export class CardCase extends React.Component<Props, State> {
                     {getEnergy(this.props.card?.energyType ?? "")}
                     <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
                     <div className='flex-grow'></div>
-                    <img className="w-8" src='assests/1st-edition.png' />
+                    <img className="w-8" src='assests/1st-edition.png' alt="1st ed"/>
                     {this.getCornerButton()}
                 </div>
             )

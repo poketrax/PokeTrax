@@ -105,7 +105,7 @@ function AddDialog(props: DialogProps) {
 }
 
 function DeleteDialog(props: DialogProps) {
-    const { onClose, onConfirm: onConfirm, name, open } = props;
+    const { onClose, onConfirm, name, open } = props;
     const [inProg, setInProg] = React.useState(false)
 
     const handleClose = () => {

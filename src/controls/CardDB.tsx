@@ -228,35 +228,6 @@ export const rarities = [
     "Amazing Rare"
 ]
 
-
-const new_variants =
-[
-    "Normal",
-    "Reverse Holofoil",
-    "Holofoil"
-]
-
-const old_sets =
-[
-    "Base Set",
-    "Jungle",
-    "Fossil",
-    "Team Rocket",
-    "Gym Heroes",
-    "Gym Challenge",
-    "Neo Genesis",
-    "Neo Discovery",
-    "Southern Islands",
-    "Neo Revelation",
-    "Neo Destiny"
-]
-
-const old_variants =
-[
-    "1st Edition",
-    "Unlimited"
-]
-
 export function getRarity(rarity: string) {
     switch (rarity) {
         case "Rare":

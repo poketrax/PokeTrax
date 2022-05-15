@@ -46,5 +46,5 @@ export class Price {
 
 export class CardSearch {
     public total: number = 0
-    public cards: Card[] = new Array()
+    public cards: Card[] = []
 }
