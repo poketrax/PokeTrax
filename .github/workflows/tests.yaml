@@ -26,6 +26,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm start, npm run start-electron
+          start: npm run make, npm start, npm run start-electron
           wait-on: 'http://localhost:3000'
 
