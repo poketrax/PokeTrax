@@ -14,7 +14,7 @@ function createWindow () {
         slashes: true,
       });
   mainWindow = new BrowserWindow({ width: 1200, height: 800 });
-  mainWindow.loadURL(startUrl);
+  mainWindow.loadURL(startUrl).catch((err) => console.log(`Failed to load index.html :${err}`));
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
