@@ -23,13 +23,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
-      - name: install
-        run: npm install
-      - name: Build
-        run: npm run make
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm start, npm run start-electron
+          start: npm rebuild && npm start, npm run start-electron
           wait-on: 'http://localhost:3000'
 
