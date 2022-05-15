@@ -16,13 +16,15 @@ const Database = require('better-sqlite3')
 const pwd = () => {
     if (process.env.NODE_ENV === 'development') {
         return "./"
-    } else if (process.env.NODE_ENV === 'test') {
+    }else if (process.env.NODE_ENV === 'ci-test') {
+        return path.join(process.env.PWD,"/build")
+    }else if (process.env.NODE_ENV === 'test') {
         return "./test/data"
     }
     switch (os.platform()) {
         case 'darwin': return '/Applications/PokeTrax.app/Contents/'
         case 'win32': return ''
-        default: return "./"
+        default: return process.env.PWD
     }
 }
 
