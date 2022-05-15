@@ -1,6 +1,17 @@
 name: test
 on: push
 jobs:
+  build-tests:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - run: npm install
+      - run: npm run build
   cypress-test:
     runs-on: ubuntu-latest
     env:
@@ -11,7 +22,7 @@ jobs:
       - name: setup
         uses: actions/setup-node@v1
         with:
-          node-version: 17
+          node-version: 16
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
