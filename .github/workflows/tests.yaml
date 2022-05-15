@@ -23,8 +23,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
+      - name: install
+        run: npm install
       - name: Build
-        run:  npm run make
+        run: npm run make
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
