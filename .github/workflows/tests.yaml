@@ -14,10 +14,9 @@ jobs:
           node-version: 17
       - name: install
         run: npm install
-      - name: Start web server
-        run: npm start
-      - name: Start electron
-        run: npm run start-electron
       - name: Cypress run
         uses: cypress-io/github-action@v2
+        with:
+          web: npm start
+          electron: npm run start-electron
 
