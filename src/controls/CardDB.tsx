@@ -76,6 +76,9 @@ export function getCollections(): Promise<Array<Collection>> {
 export function getCollectionCards(collection: string, searchVal: string, page: number): Promise<CardSearch> {
     return new Promise<CardSearch>(
         (resolve, reject) => {
+            if(collection === ''){
+                resolve(new CardSearch())
+            }
             axios.get(`${baseURL}/collections/${collection}/cards/${page}?page=${encodeURI(searchVal)}`)
                 .then(
                     (res) => {

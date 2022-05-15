@@ -5,11 +5,12 @@ import {
     getRarity,
     getTCGPprice,
     deleteCardFromCollection,
-    getEnergy
+    getEnergy,
+    addCardToCollection
 } from '../controls/CardDB';
 
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
 import { AddCardCollection } from './AddCardCollection';
@@ -27,6 +28,7 @@ import {
 import { CardDialog } from './CardDialog';
 
 interface Props {
+    id?: string
     card: Card
     onDelete: () => void
 }
@@ -36,12 +38,17 @@ class State {
     public imgLoaded = false
     public addDialogShow = false
     public cardDialogShow = false
+    public count
+
+    constructor(count: number) {
+        this.count = count
+    }
 }
 
 export class CardCase extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
-        this.state = new State()
+        this.state = new State(props.card.count ?? 0)
         getTCGPprice(props.card).then(
             (value) => {
                 this.setState({ ...this.state, prices: value })
@@ -50,32 +57,30 @@ export class CardCase extends React.Component<Props, State> {
     }
     render() {
         return (
-            <div className='flex justify-center'>
+            <div id={`card-case${this.props.id}`} className='flex justify-center' >
                 <Paper
                     elevation={3}
-                    className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'
-                    onClick={() => this.setState({...this.state, cardDialogShow: true})}>
-                    <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center '>
-                        {getEnergy(this.props.card?.energyType ?? "")}
-                        <span className='pl-2 text-lg truncate' >{this.props.card?.name}</span>
-                        <div className='flex-grow'></div>
+                    className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
+                    {this.getTitle()}
+                    <div id="collection-buttons" className="flex w-full items-center justify-center ">
                         {
-                            this.getCornerButton()
-                        }
-                    </div>
-                    <div className="flex w-full items-center justify-center ">
-
-                        {
-                            this.getCollectionButtons()
+                            this.props.card.collection != null &&
+                            CollectionButtons(
+                                this.state.count,
+                                () => { this.deleteCard() },
+                                (add) => this.updateCount(add)
+                            )
                         }
                     </div>
                     <div style={{ position: 'relative' }}>
                         {this.imgSpinner()}
                         <div className="flex justify-center align-middle">
-                            <img className='w-64 h-[357px] rounded-xl'
+                            <img className={`w-64 h-[357px] rounded-xl cursor-pointer ${(this.props.card.collection != null && this.state.count <= 0) ? "opacity-40" : ""}`}
+                                id={`card-img${this.props.id}`}
                                 style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
                                 src={baseURL + "/cardImg/" + this.props.card?.cardId}
-                                alt=""
+                                alt={this.props.card.name}
+                                onClick={() => this.setState({ ...this.state, cardDialogShow: true })}
                                 onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                                 onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
                             />
@@ -103,40 +108,154 @@ export class CardCase extends React.Component<Props, State> {
                     <div className='flex justify-center items-center w-96 p-2 pr-4'>
                         <DialogTitle>Add {this.props.card.name}</DialogTitle>
                         <div className="flex-grow"></div>
-                        <IconButton className="w-8 h-8" size="large" onClick={() => this.setState({ ...this.state, addDialogShow: false })}>
+                        <IconButton
+                            id="close-card-add"
+                            className="w-8 h-8"
+                            size="large"
+                            onClick={() => this.setState({ ...this.state, addDialogShow: false })}>
                             <ClearIcon />
                         </IconButton>
                     </div>
                     <AddCardCollection card={this.props.card} close={() => this.setState({ ...this.state, addDialogShow: false })}></AddCardCollection>
                 </Dialog>
-                <Dialog 
+                <Dialog
+                    id="card-dialog"
                     maxWidth='xl'
-                    open={this.state.cardDialogShow} 
+                    open={this.state.cardDialogShow}
                     onClose={() => this.setState({ ...this.state, cardDialogShow: false })}>
                     <div className='flex justify-center items-center w-full p-2 pr-4'>
                         <DialogTitle className='flex items-center'>
                             {getEnergy(this.props.card?.energyType ?? "")}
                             <div className='w-2'></div>
-                             {this.props.card.name}
-                            </DialogTitle>
+                            {this.props.card.name}
+                        </DialogTitle>
                         <div className="flex-grow"></div>
-                        <IconButton className="w-8 h-8" size="large" onClick={() => this.setState({ ...this.state, cardDialogShow: false })}>
+                        <IconButton
+                            id="close-card-dialog"
+                            className="w-8 h-8"
+                            size="large"
+                            onClick={() => this.setState({ ...this.state, cardDialogShow: false })}>
                             <ClearIcon />
                         </IconButton>
                     </div>
-                    <CardDialog card={this.props.card}></CardDialog>
+                    <CardDialog card={this.props.card} price={this.getPrice()}></CardDialog>
                 </Dialog>
             </div>
         )
     }
 
-    getCollectionButtons() {
-        if (this.props.card.collection != null) {
+    getTitle() {
+        if (this.props.card.variant === 'Reverse Holofoil') {
             return (
-                <ButtonGroup className="w-full mb-2 ml-4 mr-4 bg-white" variant="outlined">
-                    <Button className="w-full" startIcon={<DeleteIcon />} onClick={(ev) => { this.deleteCard() }}>Delete</Button>
-                    <Button className="w-full" startIcon={<EditIcon />}>Edit</Button>
-                </ButtonGroup>
+                <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
+                    <div className='absolute w-64 h-16 rounded-md flex items-center opacity-50'
+                        style={{ backgroundImage: `${this.getVariantBG()}` }}>
+                        {getEnergy(this.props.card?.energyType ?? "")}
+                    </div>
+                    <div className='absolute w-64 h-16 rounded-md flex items-center '
+                    >
+                        {getEnergy(this.props.card?.energyType ?? "")}
+                        <div className='pl-2 text-lg truncate' id="card-case-title">
+                            <span>{this.props.card?.name}</span></div>
+                        <div className='flex-grow'></div>
+                        {this.getCornerButton()}
+                    </div>
+                </div>
+            )
+        } else if (this.props.card.variant === 'Holofoil') {
+            return (
+                <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
+                    <div className='absolute w-64 h-16 rounded-md flex items-center opacity-25'
+                        style={{
+                            background: `linear-gradient(
+                            90deg,
+                            rgba(255, 0, 0, 1) 0%,
+                            rgba(255, 154, 0, 1) 10%,
+                            rgba(208, 222, 33, 1) 20%,
+                            rgba(79, 220, 74, 1) 30%,
+                            rgba(63, 218, 216, 1) 40%,
+                            rgba(47, 201, 226, 1) 50%,
+                            rgba(28, 127, 238, 1) 60%,
+                            rgba(95, 21, 242, 1) 70%,
+                            rgba(186, 12, 248, 1) 80%,
+                            rgba(251, 7, 217, 1) 90%,
+                            rgba(255, 0, 0, 1) 100%` }}
+                    >
+                    </div>
+                    <div className='absolute w-64 h-16 rounded-md flex items-center '
+                    >
+                        {getEnergy(this.props.card?.energyType ?? "")}
+                        <div className='pl-2 text-lg truncate' id="card-case-title">
+                            <span>{this.props.card?.name}</span></div>
+                        <div className='flex-grow'></div>
+                        {this.getCornerButton()}
+                    </div>
+                </div>
+            )
+        } else if (this.props.card.variant === "1st Edition") {
+            return (
+                <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
+                    {getEnergy(this.props.card?.energyType ?? "")}
+                    <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
+                    <div className='flex-grow'></div>
+                    <img className="w-8" src='assests/1st-edition.png' alt="1st ed"/>
+                    {this.getCornerButton()}
+                </div>
+            )
+        } else {
+            return (
+                <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
+                    {getEnergy(this.props.card?.energyType ?? "")}
+                    <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
+                    <div className='flex-grow'></div>
+                    {this.getCornerButton()}
+                </div>
+            )
+        }
+    }
+
+    getVariantBG() {
+        switch (this.props.card.energyType) {
+            case 'Grass':
+                return `url("assests/grass-rev.png")`
+            case 'Fire':
+                return `url("assests/fire-rev.png")`
+            case 'Water':
+                return `url("assests/water-rev.png")`
+            case 'Psychic':
+                return `url("assests/psychic-rev.png")`
+            case 'Lightning':
+                return `url("assests/lightning-rev.png")`
+            case 'Fighting':
+                return `url("assests/fighting-rev.png")`
+            case 'Colorless':
+                return `url("assests/colorless-rev.png")`
+            case 'Darkness':
+                return `url("assests/dark-rev.png")`
+            case 'Metal':
+                return `url("assests/steel-rev.png")`
+            case 'Fairy':
+                return `url("assests/fairy-rev.png")`
+            case 'Dragon':
+                return `url("assests/dragon-rev.png")`
+            default:
+                return `url("assests/trainer-rev.png")`
+        }
+    }
+
+    updateCount(add: boolean) {
+        let card: Card = JSON.parse(JSON.stringify(this.props.card))
+        if (this.state.count != null) {
+            if (add){
+                card.count = this.state.count + 1
+            }else{
+                card.count = this.state.count - 1
+            }
+                
+            addCardToCollection(card).then(
+                (_) => {
+                    this.setState({ ...this.state, count: card.count ?? 0 })
+                }
             )
         }
     }
@@ -149,7 +268,11 @@ export class CardCase extends React.Component<Props, State> {
     getCornerButton() {
         if (this.props.card.collection == null) {
             return (
-                <Fab aria-label="add" size="small" onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
+                <Fab
+                    id={`add-card-button${this.props.id}`}
+                    aria-label="add"
+                    size="small"
+                    onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
                     <AddIcon />
                 </Fab>)
         }
@@ -169,7 +292,7 @@ export class CardCase extends React.Component<Props, State> {
 
     componentWillReceiveProps(props: Props) {
         if (props.card.cardId !== this.props.card.cardId) {
-            this.setState(new State())
+            this.setState(new State(props.card.count ?? 0))
             getTCGPprice(props.card).then(
                 (data) => {
                     this.setState({ ...this.state, prices: data })
@@ -191,6 +314,42 @@ export class CardCase extends React.Component<Props, State> {
             return (<CircularProgress size="1rem" />)
         }
     }
+}
 
-    
+export function CollectionButtons(count: number, onDelete: () => void, onUpdate: (add: boolean) => void) {
+    return (
+        <div className="flex justify-center items-top w-full mb-2 ml-4 mr-4 ">
+            <div className="flex justify-center items-center w-full h-9 border-2 rounded-md mr-2">
+                {
+                    count > 0 &&
+                    <span id="count-display">Count: {count}</span>
+                }
+                {
+                    count <= 0 &&
+                    <span id="count-display">Wishlist</span>
+                }
+            </div>
+            <ButtonGroup className="w-fit bg-white" variant="outlined">
+                <Button
+                    id="card-case-add-count"
+                    className="w-4"
+                    onClick={() => onUpdate(true)}>
+                    <AddIcon />
+                </Button>
+                <Button
+                    id="card-case-sub-count"
+                    className="w-4"
+                    onClick={() => onUpdate(false)}
+                    disabled={count < 1 ? true : false}>
+                    <RemoveIcon />
+                </Button>
+                <Button
+                    id="card-case-delete-button"
+                    className="w-4"
+                    onClick={(ev) => { onDelete() }}>
+                    <DeleteIcon color="error" />
+                </Button>
+            </ButtonGroup>
+        </div>
+    )
 }

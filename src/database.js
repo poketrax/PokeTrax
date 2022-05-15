@@ -16,13 +16,15 @@ const Database = require('better-sqlite3')
 const pwd = () => {
     if (process.env.NODE_ENV === 'development') {
         return "./"
-    } else if (process.env.NODE_ENV === 'test') {
+    }else if (process.env.NODE_ENV === 'ci-test') {
+        return path.join(process.env.PWD,"/build")
+    }else if (process.env.NODE_ENV === 'test') {
         return "./test/data"
     }
     switch (os.platform()) {
         case 'darwin': return '/Applications/PokeTrax.app/Contents/'
         case 'win32': return ''
-        default: return "./"
+        default: return process.env.PWD
     }
 }
 
@@ -51,6 +53,10 @@ const dbStatus = () => {
 const checkForDbUpdate = () => {
     return new Promise(
         async (resolve, reject) => {
+            //search for folder
+            if(fs.existsSync(path.join(pwd(), "./sql")) === false){
+                fs.mkdirSync(path.join(pwd(), "./sql"))
+            }
             //Init databases
             let meta = await pullDbMeta()
             //if new and no meta file exists
@@ -149,7 +155,7 @@ function getTcgpPrice(card) {
                                 (id, date, cardId, variant, vendor, price) 
                                 VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
                             db.prepare(sql).run({
-                                "id": hash(price),
+                                "id": hash(date+card.cardId+variant.variant+"tcgp"),
                                 "date": price.date,
                                 "cardId": price.cardId,
                                 "variant": price.variant,

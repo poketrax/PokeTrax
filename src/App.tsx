@@ -69,11 +69,11 @@ export class App extends React.Component<{}, State> {
                 message = this.state.dbState.updated ? "Downloading New Data" : "Loading Data base"
                 content = (
                     <div className='absolute justify-items-center items-center w-full'>
-                        <LinearProgress ></LinearProgress>
+                        <LinearProgress id="app-loading-bar"></LinearProgress>
                         <div className='h-16'></div>
                         <div className='flex'>
                             <div className='grow'></div>
-                            <span className='text-2xl'>{message} ...</span>
+                            <span className='text-2xl' id="loading-message">{message} ...</span>
                             <div className='grow'></div>
                         </div>
                     </div>
@@ -86,9 +86,9 @@ export class App extends React.Component<{}, State> {
                         <img className="h-16 w-16 p-1" src={"./assests/poketrax.png"} alt=""/>
                         <span className="font-sans text-3xl pt-3 pl-2">PokéTrax</span>
                         <span className="pl-6 grid grid-cols-3">
-                            <button className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
-                            <button className='hover:text-blue-700' onClick={() => this.setPage("sets")}>Sets</button>
-                            <button className='hover:text-blue-700' onClick={() => this.setPage("collections")}>Collections</button>
+                            <button id="cards-page" className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
+                            <button id="sets-page" className='hover:text-blue-700' onClick={() => this.setPage("sets")}>Sets</button>
+                            <button id="collection-page" className='hover:text-blue-700' onClick={() => this.setPage("collections")}>Collections</button>
                         </span>
                     </div>
                 </div>

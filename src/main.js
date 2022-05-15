@@ -14,18 +14,17 @@ function createWindow () {
         slashes: true,
       });
   mainWindow = new BrowserWindow({ width: 1200, height: 800 });
-  mainWindow.loadURL(startUrl);
+  mainWindow.loadURL(startUrl).catch((err) => console.log(`Failed to load index.html :${err}`));
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
 }
 
+//Start
 if(fs.existsSync(path.join(DB.pwd(),"sql/")) === false){
   fs.mkdirSync(path.join(DB.pwd(),'sql/'))
 }
 
-DB.checkForDbUpdate()
-DB.init()
 mw.start()
 
 //Electron starts

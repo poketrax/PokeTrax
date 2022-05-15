@@ -9,7 +9,9 @@ const DB = require('./database');
 let server
 
 //Start web server
-const start = () => {
+ const start = async () => {
+    DB.checkForDbUpdate().catch((err) => console.log(err))
+    DB.init()
     server = app.listen(3030)
 }
 
@@ -199,7 +201,7 @@ app.get("/cards/:page", async (req, res) => {
     let exps = req.query.expansions != null && req.query.expansions !== "%5B%22%22%5D" ? JSON.parse(decodeURIComponent(req.query.expansions)) : []
     let FILTER_EXP = ""
     if (exps != null && exps.length) {
-        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")").replaceAll("'","''").replaceAll("\"", "\'")
+        let expFilter = JSON.stringify(exps).replaceAll("[", "(").replaceAll("]", ")").replaceAll("'", "''").replaceAll("\"", "\'")
         FILTER_EXP = `AND expName in ${expFilter}`
     }
     // Rarities
@@ -224,7 +226,7 @@ app.get("/cards/:page", async (req, res) => {
     let db = DB.cardDB()
     try {
         let countSQL = `SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
-        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType, variants FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
         // console.log(countSQL)
         /// console.log(sql)
         let countRes = db.prepare(countSQL).get()
@@ -298,7 +300,7 @@ app.delete("/collections", bodyParser.json(),
             db.prepare('DELETE FROM collections WHERE name = $name').run(collection)
             db.prepare("DELETE FROM collectionCards WHERE collection = $name").run(collection)
             res.send()
-        }catch(err){
+        } catch (err) {
             res.status(500).send()
         }
     }
@@ -319,6 +321,7 @@ app.put("/collections/card", bodyParser.json(),
                     .run({ 'count': card.count, 'grade': card.grade, 'paid': card.paid, 'cardId': card.cardId, 'variant': card.variant })
                 res.status(201).send()
             } else {
+
                 db.prepare("INSERT INTO collectionCards (cardId, collection, variant, paid, count, grade) VALUES ($cardId, $collection, $variant, $paid, $count, $grade)")
                     .run({ 'cardId': card.cardId, 'collection': card.collection, 'variant': card.variant, 'paid': card.paid, 'count': card.count, 'grade': card.grade })
                 res.status(201).send()
@@ -334,15 +337,15 @@ app.put("/collections/card", bodyParser.json(),
 /**
  * Delete Collection Card
  */
-app.delete("/collections/card", bodyParser.json(),  
+app.delete("/collections/card", bodyParser.json(),
     (req, res) => {
         let card = req.body
         let db = DB.collectionDB()
-        try{
+        try {
             let del = "DELETE FROM collectionCards WHERE cardId = $cardId AND variant = $variant AND collection = $collection AND grade = $grade"
             db.prepare(del).run(card)
             res.send()
-        }catch (err) {
+        } catch (err) {
             console.log(err)
             res.status(500).send()
         }
@@ -366,7 +369,7 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
         let count = db.prepare(sqlCount).get()
         db.prepare(sqlAttach).run()
         let cards = db.prepare(sql).all()
-        res.send({ "count": count.count, "cards": cards })
+        res.send({ "total": count.count, "cards": cards })
     } catch (err) {
         console.log(err)
         res.status(500).send(err)

@@ -15,6 +15,7 @@ export class Card {
     public paid?: number
     public count? : number
     public grade? : string
+    public variants? : string
 
     constructor(cardId: string, idTCGP: string, name:string, expId:number, expName:string, expCardNumber:string, rarity:string){
         this.cardId = cardId
@@ -45,5 +46,5 @@ export class Price {
 
 export class CardSearch {
     public total: number = 0
-    public cards: Card[] = new Array()
+    public cards: Card[] = []
 }
