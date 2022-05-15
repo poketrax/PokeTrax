@@ -53,6 +53,10 @@ const dbStatus = () => {
 const checkForDbUpdate = () => {
     return new Promise(
         async (resolve, reject) => {
+            //search for folder
+            if(fs.existsSync(path.join(pwd(), "./sql")) === false){
+                fs.mkdirSync(path.join(pwd(), "./sql"))
+            }
             //Init databases
             let meta = await pullDbMeta()
             //if new and no meta file exists

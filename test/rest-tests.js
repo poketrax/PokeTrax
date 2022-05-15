@@ -7,7 +7,7 @@ const DB = require('../src/database')
 
 before(
     async () => {
-        mw.start()
+       await mw.start()
     }
 )
 
@@ -21,7 +21,8 @@ describe(
                 }
             ).catch(
                 (err) => {
-                    fail(err)
+                    console.log(err)
+                    assert.fail(err)
                 }
             )
         })
