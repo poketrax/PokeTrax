@@ -12,11 +12,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 17
-      - name: install
-        run: npm install
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
           web: npm start
           electron: npm run start-electron
+          wait-on: 'http://localhost:3000'
 
