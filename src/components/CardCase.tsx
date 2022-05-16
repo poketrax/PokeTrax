@@ -13,6 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
+import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import { AddCardCollection } from './AddCardCollection';
 import {
     Dialog,
@@ -68,7 +69,12 @@ export class CardCase extends React.Component<Props, State> {
                             CollectionButtons(
                                 this.state.count,
                                 () => { this.deleteCard() },
-                                (add) => this.updateCount(add)
+                                (add) => this.updateCount(add),
+                                (collection) => {
+                                    addCardToCollection({...this.props.card, collection: collection})
+                                    deleteCardFromCollection(this.props.card)
+                                    
+                                }
                             )
                         }
                     </div>
@@ -127,6 +133,26 @@ export class CardCase extends React.Component<Props, State> {
                         <DialogTitle className='flex items-center'>
                             {getEnergy(this.props.card?.energyType ?? "")}
                             <div className='w-2'></div>
+                            {this.props.card.name}
+                        </DialogTitle>
+                        <div className="flex-grow"></div>
+                        <IconButton
+                            id="close-card-dialog"
+                            className="w-8 h-8"
+                            size="large"
+                            onClick={() => this.setState({ ...this.state, cardDialogShow: false })}>
+                            <ClearIcon />
+                        </IconButton>
+                    </div>
+                    <CardDialog card={this.props.card} price={this.getPrice()}></CardDialog>
+                </Dialog>
+                <Dialog
+                    id="move-dialog"
+                    maxWidth='xl'
+                    open={this.state.cardDialogShow}
+                    onClose={() => this.setState({ ...this.state, cardDialogShow: false })}>
+                    <div className='flex justify-center items-center w-full p-2 pr-4'>
+                        <DialogTitle className='flex items-center'>
                             {this.props.card.name}
                         </DialogTitle>
                         <div className="flex-grow"></div>
@@ -316,7 +342,7 @@ export class CardCase extends React.Component<Props, State> {
     }
 }
 
-export function CollectionButtons(count: number, onDelete: () => void, onUpdate: (add: boolean) => void) {
+export function CollectionButtons(count: number, onDelete: () => void, onUpdate: (add: boolean) => void, onMove : (collection: string) => void ) {
     return (
         <div className="flex justify-center items-top w-full mb-2 ml-4 mr-4 ">
             <div className="flex justify-center items-center w-full h-9 border-2 rounded-md mr-2">
@@ -342,6 +368,12 @@ export function CollectionButtons(count: number, onDelete: () => void, onUpdate:
                     onClick={() => onUpdate(false)}
                     disabled={count < 1 ? true : false}>
                     <RemoveIcon />
+                </Button>
+                <Button
+                    id="card-case-move-button"
+                    className="w-4"
+                    onClick={(ev) => { onDelete() }}>
+                    <DriveFileMoveIcon/>
                 </Button>
                 <Button
                     id="card-case-delete-button"
