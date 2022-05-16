@@ -57,15 +57,17 @@ function AddDialog(props: DialogProps) {
             setAddCollError(true)
             setAddCollErrorText(`Collection ${name} Already Exists`)
             setInProg(false)
+        } else {
+            addCollection(name).then(
+                (_) => {
+                    setInProg(false)
+                    setName("")
+                    onConfirm(name)
+                    onClose()
+                }
+            )
         }
-        addCollection(name).then(
-            (_) => {
-                setInProg(false)
-                setName("")
-                onConfirm(name)
-                onClose()
-            }
-        )
+
     }
 
     return (

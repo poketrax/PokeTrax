@@ -63,7 +63,7 @@ describe('Card Serach tests', () => {
 
     it('Test Close button', () => {
         cy.get('#card-img0').click()
-        cy.get('#close-card-dialog').click()
+        cy.get('#close-card-dialog').click({force: true})
         cy.get('#card-dialog').should('not.exist');
     })
 

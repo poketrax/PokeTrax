@@ -87,7 +87,7 @@ describe('Collection Card Tests display', () => {
         //goto collections
         cy.get('#collection-page').click();
         //increment count
-        cy.get('#card-case-add-count').click()
+        cy.get('#card-case-add-count').click({force: true})
         cy.contains("Count: 2")
         //leave page and come back
         cy.get("#cards-page").click()
@@ -95,8 +95,8 @@ describe('Collection Card Tests display', () => {
         //check it is still 2
         cy.contains("Count: 2")
         //test wishlist and decrement
-        cy.get('#card-case-sub-count').click()
-        cy.get('#card-case-sub-count').click()
+        cy.get('#card-case-sub-count').click({force: true})
+        cy.get('#card-case-sub-count').click({force: true})
         cy.contains("Wishlist")
         //make sure minus is disabled
         cy.get('#card-case-sub-count').should('be.disabled')
@@ -111,7 +111,7 @@ describe('Collection Card Tests display', () => {
 
     it('Test delete card', () => {
         //add normal card
-        cy.get('#add-card-button1').click();
+        cy.get('#add-card-button1').click({force: true});
         cy.get('#collection-input').click().type('TEST1');
         cy.get('#confirm-add-button').click();
         //goto collections
