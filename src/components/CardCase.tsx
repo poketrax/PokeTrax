@@ -8,22 +8,19 @@ import {
     getEnergy,
     addCardToCollection
 } from '../controls/CardDB';
-
+import { CollectionButtons } from './CollectionButtons';
 import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
+
 import { AddCardCollection } from './AddCardCollection';
 import {
     Dialog,
     DialogTitle,
     IconButton,
     CircularProgress,
-    Button,
     Paper,
     Tooltip,
-    Fab,
-    ButtonGroup
+    Fab
 } from '@mui/material';
 import { CardDialog } from './CardDialog';
 
@@ -65,11 +62,13 @@ export class CardCase extends React.Component<Props, State> {
                     <div id="collection-buttons" className="flex w-full items-center justify-center ">
                         {
                             this.props.card.collection != null &&
-                            CollectionButtons(
-                                this.state.count,
-                                () => { this.deleteCard() },
-                                (add) => this.updateCount(add)
-                            )
+                            <CollectionButtons
+                                count={this.state.count}
+                                onDelete={() => { this.deleteCard() }}
+                                onUpdate={(add: boolean) => this.updateCount(add)}
+                                onMove={(collection: string) => {
+                                    this.move(collection)
+                                }}/>
                         }
                     </div>
                     <div style={{ position: 'relative' }}>
@@ -144,7 +143,7 @@ export class CardCase extends React.Component<Props, State> {
         )
     }
 
-    getTitle() {
+    private getTitle() {
         if (this.props.card.variant === 'Reverse Holofoil') {
             return (
                 <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
@@ -198,7 +197,7 @@ export class CardCase extends React.Component<Props, State> {
                     {getEnergy(this.props.card?.energyType ?? "")}
                     <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
                     <div className='flex-grow'></div>
-                    <img className="w-8" src='assests/1st-edition.png' alt="1st ed"/>
+                    <img className="w-8" src='assests/1st-edition.png' alt="1st ed" />
                     {this.getCornerButton()}
                 </div>
             )
@@ -214,7 +213,7 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    getVariantBG() {
+    private getVariantBG() {
         switch (this.props.card.energyType) {
             case 'Grass':
                 return `url("assests/grass-rev.png")`
@@ -243,15 +242,15 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    updateCount(add: boolean) {
+    private updateCount(add: boolean) {
         let card: Card = JSON.parse(JSON.stringify(this.props.card))
         if (this.state.count != null) {
-            if (add){
+            if (add) {
                 card.count = this.state.count + 1
-            }else{
+            } else {
                 card.count = this.state.count - 1
             }
-                
+
             addCardToCollection(card).then(
                 (_) => {
                     this.setState({ ...this.state, count: card.count ?? 0 })
@@ -260,12 +259,19 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    deleteCard() {
+    private move(collection: string) {
+        let card = { ...this.props.card, collection: collection }
+        deleteCardFromCollection(this.props.card)
+        this.props.onDelete()
+        addCardToCollection(card)
+    }
+
+    private deleteCard() {
         deleteCardFromCollection(this.props.card)
         this.props.onDelete()
     }
 
-    getCornerButton() {
+    private getCornerButton() {
         if (this.props.card.collection == null) {
             return (
                 <Fab
@@ -278,7 +284,7 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    imgSpinner() {
+    private imgSpinner() {
         if (this.state.imgLoaded === false) {
             return (
                 <div className="h-full" style={{ position: 'absolute' }}>
@@ -314,42 +320,4 @@ export class CardCase extends React.Component<Props, State> {
             return (<CircularProgress size="1rem" />)
         }
     }
-}
-
-export function CollectionButtons(count: number, onDelete: () => void, onUpdate: (add: boolean) => void) {
-    return (
-        <div className="flex justify-center items-top w-full mb-2 ml-4 mr-4 ">
-            <div className="flex justify-center items-center w-full h-9 border-2 rounded-md mr-2">
-                {
-                    count > 0 &&
-                    <span id="count-display">Count: {count}</span>
-                }
-                {
-                    count <= 0 &&
-                    <span id="count-display">Wishlist</span>
-                }
-            </div>
-            <ButtonGroup className="w-fit bg-white" variant="outlined">
-                <Button
-                    id="card-case-add-count"
-                    className="w-4"
-                    onClick={() => onUpdate(true)}>
-                    <AddIcon />
-                </Button>
-                <Button
-                    id="card-case-sub-count"
-                    className="w-4"
-                    onClick={() => onUpdate(false)}
-                    disabled={count < 1 ? true : false}>
-                    <RemoveIcon />
-                </Button>
-                <Button
-                    id="card-case-delete-button"
-                    className="w-4"
-                    onClick={(ev) => { onDelete() }}>
-                    <DeleteIcon color="error" />
-                </Button>
-            </ButtonGroup>
-        </div>
-    )
 }

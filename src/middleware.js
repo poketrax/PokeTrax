@@ -286,8 +286,8 @@ app.put("/collections", bodyParser.json(),
         try {
             db.prepare('INSERT INTO collections (name, img) values ($name, $img)').run({ 'name': req.body.name, 'img': req.body.name })
             res.status(201).send()
-        } catch {
-            res.status(500).send(err)
+        } catch (err) {
+            res.status(400).send(err)
             console.log(err)
         }
     })

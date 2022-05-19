@@ -57,15 +57,17 @@ function AddDialog(props: DialogProps) {
             setAddCollError(true)
             setAddCollErrorText(`Collection ${name} Already Exists`)
             setInProg(false)
+        } else {
+            addCollection(name).then(
+                (_) => {
+                    setInProg(false)
+                    setName("")
+                    onConfirm(name)
+                    onClose()
+                }
+            )
         }
-        addCollection(name).then(
-            (_) => {
-                setInProg(false)
-                setName("")
-                onConfirm(name)
-                onClose()
-            }
-        )
+
     }
 
     return (
@@ -96,7 +98,7 @@ function AddDialog(props: DialogProps) {
                         className="w-full"
                         variant='contained'
                         onClick={handleClose}
-                        startIcon={<CloseIcon />}>Cancel</Button>
+                        startIcon={<CloseIcon/>}>Cancel</Button>
                 </div>
                 {inProg && <LinearProgress />}
             </div>

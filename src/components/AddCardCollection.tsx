@@ -52,7 +52,6 @@ export class AddCardCollection extends React.Component<Props, State> {
     private selectedVariant: string = ""
     private selectedColl: string = ""
 
-
     private PriceFormat = React.forwardRef<NumberFormat<string>, FormatProps>(
         function NumberFormatCustom(props, ref) {
             const { onChange, ...other } = props;
@@ -153,7 +152,6 @@ export class AddCardCollection extends React.Component<Props, State> {
                     options={this.state.displayCollections}
                     getOptionLabel={(option) => option}
                     defaultValue={this.selectedColl}
-                    disableCloseOnSelect
                     freeSolo
                     renderInput={(params) => (
                         <TextField
@@ -179,7 +177,6 @@ export class AddCardCollection extends React.Component<Props, State> {
                     options={this.variants}
                     getOptionLabel={(option) => option}
                     defaultValue={this.selectedVariant}
-                    disableCloseOnSelect
                     onChange={
                         (_, value) => {
                             this.selectedVariant = value ?? this.selectedVariant
