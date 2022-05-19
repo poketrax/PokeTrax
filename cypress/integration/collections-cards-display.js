@@ -1,41 +1,39 @@
+import { 
+    addCardToCollection,
+    sortSet,
+    deleteCurrentCollection,
+    gotoCollections,
+    addCollection,
+    gotoCollection
+} from './common'
 
 describe('Collection Card Tests display', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/')
-        cy.get('#expantions-sel').click();
-        cy.get('#option-Brilliant-Stars').click();
-        cy.get('#sort-set-number').click();
+        sortSet("Brilliant-Stars")
     })
 
     it('Test add collection from Card', () => {
         //click add card
-        cy.get('#add-card-button0').click();
-        cy.get('#collection-input').click().type('TEST1');
-        cy.get('#price-input').click().type('1')
-        cy.get('#confirm-add-button').click();
+        addCardToCollection(0, 'TEST1')
         //goto collections
-        cy.get('#collection-page').click();
+        gotoCollections()
         //look for collection
         cy.get('#tab-TEST1').invoke('attr', 'aria-selected').should('eq', 'true')
         //clean up
-        cy.get('#delete-collection-button').click();
-        cy.get('#delete-confirm-button').click();
+        deleteCurrentCollection()
     })
 
     it('Test one regular card', () => {
         //click add card
-        cy.get('#add-card-button0').click();
-        cy.get('#collection-input').click().type('TEST1');
-        cy.get('#price-input').click().type('1')
-        cy.get('#confirm-add-button').click();
+        addCardToCollection(0, 'TEST1')
         //goto collections
         cy.get('#collection-page').click();
         //look for card
         cy.contains("VSTAR Token")
         cy.contains("1–1 of 1")
         //clean up
-        cy.get('#delete-collection-button').click();
-        cy.get('#delete-confirm-button').click();
+        deleteCurrentCollection()
     })
 
     it('Test add failure conditions', () => {
@@ -51,7 +49,6 @@ describe('Collection Card Tests display', () => {
         cy.get('#confirm-add-button').click();
         cy.get("#add-card-error")
         cy.contains("Count must be greater than 0")
-        
     })
 
     it('Test variants card', () => {
@@ -64,26 +61,19 @@ describe('Collection Card Tests display', () => {
         cy.get('.pr-4').click()
         cy.get('#confirm-add-button').click();
         //add regular card
-        cy.get('#add-card-button1').click();
-        cy.get('#collection-input').click().type('TEST1')
-        cy.get('.pr-4').click()
-        cy.get('#confirm-add-button').click();
+        addCardToCollection(1, 'TEST1')
         //goto collections
-        cy.get('#collection-page').click();
+        gotoCollections()
         //look for card
         cy.contains("Exeggcute")
         cy.contains("1–2 of 2")
         //clean up
-        cy.get('#delete-collection-button').click();
-        cy.get('#delete-confirm-button').click();
+        deleteCurrentCollection()
     })
 
     it('Test count logic', () => {
         //click add card
-        cy.get('#add-card-button1').click();
-        cy.get('#collection-input').click().type('TEST1');
-        cy.get('#price-input').click().type('1')
-        cy.get('#confirm-add-button').click();
+        addCardToCollection(1, "TEST1")
         //goto collections
         cy.get('#collection-page').click();
         //increment count
@@ -105,15 +95,12 @@ describe('Collection Card Tests display', () => {
         //verify changes 
         cy.contains("Wishlist")
         //clean up
-        cy.get('#delete-collection-button').click();
-        cy.get('#delete-confirm-button').click();
+        deleteCurrentCollection()
     })
 
     it('Test delete card', () => {
         //add normal card
-        cy.get('#add-card-button1').click({force: true});
-        cy.get('#collection-input').click().type('TEST1');
-        cy.get('#confirm-add-button').click();
+        addCardToCollection(1, "TEST1")
         //goto collections
         cy.get('#collection-page').click();
         //delete card
@@ -124,19 +111,48 @@ describe('Collection Card Tests display', () => {
         cy.get('#delete-confirm-button').click();
     })
 
+    it('Test move card error', () => {
+        //Add Card
+        addCardToCollection(1, "TEST1")
+        gotoCollections()
+        gotoCollection("TEST1")
+
+        //Test empty 
+        cy.get('#card-case-move-button').click({force: true})
+        cy.get('#move-confirm-button').click()
+        cy.get("#collection-input").invoke('attr', 'aria-invalid').should('eq', 'true')
+        cy.get('#close-move-card-dialog').click({force: true})
+
+        deleteCurrentCollection()
+    })
+
+    it('Test move card', () => {
+        //Add Card
+        addCardToCollection(1, "TEST1")
+        gotoCollections()
+        addCollection("TEST2")
+        gotoCollection("TEST1")
+
+        //Test Add
+        cy.get('#card-case-move-button').click({force: true})
+        cy.get("#collection-input").click().type("TEST2")
+        cy.get('#move-dialog-title-pad').click({force: true})
+        cy.get('#move-confirm-button').click()
+
+        gotoCollection("TEST2")
+        cy.contains("Exeggcute")
+
+        deleteCurrentCollection()
+        deleteCurrentCollection()
+    })
+
     it('Test pagination', () => {
         //click add card
         for (let i = 0; i < 25; i++) {
-            cy.get(`#add-card-button${i}`).click();
-            cy.get('#collection-input').click().type('TEST1');
-            cy.get('#price-input').click().type('1')
-            cy.get('#confirm-add-button').click();
+            addCardToCollection(i, "TEST1")
         }
         cy.get('[data-testid=KeyboardArrowRightIcon]').first().click();
-        cy.get(`#add-card-button0`).click();
-        cy.get('#collection-input').click().type('TEST1');
-        cy.get('#price-input').click().type('1')
-        cy.get('#confirm-add-button').click();
+        addCardToCollection(0, "TEST1")
         //goto collections
         cy.get('#collection-page').click();
         //look for card
@@ -145,7 +161,6 @@ describe('Collection Card Tests display', () => {
         cy.get('[data-testid=KeyboardArrowRightIcon]').first().click();
         cy.contains("Monferno")
         //clean up
-        cy.get('#delete-collection-button').click();
-        cy.get('#delete-confirm-button').click();
+        deleteCurrentCollection()
     })
 })
