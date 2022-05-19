@@ -98,7 +98,7 @@ function AddDialog(props: DialogProps) {
                         className="w-full"
                         variant='contained'
                         onClick={handleClose}
-                        startIcon={<CloseIcon />}>Cancel</Button>
+                        startIcon={<CloseIcon/>}>Cancel</Button>
                 </div>
                 {inProg && <LinearProgress />}
             </div>
