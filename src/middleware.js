@@ -383,6 +383,9 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
         case "priceDSC":
             order = `ORDER BY price DESC`
             break
+        case "wish":
+            order = `ORDER BY count ASC`
+            break
         default:
             order = ``
     }

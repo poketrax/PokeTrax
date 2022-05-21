@@ -152,168 +152,142 @@ export class CardCase extends React.Component<Props, State> {
     }
 
     private getTitle() {
-        if (this.props.card.variant === 'Reverse Holofoil') {
-            return (
-                <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
-                    <div className='absolute w-64 h-16 rounded-md flex items-center opacity-50'
-                        style={{ backgroundImage: `url("${this.getVariantBG()}")` }}>
-                        {getEnergy(this.props.card?.energyType ?? "")}
-                    </div>
-                    <div className='absolute w-64 h-16 rounded-md flex items-center '
-                    >
-                        {getEnergy(this.props.card?.energyType ?? "")}
-                        <div className='pl-2 text-lg truncate' id="card-case-title">
-                            <span>{this.props.card?.name}</span></div>
-                        <div className='flex-grow'></div>
-                        {this.getCornerButton()}
-                    </div>
-                </div>
-            )
-        } else if (this.props.card.variant === 'Holofoil') {
-            return (
-                <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
-                    <div className='absolute w-64 h-16 rounded-md flex items-center opacity-25'
-                        style={{
-                            background: rainbowHolo
-                        }}
-                    >
-                    </div>
-                    <div className='absolute w-64 h-16 rounded-md flex items-center '
-                    >
-                        {getEnergy(this.props.card?.energyType ?? "")}
-                        <div className='pl-2 text-lg truncate' id="card-case-title">
-                            <span>{this.props.card?.name}</span></div>
-                        <div className='flex-grow'></div>
-                        {this.getCornerButton()}
-                    </div>
-                </div>
-            )
-        } else if (this.props.card.variant === "1st Edition") {
-            return (
-                <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
+        return (
+            <div className='h-16 mt-4 mb-2 ml-4 mr-4 rounded-md flex items-center'>
+                <div className='absolute w-64 h-16 rounded-md flex items-center opacity-30'
+                    style={{ backgroundImage: `url("${this.getVariantBG()}")` }}>
                     {getEnergy(this.props.card?.energyType ?? "")}
-                    <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
+                </div>
+                <div className='absolute w-64 h-16 rounded-md flex items-center '
+                >
+                    {getEnergy(this.props.card?.energyType ?? "")}
+                    <div className='pl-2 text-lg truncate' id="card-case-title">
+                        <span>{this.props.card?.name}</span></div>
                     <div className='flex-grow'></div>
-                    <img className="w-8" src='assests/1st-edition.png' alt="1st ed" />
+                    {
+                        this.props.card.variant?.includes("1st Edition") &&
+                        <img className="w-8 m-2" src='assests/1st-edition.png' alt="1st ed" />
+                    }
                     {this.getCornerButton()}
                 </div>
-            )
-        } else {
-            return (
-                <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
-                    {getEnergy(this.props.card?.energyType ?? "")}
-                    <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
-                    <div className='flex-grow'></div>
-                    {this.getCornerButton()}
-                </div>
-            )
-        }
+            </div>
+        )
     }
 
 
     private getVariantBG() {
-        switch (this.props.card.energyType) {
-            case 'Grass':
-                return `assests/grass-rev.png`
-            case 'Fire':
-                return `assests/fire-rev.png`
-            case 'Water':
-                return `assests/water-rev.png`
-            case 'Psychic':
-                return `assests/psychic-rev.png`
-            case 'Lightning':
-                return `assests/lightning-rev.png`
-            case 'Fighting':
-                return `assests/fighting-rev.png`
-            case 'Colorless':
-                return `assests/colorless-rev.png`
-            case 'Darkness':
-                return `assests/dark-rev.png`
-            case 'Metal':
-                return `assests/steel-rev.png`
-            case 'Fairy':
-                return `assests/fairy-rev.png`
-            case 'Dragon':
-                return `assests/dragon-rev.png`
-            default:
-                return `assests/trainer-rev.png`
-        }
+    switch (this.props.card.energyType) {
+        case 'Grass':
+            return `assests/grass-rev.png`
+        case 'Fire':
+            return `assests/fire-rev.png`
+        case 'Water':
+            return `assests/water-rev.png`
+        case 'Psychic':
+            return `assests/psychic-rev.png`
+        case 'Lightning':
+            return `assests/lightning-rev.png`
+        case 'Fighting':
+            return `assests/fighting-rev.png`
+        case 'Colorless':
+            return `assests/colorless-rev.png`
+        case 'Darkness':
+            return `assests/dark-rev.png`
+        case 'Metal':
+            return `assests/steel-rev.png`
+        case 'Fairy':
+            return `assests/fairy-rev.png`
+        case 'Dragon':
+            return `assests/dragon-rev.png`
+        default:
+            return `assests/trainer-rev.png`
     }
+}
 
     private updateCount(add: boolean) {
-        let card: Card = JSON.parse(JSON.stringify(this.props.card))
-        if (this.state.count != null) {
-            if (add) {
-                card.count = this.state.count + 1
-            } else {
-                card.count = this.state.count - 1
-            }
-
-            addCardToCollection(card).then(
-                (_) => {
-                    this.setState({ ...this.state, count: card.count ?? 0 })
-                }
-            )
+    let card: Card = JSON.parse(JSON.stringify(this.props.card))
+    if (this.state.count != null) {
+        if (add) {
+            card.count = this.state.count + 1
+        } else {
+            card.count = this.state.count - 1
         }
+
+        addCardToCollection(card).then(
+            (_) => {
+                this.setState({ ...this.state, count: card.count ?? 0 })
+            }
+        )
     }
+}
 
     private move(collection: string) {
-        let card = { ...this.props.card, collection: collection }
-        deleteCardFromCollection(this.props.card)
-        this.props.onDelete()
-        addCardToCollection(card)
-    }
+    let card = { ...this.props.card, collection: collection }
+    deleteCardFromCollection(this.props.card)
+    this.props.onDelete()
+    addCardToCollection(card)
+}
 
     private deleteCard() {
-        deleteCardFromCollection(this.props.card)
-        this.props.onDelete()
-    }
+    deleteCardFromCollection(this.props.card)
+    this.props.onDelete()
+}
 
     private getCornerButton() {
-        if (this.props.card.collection == null) {
-            return (
-                <div className='min-w-10'>
-                    <Fab
-                        id={`add-card-button${this.props.id}`}
-                        aria-label="add"
-                        size="small"
-                        onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
-                        <AddIcon />
-                    </Fab>
-                </div>)
-        }
+    if (this.props.card.collection == null) {
+        return (
+            <div className='min-w-10 m-2'>
+                <Fab
+                    id={`add-card-button${this.props.id}`}
+                    aria-label="add"
+                    size="small"
+                    onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
+                    <AddIcon />
+                </Fab>
+            </div>)
     }
+}
 
     private imgSpinner() {
-        if (this.state.imgLoaded === false) {
-            return (
-                <div className="h-full" style={{ position: 'absolute' }}>
-                    <div className='flex items-center justify-center w-64 h-full'>
-                        <CircularProgress className="flex" size={100} ></CircularProgress>
-                    </div>
+    if (this.state.imgLoaded === false) {
+        return (
+            <div className="h-full" style={{ position: 'absolute' }}>
+                <div className='flex items-center justify-center w-64 h-full'>
+                    <CircularProgress className="flex" size={100} ></CircularProgress>
                 </div>
-            )
-        }
+            </div>
+        )
     }
+}
 
     private holoOverlay() {
-        if (this.props.card.variant === 'Reverse Holofoil') {
-            return (
-                <div className="h-full" style={{ position: 'absolute' }}>
-                    <img className='flex items-center justify-center w-64 h-full rounded-md opacity-30' src={this.getVariantBG()}/>
-                </div>
-            )
-        }
+    if (this.props.card.variant === 'Reverse Holofoil') {
+        return (
+            <div className="h-full" style={{ position: 'absolute' }}>
+                <img className='flex items-center justify-center w-64 h-full rounded-md opacity-40' src={this.getVariantBG()} />
+            </div>
+        )
+    } else if (this.props.card.variant === 'Holofoil' || this.props.card.variant === '1st Edition Holofoil') {
+        return (
+            <div className="h-full" style={{ position: 'absolute' }}>
+                <div className='flex items-center justify-center w-64 h-full rounded-md opacity-30'
+                    style={{
+                        background: rainbowHolo
+                    }}
+                ></div>
+            </div>
+        )
     }
+}
 
     private getPrice(): string {
-        return this.props.card.price != null ? `$${this.props.card.price.toFixed(2).toString()}` : `$-.--`
-    }
+    return this.props.card.price != null ? `$${this.props.card.price.toFixed(2).toString()}` : `$-.--`
+}
 
-    componentWillReceiveProps(props: Props) {
-        if (props.card.cardId !== this.props.card.cardId) {
-            this.setState(new State(props.card.count ?? 0))
-        }
+componentWillReceiveProps(props: Props) {
+    if (props.card.cardId !== this.props.card.cardId) {
+        this.setState(new State(props.card.count ?? 0))
     }
+}
 
 }

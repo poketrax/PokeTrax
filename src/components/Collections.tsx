@@ -294,6 +294,9 @@ export class Collections extends React.Component<{}, State> {
                                             console.log(value)
                                             this.setCollection(this.state.collection, 0, false, this.state.searchValue, value)
                                         }}>
+                                        <ToggleButton value="wish" id="sort-wish">
+                                            <div>Wishlist</div>
+                                        </ToggleButton>
                                         <ToggleButton value="name" id="sort-name">
                                             <div>Name</div>
                                         </ToggleButton>
