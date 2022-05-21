@@ -13,7 +13,7 @@ import { MdOutlineCatchingPokemon } from "react-icons/md"
 import { search, expansions, rarities, getRarity } from '../controls/CardDB'
 import { baseURL } from "../index";
 
-const icon = <CgPokemon />;
+const icon = <CgPokemon/>;
 const checkedIcon = <MdOutlineCatchingPokemon />;
 class State {
     sets: string[] = []
@@ -177,6 +177,15 @@ export class CardSearch extends React.Component<Props, State> {
                             </ToggleButton>
                             <ToggleButton value="setNumber" id="sort-set-number">
                                 <div>Set #</div>
+                            </ToggleButton>
+                            <ToggleButton value="pokedex" id="sort-dex-number">
+                                <div>Dex #</div>
+                            </ToggleButton>
+                            <ToggleButton value="priceASC" id="sort-price">
+                                <div>$ ⬆︎</div>
+                            </ToggleButton>
+                            <ToggleButton value="priceDSC" id="sort-price">
+                                <div>$ ⬇︎</div>
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </div>

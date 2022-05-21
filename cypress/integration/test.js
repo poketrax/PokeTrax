@@ -12,4 +12,9 @@ describe('Test Tester', () => {
         cy.visit('http://localhost:3000/')
         sortSet("Brilliant-Stars")
     })
+
+    it('', () => {
+        
+      })
+
 })

@@ -73,13 +73,13 @@ export function getCollections(): Promise<Array<Collection>> {
     )
 }
 
-export function getCollectionCards(collection: string, searchVal: string, page: number): Promise<CardSearch> {
+export function getCollectionCards(collection: string, page: number, searchVal?: string, sort?: string): Promise<CardSearch> {
     return new Promise<CardSearch>(
         (resolve, reject) => {
             if(collection === ''){
                 resolve(new CardSearch())
             }
-            axios.get(`${baseURL}/collections/${collection}/cards/${page}?page=${encodeURI(searchVal)}`)
+            axios.get(`${baseURL}/collections/${collection}/cards/${page}?name=${encodeURI(searchVal ?? "")}&sort=${sort ?? ""}`)
                 .then(
                     (res) => {
                         resolve(res.data)

@@ -1,15 +1,11 @@
 import React from 'react';
 import { Collection } from '../model/Collection';
-import {
-    getCollections
-} from '../controls/CardDB';
-
+import { getCollections } from '../controls/CardDB';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear'
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
-
 import {
     IconButton,
     Dialog,
@@ -40,7 +36,6 @@ export class CollectionButtons extends React.Component<Props, State> {
         this.state = new State()
         getCollections().then(
             (value) => {
-                console.log('coolections')
                 this.setState({ ...this.state, collections: value })
             }
         )

@@ -1,9 +1,8 @@
 import React from 'react';
-import { Card, Price } from '../model/Card'
+import { Card } from '../model/Card'
 import { baseURL } from '../index'
 import {
     getRarity,
-    getTCGPprice,
     deleteCardFromCollection,
     getEnergy,
     addCardToCollection
@@ -24,6 +23,19 @@ import {
 } from '@mui/material';
 import { CardDialog } from './CardDialog';
 
+const rainbowHolo = `linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(255, 154, 0, 1) 10%,
+    rgba(208, 222, 33, 1) 20%,
+    rgba(79, 220, 74, 1) 30%,
+    rgba(63, 218, 216, 1) 40%,
+    rgba(47, 201, 226, 1) 50%,
+    rgba(28, 127, 238, 1) 60%,
+    rgba(95, 21, 242, 1) 70%,
+    rgba(186, 12, 248, 1) 80%,
+    rgba(251, 7, 217, 1) 90%,
+    rgba(255, 0, 0, 1) 100%`
 interface Props {
     id?: string
     card: Card
@@ -31,11 +43,10 @@ interface Props {
 }
 
 class State {
-    public prices = new Array<Price>()
     public imgLoaded = false
     public addDialogShow = false
     public cardDialogShow = false
-    public count
+    public count: number
 
     constructor(count: number) {
         this.count = count
@@ -46,11 +57,6 @@ export class CardCase extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State(props.card.count ?? 0)
-        getTCGPprice(props.card).then(
-            (value) => {
-                this.setState({ ...this.state, prices: value })
-            }
-        )
     }
     render() {
         return (
@@ -68,7 +74,7 @@ export class CardCase extends React.Component<Props, State> {
                                 onUpdate={(add: boolean) => this.updateCount(add)}
                                 onMove={(collection: string) => {
                                     this.move(collection)
-                                }}/>
+                                }} />
                         }
                     </div>
                     <div style={{ position: 'relative' }}>
@@ -82,7 +88,9 @@ export class CardCase extends React.Component<Props, State> {
                                 onClick={() => this.setState({ ...this.state, cardDialogShow: true })}
                                 onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                                 onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
+
                             />
+                            {this.holoOverlay()}
                         </div>
                     </div>
                     <div className='h-8 pl-2 pr-2 flex justify-center items-center'>
@@ -137,187 +145,149 @@ export class CardCase extends React.Component<Props, State> {
                             <ClearIcon />
                         </IconButton>
                     </div>
-                    <CardDialog card={this.props.card} price={this.getPrice()}></CardDialog>
+                    <CardDialog card={this.props.card}></CardDialog>
                 </Dialog>
             </div>
         )
     }
 
     private getTitle() {
-        if (this.props.card.variant === 'Reverse Holofoil') {
-            return (
-                <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
-                    <div className='absolute w-64 h-16 rounded-md flex items-center opacity-50'
-                        style={{ backgroundImage: `${this.getVariantBG()}` }}>
-                        {getEnergy(this.props.card?.energyType ?? "")}
-                    </div>
-                    <div className='absolute w-64 h-16 rounded-md flex items-center '
-                    >
-                        {getEnergy(this.props.card?.energyType ?? "")}
-                        <div className='pl-2 text-lg truncate' id="card-case-title">
-                            <span>{this.props.card?.name}</span></div>
-                        <div className='flex-grow'></div>
-                        {this.getCornerButton()}
-                    </div>
-                </div>
-            )
-        } else if (this.props.card.variant === 'Holofoil') {
-            return (
-                <div className='h-16 mt-4 mb-2 ml-4 mr-4 border-2 border-slate-300 rounded-md flex items-center'>
-                    <div className='absolute w-64 h-16 rounded-md flex items-center opacity-25'
-                        style={{
-                            background: `linear-gradient(
-                            90deg,
-                            rgba(255, 0, 0, 1) 0%,
-                            rgba(255, 154, 0, 1) 10%,
-                            rgba(208, 222, 33, 1) 20%,
-                            rgba(79, 220, 74, 1) 30%,
-                            rgba(63, 218, 216, 1) 40%,
-                            rgba(47, 201, 226, 1) 50%,
-                            rgba(28, 127, 238, 1) 60%,
-                            rgba(95, 21, 242, 1) 70%,
-                            rgba(186, 12, 248, 1) 80%,
-                            rgba(251, 7, 217, 1) 90%,
-                            rgba(255, 0, 0, 1) 100%` }}
-                    >
-                    </div>
-                    <div className='absolute w-64 h-16 rounded-md flex items-center '
-                    >
-                        {getEnergy(this.props.card?.energyType ?? "")}
-                        <div className='pl-2 text-lg truncate' id="card-case-title">
-                            <span>{this.props.card?.name}</span></div>
-                        <div className='flex-grow'></div>
-                        {this.getCornerButton()}
-                    </div>
-                </div>
-            )
-        } else if (this.props.card.variant === "1st Edition") {
-            return (
-                <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
+        return (
+            <div className='h-16 mt-4 mb-2 ml-4 mr-4 rounded-md flex items-center'>
+                <div className='absolute w-64 h-16 rounded-md flex items-center opacity-30'
+                    style={{ backgroundImage: `url("${this.getVariantBG()}")` }}>
                     {getEnergy(this.props.card?.energyType ?? "")}
-                    <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
+                </div>
+                <div className='absolute w-64 h-16 rounded-md flex items-center '
+                >
+                    {getEnergy(this.props.card?.energyType ?? "")}
+                    <div className='pl-2 text-lg truncate' id="card-case-title">
+                        <span>{this.props.card?.name}</span></div>
                     <div className='flex-grow'></div>
-                    <img className="w-8" src='assests/1st-edition.png' alt="1st ed" />
+                    {
+                        this.props.card.variant?.includes("1st Edition") &&
+                        <img className="w-8 m-2" src='assests/1st-edition.png' alt="1st ed" />
+                    }
                     {this.getCornerButton()}
                 </div>
-            )
-        } else {
-            return (
-                <div className='h-16 mt-4 mb-2 ml-4 mr-4 p-2 border-2 rounded-md flex items-center'>
-                    {getEnergy(this.props.card?.energyType ?? "")}
-                    <span className='pl-2 text-lg truncate' id="card-case-title">{this.props.card?.name}</span>
-                    <div className='flex-grow'></div>
-                    {this.getCornerButton()}
-                </div>
-            )
-        }
+            </div>
+        )
     }
+
 
     private getVariantBG() {
-        switch (this.props.card.energyType) {
-            case 'Grass':
-                return `url("assests/grass-rev.png")`
-            case 'Fire':
-                return `url("assests/fire-rev.png")`
-            case 'Water':
-                return `url("assests/water-rev.png")`
-            case 'Psychic':
-                return `url("assests/psychic-rev.png")`
-            case 'Lightning':
-                return `url("assests/lightning-rev.png")`
-            case 'Fighting':
-                return `url("assests/fighting-rev.png")`
-            case 'Colorless':
-                return `url("assests/colorless-rev.png")`
-            case 'Darkness':
-                return `url("assests/dark-rev.png")`
-            case 'Metal':
-                return `url("assests/steel-rev.png")`
-            case 'Fairy':
-                return `url("assests/fairy-rev.png")`
-            case 'Dragon':
-                return `url("assests/dragon-rev.png")`
-            default:
-                return `url("assests/trainer-rev.png")`
-        }
+    switch (this.props.card.energyType) {
+        case 'Grass':
+            return `assests/grass-rev.png`
+        case 'Fire':
+            return `assests/fire-rev.png`
+        case 'Water':
+            return `assests/water-rev.png`
+        case 'Psychic':
+            return `assests/psychic-rev.png`
+        case 'Lightning':
+            return `assests/lightning-rev.png`
+        case 'Fighting':
+            return `assests/fighting-rev.png`
+        case 'Colorless':
+            return `assests/colorless-rev.png`
+        case 'Darkness':
+            return `assests/dark-rev.png`
+        case 'Metal':
+            return `assests/steel-rev.png`
+        case 'Fairy':
+            return `assests/fairy-rev.png`
+        case 'Dragon':
+            return `assests/dragon-rev.png`
+        default:
+            return `assests/trainer-rev.png`
     }
+}
 
     private updateCount(add: boolean) {
-        let card: Card = JSON.parse(JSON.stringify(this.props.card))
-        if (this.state.count != null) {
-            if (add) {
-                card.count = this.state.count + 1
-            } else {
-                card.count = this.state.count - 1
-            }
-
-            addCardToCollection(card).then(
-                (_) => {
-                    this.setState({ ...this.state, count: card.count ?? 0 })
-                }
-            )
+    let card: Card = JSON.parse(JSON.stringify(this.props.card))
+    if (this.state.count != null) {
+        if (add) {
+            card.count = this.state.count + 1
+        } else {
+            card.count = this.state.count - 1
         }
+
+        addCardToCollection(card).then(
+            (_) => {
+                this.setState({ ...this.state, count: card.count ?? 0 })
+            }
+        )
     }
+}
 
     private move(collection: string) {
-        let card = { ...this.props.card, collection: collection }
-        deleteCardFromCollection(this.props.card)
-        this.props.onDelete()
-        addCardToCollection(card)
-    }
+    let card = { ...this.props.card, collection: collection }
+    deleteCardFromCollection(this.props.card)
+    this.props.onDelete()
+    addCardToCollection(card)
+}
 
     private deleteCard() {
-        deleteCardFromCollection(this.props.card)
-        this.props.onDelete()
-    }
+    deleteCardFromCollection(this.props.card)
+    this.props.onDelete()
+}
 
     private getCornerButton() {
-        if (this.props.card.collection == null) {
-            return (
+    if (this.props.card.collection == null) {
+        return (
+            <div className='min-w-10 m-2'>
                 <Fab
                     id={`add-card-button${this.props.id}`}
                     aria-label="add"
                     size="small"
                     onClick={() => this.setState({ ...this.state, addDialogShow: true })}>
                     <AddIcon />
-                </Fab>)
-        }
+                </Fab>
+            </div>)
     }
+}
 
     private imgSpinner() {
-        if (this.state.imgLoaded === false) {
-            return (
-                <div className="h-full" style={{ position: 'absolute' }}>
-                    <div className='flex items-center justify-center w-64 h-full'>
-                        <CircularProgress className="flex" size={100} ></CircularProgress>
-                    </div>
+    if (this.state.imgLoaded === false) {
+        return (
+            <div className="h-full" style={{ position: 'absolute' }}>
+                <div className='flex items-center justify-center w-64 h-full'>
+                    <CircularProgress className="flex" size={100} ></CircularProgress>
                 </div>
-            )
-        }
+            </div>
+        )
     }
+}
 
-    componentWillReceiveProps(props: Props) {
-        if (props.card.cardId !== this.props.card.cardId) {
-            this.setState(new State(props.card.count ?? 0))
-            getTCGPprice(props.card).then(
-                (data) => {
-                    this.setState({ ...this.state, prices: data })
-                }
-            )
-        }
+    private holoOverlay() {
+    if (this.props.card.variant === 'Reverse Holofoil') {
+        return (
+            <div className="h-full" style={{ position: 'absolute' }}>
+                <img className='flex items-center justify-center w-64 h-full rounded-md opacity-40' alt="holo-overlay" src={this.getVariantBG()} />
+            </div>
+        )
+    } else if (this.props.card.variant === 'Holofoil' || this.props.card.variant === '1st Edition Holofoil') {
+        return (
+            <div className="h-full" style={{ position: 'absolute' }}>
+                <div className='flex items-center justify-center w-64 h-full rounded-md opacity-30'
+                    style={{
+                        background: rainbowHolo
+                    }}
+                ></div>
+            </div>
+        )
     }
+}
 
-    private getPrice(): string | JSX.Element {
-        if (this.state.prices?.length !== 0) {
-            let val = "-.--"
-            for (let price of this.state.prices) {
-                if (price.price != null) {
-                    val = `$${price.price.toFixed(2).toString()}`
-                }
-            }
-            return val
-        } else {
-            return (<CircularProgress size="1rem" />)
-        }
+    private getPrice(): string {
+    return this.props.card.price != null ? `$${this.props.card.price.toFixed(2).toString()}` : `$-.--`
+}
+
+componentWillReceiveProps(props: Props) {
+    if (props.card.cardId !== this.props.card.cardId) {
+        this.setState(new State(props.card.count ?? 0))
     }
+}
+
 }
