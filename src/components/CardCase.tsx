@@ -264,7 +264,7 @@ export class CardCase extends React.Component<Props, State> {
     if (this.props.card.variant === 'Reverse Holofoil') {
         return (
             <div className="h-full" style={{ position: 'absolute' }}>
-                <img className='flex items-center justify-center w-64 h-full rounded-md opacity-40' src={this.getVariantBG()} />
+                <img className='flex items-center justify-center w-64 h-full rounded-md opacity-40' alt="holo-overlay" src={this.getVariantBG()} />
             </div>
         )
     } else if (this.props.card.variant === 'Holofoil' || this.props.card.variant === '1st Edition Holofoil') {
