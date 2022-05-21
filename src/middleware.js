@@ -9,7 +9,7 @@ const DB = require('./database');
 let server
 
 //Start web server
- const start = async () => {
+const start = async () => {
     DB.checkForDbUpdate().catch((err) => console.log(err))
     DB.init()
     server = app.listen(3030)
@@ -220,13 +220,22 @@ app.get("/cards/:page", async (req, res) => {
         case "setNumber":
             order = `ORDER BY expCardNumber ASC`
             break
+        case "pokedex":
+            order = `ORDER BY pokedex ASC`
+            break
+        case "priceASC":
+            order = `ORDER BY price ASC`
+            break
+        case "priceDSC":
+            order = `ORDER BY price DESC`
+            break
         default:
             order = ``
     }
     let db = DB.cardDB()
     try {
         let countSQL = `SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
-        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType, variants FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, rarity, cardType, energyType, variants, pokedex, price FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
         // console.log(countSQL)
         /// console.log(sql)
         let countRes = db.prepare(countSQL).get()
@@ -357,6 +366,26 @@ app.delete("/collections/card", bodyParser.json(),
  */
 app.get("/collections/:collection/cards/:page", (req, res) => {
     let nameFilter = ``
+    let order
+    switch (req.query.sort) {
+        case "name":
+            order = `ORDER BY cardId ASC`
+            break
+        case "setNumber":
+            order = `ORDER BY expCardNumber ASC`
+            break
+        case "pokedex":
+            order = `ORDER BY pokedex ASC`
+            break
+        case "priceASC":
+            order = `ORDER BY price ASC`
+            break
+        case "priceDSC":
+            order = `ORDER BY price DESC`
+            break
+        default:
+            order = ``
+    }
     if (req.query.name != null && req.query.name != '') {
         nameFilter = `AND colCards.cardId like '%${decodeURI(req.query.name)}%'`
     }
@@ -364,7 +393,7 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
     let sqlCount = `SELECT count(cardId) as count FROM collectionCards colCards WHERE colCards.collection = '${req.params.collection}' ${nameFilter}`
     let sqlAttach = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
     let sql = `SELECT * FROM collectionCards colCards INNER JOIN cardDB.cards cards ON cards.cardId = colCards.cardId ` +
-        `WHERE colCards.collection = '${req.params.collection}' ${nameFilter} LIMIT 25 OFFSET ${req.params.page * 25}`
+        `WHERE colCards.collection = '${req.params.collection}' ${nameFilter} ${order} LIMIT 25 OFFSET ${req.params.page * 25}`
     try {
         let count = db.prepare(sqlCount).get()
         db.prepare(sqlAttach).run()

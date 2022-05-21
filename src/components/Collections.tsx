@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Collection } from '../model/Collection';
 import TextField from '@mui/material/TextField';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -28,6 +30,7 @@ class State {
     public addDialogOpen = false
     public deleteDialogOpen = false
     public searchValue = ""
+    public sort = ""
     public page = 0
 }
 
@@ -67,7 +70,6 @@ function AddDialog(props: DialogProps) {
                 }
             )
         }
-
     }
 
     return (
@@ -98,7 +100,7 @@ function AddDialog(props: DialogProps) {
                         className="w-full"
                         variant='contained'
                         onClick={handleClose}
-                        startIcon={<CloseIcon/>}>Cancel</Button>
+                        startIcon={<CloseIcon />}>Cancel</Button>
                 </div>
                 {inProg && <LinearProgress />}
             </div>
@@ -185,7 +187,7 @@ export class Collections extends React.Component<{}, State> {
         this.setCollection(coll, this.state.page)
     }
 
-    private setCollection(_collection: string, page: number, _delete?: boolean) {
+    private setCollection(_collection: string, page: number, _delete?: boolean, searchValue?: string, sort?: string) {
         let collection = _collection
         if (_delete) {
             if (this.state.collections.length !== 0) {
@@ -197,7 +199,8 @@ export class Collections extends React.Component<{}, State> {
                 collections: this.state.collections.filter((value) => value.name !== _collection)
             })
         }
-        getCollectionCards(collection, this.state.searchValue, page)
+        
+        getCollectionCards(collection, page, searchValue, sort)
             .then(
                 (search) => {
                     this.setState(
@@ -206,6 +209,8 @@ export class Collections extends React.Component<{}, State> {
                             total: search.total,
                             collectionCards: search.cards,
                             collection: collection,
+                            searchValue: searchValue ?? this.state.searchValue,
+                            sort: sort ?? this.state.sort,
                             page: page
                         }
                     )
@@ -277,9 +282,35 @@ export class Collections extends React.Component<{}, State> {
                                         onChange={(e) => this.searchTerm = e.target.value}
                                         onKeyPress={(e) => {
                                             if (e.key === "Enter") {
+                                                this.setCollection(this.state.collection, 0, false, this.searchTerm)
                                             }
                                         }} />
                                     <div className='flex-grow'></div>
+                                    <ToggleButtonGroup
+                                        className='h-10'
+                                        value={this.state.sort}
+                                        exclusive
+                                        onChange={(_, value) => {
+                                            console.log(value)
+                                            this.setCollection(this.state.collection, 0, false, this.state.searchValue, value)
+                                        }}>
+                                        <ToggleButton value="name" id="sort-name">
+                                            <div>Name</div>
+                                        </ToggleButton>
+                                        <ToggleButton value="setNumber" id="sort-set-number">
+                                            <div>Set #</div>
+                                        </ToggleButton>
+                                        <ToggleButton value="pokedex" id="sort-dex-number">
+                                            <div>Dex #</div>
+                                        </ToggleButton>
+                                        <ToggleButton value="priceASC" id="sort-price">
+                                            <div>$ ⬆︎</div>
+                                        </ToggleButton>
+                                        <ToggleButton value="priceDSC" id="sort-price">
+                                            <div>$ ⬇︎</div>
+                                        </ToggleButton>
+                                    </ToggleButtonGroup>
+                                    <div className='w-4'></div>
                                     <Button
                                         id="delete-collection-button"
                                         variant='contained'

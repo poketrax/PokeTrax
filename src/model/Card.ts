@@ -6,7 +6,7 @@ export class Card {
     public expName: string
     public expCardNumber : string
     public rarity: string
-    public price = new Array<Price>()
+    public price?: number
     public releaseDate?: string
     public energyType?: string
     public cardType?: string

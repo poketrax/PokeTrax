@@ -32,7 +32,6 @@ export class CardDialog extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-
         getTCGPprices(props.card, this.state.start, Date.now())
             .then(
                 (value) => {
@@ -139,7 +138,7 @@ export class CardDialog extends React.Component<Props, State> {
                     <div className="flex w-full justify-center items-center">
                         <div className="text-2xl" >Prices</div>
                         <div className="flex-grow"></div>
-                        <div>Market Price: {this.props.price}</div>
+                        <div>Market Price: ${this.props.card.price != null ? this.props.card.price.toFixed(2).toString() : "$-.--"}</div>
                     </div>
                     <div className='h-80'>
                         <VictoryChart
