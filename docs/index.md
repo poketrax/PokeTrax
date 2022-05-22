@@ -6,8 +6,12 @@ PokeTrax is an open source and free to use Pokémon TCG collection management to
    * Search for Cards
 ## Downloads
 Download links:
-[Downloads](https://github.com/poketrax/PokeTrax/releases/tag/v1.0.1-beta)
+[Downloads](https://github.com/poketrax/PokeTrax/releases)
 ## Install Instructions:
+
+* **Windows**
+    1. Download exe from release
+    1. You will get a warning 
 
 * **MacOS**
     1. Download dmg from releases
@@ -28,6 +32,3 @@ Download links:
     ![System Prefs](assets/macos_sec.png)
     1. Click Open on the next dialog.
     ![System Prefs](assets/macos_accept.png)
-* **Windows**
-    1. Download exe from release
-    1. You will get a warning 
