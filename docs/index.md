@@ -11,7 +11,10 @@ Download links:
 
 * **Windows**
     1. Download exe from release
-    1. You will get a warning 
+    1. You will get a warning click more info
+    ![Error](assets/windows_warning.png)
+    1. Then click run anyway
+    ![Error](assets/windows_accept.png)
 
 * **MacOS**
     1. Download dmg from releases
