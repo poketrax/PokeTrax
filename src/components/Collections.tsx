@@ -324,6 +324,7 @@ export class Collections extends React.Component<{}, State> {
                                     </Button>
                                 </div>
                             </div>
+                            <div className='h-[calc(100vh-14rem)] overflow-auto'>
                             {
                                 (this.state.collectionCards.length !== 0)
                                 &&
@@ -355,6 +356,7 @@ export class Collections extends React.Component<{}, State> {
                                     />
                                 </div>)
                             }
+                            </div>
                         </div>
                     )
                 }
