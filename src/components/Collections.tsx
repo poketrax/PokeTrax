@@ -200,7 +200,7 @@ export class Collections extends React.Component<{}, State> {
             })
         }
         
-        getCollectionCards(collection, page, searchValue, sort)
+        getCollectionCards(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
             .then(
                 (search) => {
                     this.setState(
