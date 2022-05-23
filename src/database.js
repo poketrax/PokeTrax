@@ -244,7 +244,7 @@ const getCollectionDownload = (collection, type) => {
             case "txt-TCGP":
                 let list = ""
                 for(let card of cards){
-                    list += `${card.count} ${card.name} [${card.expIdTCGP.split(" ")}]\n`
+                    list += `${card.count} ${card.name} [${card.expCodeTCGP}]\n`
                 }
                 return list
         }
