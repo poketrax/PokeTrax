@@ -21,6 +21,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardCase } from './CardCase';
 import { Card } from '../model/Card'
+import DownloadMenu from './DownloadMenu';
 
 class State {
     public collection = ""
@@ -313,6 +314,8 @@ export class Collections extends React.Component<{}, State> {
                                             <div>$ ⬇︎</div>
                                         </ToggleButton>
                                     </ToggleButtonGroup>
+                                    <div className='w-4'></div>
+                                    <DownloadMenu name={this.state.collection}></DownloadMenu>
                                     <div className='w-4'></div>
                                     <Button
                                         id="delete-collection-button"

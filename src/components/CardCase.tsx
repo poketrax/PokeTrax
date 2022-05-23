@@ -11,6 +11,7 @@ import { CollectionButtons } from './CollectionButtons';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 
+
 import { AddCardCollection } from './AddCardCollection';
 import {
     Dialog,
@@ -100,7 +101,7 @@ export class CardCase extends React.Component<Props, State> {
                             </Tooltip>
                         </div>
                         <div className='grow'></div>
-                        <a href={'https://tcgplayer.com/product/' + this.props.card?.idTCGP}>{this.getPrice()}</a>
+                        <div onClick={() => window.open('https://tcgplayer.com/product/' + this.props.card?.idTCGP)}>{this.getPrice()}</div>
                         <div className='grow'></div>
                         <div>{this.props.card?.expCardNumber}</div>
                         <div className='grow'></div>
@@ -171,6 +172,7 @@ export class CardCase extends React.Component<Props, State> {
             </div>
         )
     }
+
 
 
     private getVariantBG() {
@@ -287,5 +289,4 @@ export class CardCase extends React.Component<Props, State> {
             this.setState(new State(props.card.count ?? 0))
         }
     }
-
 }

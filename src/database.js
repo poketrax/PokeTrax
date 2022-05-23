@@ -241,7 +241,7 @@ const getCollectionDownload = (collection, type) => {
                 const fields = ['name', 'expName', 'expCardNumber', 'rarity', 'energyType', 'cardType', 'pokedex', 'variant', 'grade', 'paid', 'count'];
                 const opts = { fields };
                 return parse(cards, opts)
-            case "TCGP":
+            case "txt-TCGP":
                 let list = ""
                 for(let card of cards){
                     list += `${card.count} ${card.name} [${card.expIdTCGP.split(" ")}]\n`

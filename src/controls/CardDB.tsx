@@ -228,6 +228,32 @@ export const rarities = [
     "Amazing Rare"
 ]
 
+function downloadURI(uri: string, name: string) {
+    var link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    link.remove()
+  }
+
+export function download(collection: string, type: string){
+    axios.get(`${baseURL}/collections/download/${collection}/${type}`).then(
+        (res) => {
+            let data = res.data
+            if(type === 'JSON'){
+                data = JSON.stringify(res.data, null, 1)
+            }
+            let extention = type.toLowerCase()
+            extention = extention.split("-")[0]
+            const blob = new Blob([data], { type: `application/${extention}`});
+            const url = URL.createObjectURL(blob);
+            downloadURI(url, `${collection}.${extention}`)
+        }
+    )
+}
+
 export function getRarity(rarity: string) {
     switch (rarity) {
         case "Rare":
