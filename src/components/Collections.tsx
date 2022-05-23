@@ -184,7 +184,7 @@ export class Collections extends React.Component<{}, State> {
     }
 
     private setCollectionEvent = (event: React.SyntheticEvent, coll: string) => {
-        this.setCollection(coll, this.state.page)
+        this.setCollection(coll, 0)
     }
 
     private setCollection(_collection: string, page: number, _delete?: boolean, searchValue?: string, sort?: string) {
