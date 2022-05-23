@@ -409,3 +409,7 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
         db.close()
     }
 })
+
+app.get("/collections/download/:collection/:type", (req, res) => {
+    res.send(DB.getCollectionDownload(req.params.collection, req.params.type))
+})

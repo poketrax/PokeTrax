@@ -5,6 +5,7 @@ const compver = require('compare-version');
 const https = require("follow-redirects").https
 const axios = require('axios')
 const hash = require('object-hash');
+const { parse } = require('json2csv');
 
 const DB_META = "./sql/meta.json"
 const CARD_DB_FILE = "./sql/data.sqlite3"
@@ -220,6 +221,42 @@ const getPrices = (card, _start, _end) => {
     )
 }
 
+/**
+ * 
+ * @param {string} collection 
+ * @returns {string} output
+ */
+const getCollectionDownload = (collection, type) => {
+    let db = collectionDB()
+    let sqlAttach = `ATTACH DATABASE '${path.join(pwd(), CARD_DB_FILE)}' AS cardDB;`
+    let sql = `SELECT * FROM collectionCards colCards INNER JOIN cardDB.cards cards ON cards.cardId = colCards.cardId ` +
+        `WHERE colCards.collection = '${collection}'`
+    try {
+        db.prepare(sqlAttach).run()
+        let cards = db.prepare(sql).all()
+        switch(type){
+            case "JSON":
+                return JSON.stringify(cards, null, 1)
+            case "CSV":
+                const fields = ['name', 'expName', 'expCardNumber', 'rarity', 'energyType', 'cardType', 'pokedex', 'variant', 'grade', 'paid', 'count'];
+                const opts = { fields };
+                return parse(cards, opts)
+            case "TCGP":
+                let list = ""
+                for(let card of cards){
+                    list += `${card.count} ${card.name} [${card.expIdTCGP.split(" ")}]\n`
+                }
+                return list
+        }
+        
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    } finally {
+        db.close()
+    }
+}
+
 const init = async () => {
     try {
         let prices = pricesDB()
@@ -234,6 +271,7 @@ const init = async () => {
     }
 }
 
+module.exports.getCollectionDownload = getCollectionDownload
 module.exports.dbStatus = dbStatus
 module.exports.init = init
 module.exports.pwd = pwd

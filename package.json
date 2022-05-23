@@ -38,6 +38,7 @@
     "fs-extra": "^10.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jsdom": "^19.0.0",
+    "json2csv": "^5.0.7",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.4.5",
     "object-hash": "^3.0.0",
