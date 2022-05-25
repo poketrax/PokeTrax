@@ -264,7 +264,10 @@ export class CardCase extends React.Component<Props, State> {
         if (this.props.card.variant === 'Reverse Holofoil') {
             return (
                 <div className="h-full" style={{ position: 'absolute' }}>
-                    <img className='flex items-center justify-center w-64 h-full rounded-md opacity-40' alt="holo-overlay" src={this.getVariantBG()} />
+                    <img className='flex items-center justify-center w-64 h-full rounded-md opacity-40'
+                     alt="holo-overlay" 
+                     src={this.getVariantBG()} 
+                     onClick={() => this.setState({ ...this.state, cardDialogShow: true })}/>
                 </div>
             )
         } else if (this.props.card.variant === 'Holofoil' || this.props.card.variant === '1st Edition Holofoil') {
@@ -274,6 +277,7 @@ export class CardCase extends React.Component<Props, State> {
                         style={{
                             background: rainbowHolo
                         }}
+                        onClick={() => this.setState({ ...this.state, cardDialogShow: true })}
                     ></div>
                 </div>
             )
