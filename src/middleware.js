@@ -37,7 +37,7 @@ app.get("/cardImg/:asset_id",
     (req, res, next) => {
         let db = DB.cardDB()
         try {
-            let card = db.prepare('SELECT img FROM cards WHERE cardId = $id').get({ "id": req.params.asset_id })
+            let card = db.prepare('SELECT img FROM cards WHERE cardId = $id').get({ "id": decodeURIComponent(req.params.asset_id) })
             if (card != null) {
                 res.locals.fetchUrl = card.img;
                 res.locals.cacheKey = req.params.asset_id;

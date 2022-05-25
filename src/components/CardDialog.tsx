@@ -127,7 +127,7 @@ export class CardDialog extends React.Component<Props, State> {
                 <div className='p-4 pr-2'>
                     <img className='rounded-xl w-96'
                         style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
-                        src={baseURL + "/cardImg/" + this.props.card?.cardId}
+                        src={baseURL + "/cardImg/" + encodeURIComponent(this.props.card?.cardId)}
                         alt=""
                         onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                         onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}

@@ -84,7 +84,7 @@ export class CardCase extends React.Component<Props, State> {
                             <img className={`w-64 h-[357px] rounded-xl cursor-pointer ${(this.props.card.collection != null && this.state.count <= 0) ? "opacity-40" : ""}`}
                                 id={`card-img${this.props.id}`}
                                 style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
-                                src={baseURL + "/cardImg/" + this.props.card?.cardId}
+                                src={baseURL + "/cardImg/" + encodeURIComponent(this.props.card?.cardId)}
                                 alt={this.props.card.name}
                                 onClick={() => this.setState({ ...this.state, cardDialogShow: true })}
                                 onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
