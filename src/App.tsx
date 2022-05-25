@@ -12,6 +12,7 @@ class State {
     selectedSet: string = ""
     dbState: DbState = new DbState()
 }
+
 export interface AppControl {
     page: string
     selectedSet: string
@@ -39,7 +40,8 @@ export class App extends React.Component<{}, State> {
                         }
                     }
                 )
-            })
+            }
+        )
     }
 
     setPage(page: string, selectedSet?: string) {
@@ -93,7 +95,7 @@ export class App extends React.Component<{}, State> {
                     </div>
                 </div>
 
-                    {content}
+                {content}
             </div>
         )
     }
