@@ -10,8 +10,6 @@ import {
 import { CollectionButtons } from './CollectionButtons';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
-
-
 import { AddCardCollection } from './AddCardCollection';
 import {
     Dialog,

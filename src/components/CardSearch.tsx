@@ -23,9 +23,15 @@ class State {
     page: number = 0
     count: number = 0
     sort: string = ""
+
+    constructor(set?: string) {
+        if (set != null) {
+            this.setsSelected.push(set)
+        }
+    }
 }
 class Props {
-    selectedSet?: string
+    selectedSet: string = ""
 }
 
 export const setFilter = new Subject<string[]>()
@@ -35,16 +41,15 @@ export class CardSearch extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        if (typeof props.selectedSet === 'string') {
-            this.setSearch(0, [props.selectedSet])
-        } else {
-            this.setSearch(0)
+        if (props.selectedSet !== '') {
+            this.state = new State(props.selectedSet)
         }
         expansions().then(
             (data) => {
                 this.setState({ ...this.state, sets: data.map((exp) => exp.name) })
             }
         )
+        this.setSearch(0)
     }
 
     private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
@@ -91,9 +96,7 @@ export class CardSearch extends React.Component<Props, State> {
                             limitTags={1}
                             id="expantions-sel"
                             options={this.state.sets}
-                            getOptionLabel={(option) => option}
                             defaultValue={this.state.setsSelected}
-                            disableCloseOnSelect
                             renderOption={(props, option, { selected }) => (
                                 <li {...props} id={`option-${option.replace(" ", "-")}`} >
                                     <div className='flex justify-center items-center w-full'>
@@ -132,7 +135,7 @@ export class CardSearch extends React.Component<Props, State> {
                         id="rarities-sel"
                         options={rarities}
                         getOptionLabel={(option) => option}
-                        defaultValue={this.state.setsSelected}
+                        defaultValue={this.state.rareSelected}
                         disableCloseOnSelect
                         renderOption={(props, option, { selected }) => (
                             <li {...props} id={`option-${option.replace(" ", "-")}`} className="flex justify-items-center items-center">
