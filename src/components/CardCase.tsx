@@ -266,7 +266,7 @@ export class CardCase extends React.Component<Props, State> {
                      onClick={() => this.setState({ ...this.state, cardDialogShow: true })}/>
                 </div>
             )
-        } else if (this.props.card.variant === 'Holofoil' || this.props.card.variant === '1st Edition Holofoil') {
+        } else if (this.props.card.variant?.includes('Holofoil')) {
             return (
                 <div className="h-full" style={{ position: 'absolute' }}>
                     <div className='flex items-center justify-center w-64 h-full rounded-md opacity-30'
