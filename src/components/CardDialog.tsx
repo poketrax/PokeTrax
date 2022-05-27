@@ -1,6 +1,8 @@
 import React from 'react';
 import { baseURL } from '../index'
 import { Card, Price } from '../model/Card'
+import { CardBuyLink } from '../components/CardBuyLink'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {
     VictoryChart,
     VictoryLine,
@@ -40,25 +42,25 @@ export class CardDialog extends React.Component<Props, State> {
             )
     }
 
-    private getLine(variant: string, color: string) : JSX.Element[] {
+    private getLine(variant: string, color: string): JSX.Element[] {
         let items = new Array<JSX.Element>()
         let _prices = this.state.prices
-        .filter((val) => val.variant === variant)
+            .filter((val) => val.variant === variant)
         if (_prices.length !== 0) {
             let data = _prices.map((value) => { return { x: new Date(value.date), y: value.price, label: `${variant}: $${value.price.toFixed(2)}` } })
             items.push(
                 <VictoryLine
-                    style={{ 
+                    style={{
                         data: { stroke: color },
                         parent: { border: "1px solid #ccc" }
                     }}
                     interpolation="natural"
                     data={data}
-                    labelComponent={<VictoryTooltip/>}
+                    labelComponent={<VictoryTooltip />}
                 />
             )
             items.push(
-                <VictoryScatter data={data} labelComponent={<VictoryTooltip/>}/>
+                <VictoryScatter data={data} labelComponent={<VictoryTooltip />} />
             )
         }
         return items
@@ -100,10 +102,21 @@ export class CardDialog extends React.Component<Props, State> {
         }
         if (this.props.card.paid != null &&
             this.props.card.paid !== 0) {
+            let color = ""
+            let percent = ""
+            if (this.props.card.price != null) {
+                if (this.props.card.paid > this.props.card.price) {
+                    color = "text-red-600"
+                    percent = `⬇︎ %${(this.props.card.paid / this.props.card.price).toFixed(2)}`
+                } else {
+                    color = "text-green-600"
+                    percent = `⬆︎ %${(this.props.card.paid / this.props.card.price).toFixed(2)}`
+                }
+            }
             items.push(
                 <tr className={`${bg ? 'bg-slate-200' : ''}`}>
                     <td>Price Paid</td>
-                    <td id="td-paid">{this.props.card.paid}</td>
+                    <td className={color} id="td-paid" >${this.props.card.paid.toFixed(2)} - {percent}</td>
                 </tr>
             )
             bg = !bg
@@ -127,7 +140,7 @@ export class CardDialog extends React.Component<Props, State> {
                 <div className='p-4 pr-2'>
                     <img className='rounded-xl w-96'
                         style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
-                        src={baseURL + "/cardImg/" + this.props.card?.cardId}
+                        src={baseURL + "/cardImg/" + encodeURIComponent(this.props.card?.cardId)}
                         alt=""
                         onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                         onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
@@ -142,10 +155,10 @@ export class CardDialog extends React.Component<Props, State> {
                     </div>
                     <div className='h-80'>
                         <VictoryChart
-                            domainPadding={{ y: 3 }}
+                            domainPadding={{ y: [32, 32], x: 32 }}
                             containerComponent={
-                                <VictoryZoomContainer/>
-                              }
+                                <VictoryZoomContainer />
+                            }
                             width={700}
                             theme={VictoryTheme.material}>
                             {this.getLines()}
@@ -167,6 +180,13 @@ export class CardDialog extends React.Component<Props, State> {
                         </tr>
                         {this.getTableRows()}
                     </table>
+                </div>
+                <div className='flex flex-col w-24 items-center'>
+                    <div className='w-24 flex justify-center items-center mb-2'>
+                        <ShoppingCartIcon></ShoppingCartIcon> Buy
+                    </div>
+                    <CardBuyLink type="tcgp" card={this.props.card}></CardBuyLink>
+                    <CardBuyLink type="ebay" card={this.props.card}></CardBuyLink>
                 </div>
             </div>
         )

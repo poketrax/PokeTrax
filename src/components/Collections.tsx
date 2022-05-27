@@ -1,8 +1,10 @@
 import React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import { Tooltip } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -15,12 +17,14 @@ import {
     getCollections,
     addCollection,
     deleteCollection,
-    getCollectionCards
+    getCollectionCards,
+    getCollectionValue
 } from '../controls/CardDB'
 import LinearProgress from '@mui/material/LinearProgress';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardCase } from './CardCase';
 import { Card } from '../model/Card'
+import DownloadMenu from './DownloadMenu';
 
 class State {
     public collection = ""
@@ -32,6 +36,7 @@ class State {
     public searchValue = ""
     public sort = ""
     public page = 0
+    public totalValue = 0
 }
 
 interface DialogProps {
@@ -184,7 +189,7 @@ export class Collections extends React.Component<{}, State> {
     }
 
     private setCollectionEvent = (event: React.SyntheticEvent, coll: string) => {
-        this.setCollection(coll, this.state.page)
+        this.setCollection(coll, 0)
     }
 
     private setCollection(_collection: string, page: number, _delete?: boolean, searchValue?: string, sort?: string) {
@@ -199,8 +204,13 @@ export class Collections extends React.Component<{}, State> {
                 collections: this.state.collections.filter((value) => value.name !== _collection)
             })
         }
-        
-        getCollectionCards(collection, page, searchValue, sort)
+        getCollectionValue(_collection)
+            .then(
+                (value) => {
+                    this.setState({ ...this.state, totalValue: value.data.totalValue })
+                }
+            )
+        getCollectionCards(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
             .then(
                 (search) => {
                     this.setState(
@@ -235,7 +245,7 @@ export class Collections extends React.Component<{}, State> {
         this.setCollection(this.state.collection, newPage)
     };
 
-    renderCards() {
+    private renderCards() {
         let items = []
         for (let i = 0; i < this.state.collectionCards.length; i++) {
             let card = this.state.collectionCards[i]
@@ -249,6 +259,108 @@ export class Collections extends React.Component<{}, State> {
                 </CardCase>)
         }
         return items
+    }
+
+    private cardContainer() {
+        if (this.state.collectionCards.length !== 0) {
+            return (<div className='h-[calc(100vh-14rem)] overflow-auto'>
+                <div id="collection-cards" className='w-full'>
+                    <div className='flex justify-center items-center'>
+                        <div className='flex-grow'></div>
+                        <div className='h-10 pr-2 pl-2 border-2 rounded-md flex justify-center items-center'>
+                            <div>Total Value: ${this.state.totalValue != null ? this.state.totalValue.toFixed(2) : "-.--"}</div>
+                        </div>
+                        <div className='w-16'></div>
+                        <TablePagination
+                            id="card-collection-pagination"
+                            component="div"
+                            count={this.state.total}
+                            page={this.state.page}
+                            rowsPerPage={25}
+                            rowsPerPageOptions={[25]}
+                            onPageChange={this.handleChangePage}
+                        />
+                    </div>
+                    <div className='flex'>
+                        <div className='flex-grow'></div>
+                        <div className='grid h-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4'
+                            id="card-grid">
+                            {this.renderCards()}
+                        </div>
+                        <div className='flex-grow'></div>
+                    </div>
+                    <TablePagination
+                        component="div"
+                        count={this.state.total}
+                        page={this.state.page}
+                        rowsPerPage={25}
+                        rowsPerPageOptions={[25]}
+                        onPageChange={this.handleChangePage}
+                    />
+                </div>
+            </div>)
+        }
+    }
+
+    private searchbar() {
+        if (this.state.collections.length !== 0) {
+            return (
+                <div id="collection-search-bar" className='w-full'>
+                    <div className='flex items-center justify-center h-16 p-4 w-full'>
+                        <TextField className='min-w-fit w-80'
+                            id="collection-text-search"
+                            label="Search"
+                            variant="outlined"
+                            onChange={(e) => this.searchTerm = e.target.value}
+                            onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                    this.setCollection(this.state.collection, 0, false, this.searchTerm)
+                                }
+                            }} />
+                        <div className='flex-grow'></div>
+                        <div className='w-4'></div>
+                        <ToggleButtonGroup
+                            className='h-10'
+                            value={this.state.sort}
+                            exclusive
+                            onChange={(_, value) => {
+                                this.setCollection(this.state.collection, 0, false, this.state.searchValue, value)
+                            }}>
+                            <ToggleButton value="wish" id="sort-wish">
+                                <div>Wishlist</div>
+                            </ToggleButton>
+                            <ToggleButton value="name" id="sort-name">
+                                <div>Name</div>
+                            </ToggleButton>
+                            <ToggleButton value="setNumber" id="sort-set-number">
+                                <div>Set #</div>
+                            </ToggleButton>
+                            <ToggleButton value="pokedex" id="sort-dex-number">
+                                <div>Dex #</div>
+                            </ToggleButton>
+                            <ToggleButton value="priceASC" id="sort-price-asc">
+                                <div>$ ⬆︎</div>
+                            </ToggleButton>
+                            <ToggleButton value="priceDSC" id="sort-price-dsc">
+                                <div>$ ⬇︎</div>
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+                        <div className='w-4'></div>
+                        <DownloadMenu name={this.state.collection}></DownloadMenu>
+                        <div className='w-4'></div>
+                        <Tooltip title="Delete Collection">
+                            <Fab
+                                id="delete-collection-button"
+                                size="small"
+                                color="error"
+                                onClick={() => { this.setState({ ...this.state, deleteDialogOpen: true }) }}>
+                                <DeleteForeverIcon />
+                            </Fab>
+                        </Tooltip>
+                    </div>
+                </div>
+            )
+        }
     }
 
     render() {
@@ -270,94 +382,10 @@ export class Collections extends React.Component<{}, State> {
                         New Collection
                     </Button>
                 </div>
-                {this.state.collections.length !== 0 &&
-                    (
-                        <div>
-                            <div id="collection-search-bar" className='w-full'>
-                                <div className='flex items-center justify-center h-16 p-4 w-full'>
-                                    <TextField className='min-w-fit w-80'
-                                        id="collection-text-search"
-                                        label="Search"
-                                        variant="outlined"
-                                        onChange={(e) => this.searchTerm = e.target.value}
-                                        onKeyPress={(e) => {
-                                            if (e.key === "Enter") {
-                                                this.setCollection(this.state.collection, 0, false, this.searchTerm)
-                                            }
-                                        }} />
-                                    <div className='flex-grow'></div>
-                                    <ToggleButtonGroup
-                                        className='h-10'
-                                        value={this.state.sort}
-                                        exclusive
-                                        onChange={(_, value) => {
-                                            console.log(value)
-                                            this.setCollection(this.state.collection, 0, false, this.state.searchValue, value)
-                                        }}>
-                                        <ToggleButton value="wish" id="sort-wish">
-                                            <div>Wishlist</div>
-                                        </ToggleButton>
-                                        <ToggleButton value="name" id="sort-name">
-                                            <div>Name</div>
-                                        </ToggleButton>
-                                        <ToggleButton value="setNumber" id="sort-set-number">
-                                            <div>Set #</div>
-                                        </ToggleButton>
-                                        <ToggleButton value="pokedex" id="sort-dex-number">
-                                            <div>Dex #</div>
-                                        </ToggleButton>
-                                        <ToggleButton value="priceASC" id="sort-price">
-                                            <div>$ ⬆︎</div>
-                                        </ToggleButton>
-                                        <ToggleButton value="priceDSC" id="sort-price">
-                                            <div>$ ⬇︎</div>
-                                        </ToggleButton>
-                                    </ToggleButtonGroup>
-                                    <div className='w-4'></div>
-                                    <Button
-                                        id="delete-collection-button"
-                                        variant='contained'
-                                        startIcon={<DeleteForeverIcon />}
-                                        color="error"
-                                        onClick={() => { this.setState({ ...this.state, deleteDialogOpen: true }) }}>
-                                        Delete
-                                    </Button>
-                                </div>
-                            </div>
-                            {
-                                (this.state.collectionCards.length !== 0)
-                                &&
-                                (<div id="collection-cards" className='w-full'>
-                                    <TablePagination
-                                        id="card-collection-pagination"
-                                        component="div"
-                                        count={this.state.total}
-                                        page={this.state.page}
-                                        rowsPerPage={25}
-                                        rowsPerPageOptions={[25]}
-                                        onPageChange={this.handleChangePage}
-                                    />
-                                    <div className='flex'>
-                                        <div className='flex-grow'></div>
-                                        <div className='grid h-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4'
-                                            id="card-grid">
-                                            {this.renderCards()}
-                                        </div>
-                                        <div className='flex-grow'></div>
-                                    </div>
-                                    <TablePagination
-                                        component="div"
-                                        count={this.state.total}
-                                        page={this.state.page}
-                                        rowsPerPage={25}
-                                        rowsPerPageOptions={[25]}
-                                        onPageChange={this.handleChangePage}
-                                    />
-                                </div>)
-                            }
-                        </div>
-                    )
-                }
+                <div>
+                    {this.searchbar()}
+                    {this.cardContainer()}
+                </div>
                 <AddDialog
                     open={this.state.addDialogOpen}
                     name=""

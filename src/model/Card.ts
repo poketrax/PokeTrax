@@ -3,6 +3,7 @@ export class Card {
     public idTCGP: string
     public name : string
     public expIdTCGP: number
+    public expCodeTCGP?: string
     public expName: string
     public expCardNumber : string
     public rarity: string

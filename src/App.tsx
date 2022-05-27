@@ -12,6 +12,7 @@ class State {
     selectedSet: string = ""
     dbState: DbState = new DbState()
 }
+
 export interface AppControl {
     page: string
     selectedSet: string
@@ -28,22 +29,23 @@ export class App extends React.Component<{}, State> {
             }
         )
         //checks to see if update is happing
-        let dbcheck = timer(0,100).subscribe( 
+        let dbcheck = timer(0, 100).subscribe(
             () => {
                 getDbState().then(
                     (state) => {
-                        this.setState({...this.state, dbState: state })
-                        if(state.ready){
+                        this.setState({ ...this.state, dbState: state })
+                        if (state.ready) {
                             this.setPage('cards')
                             dbcheck.unsubscribe()
                         }
                     }
                 )
-        })
+            }
+        )
     }
 
     setPage(page: string, selectedSet?: string) {
-        if(this.state.dbState.ready !== false){
+        if (this.state.dbState.ready !== false) {
             this.setState({
                 ...this.state,
                 page: page ?? this.state.page,
@@ -65,7 +67,7 @@ export class App extends React.Component<{}, State> {
             case 'collections':
                 content = <Collections></Collections>
                 break
-            default: 
+            default:
                 message = this.state.dbState.updated ? "Downloading New Data" : "Loading Data base"
                 content = (
                     <div className='absolute justify-items-center items-center w-full'>
@@ -81,9 +83,9 @@ export class App extends React.Component<{}, State> {
         }
         return (
             <div>
-                <div className="w-full h-16 bg-gray-400 flex flex-row" >
+                <div className="sticky top-0 w-full h-16 bg-gray-400 flex flex-row">
                     <div className="h-16 flex-none flex flex-row">
-                        <img className="h-16 w-16 p-1" src={"./assests/poketrax.png"} alt=""/>
+                        <img className="h-16 w-16 p-1" src={"./assests/poketrax.png"} alt="" />
                         <span className="font-sans text-3xl pt-3 pl-2">PokéTrax</span>
                         <span className="pl-6 grid grid-cols-3">
                             <button id="cards-page" className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
@@ -92,6 +94,7 @@ export class App extends React.Component<{}, State> {
                         </span>
                     </div>
                 </div>
+
                 {content}
             </div>
         )
