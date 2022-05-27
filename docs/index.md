@@ -5,7 +5,7 @@ PokeTrax is an open source and free to use Pokémon TCG collection management to
    * Monitor price changes 
    * Search for Cards
 ## Downloads
-[![Windows](assets/windows.png)](https://github.com/poketrax/PokeTrax/releases/download/v0.4.0-beta/PokeTrax.Setup.0.4.0.exe)[![MacOS](assets/macos.png)](https://github.com/poketrax/PokeTrax/releases/download/v0.4.0-beta/PokeTrax-0.4.0.dmg)
+[![Windows](assets/windows.png)](https://github.com/poketrax/PokeTrax/releases/download/v0.4.1-beta/PokeTrax.Setup.0.4.1.exe)[![MacOS](assets/macos.png)](https://github.com/poketrax/PokeTrax/releases/download/v0.4.1-beta/PokeTrax-0.4.1.dmg)
 ## Install Instructions:
 
 * **Windows**
