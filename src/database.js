@@ -1,4 +1,5 @@
 const path = require('path')
+const { app } = require('electron');
 const os = require("os");
 const fs = require('fs');
 const compver = require('compare-version');
@@ -14,6 +15,17 @@ const Database = require('better-sqlite3');
 
 /* Print the working directory for the application to get date files */
 const pwd = () => {
+    if (process.env.NODE_ENV === 'development') {
+        return "./"
+    } else if (process.env.NODE_ENV === 'ci-test') {
+        return path.join(process.env.PWD, "/build")
+    } else if (process.env.NODE_ENV === 'test') {
+        return "./test/data"
+    }
+    return app.getPath("appData")
+}
+
+const appPath = () => {
     if (process.env.NODE_ENV === 'development') {
         return "./"
     } else if (process.env.NODE_ENV === 'ci-test') {
@@ -286,6 +298,7 @@ const init = async () => {
     }
 }
 
+module.exports.appPath = appPath
 module.exports.getCollectionDownload = getCollectionDownload
 module.exports.dbStatus = dbStatus
 module.exports.init = init
