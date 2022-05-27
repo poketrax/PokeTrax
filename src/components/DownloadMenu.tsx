@@ -1,10 +1,11 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+import { Tooltip } from '@mui/material';
 import Menu from '@mui/material/Menu';
+import Fab from '@mui/material/Fab';
 import MenuItem from '@mui/material/MenuItem';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Collection } from '../model/Collection';
-import {download} from '../controls/CardDB'
+import { download } from '../controls/CardDB'
 
 class State {
     public anchorEl?: HTMLElement
@@ -13,7 +14,7 @@ class State {
 
 export default class DownloadMenu extends React.Component<Collection, State>  {
 
-    constructor(props: Collection){
+    constructor(props: Collection) {
         super(props)
         this.state = new State()
     }
@@ -25,7 +26,7 @@ export default class DownloadMenu extends React.Component<Collection, State>  {
         this.setState({ ...this.state, open: false });
     }
 
-    private clickItem(type: string){
+    private clickItem(type: string) {
         download(this.props.name, type)
         this.handleClose()
     }
@@ -38,20 +39,21 @@ export default class DownloadMenu extends React.Component<Collection, State>  {
         link.click();
         document.body.removeChild(link);
         link.remove()
-      }
+    }
 
     render(): React.ReactNode {
         return (
             <div>
-                <Button
-                    id="download-menu-open"
-                    variant='contained'
-                    startIcon={<DownloadIcon />}
-                    aria-haspopup="true"
-                    onClick={(ev) => this.handleClick(ev)}
-                >
-                    Download
-                </Button>
+                <Tooltip title="Download Collection">
+                    <Fab
+                        id="download-menu-open"
+                        aria-haspopup="true"
+                        size="small"
+                        color="primary"
+                        onClick={(ev) => this.handleClick(ev)}>
+                        <DownloadIcon />
+                    </Fab>
+                </Tooltip>
                 <Menu
                     id="download-menu"
                     aria-labelledby="demo-positioned-button"

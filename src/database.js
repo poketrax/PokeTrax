@@ -51,6 +51,7 @@ const dbStatus = () => {
 }
 
 const checkForDbUpdate = () => {
+    updateCollections()
     return new Promise(
         async (resolve, reject) => {
             //search for folder
@@ -92,14 +93,14 @@ const checkForDbUpdate = () => {
 
 async function updateCollections() {
     let cdb = collectionDB()
-    let collections = cdb.prepare(`SELECT * from collections`).all() ?? []
+    let collections = cdb.prepare(`SELECT name from collections`).all() ?? []
     for (let colleciton of collections) {
-        let cards = cdb.prepare(`SELECT cardId FROM collectionCards WHERE collection = $collection`).all({ collection: colleciton }) ?? []
+        let cards = cdb.prepare(`SELECT cardId FROM collectionCards WHERE collection = $collection`).all({ collection: colleciton.name }) ?? []
         for (let cardC of cards) {
             let carddb = cardDB()
             let card = carddb.prepare(`SELECT * FROM cards WHERE cardId = $cardId`).get({ cardId: cardC.cardId })
             await getTcgpPrice(card)
-            cardDB.close()
+            carddb.close()
         }
     }
 }

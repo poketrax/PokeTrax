@@ -1,6 +1,8 @@
 import React from 'react';
 import { baseURL } from '../index'
 import { Card, Price } from '../model/Card'
+import { CardBuyLink } from '../components/CardBuyLink'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {
     VictoryChart,
     VictoryLine,
@@ -100,13 +102,13 @@ export class CardDialog extends React.Component<Props, State> {
         }
         if (this.props.card.paid != null &&
             this.props.card.paid !== 0) {
-                let color = ""
-                let percent = ""
+            let color = ""
+            let percent = ""
             if (this.props.card.price != null) {
-                if(this.props.card.paid > this.props.card.price){
+                if (this.props.card.paid > this.props.card.price) {
                     color = "text-red-600"
                     percent = `⬇︎ %${(this.props.card.paid / this.props.card.price).toFixed(2)}`
-                }else{
+                } else {
                     color = "text-green-600"
                     percent = `⬆︎ %${(this.props.card.paid / this.props.card.price).toFixed(2)}`
                 }
@@ -160,7 +162,6 @@ export class CardDialog extends React.Component<Props, State> {
                             width={700}
                             theme={VictoryTheme.material}>
                             {this.getLines()}
-
                         </VictoryChart>
                     </div>
                     <div className="text-2xl">Details</div>
@@ -179,6 +180,13 @@ export class CardDialog extends React.Component<Props, State> {
                         </tr>
                         {this.getTableRows()}
                     </table>
+                </div>
+                <div className='flex flex-col w-24 items-center'>
+                    <div className='w-24 flex justify-center items-center mb-2'>
+                        <ShoppingCartIcon></ShoppingCartIcon> Buy
+                    </div>
+                    <CardBuyLink type="tcgp" card={this.props.card}></CardBuyLink>
+                    <CardBuyLink type="ebay" card={this.props.card}></CardBuyLink>
                 </div>
             </div>
         )

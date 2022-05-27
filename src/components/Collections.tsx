@@ -1,8 +1,10 @@
 import React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import { Tooltip } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -205,7 +207,7 @@ export class Collections extends React.Component<{}, State> {
         getCollectionValue(_collection)
             .then(
                 (value) => {
-                    this.setState({...this.state, totalValue : value.data.totalValue})
+                    this.setState({ ...this.state, totalValue: value.data.totalValue })
                 }
             )
         getCollectionCards(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
@@ -264,7 +266,7 @@ export class Collections extends React.Component<{}, State> {
             return (<div className='h-[calc(100vh-14rem)] overflow-auto'>
                 <div id="collection-cards" className='w-full'>
                     <div className='flex justify-center items-center'>
-                        <div className='flex-grow'></div>   
+                        <div className='flex-grow'></div>
                         <div className='h-10 pr-2 pl-2 border-2 rounded-md flex justify-center items-center'>
                             <div>Total Value: ${this.state.totalValue != null ? this.state.totalValue.toFixed(2) : "-.--"}</div>
                         </div>
@@ -316,6 +318,7 @@ export class Collections extends React.Component<{}, State> {
                                 }
                             }} />
                         <div className='flex-grow'></div>
+                        <div className='w-4'></div>
                         <ToggleButtonGroup
                             className='h-10'
                             value={this.state.sort}
@@ -345,14 +348,15 @@ export class Collections extends React.Component<{}, State> {
                         <div className='w-4'></div>
                         <DownloadMenu name={this.state.collection}></DownloadMenu>
                         <div className='w-4'></div>
-                        <Button
-                            id="delete-collection-button"
-                            variant='contained'
-                            startIcon={<DeleteForeverIcon />}
-                            color="error"
-                            onClick={() => { this.setState({ ...this.state, deleteDialogOpen: true }) }}>
-                            Delete
-                        </Button>
+                        <Tooltip title="Delete Collection">
+                            <Fab
+                                id="delete-collection-button"
+                                size="small"
+                                color="error"
+                                onClick={() => { this.setState({ ...this.state, deleteDialogOpen: true }) }}>
+                                <DeleteForeverIcon />
+                            </Fab>
+                        </Tooltip>
                     </div>
                 </div>
             )
