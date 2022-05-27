@@ -431,7 +431,7 @@ app.get("/collections/download/:collection/:type", (req, res) => {
 
 app.get("/collections/:collection/value", (req, res) => {
     let sqlSelect = `
-    SELECT max(date) as date, _price.variant, _collections.*, _cards.*, _price.price
+    SELECT max(date) as date, _price.price, _collections.paid
     FROM prices _price
     INNER JOIN collectionDB.collectionCards _collections 
         ON _price.cardId = _collections.cardId 

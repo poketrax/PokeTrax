@@ -266,7 +266,7 @@ export class Collections extends React.Component<{}, State> {
                     <div className='flex justify-center items-center'>
                         <div className='flex-grow'></div>   
                         <div className='h-10 pr-2 pl-2 border-2 rounded-md flex justify-center items-center'>
-                            <div>Total Value: ${this.state.totalValue.toFixed(2)}</div>
+                            <div>Total Value: ${this.state.totalValue != null ? this.state.totalValue.toFixed(2) : "-.--"}</div>
                         </div>
                         <div className='w-16'></div>
                         <TablePagination
