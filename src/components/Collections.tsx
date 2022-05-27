@@ -204,28 +204,31 @@ export class Collections extends React.Component<{}, State> {
                 collections: this.state.collections.filter((value) => value.name !== _collection)
             })
         }
-        getCollectionValue(_collection)
-            .then(
-                (value) => {
-                    this.setState({ ...this.state, totalValue: value.data.totalValue })
-                }
-            )
-        getCollectionCards(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
-            .then(
-                (search) => {
-                    this.setState(
-                        {
-                            ...this.state,
-                            total: search.total,
-                            collectionCards: search.cards,
-                            collection: collection,
-                            searchValue: searchValue ?? this.state.searchValue,
-                            sort: sort ?? this.state.sort,
-                            page: page
-                        }
-                    )
-                }
-            )
+        if (_collection != null && _collection !== "") {
+            getCollectionValue(_collection)
+                .then(
+                    (value) => {
+                        this.setState({ ...this.state, totalValue: value.data.totalValue })
+                    }
+                )
+            getCollectionCards(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
+                .then(
+                    (search) => {
+                        this.setState(
+                            {
+                                ...this.state,
+                                total: search.total,
+                                collectionCards: search.cards,
+                                collection: collection,
+                                searchValue: searchValue ?? this.state.searchValue,
+                                sort: sort ?? this.state.sort,
+                                page: page
+                            }
+                        )
+                    }
+                )
+        }
+
     }
 
     private generateTabs(): JSX.Element[] {

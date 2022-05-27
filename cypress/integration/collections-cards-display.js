@@ -24,18 +24,6 @@ describe('Collection Card Tests display', () => {
         deleteCurrentCollection()
     })
 
-    it('Test one regular card', () => {
-        //click add card
-        addCardToCollection(0, 'TEST1')
-        //goto collections
-        cy.get('#collection-page').click();
-        //look for card
-        cy.contains("VSTAR Token")
-        cy.contains("1–1 of 1")
-        //clean up
-        deleteCurrentCollection()
-    })
-
     it('Test add failure conditions', () => {
         //click add card
         cy.get('#add-card-button0').click();

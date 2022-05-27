@@ -17,20 +17,16 @@ describe('Card Serach tests', () => {
         cy.get('#card-grid').children().should('have.length', 1)
     })
 
-    it('Test Order By Name', () => {
+    it('Test Order' , () => {
         //Detect cards
         cy.get('#expantions-sel').click();
         cy.get('#option-Brilliant-Stars').click();
         cy.get('#sort-name').click();
         cy.get('#card-case-title').first().should('have.text', 'Acerola\'s Premonition')
-    })
-
-    it('Test Order By Set #', () => {
-        //Detect cards
-        cy.get('#expantions-sel').click();
-        cy.get('#option-Brilliant-Stars').click();
         cy.get('#sort-set-number').click();
         cy.get('#card-case-title').first().should('have.text', 'VSTAR Token')
+        cy.get(`#sort-dex-number`).click()
+        cy.get('#card-case-title').first().should('have.text', 'Charizard V')
     })
 
     it('Test paging', () => {
@@ -59,10 +55,6 @@ describe('Card Serach tests', () => {
         cy.get('#td-expantion').should('have.text', 'Brilliant Stars - 186')
         cy.get('#td-rarity').should('have.text', 'Ultra Rare')
         cy.get('#td-card-type').should('have.text', 'Item')
-    })
-
-    it('Test Close button', () => {
-        cy.get('#card-img0').click()
         cy.get('#close-card-dialog').click({force: true})
         cy.get('#card-dialog').should('not.exist');
     })

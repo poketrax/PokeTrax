@@ -13,8 +13,4 @@ describe('Test Tester', () => {
         sortSet("Brilliant-Stars")
     })
 
-    it('', () => {
-        
-      })
-
 })
