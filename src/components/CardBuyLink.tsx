@@ -8,9 +8,6 @@ interface Props {
 }
 
 export class CardBuyLink extends React.Component<Props, {}> {
-    constructor(props: Props){
-        super(props)
-    }
 
     private getImage(){
         switch(this.props.type){
