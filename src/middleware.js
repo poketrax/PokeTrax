@@ -5,6 +5,7 @@ const app = express();
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const bodyParser = require('body-parser');
 const DB = require('./database');
+const { BsDash } = require("react-icons/bs");
 
 let server
 
@@ -215,7 +216,7 @@ app.get("/cards/:page", async (req, res) => {
     let order
     switch (req.query.sort) {
         case "name":
-            order = `ORDER BY cardId ASC`
+            order = `ORDER BY name ASC`
             break
         case "setNumber":
             order = `ORDER BY expCardNumber ASC`
@@ -264,7 +265,7 @@ app.post("/price", bodyParser.json(), async (req, res) => {
     ).catch(
         (err) => {
             res.status(500).send('sqlerr: ' + err)
-            //console.log(err)
+            console.log(err)
         }
     )
 })
@@ -325,12 +326,12 @@ app.put("/collections/card", bodyParser.json(),
         try {
             let findSql = "SELECT * from collectionCards WHERE cardId = $cardId AND variant = $variant AND collection = $collection AND grade = $grade"
             let found = db.prepare(findSql).get(card)
+            DB.getPrices(card)
             if (found != null) {
                 db.prepare("UPDATE collectionCards SET count = $count, grade = $grade, paid = $paid WHERE cardId = $cardId AND variant = $variant AND grade = $grade")
                     .run({ 'count': card.count, 'grade': card.grade, 'paid': card.paid, 'cardId': card.cardId, 'variant': card.variant })
                 res.status(201).send()
             } else {
-
                 db.prepare("INSERT INTO collectionCards (cardId, collection, variant, paid, count, grade) VALUES ($cardId, $collection, $variant, $paid, $count, $grade)")
                     .run({ 'cardId': card.cardId, 'collection': card.collection, 'variant': card.variant, 'paid': card.paid, 'count': card.count, 'grade': card.grade })
                 res.status(201).send()
@@ -369,7 +370,7 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
     let order
     switch (req.query.sort) {
         case "name":
-            order = `ORDER BY cardId ASC`
+            order = `ORDER BY name ASC`
             break
         case "setNumber":
             order = `ORDER BY expCardNumber ASC`
@@ -390,17 +391,31 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
             order = ``
     }
     if (req.query.name != null && req.query.name != '') {
-        nameFilter = `AND colCards.cardId like '%${decodeURI(req.query.name)}%'`
+        nameFilter = `AND _collections.cardId like '%${decodeURI(req.query.name)}%'`
     }
-    let db = DB.collectionDB()
-    let sqlCount = `SELECT count(cardId) as count FROM collectionCards colCards WHERE colCards.collection = '${req.params.collection}' ${nameFilter}`
-    let sqlAttach = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
-    let sql = `SELECT * FROM collectionCards colCards INNER JOIN cardDB.cards cards ON cards.cardId = colCards.cardId ` +
-        `WHERE colCards.collection = '${req.params.collection}' ${nameFilter} ${order} LIMIT 25 OFFSET ${req.params.page * 25}`
+    let db = DB.pricesDB()
+
+    let sqlSelect =
+        `SELECT max(date) as date, _price.variant, _collections.*, _cards.*, _price.price
+    FROM prices _price
+    INNER JOIN collectionDB.collectionCards _collections 
+        ON _price.cardId = _collections.cardId 
+        AND _price.variant = _collections.variant
+    INNER JOIN cardDB.cards _cards
+        ON _price.cardId = _cards.cardId
+    WHERE _collections.collection = $collection ${nameFilter}
+    GROUP BY _price.cardId, _price.variant
+    ${order}`
+    let limit = `LIMIT 25 OFFSET ${(req.params.page) * 25}`
+
+    let sqlAttachCard = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
+    let sqlAttachColl = `ATTACH DATABASE '${path.join(DB.pwd(), DB.COLLECTION_DB_FILE)}' AS collectionDB;`
+
     try {
-        let count = db.prepare(sqlCount).get()
-        db.prepare(sqlAttach).run()
-        let cards = db.prepare(sql).all()
+        db.prepare(sqlAttachCard).run()
+        db.prepare(sqlAttachColl).run()
+        let count = db.prepare(`SELECT count(cardID) as count FROM (${sqlSelect})`).get({ collection: req.params.collection })
+        let cards = db.prepare(`${sqlSelect} ${limit}`).all({ collection: req.params.collection })
         res.send({ "total": count.count, "cards": cards })
     } catch (err) {
         console.log(err)
@@ -412,4 +427,32 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
 
 app.get("/collections/download/:collection/:type", (req, res) => {
     res.send(DB.getCollectionDownload(req.params.collection, req.params.type))
+})
+
+app.get("/collections/:collection/value", (req, res) => {
+    let sqlSelect = `
+    SELECT max(date) as date, _price.variant, _collections.*, _cards.*, _price.price
+    FROM prices _price
+    INNER JOIN collectionDB.collectionCards _collections 
+        ON _price.cardId = _collections.cardId 
+        AND _price.variant = _collections.variant
+    INNER JOIN cardDB.cards _cards
+        ON _price.cardId = _cards.cardId
+    WHERE _collections.collection = $collection
+    GROUP BY _price.cardId, _price.variant`
+
+    let sqlAttachCard = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
+    let sqlAttachColl = `ATTACH DATABASE '${path.join(DB.pwd(), DB.COLLECTION_DB_FILE)}' AS collectionDB;`
+    let db = DB.pricesDB()
+    try {
+        db.prepare(sqlAttachCard).run()
+        db.prepare(sqlAttachColl).run()
+        let totalValue = db.prepare(`SELECT sum(price) as totalValue, sum(paid) as totalPaid from(${sqlSelect})`).get({collection: req.params.collection})
+        res.send(totalValue)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    } finally{
+        db.close()
+    }
 })

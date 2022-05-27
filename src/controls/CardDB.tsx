@@ -254,6 +254,11 @@ export function download(collection: string, type: string){
     )
 }
 
+
+export function getCollectionValue(collection: string){
+    return axios.get(`${baseURL}/collections/${collection}/value`)
+}
+
 export function getRarity(rarity: string) {
     switch (rarity) {
         case "Rare":

@@ -46,7 +46,6 @@ class State {
     public addDialogShow = false
     public cardDialogShow = false
     public count: number
-
     constructor(count: number) {
         this.count = count
     }
@@ -61,8 +60,8 @@ export class CardCase extends React.Component<Props, State> {
         return (
             <div id={`card-case${this.props.id}`} className='flex justify-center' >
                 <Paper
-                    elevation={3}
-                    className='rounded-lg w-72 h-fit hover:shadow-2xl hover:bg-blue-500 hover:text-white'>
+                    elevation={2}
+                    className='rounded-lg w-72 h-fit hover:shadow-2xl'>
                     {this.getTitle()}
                     <div id="collection-buttons" className="flex w-full items-center justify-center ">
                         {
@@ -87,7 +86,6 @@ export class CardCase extends React.Component<Props, State> {
                                 onClick={() => this.setState({ ...this.state, cardDialogShow: true })}
                                 onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                                 onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
-
                             />
                             {this.holoOverlay()}
                         </div>
@@ -99,7 +97,7 @@ export class CardCase extends React.Component<Props, State> {
                             </Tooltip>
                         </div>
                         <div className='grow'></div>
-                        <div onClick={() => window.open('https://tcgplayer.com/product/' + this.props.card?.idTCGP)}>{this.getPrice()}</div>
+                        {this.getPrice()}
                         <div className='grow'></div>
                         <div>{this.props.card?.expCardNumber}</div>
                         <div className='grow'></div>
@@ -282,8 +280,26 @@ export class CardCase extends React.Component<Props, State> {
         }
     }
 
-    private getPrice(): string {
-        return this.props.card.price != null ? `$${this.props.card.price.toFixed(2).toString()}` : `$-.--`
+    private getPrice(): JSX.Element {
+        let price = `$-.--`
+        let color = ""
+        if(this.props.card.price != null){
+            price = `$${this.props.card.price.toFixed(2).toString()}`
+            if(this.props.card.paid != null && this.props.card.paid !== 0){
+                if(this.props.card.paid <= this.props.card.price){
+                    price = `⬆︎ ${price}`
+                    color = "text-green-600"
+                }else{
+                    price = `⬇︎ ${price}`
+                    color = "text-red-600"
+                }
+            }
+        }
+        return (<div 
+                onClick={() => window.open('https://tcgplayer.com/product/' + this.props.card?.idTCGP)}
+                className = {color}>
+                    {price}
+                </div>) 
     }
 
     componentWillReceiveProps(props: Props) {

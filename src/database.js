@@ -6,20 +6,19 @@ const https = require("follow-redirects").https
 const axios = require('axios')
 const hash = require('object-hash');
 const { parse } = require('json2csv');
-
 const DB_META = "./sql/meta.json"
 const CARD_DB_FILE = "./sql/data.sqlite3"
 const PRICE_DB_FILE = "./sql/prices.sqlite3"
 const COLLECTION_DB_FILE = "./sql/collections.sqlite3"
-const Database = require('better-sqlite3')
+const Database = require('better-sqlite3');
 
 /* Print the working directory for the application to get date files */
 const pwd = () => {
     if (process.env.NODE_ENV === 'development') {
         return "./"
-    }else if (process.env.NODE_ENV === 'ci-test') {
-        return path.join(process.env.PWD,"/build")
-    }else if (process.env.NODE_ENV === 'test') {
+    } else if (process.env.NODE_ENV === 'ci-test') {
+        return path.join(process.env.PWD, "/build")
+    } else if (process.env.NODE_ENV === 'test') {
         return "./test/data"
     }
     switch (os.platform()) {
@@ -31,17 +30,17 @@ const pwd = () => {
 
 /**
  * Prices database close when done
- * @returns {Datebase}
+ * @returns {Database}
  */
 const pricesDB = () => { return new Database(path.join(pwd(), PRICE_DB_FILE)) }
 /**
  * Card database close when done
- * @returns {Datebase}
+ * @returns {Database}
  */
 const cardDB = () => { return new Database(path.join(pwd(), CARD_DB_FILE)) }
 /**
  * Collection database close when done
- * @returns {Datebase}
+ * @returns {Database}
  */
 const collectionDB = () => { return new Database(path.join(pwd(), COLLECTION_DB_FILE)) }
 
@@ -55,7 +54,7 @@ const checkForDbUpdate = () => {
     return new Promise(
         async (resolve, reject) => {
             //search for folder
-            if(fs.existsSync(path.join(pwd(), "./sql")) === false){
+            if (fs.existsSync(path.join(pwd(), "./sql")) === false) {
                 fs.mkdirSync(path.join(pwd(), "./sql"))
             }
             //Init databases
@@ -89,6 +88,20 @@ const checkForDbUpdate = () => {
             }
         }
     )
+}
+
+async function updateCollections() {
+    let cdb = collectionDB()
+    let collections = cdb.prepare(`SELECT * from collections`).all() ?? []
+    for (let colleciton of collections) {
+        let cards = cdb.prepare(`SELECT cardId FROM collectionCards WHERE collection = $collection`).all({ collection: colleciton }) ?? []
+        for (let cardC of cards) {
+            let carddb = cardDB()
+            let card = carddb.prepare(`SELECT * FROM cards WHERE cardId = $cardId`).get({ cardId: cardC.cardId })
+            await getTcgpPrice(card)
+            cardDB.close()
+        }
+    }
 }
 
 //pull release info from database repo
@@ -132,6 +145,7 @@ async function pullDb(meta) {
  * @returns 
  */
 function getTcgpPrice(card) {
+    console.log("call tcgp")
     let db = pricesDB()
     return new Promise(
         (resolve, reject) => {
@@ -156,7 +170,7 @@ function getTcgpPrice(card) {
                                 (id, date, cardId, variant, vendor, price) 
                                 VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
                             db.prepare(sql).run({
-                                "id": hash(date+card.cardId+variant.variant+"tcgp"),
+                                "id": hash(date + card.cardId + variant.variant + "tcgp"),
                                 "date": price.date,
                                 "cardId": price.cardId,
                                 "variant": price.variant,
@@ -186,13 +200,13 @@ const getPrices = (card, _start, _end) => {
     return new Promise(
         (resolve, reject) => {
             let yesterday = new Date(Date.now())
-            yesterday.setDate(yesterday.getDate() - 1)
+            yesterday.setDate(yesterday.getDate() - 2)
 
             let timeFilter = ``
             let limit = ``
             if (_start != null && _end != null) {
                 timeFilter = `AND date > $start AND date < $end`
-            }else{
+            } else {
                 limit = "LIMIT 1"
             }
             let sql = `SELECT * FROM prices WHERE cardId = $cardId ${timeFilter} ORDER BY date DESC ${limit}`
@@ -234,7 +248,7 @@ const getCollectionDownload = (collection, type) => {
     try {
         db.prepare(sqlAttach).run()
         let cards = db.prepare(sql).all()
-        switch(type){
+        switch (type) {
             case "JSON":
                 return JSON.stringify(cards, null, 1)
             case "CSV":
@@ -243,12 +257,12 @@ const getCollectionDownload = (collection, type) => {
                 return parse(cards, opts)
             case "txt-TCGP":
                 let list = ""
-                for(let card of cards){
+                for (let card of cards) {
                     list += `${card.count} ${card.name} [${card.expCodeTCGP}]\n`
                 }
                 return list
         }
-        
+
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
@@ -279,5 +293,7 @@ module.exports.pricesDB = pricesDB
 module.exports.collectionDB = collectionDB
 module.exports.cardDB = cardDB
 module.exports.CARD_DB_FILE = CARD_DB_FILE
+module.exports.COLLECTION_DB_FILE = COLLECTION_DB_FILE
+module.exports.PRICE_DB_FILE = PRICE_DB_FILE
 module.exports.checkForDbUpdate = checkForDbUpdate
 module.exports.getPrices = getPrices
