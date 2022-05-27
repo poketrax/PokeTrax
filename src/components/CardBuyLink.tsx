@@ -26,7 +26,7 @@ export class CardBuyLink extends React.Component<Props, {}> {
                 window.open('https://tcgplayer.com/product/' + this.props.card?.idTCGP)
                 break;
             case 'ebay' :
-                window.open('https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(this.props.card?.cardId))
+                window.open(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(this.props.card?.cardId)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
                 break;
             default:
         }
