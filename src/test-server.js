@@ -1,3 +1,3 @@
-const mw = require("./middleware")
+const mw = require("./controls/middleware")
 
 mw.start() 

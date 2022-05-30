@@ -5,7 +5,6 @@ const app = express();
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const bodyParser = require('body-parser');
 const DB = require('./database');
-const { BsDash } = require("react-icons/bs");
 
 let server
 

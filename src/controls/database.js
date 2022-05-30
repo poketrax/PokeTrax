@@ -63,7 +63,7 @@ const dbStatus = () => {
 }
 
 const checkForDbUpdate = () => {
-    updateCollections()
+   // updateCollections()
     return new Promise(
         async (resolve, reject) => {
             //search for folder
