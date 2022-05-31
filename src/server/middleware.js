@@ -10,7 +10,7 @@ let server
 
 //Start web server
 const start = async () => {
-    DB.checkForDbUpdate().catch((err) => console.log(err))
+    await DB.checkForDbUpdate().catch((err) => console.log(err))
     DB.init()
     server = app.listen(3030)
 }

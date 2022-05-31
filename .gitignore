@@ -19,6 +19,7 @@ build/
 /dist
 sql/
 out/
+dev-data/
 
 # misc
 .DS_Store

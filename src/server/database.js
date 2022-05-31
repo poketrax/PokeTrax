@@ -16,7 +16,7 @@ const Database = require('better-sqlite3');
 /* Print the working directory for the application to get date files */
 const pwd = () => {
     if (process.env.NODE_ENV === 'development') {
-        return "./"
+        return "./dev-data"
     } else if (process.env.NODE_ENV === 'ci-test') {
         return path.join(process.env.PWD, "/build")
     } else if (process.env.NODE_ENV === 'test') {
@@ -68,7 +68,7 @@ const checkForDbUpdate = () => {
         async (resolve, reject) => {
             //search for folder
             if (fs.existsSync(path.join(pwd(), "./sql")) === false) {
-                fs.mkdirSync(path.join(pwd(), "./sql"))
+                fs.mkdirSync(path.join(pwd(), "./sql"), {recursive: true})
             }
             //Init databases
             let meta = await pullDbMeta()
