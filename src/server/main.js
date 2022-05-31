@@ -1,9 +1,9 @@
-import { app, BrowserWindow } from 'electron';
+const { app, BrowserWindow } = require('electron');
 const fs = require('fs')
 const path = require('path');
 const url = require('url');
-const mw = require("./controls/middleware")
-const DB = require("./controls/database")
+const mw = require("./middleware")
+const DB = require("./database")
 
 let mainWindow;
 
@@ -13,7 +13,7 @@ function createWindow () {
         protocol: 'file:',
         slashes: true,
       });
-  mainWindow = new BrowserWindow({ width: 1600, height: 100 });
+  mainWindow = new BrowserWindow({ width: 1600, height: 1000 });
   mainWindow.loadURL(startUrl).catch((err) => console.log(`Failed to load index.html :${err}`));
   mainWindow.on('closed', function () {
     mainWindow = null;
