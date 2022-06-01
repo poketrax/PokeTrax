@@ -16,12 +16,11 @@ describe('Collection Meta Tests', () => {
     cy.get('#add-collection-dialog').should('not.exist');
     //look for collection
     cy.get('#tab-TEST1').invoke('attr', 'aria-selected').should('eq', 'true')
-  })
- 
-  it('Test fail add collection with same name / delete collection', () => {
     addCollection("TEST1")
+    //test error condition
     cy.get('#add-collection-error').should('exist')
     cy.get('#add-collection-cancel-button').click()
+    //test delete
     deleteCurrentCollection()
     cy.get('#delete-collection-dialog').should('not.exist');
   })
