@@ -1,10 +1,11 @@
-import { 
+import {
     addCardToCollection,
     sortSet,
     deleteCurrentCollection,
     gotoCollections,
     addCollection,
-    gotoCollection
+    gotoCollection,
+    gotoCards
 } from './common'
 
 describe('Collection Card Tests display', () => {
@@ -59,13 +60,13 @@ describe('Collection Card Tests display', () => {
         deleteCurrentCollection()
     })
 
-    it('Test count logic', () => {
+    it('Test count and delete', () => {
         //click add card
         addCardToCollection(1, "TEST1")
         //goto collections
         cy.get('#collection-page').click();
         //increment count
-        cy.get('#card-case-add-count').click({force: true})
+        cy.get('#card-case-add-count').click({ force: true })
         cy.contains("Count: 2")
         //leave page and come back
         cy.get("#cards-page").click()
@@ -73,44 +74,23 @@ describe('Collection Card Tests display', () => {
         //check it is still 2
         cy.contains("Count: 2")
         //test wishlist and decrement
-        cy.get('#card-case-sub-count').click({force: true})
-        cy.get('#card-case-sub-count').click({force: true})
-        cy.contains("Wishlist")
+        cy.get('#card-case-sub-count').click({ force: true })
+        cy.contains("Count: 1")
+        cy.get('#card-case-sub-count').click({ force: true })
+        cy.get('#count-display').contains("Wishlist")
         //make sure minus is disabled
         cy.get('#card-case-sub-count').should('be.disabled')
-        cy.get("#cards-page").click()
-        cy.get('#collection-page').click();
-        //verify changes 
-        cy.contains("Wishlist")
-        //clean up
-        deleteCurrentCollection()
-    })
-
-    it('Test delete card', () => {
-        //add normal card
-        addCardToCollection(1, "TEST1")
-        //goto collections
-        cy.get('#collection-page').click();
+        //move off collections
+        gotoCards()
+        gotoCollections()
+        //verify wishlist is still there
+        cy.get('#count-display').contains("Wishlist")
+        // TEST DELETE
         //delete card
         cy.get('#card-case-delete-button').click();
         //clean up
         cy.get("card-grid").should('not.exist');
-        cy.get('#delete-collection-button').click();
-        cy.get('#delete-confirm-button').click();
-    })
-
-    it('Test move card error', () => {
-        //Add Card
-        addCardToCollection(1, "TEST1")
-        gotoCollections()
-        gotoCollection("TEST1")
-
-        //Test empty 
-        cy.get('#card-case-move-button').click({force: true})
-        cy.get('#move-confirm-button').click()
-        cy.get("#collection-input").invoke('attr', 'aria-invalid').should('eq', 'true')
-        cy.get('#close-move-card-dialog').click({force: true})
-
+        //clean up
         deleteCurrentCollection()
     })
 
@@ -118,13 +98,27 @@ describe('Collection Card Tests display', () => {
         //Add Card
         addCardToCollection(1, "TEST1")
         gotoCollections()
+        gotoCollection("TEST1")
+
+        //Test empty 
+        cy.get('#card-case-move-button').click({ force: true })
+        cy.get('#move-confirm-button').click()
+        cy.get("#collection-input").invoke('attr', 'aria-invalid').should('eq', 'true')
+        cy.get('#close-move-card-dialog').click({ force: true })
+
+        deleteCurrentCollection()
+        gotoCards()
+        sortSet("Brilliant-Stars")
+        //Add Card
+        addCardToCollection(1, "TEST1")
+        gotoCollections()
         addCollection("TEST2")
         gotoCollection("TEST1")
 
         //Test Add
-        cy.get('#card-case-move-button').click({force: true})
+        cy.get('#card-case-move-button').click({ force: true })
         cy.get("#collection-input").click().type("TEST2")
-        cy.get('#move-dialog-title-pad').click({force: true})
+        cy.get('#move-dialog-title-pad').click({ force: true })
         cy.get('#move-confirm-button').click()
 
         gotoCollection("TEST2")

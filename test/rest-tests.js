@@ -1,9 +1,9 @@
-const mw = require('../src/middleware')
+const mw = require('../src/server/middleware')
 const axios = require('axios')
 const fs = require('fs')
 const path = require('path')
 const assert = require('assert');
-const DB = require('../src/database')
+const DB = require('../src/server/database')
 
 before(
     async () => {

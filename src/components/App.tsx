@@ -1,11 +1,11 @@
 import React from 'react';
-import './App.css';
-import Cards from "./components/CardSearch"
-import { Expansions } from "./components/Expansions"
+import '../index.css';
+import Cards from "./CardSearch"
+import { Expansions } from "./Expansions"
 import LinearProgress from '@mui/material/LinearProgress';
 import { Subject, timer } from 'rxjs'
-import { DbState, getDbState } from './controls/CardDB';
-import { Collections } from './components/Collections';
+import { DbState, getDbState } from '../controls/CardDB';
+import { Collections } from './Collections';
 
 class State {
     page: string = ""
@@ -68,14 +68,14 @@ export class App extends React.Component<{}, State> {
                 content = <Collections></Collections>
                 break
             default:
-                message = this.state.dbState.updated ? "Downloading New Data" : "Loading Data base"
+                message = (this.state.dbState.updated ? "Downloading New Data" : "Loading Database") + "...";
                 content = (
                     <div className='absolute justify-items-center items-center w-full'>
                         <LinearProgress id="app-loading-bar"></LinearProgress>
                         <div className='h-16'></div>
                         <div className='flex'>
                             <div className='grow'></div>
-                            <span className='text-2xl' id="loading-message">{message} ...</span>
+                            <span className='text-2xl' id="loading-message">{message}</span>
                             <div className='grow'></div>
                         </div>
                     </div>

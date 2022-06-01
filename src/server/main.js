@@ -13,7 +13,7 @@ function createWindow () {
         protocol: 'file:',
         slashes: true,
       });
-  mainWindow = new BrowserWindow({ width: 1200, height: 800 });
+  mainWindow = new BrowserWindow({ width: 1600, height: 1000 });
   mainWindow.loadURL(startUrl).catch((err) => console.log(`Failed to load index.html :${err}`));
   mainWindow.on('closed', function () {
     mainWindow = null;
