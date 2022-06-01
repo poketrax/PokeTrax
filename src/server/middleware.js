@@ -5,13 +5,12 @@ const app = express();
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const bodyParser = require('body-parser');
 const DB = require('./database');
-const { BsDash } = require("react-icons/bs");
 
 let server
 
 //Start web server
 const start = async () => {
-    DB.checkForDbUpdate().catch((err) => console.log(err))
+    await DB.checkForDbUpdate().catch((err) => console.log(err))
     DB.init()
     server = app.listen(3030)
 }

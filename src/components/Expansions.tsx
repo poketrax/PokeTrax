@@ -2,7 +2,7 @@ import React from 'react';
 import { Series, Expansion } from '../model/Meta'
 import axios from 'axios'
 import { baseURL } from '../index'
-import { AppController } from '../App'
+import { AppController } from './App'
 
 class State {
     series = new Array<Series>()

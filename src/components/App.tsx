@@ -1,11 +1,11 @@
 import React from 'react';
-import './App.css';
-import Cards from "./components/CardSearch"
-import { Expansions } from "./components/Expansions"
+import '../index.css';
+import Cards from "./CardSearch"
+import { Expansions } from "./Expansions"
 import LinearProgress from '@mui/material/LinearProgress';
 import { Subject, timer } from 'rxjs'
-import { DbState, getDbState } from './controls/CardDB';
-import { Collections } from './components/Collections';
+import { DbState, getDbState } from '../controls/CardDB';
+import { Collections } from './Collections';
 
 class State {
     page: string = ""
