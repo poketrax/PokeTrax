@@ -2,7 +2,7 @@ name: test
 on: 
   push: 
     branches:
-      - 'releases/**'
+      - 'release/**'
 jobs:
   build-tests:
     runs-on: ubuntu-latest
