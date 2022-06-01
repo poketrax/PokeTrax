@@ -67,21 +67,24 @@ const checkForDbUpdate = () => {
     return new Promise(
         async (resolve, reject) => {
             //search for folder
+            
             if (fs.existsSync(path.join(pwd(), "./sql")) === false) {
                 fs.mkdirSync(path.join(pwd(), "./sql"), {recursive: true})
             }
             //Init databases
             let meta = await pullDbMeta()
+            
             //if new and no meta file exists
             if (fs.existsSync(path.join(pwd(), DB_META)) === false) {
                 dbUpdate = { ready: false, updated: true }
                 try {
+                    
                     await pullDb(meta)
                     resolve()
                 } catch (err) {
                     dbUpdate = { ready: false, updated: false, error: err }
                     console.log(err)
-                    reject()
+                    reject("can't pull data base")
                 }
             } else { // look for update
                 let current = JSON.parse(fs.readFileSync(path.join(pwd(), DB_META), { encoding: 'utf8', flag: 'r' }))
@@ -93,10 +96,11 @@ const checkForDbUpdate = () => {
                     } catch (err) {
                         dbUpdate = { ready: false, updated: false, error: err }
                         console.log(err)
-                        reject()
+                        reject("cant pull database")
                     }
                 } else {
                     dbUpdate = { ready: true, updated: false }
+                    resolve()
                 }
             }
         }
@@ -137,16 +141,18 @@ async function pullDbMeta() {
 async function pullDb(meta) {
     return new Promise(
         async (resolve, reject) => {
+            console.
             https.get(meta.asset, (stream) => {
                 //write database file
                 let writer = fs.createWriteStream(path.join(pwd(), CARD_DB_FILE))
                 stream.pipe(writer)
+                
                 writer.on('finish', () => {
                     fs.writeFileSync(path.join(pwd(), "./sql/meta.json"), JSON.stringify(meta))
                     dbUpdate = { ready: true, updated: true }
                     resolve()
                 })
-                writer.on('error', () => { reject() })
+                writer.on('error', () => { console.log("ERROR");reject() })
             })
         }
     )
