@@ -7,17 +7,17 @@
 
 # testing
 /coverage
+test/data/cardImg
+test/data/expLogo
+test/data/expSymbol
+test/data/seriesImg
+test/data/sql
 
 # production
 build/
 /data
-/expLogo
-/expSymbol
-/cardImg
-/seriesImg
 /out
 /dist
-sql/
 out/
 dev-data/
 
