@@ -254,7 +254,7 @@ export function download(collection: string, type: string) {
     )
 }
 
-export async function renameCollection(collection: string, newName: string, update: (percent: number, done: boolean) => {}){
+export async function renameCollection(collection: string, newName: string, update: (percent: number, done: boolean) => void){
     let total = 0
     let processed = 0
     let pages = 0
@@ -275,11 +275,13 @@ export async function renameCollection(collection: string, newName: string, upda
             }
         }
         catch (err) {
-            
+            console.log(err)
         }
         i++
-        update(processed / total, i < pages)
+        update(processed / total, false)
     } while (i < pages)
+    deleteCollection(collection)
+    update(1, true)
 }
 
 export function getCollectionValue(collection: string) {
