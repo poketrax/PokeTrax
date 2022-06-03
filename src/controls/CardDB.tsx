@@ -284,6 +284,10 @@ export async function renameCollection(collection: string, newName: string, upda
     update(1, true)
 }
 
+export function openLink(type: string, card: Card){
+    axios.post(`${baseURL}/openlink`, {type: type, card: card})
+}
+
 export function getCollectionValue(collection: string) {
     return axios.get(`${baseURL}/collections/${collection}/value`)
 }
