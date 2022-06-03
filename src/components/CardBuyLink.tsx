@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '../model/Card';
-
+import { openLink } from '../controls/CardDB'
 
 interface Props {
     card: Card
@@ -21,15 +21,7 @@ export class CardBuyLink extends React.Component<Props, {}> {
     }
 
     private onclick(){
-        switch(this.props.type){
-            case 'tcgp' :
-                window.open('https://tcgplayer.com/product/' + this.props.card?.idTCGP)
-                break;
-            case 'ebay' :
-                window.open(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(this.props.card?.cardId)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
-                break;
-            default:
-        }
+        openLink(this.props.type, this.props.card)
     }
 
     render() {
@@ -37,7 +29,6 @@ export class CardBuyLink extends React.Component<Props, {}> {
             <div className='w-20 border-2 rounded-lg p-2 hover:shadow-2xl' 
                 onClick={() => this.onclick()}> 
                 {this.getImage()}
-                
             </div>
         )
     }

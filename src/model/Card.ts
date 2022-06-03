@@ -49,3 +49,13 @@ export class CardSearch {
     public total: number = 0
     public cards: Card[] = []
 }
+
+export class LinkRequest{
+    public type: string
+    public card: Card
+
+    constructor(type: string, card: Card){
+        this.card = card
+        this.type = type
+    }
+}
