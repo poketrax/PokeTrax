@@ -73,10 +73,10 @@ export function getCollections(): Promise<Array<Collection>> {
     )
 }
 
-export function getCollectionCards(collection: string, page: number, searchVal?: string, sort?: string): Promise<CardSearch> {
+export async function getCollectionCards(collection: string, page: number, searchVal?: string, sort?: string): Promise<CardSearch> {
     return new Promise<CardSearch>(
         (resolve, reject) => {
-            if(collection === ''){
+            if (collection === '') {
                 resolve(new CardSearch())
             }
             axios.get(`${baseURL}/collections/${collection}/cards/${page}?name=${encodeURI(searchVal ?? "")}&sort=${sort ?? ""}`)
@@ -236,26 +236,55 @@ function downloadURI(uri: string, name: string) {
     link.click();
     document.body.removeChild(link);
     link.remove()
-  }
+}
 
-export function download(collection: string, type: string){
+export function download(collection: string, type: string) {
     axios.get(`${baseURL}/collections/download/${collection}/${type}`).then(
         (res) => {
             let data = res.data
-            if(type === 'JSON'){
+            if (type === 'JSON') {
                 data = JSON.stringify(res.data, null, 1)
             }
             let extention = type.toLowerCase()
             extention = extention.split("-")[0]
-            const blob = new Blob([data], { type: `application/${extention}`});
+            const blob = new Blob([data], { type: `application/${extention}` });
             const url = URL.createObjectURL(blob);
             downloadURI(url, `${collection}.${extention}`)
         }
     )
 }
 
+export async function renameCollection(collection: string, newName: string, update: (percent: number, done: boolean) => void){
+    let total = 0
+    let processed = 0
+    let pages = 0
+    let i = 0
 
-export function getCollectionValue(collection: string){
+    addCollection(newName)
+    do {
+        try {
+            let results = await getCollectionCards(collection, i)
+            if (total === 0) {
+                pages = Math.ceil(results.total / 25)
+                total = results.total
+            }
+            for (let card of results.cards) {
+                card.collection = newName
+                addCardToCollection(card)
+                processed++
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+        i++
+        update(processed / total, false)
+    } while (i < pages)
+    deleteCollection(collection)
+    update(1, true)
+}
+
+export function getCollectionValue(collection: string) {
     return axios.get(`${baseURL}/collections/${collection}/value`)
 }
 

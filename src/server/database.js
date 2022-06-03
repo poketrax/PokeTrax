@@ -141,7 +141,6 @@ async function pullDbMeta() {
 async function pullDb(meta) {
     return new Promise(
         async (resolve, reject) => {
-            console.
             https.get(meta.asset, (stream) => {
                 //write database file
                 let writer = fs.createWriteStream(path.join(pwd(), CARD_DB_FILE))
