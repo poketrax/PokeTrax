@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import UploadIcon from '@mui/icons-material/Upload';
 import EditIcon from '@mui/icons-material/Edit';
 import { Tooltip } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -27,6 +28,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardCase } from './CardCase';
 import { Card } from '../model/Card'
 import DownloadMenu from './DownloadMenu';
+import { ReadStream } from 'fs-extra';
 
 class State {
     public collection = ""
@@ -36,6 +38,7 @@ class State {
     public addDialogOpen = false
     public deleteDialogOpen = false
     public renameDialogOpen = false
+    public importDialogOpen = false
     public searchValue = ""
     public sort = ""
     public page = 0
@@ -232,6 +235,70 @@ function DeleteDialog(props: DialogProps) {
         </Dialog>
     );
 }
+
+function ImportDialog(props: DialogProps) {
+    const { onClose, onConfirm, open } = props;
+    const [inProg, setInProg] = React.useState(false)
+    const [prog, setProg] = React.useState(false)
+    const [name, setName] = React.useState("")
+    const [file, setFile] = React.useState(new Array<Card>())
+    let reader
+
+    const handleClose = () => {
+        onClose();
+    };
+
+    const uploadColl = () => {
+        setInProg(true)
+        deleteCollection(name).then(
+            (_) => {
+                setInProg(false)
+                onConfirm(name)
+                handleClose()
+            }
+        )
+    }
+
+
+    return (
+        <Dialog
+            id="import-confirm-dialog"
+            onClose={handleClose}
+            open={open}>
+            <DialogTitle>Import Collection</DialogTitle>
+            <div className='w-96 m-4'>
+                <form>
+                    <h1>File</h1>
+                    <input type="file" onChange={(ev) => {}}/>
+                    <Button
+                    type="submit"
+                    id="import-confirm-cancel-button"
+                    className="w-full"
+                    variant='contained'
+                    >Choose File</Button>
+                </form>
+                
+                <div className="w-full pt-2 pb-2 flex items-center justify-center">
+                    <Button
+                        id="import-confirm-button"
+                        className="w-full"
+                        variant='contained'
+                        onClick={uploadColl}
+                        startIcon={<UploadIcon />} color="error">Upload</Button>
+                    <div className='w-2'></div>
+                    <Button
+                        id="import-confirm-cancel-button"
+                        className="w-full"
+                        variant='contained'
+                        onClick={handleClose}
+                        startIcon={<CloseIcon />}>Cancel</Button>
+                </div>
+                {inProg && <LinearProgress id="delete-in-prog" />}
+            </div>
+        </Dialog>
+    );
+}
+
 export class Collections extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props)
@@ -426,7 +493,7 @@ export class Collections extends React.Component<{}, State> {
                                 size='small'
                                 id="rename-collection-button"
                                 color="primary"
-                                onClick={() => { this.setState({ ...this.state, renameDialogOpen: true })}}>
+                                onClick={() => { this.setState({ ...this.state, renameDialogOpen: true }) }}>
                                 <EditIcon />
                             </Fab>
                         </Tooltip>
