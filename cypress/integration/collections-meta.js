@@ -10,6 +10,7 @@ import {
 describe('Collection Meta Tests', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
+    cy.get('#card-grid')
     gotoCollections()
   })
 

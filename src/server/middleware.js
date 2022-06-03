@@ -343,6 +343,7 @@ app.put("/collections/card", bodyParser.json(),
         }
     }
 )
+
 /**
  * Delete Collection Card
  */
