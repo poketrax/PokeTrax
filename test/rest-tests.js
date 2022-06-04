@@ -7,7 +7,7 @@ const DB = require('../src/server/database')
 
 before(
     async () => {
-       await mw.start()
+        await mw.start()
     }
 )
 
@@ -15,14 +15,14 @@ describe(
     'Test Image retreival',
     () => {
         it('Test pull card img', async () => {
-            await axios.get("http://localhost:3030/cardImg/Brilliant-Stars-Ultra-Ball-150").then(
+            await axios.get(`http://localhost:3030/cardImg/${encodeURIComponent(`SWSH09-Brilliant-Stars-Ultra-Ball-150`)}`).then(
                 (res) => {
                     assert.ok(res.status === 200)
                 }
             ).catch(
                 (err) => {
-                    console.log(err)
-                    assert.fail(err)
+                    // console.log(err.response)
+                    fail(err.response)
                 }
             )
         })
@@ -34,7 +34,6 @@ describe(
             ).catch(
                 (err) => {
                     fail(err)
-
                 }
             )
         })
@@ -85,9 +84,9 @@ describe(
             assert.ok(cards.data.total != 0, `No results found ${cards.data}`)
         });
         it('Search for 1 card', async () => {
-            let cards = await axios.get("http://localhost:3030/cards/0?name=Brilliant-Stars-Ultra-Ball-150")
-            assert.ok(cards.data.total === 1, `number of results not right ${JSON.stringify(cards.data)}`)
-            assert.ok(cards.data.cards[0].cardId === 'Brilliant-Stars-Ultra-Ball-150', `Name is not right ${JSON.stringify(cards.data)}`)
+            let cards = await axios.get(`http://localhost:3030/cards/0?name=${encodeURIComponent(`Brilliant Stars Ultra Ball 150`)}`)
+            assert.equal(cards.data.total, 1, `number of results not right ${JSON.stringify(cards.data)}`)
+            assert.equal(cards.data.cards[0].cardId, 'SWSH09-Brilliant-Stars-Ultra-Ball-150', `Name is not right ${JSON.stringify(cards.data)}`)
         });
     }
 )
@@ -95,7 +94,6 @@ describe(
 describe(
     'Collection Rest Tests',
     () => {
-
         it('Add Collection', async () => {
             let res = await axios.put("http://localhost:3030/collections", { 'name': 'collection1' })
             await axios.put("http://localhost:3030/collections", { 'name': 'collection2' })
@@ -113,49 +111,82 @@ describe(
             )
         })
         it('Add Cards', async () => {
-            let cards = JSON.parse(fs.readFileSync('./test/data/testCollection.json'))
+            let cards = JSON.parse(fs.readFileSync('./test/testCollection.json'))
             for (let card of cards) {
                 try {
-                    await axios.put("http://localhost:3030/collections/card", card)
+                    let res = await axios.put("http://localhost:3030/collections/card", card)
+                    assert.equal(res.status, 201, `Status not right ${res.status}`)
                 } catch (err) {
                     return new Error(err)
                 }
-
             }
         })
+
         it('Test Get Cards', async () => {
+            await new Promise(resolve => setTimeout(resolve, 3000));
             let resCol1 = await axios.get("http://localhost:3030/collections/collection1/cards/0")
             let resCol2 = await axios.get("http://localhost:3030/collections/collection2/cards/0")
-            assert.equal(resCol1.data.count, 3, `Number of cards in Collection 1 not right ${JSON.stringify(resCol1.data)}`)
-            assert.equal(resCol2.data.count, 1, `Number of cards in Collection 2 not right ${JSON.stringify(resCol2.data)}`)
+            assert.equal(resCol1.data.total, 3, `Number of cards in Collection 1 not right ${JSON.stringify(resCol1.data)}`)
+            assert.equal(resCol2.data.total, 1, `Number of cards in Collection 2 not right ${JSON.stringify(resCol2.data)}`)
         })
+
         it('Update cards', async () => {
             await axios.put("http://localhost:3030/collections/card",
                 {
-                    "cardId": "Brilliant-Stars-Choice-Belt-135",
+                    "cardId": "SWSH09-Brilliant-Stars-Choice-Belt-135",
                     "collection": "collection2",
                     "variant": "Normal",
                     "paid": 1.0,
                     "count": 2,
-                    "grade": "CGC 10"
+                    "grade": "",
+                    "idTCGP": 263857,
+                    "name": "Choice Belt",
+                    "expIdTCGP": "SWSH09 Brilliant Stars",
+                    "expName": "Brilliant Stars",
+                    "expCardNumber": "135",
+                    "expCodeTCGP": "SWSH09",
+                    "rarity": "Uncommon",
+                    "img": "https://product-images.tcgplayer.com/fit-in/437x437/263857.jpg",
+                    "price": 0.17,
+                    "description": "The attacks of the Pokemon this card is attached to do 30 more damage to your opponent's Active Pokemon V <em>(before applying Weakness and Resistance)</em>.",
+                    "releaseDate": "2022-02-25T00:00:00Z",
+                    "energyType": "",
+                    "cardType": "Item",
+                    "pokedex": 100000,
+                    "variants": "[\"Normal\",\"Reverse Holofoil\"]"
                 })
             let res = await axios.get("http://localhost:3030/collections/collection2/cards/0")
-            assert.equal(res.data.count, 1)
+            assert.equal(res.data.total, 1)
             let cards = res.data.cards
             assert.equal(cards[0].variant, "Normal", `variant not set ${JSON.stringify(cards[0], null, 1)}`)
-            assert.equal(cards[0].paid, 1.0, `Paid not set ${cards}`)
-            assert.equal(cards[0].count, 2, `Count not set ${cards}`)
+            assert.equal(cards[0].paid, 1.0, `Paid not set ${JSON.stringify(cards[0])}`)
+            assert.equal(cards[0].count, 2, `Count not set ${cards[0]}`)
             await axios.put("http://localhost:3030/collections/card",
                 {
-                    "cardId": "Brilliant-Stars-Choice-Belt-135",
+                    "cardId": "SWSH09-Brilliant-Stars-Choice-Belt-135",
                     "collection": "collection2",
-                    "variant": "Reverse Holo",
+                    "variant": "Reverse Holofoil",
                     "paid": 1.0,
                     "count": 1,
-                    "grade": "CGC 10"
+                    "grade": "",
+                    "idTCGP": 263857,
+                    "name": "Choice Belt",
+                    "expIdTCGP": "SWSH09 Brilliant Stars",
+                    "expName": "Brilliant Stars",
+                    "expCardNumber": "135",
+                    "expCodeTCGP": "SWSH09",
+                    "rarity": "Uncommon",
+                    "img": "https://product-images.tcgplayer.com/fit-in/437x437/263857.jpg",
+                    "price": 0.17,
+                    "description": "The attacks of the Pokemon this card is attached to do 30 more damage to your opponent's Active Pokemon V <em>(before applying Weakness and Resistance)</em>.",
+                    "releaseDate": "2022-02-25T00:00:00Z",
+                    "energyType": "",
+                    "cardType": "Item",
+                    "pokedex": 100000,
+                    "variants": "[\"Normal\",\"Reverse Holofoil\"]"
                 })
             let res2 = await axios.get("http://localhost:3030/collections/collection2/cards/0")
-            assert.equal(res2.data.count, 2)
+            assert.equal(res2.data.total, 2)
         })
 
         it('Delete card', async () => {
@@ -163,16 +194,31 @@ describe(
                 {
                     "data":
                     {
-                        "cardId": "Brilliant-Stars-Choice-Belt-135",
+                        "cardId": "SWSH09-Brilliant-Stars-Choice-Belt-135",
                         "collection": "collection2",
                         "variant": "Normal",
                         "paid": 1.0,
                         "count": 2,
-                        "grade": "CGC 10"
+                        "grade": "",
+                        "idTCGP": 263857,
+                        "name": "Choice Belt",
+                        "expIdTCGP": "SWSH09 Brilliant Stars",
+                        "expName": "Brilliant Stars",
+                        "expCardNumber": "135",
+                        "expCodeTCGP": "SWSH09",
+                        "rarity": "Uncommon",
+                        "img": "https://product-images.tcgplayer.com/fit-in/437x437/263857.jpg",
+                        "price": 0.17,
+                        "description": "The attacks of the Pokemon this card is attached to do 30 more damage to your opponent's Active Pokemon V <em>(before applying Weakness and Resistance)</em>.",
+                        "releaseDate": "2022-02-25T00:00:00Z",
+                        "energyType": "",
+                        "cardType": "Item",
+                        "pokedex": 100000,
+                        "variants": "[\"Normal\",\"Reverse Holofoil\"]"
                     }
                 })
             let res = await axios.get("http://localhost:3030/collections/collection2/cards/0")
-            assert.equal(res.data.count, 1)
+            assert.equal(res.data.total, 1)
         })
 
         it("Delete collection", async () => {
@@ -182,7 +228,7 @@ describe(
             let colls = await axios.get("http://localhost:3030/collections/")
             let res = await axios.get("http://localhost:3030/collections/collection2/cards/0")
             assert.equal(colls.data.length, 1, "collection not deleted")
-            assert.equal(res.data.count, 0, "cards not deleted")
+            assert.equal(res.data.total, 0, "cards not deleted")
         })
     }
 )
@@ -190,6 +236,6 @@ describe(
 after(
     () => {
         mw.stop()
-        fs.rmSync(path.join(DB.pwd(), "./sql/collections.sqlite3"))
+        fs.rmSync(DB.pwd(), { recursive: true, force: true })
     }
 )

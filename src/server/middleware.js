@@ -1,4 +1,5 @@
 const express = require("express");
+const shell = require('electron').shell;
 const cors = require('cors')
 const path = require('path')
 const app = express();
@@ -343,6 +344,7 @@ app.put("/collections/card", bodyParser.json(),
         }
     }
 )
+
 /**
  * Delete Collection Card
  */
@@ -446,12 +448,29 @@ app.get("/collections/:collection/value", (req, res) => {
     try {
         db.prepare(sqlAttachCard).run()
         db.prepare(sqlAttachColl).run()
-        let totalValue = db.prepare(`SELECT sum(price) as totalValue, sum(paid) as totalPaid from(${sqlSelect})`).get({collection: req.params.collection})
+        let totalValue = db.prepare(`SELECT sum(price) as totalValue, sum(paid) as totalPaid from(${sqlSelect})`).get({ collection: req.params.collection })
         res.send(totalValue)
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
-    } finally{
+    } finally {
         db.close()
     }
+})
+
+app.post("/openlink", bodyParser.json(), (req, res) => {
+    let linkReq = req.body
+    switch (linkReq.type) {
+        case 'tcgp':
+            shell.openExternal('https://tcgplayer.com/product/' + linkReq.card?.idTCGP)
+            res.sendStatus(200)
+            break;
+        case 'ebay':
+            shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(linkReq.card?.cardId)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
+            res.sendStatus(200)
+            break;
+        default:
+    }
+    console.log(`body empty ${JSON.stringify(req.body)}`)
+    res.sendStatus(400)
 })

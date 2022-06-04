@@ -2,11 +2,15 @@
 import { 
   deleteCurrentCollection,
   gotoCollections,
-  addCollection
+  addCollection,
+  addCardToCollection,
+  gotoCards,
+  sortSet
 } from './common'
 describe('Collection Meta Tests', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
+    cy.get('#card-grid')
     gotoCollections()
   })
 
@@ -37,6 +41,23 @@ describe('Collection Meta Tests', () => {
     //Check if test 1 is selected after delete
     cy.get('#tab-TEST1').invoke('attr', 'aria-selected').should('eq', 'true')
     //delete Test1 clean up
+    deleteCurrentCollection()
+  })
+
+  it('Rename Collection', () => {
+    gotoCards()
+    sortSet("Brilliant-Stars")
+    addCardToCollection(0, "OLD")
+    addCardToCollection(1, "OLD")
+    addCardToCollection(2, "OLD")
+    gotoCollections()
+    cy.get('#rename-collection-button').click({force: true})
+    cy.get('#rename-collection-confirm-button').click()
+    cy.contains("Please set a new Collection name")
+    cy.get('#rename-collection-name').invoke('attr', 'aria-invalid').should('eq', 'true')
+    cy.get('#rename-collection-name').click().type("NEW")
+    cy.get('#rename-collection-confirm-button').click()
+    cy.contains('1–3 of 3')
     deleteCurrentCollection()
   })
 

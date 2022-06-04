@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from '../model/Card'
 import { CardCase } from './CardCase'
 import { Subject } from 'rxjs'
+import { AppController } from './App'
 import TablePagination from '@mui/material/TablePagination';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -44,6 +45,7 @@ export class CardSearch extends React.Component<Props, State> {
         if (props.selectedSet !== '') {
             this.state = new State(props.selectedSet)
         }
+        AppController.next({page: "", selectedSet: ""})
         expansions().then(
             (data) => {
                 this.setState({ ...this.state, sets: data.map((exp) => exp.name) })
@@ -76,6 +78,7 @@ export class CardSearch extends React.Component<Props, State> {
             }
         )
     }
+
     render() {
         return (
             <div className='w-full'>

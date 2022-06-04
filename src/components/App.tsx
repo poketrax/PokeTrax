@@ -25,7 +25,11 @@ export class App extends React.Component<{}, State> {
         this.state = new State()
         AppController.subscribe(
             (msg) => {
-                this.setPage(msg.page, msg.selectedSet)
+                if(msg.selectedSet === ""){
+                    this.setState({...this.state, selectedSet : ""})
+                }else{
+                    this.setPage(msg.page, msg.selectedSet)
+                }
             }
         )
         //checks to see if update is happing
@@ -94,7 +98,6 @@ export class App extends React.Component<{}, State> {
                         </span>
                     </div>
                 </div>
-
                 {content}
             </div>
         )

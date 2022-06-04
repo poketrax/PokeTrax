@@ -15,7 +15,7 @@ export function addCardToCollection(card_number, collection) {
  */
 export function sortSet(set) {
     cy.get('#expantions-sel').click();
-    cy.get(`#option-${set}`).click();
+    cy.get(`#option-${set}`).scrollIntoView().click();
     cy.get('#sort-set-number').click();
 }
 
