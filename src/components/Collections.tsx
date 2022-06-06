@@ -4,7 +4,6 @@ import Tab from '@mui/material/Tab';
 import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
-import UploadIcon from '@mui/icons-material/Upload';
 import EditIcon from '@mui/icons-material/Edit';
 import { Tooltip } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -21,14 +20,16 @@ import {
     deleteCollection,
     getCollectionCards,
     getCollectionValue,
-    renameCollection
+    addCardToCollection
 } from '../controls/CardDB'
 import LinearProgress from '@mui/material/LinearProgress';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardCase } from './CardCase';
 import { Card } from '../model/Card'
 import DownloadMenu from './DownloadMenu';
-import { ReadStream } from 'fs-extra';
+import { FileUploader } from "react-drag-drop-files";
+
+const fileTypes = ["JSON"];
 
 class State {
     public collection = ""
@@ -53,81 +54,14 @@ interface DialogProps {
     onConfirm: (name: string) => void;
 }
 
-function RenameDialog(props: DialogProps) {
-    const { onClose, onConfirm, open, collections } = props;
-    const [name, setName] = React.useState('');
-    const [prog, setProg] = React.useState(0)
-    const [inProg, setInProg] = React.useState(false)
-    const [renameError, setRenameError] = React.useState(false)
-    const [renameErrorText, setRenameErrorText] = React.useState("")
-
-    const handleClose = () => {
-        setName("")
-        onClose();
-    };
-
-    const progressCallback = (progress: number, finished: boolean): void => {
-        console.log(`prog: ${progress} finish: ${finished}`)
-        setProg(progress)
-        if (finished) {
-            handleClose();
-            onConfirm(name)
-        }
-    }
-
-    const rename = () => {
-        if (name != null && name !== '') {
-            renameCollection(props.name, name, progressCallback)
-            setInProg(true)
-            setRenameErrorText("In Progress don't close dialog")
-        } else {
-            setRenameError(true)
-            setRenameErrorText("Please set a new Collection name")
-        }
-    }
-
-    return (
-        <Dialog
-            id="rename-collection-dialog"
-            onClose={handleClose}
-            open={open}>
-            <DialogTitle>Rename Collection {props.name}</DialogTitle>
-            <div className='w-96 m-4'>
-                <TextField
-                    className="w-full"
-                    id="rename-collection-name"
-                    label="Name"
-                    variant="outlined"
-                    error={renameError}
-                    value={name}
-                    onChange={(ev) => { setName(ev.target.value) }} />
-                {renameError && (<div id="rename-collection-error">{renameErrorText}</div>)}
-                <div className="w-full pt-2 pb-2 flex items-center justify-center">
-                    <Button
-                        id="rename-collection-confirm-button"
-                        className="w-full"
-                        variant='contained'
-                        onClick={rename} startIcon={<EditIcon />}>Rename</Button>
-                    <div className='w-2'></div>
-                    <Button
-                        id="add-collection-cancel-button"
-                        className="w-full"
-                        variant='contained'
-                        onClick={handleClose}
-                        startIcon={<CloseIcon />}>Cancel</Button>
-                </div>
-                {inProg && <LinearProgress variant='determinate' value={prog} />}
-            </div>
-        </Dialog>
-    );
-}
-
 function AddDialog(props: DialogProps) {
     const { onClose, onConfirm, open, collections } = props;
     const [name, setName] = React.useState('');
     const [inProg, setInProg] = React.useState(false)
+    const [prog, setProg] = React.useState(0)
     const [addCollError, setAddCollError] = React.useState(false)
     const [addCollErrorText, setAddCollErrorText] = React.useState("")
+    const [file, setFile] = React.useState(null)
 
     const handleClose = () => {
         setName("")
@@ -152,12 +86,44 @@ function AddDialog(props: DialogProps) {
         }
     }
 
+    function uploadColl() {
+        setInProg(true)
+        if (collections?.find((coll) => coll.name === name)) {
+            setAddCollError(true)
+            setAddCollErrorText(`Collection ${name} Already Exists`)
+            setInProg(false)
+        } else {
+            if (file != null) {
+                var reader = new FileReader()
+                console.log(file)
+                reader.readAsText(file)
+                reader.onload = async () => {
+                    if (typeof (reader.result) === 'string') {
+                        let cards: Array<Card> = JSON.parse(reader.result)
+                        addCollection(name)
+                        for (let i =0; i< cards.length; i++) {
+                            let card = cards[i]
+                            setProg((i/cards.length) * 100)
+                            console.log(card)
+                            card.collection = name
+                            await addCardToCollection(card)
+                        }
+                        setInProg(false)
+                        setName("")
+                        onConfirm(name)
+                        onClose()
+                    }
+                }
+            }
+        }
+    }
+
     return (
         <Dialog
             id="add-collection-dialog"
             onClose={handleClose}
             open={open}>
-            <DialogTitle>Add Collection</DialogTitle>
+            <DialogTitle>Add/Upload Collection</DialogTitle>
             <div className='w-96 m-4'>
                 <TextField
                     className="w-full"
@@ -167,13 +133,28 @@ function AddDialog(props: DialogProps) {
                     error={addCollError}
                     value={name}
                     onChange={(ev) => { setName(ev.target.value) }} />
+                <div>Collection file upload *optional</div>
+                <FileUploader
+                    label="Upload or Drop JSON file here"
+                    handleChange={(file) => { setFile(file); console.log(file) }}
+                    name="file"
+                    types={fileTypes} />
                 {addCollError && (<div id="add-collection-error">{addCollErrorText}</div>)}
                 <div className="w-full pt-2 pb-2 flex items-center justify-center">
                     <Button
                         id="add-collection-confirm-button"
                         className="w-full"
                         variant='contained'
-                        onClick={addColl} startIcon={<AddCircleOutlineIcon />}>Add</Button>
+                        onClick={
+                            () => {
+                                if (file != null) {
+                                    uploadColl()
+                                } else {
+                                    addColl()
+                                }
+                            }
+                        }
+                        startIcon={<AddCircleOutlineIcon />}>Add</Button>
                     <div className='w-2'></div>
                     <Button
                         id="add-collection-cancel-button"
@@ -182,7 +163,7 @@ function AddDialog(props: DialogProps) {
                         onClick={handleClose}
                         startIcon={<CloseIcon />}>Cancel</Button>
                 </div>
-                {inProg && <LinearProgress />}
+                {inProg && <LinearProgress variant='determinate' value={prog}/>}
             </div>
         </Dialog>
     );
@@ -225,69 +206,6 @@ function DeleteDialog(props: DialogProps) {
                     <div className='w-2'></div>
                     <Button
                         id="delete-confim-cancel-button"
-                        className="w-full"
-                        variant='contained'
-                        onClick={handleClose}
-                        startIcon={<CloseIcon />}>Cancel</Button>
-                </div>
-                {inProg && <LinearProgress id="delete-in-prog" />}
-            </div>
-        </Dialog>
-    );
-}
-
-function ImportDialog(props: DialogProps) {
-    const { onClose, onConfirm, open } = props;
-    const [inProg, setInProg] = React.useState(false)
-    const [prog, setProg] = React.useState(false)
-    const [name, setName] = React.useState("")
-    const [file, setFile] = React.useState(new Array<Card>())
-    let reader
-
-    const handleClose = () => {
-        onClose();
-    };
-
-    const uploadColl = () => {
-        setInProg(true)
-        deleteCollection(name).then(
-            (_) => {
-                setInProg(false)
-                onConfirm(name)
-                handleClose()
-            }
-        )
-    }
-
-
-    return (
-        <Dialog
-            id="import-confirm-dialog"
-            onClose={handleClose}
-            open={open}>
-            <DialogTitle>Import Collection</DialogTitle>
-            <div className='w-96 m-4'>
-                <form>
-                    <h1>File</h1>
-                    <input type="file" onChange={(ev) => {}}/>
-                    <Button
-                    type="submit"
-                    id="import-confirm-cancel-button"
-                    className="w-full"
-                    variant='contained'
-                    >Choose File</Button>
-                </form>
-                
-                <div className="w-full pt-2 pb-2 flex items-center justify-center">
-                    <Button
-                        id="import-confirm-button"
-                        className="w-full"
-                        variant='contained'
-                        onClick={uploadColl}
-                        startIcon={<UploadIcon />} color="error">Upload</Button>
-                    <div className='w-2'></div>
-                    <Button
-                        id="import-confirm-cancel-button"
                         className="w-full"
                         variant='contained'
                         onClick={handleClose}
@@ -405,7 +323,7 @@ export class Collections extends React.Component<{}, State> {
 
     private cardContainer() {
         if (this.state.collectionCards.length !== 0) {
-            return (<div className='h-[calc(100vh-14rem)] overflow-auto'>
+            return (
                 <div id="collection-cards" className='w-full'>
                     <div className='flex justify-center items-center'>
                         <div className='flex-grow'></div>
@@ -440,7 +358,7 @@ export class Collections extends React.Component<{}, State> {
                         onPageChange={this.handleChangePage}
                     />
                 </div>
-            </div>)
+            )
         }
     }
 
@@ -536,7 +454,10 @@ export class Collections extends React.Component<{}, State> {
                 </div>
                 <div>
                     {this.searchbar()}
-                    {this.cardContainer()}
+                    <div className='h-[calc(100vh-13rem)] overflow-auto'>
+                        {this.cardContainer()}
+                    </div>
+
                 </div>
                 <AddDialog
                     open={this.state.addDialogOpen}
@@ -553,19 +474,6 @@ export class Collections extends React.Component<{}, State> {
                         this.setCollection(this.state.collection, 0, true)
                     }}
                     onClose={() => { this.closeDialog() }}
-                />
-                <RenameDialog
-                    open={this.state.renameDialogOpen}
-                    name={this.state.collection}
-                    collections={this.state.collections}
-                    onConfirm={
-                        (name) => {
-                            this.setCollection(name, 0)
-                        }
-                    }
-                    onClose={
-                        () => { this.closeDialog() }
-                    }
                 />
             </div>
         )
