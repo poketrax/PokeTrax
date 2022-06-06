@@ -68,7 +68,7 @@ function AddDialog(props: DialogProps) {
         onClose();
     };
 
-    const addColl = () => {
+    function addColl() {
         setInProg(true)
         if (collections?.find((coll) => coll.name === name)) {
             setAddCollError(true)
@@ -101,9 +101,9 @@ function AddDialog(props: DialogProps) {
                     if (typeof (reader.result) === 'string') {
                         let cards: Array<Card> = JSON.parse(reader.result)
                         addCollection(name)
-                        for (let i =0; i< cards.length; i++) {
+                        for (let i = 0; i < cards.length; i++) {
                             let card = cards[i]
-                            setProg((i/cards.length) * 100)
+                            setProg((i / cards.length) * 100)
                             console.log(card)
                             card.collection = name
                             await addCardToCollection(card)
@@ -115,6 +115,19 @@ function AddDialog(props: DialogProps) {
                     }
                 }
             }
+        }
+    }
+
+    const addUploadClick = () => {
+        if (name != null && name !== "") {
+            if (file != null) {
+                uploadColl()
+            } else {
+                addColl()
+            }
+        } else {
+            setAddCollErrorText("Collection Name Cannot be Empty")
+            setAddCollError(true)
         }
     }
 
@@ -133,28 +146,21 @@ function AddDialog(props: DialogProps) {
                     error={addCollError}
                     value={name}
                     onChange={(ev) => { setName(ev.target.value) }} />
-                <div>Collection file upload *optional</div>
+                <div className='pt-2'>Collection file upload *optional</div>
                 <FileUploader
                     label="Upload or Drop JSON file here"
                     handleChange={(file) => { setFile(file); console.log(file) }}
                     name="file"
+
                     types={fileTypes} />
-                {addCollError && (<div id="add-collection-error">{addCollErrorText}</div>)}
-                <div className="w-full pt-2 pb-2 flex items-center justify-center">
+                {addCollError && (<div className='text-red-600' id="add-collection-error">{addCollErrorText}</div>)}
+                <div className="w-full pt-4 pb-2 flex items-center justify-center">
                     <Button
                         id="add-collection-confirm-button"
                         className="w-full"
                         variant='contained'
-                        onClick={
-                            () => {
-                                if (file != null) {
-                                    uploadColl()
-                                } else {
-                                    addColl()
-                                }
-                            }
-                        }
-                        startIcon={<AddCircleOutlineIcon />}>Add</Button>
+                        onClick={addUploadClick}
+                        startIcon={<AddCircleOutlineIcon/>}>Add</Button>
                     <div className='w-2'></div>
                     <Button
                         id="add-collection-cancel-button"
@@ -163,7 +169,7 @@ function AddDialog(props: DialogProps) {
                         onClick={handleClose}
                         startIcon={<CloseIcon />}>Cancel</Button>
                 </div>
-                {inProg && <LinearProgress variant='determinate' value={prog}/>}
+                {inProg && <LinearProgress variant='determinate' value={prog} />}
             </div>
         </Dialog>
     );
