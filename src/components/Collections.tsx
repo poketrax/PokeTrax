@@ -146,12 +146,11 @@ function AddDialog(props: DialogProps) {
                     error={addCollError}
                     value={name}
                     onChange={(ev) => { setName(ev.target.value) }} />
-                <div className='pt-2'>Collection file upload *optional</div>
+                <div className='pt-2'>{file != null ? `File: ${file.name}` : `Collection file upload *optional`}</div>
                 <FileUploader
                     label="Upload or Drop JSON file here"
                     handleChange={(file) => { setFile(file); console.log(file) }}
                     name="file"
-
                     types={fileTypes} />
                 {addCollError && (<div className='text-red-600' id="add-collection-error">{addCollErrorText}</div>)}
                 <div className="w-full pt-4 pb-2 flex items-center justify-center">
