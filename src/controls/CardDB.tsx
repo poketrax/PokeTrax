@@ -8,6 +8,7 @@ import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
 import { CgPokemon } from "react-icons/cg"
 import { from } from 'rxjs';
 import { Collection } from "../model/Collection";
+
 export class DbState {
     public ready: boolean = false
     public updated: boolean = false
