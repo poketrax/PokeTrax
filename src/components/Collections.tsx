@@ -4,6 +4,8 @@ import Tab from '@mui/material/Tab';
 import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import Autocomplete from '@mui/material/Autocomplete';
+import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
 import { Tooltip } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -20,6 +22,9 @@ import {
     deleteCollection,
     getCollectionCards,
     getCollectionValue,
+    renameCollection,
+    rarities,
+    getRarity,
     addCardToCollection
 } from '../controls/CardDB'
 import LinearProgress from '@mui/material/LinearProgress';
@@ -27,10 +32,14 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardCase } from './CardCase';
 import { Card } from '../model/Card'
 import DownloadMenu from './DownloadMenu';
+import { CgPokemon } from "react-icons/cg"
+import { MdOutlineCatchingPokemon } from "react-icons/md"
 import { FileUploader } from "react-drag-drop-files";
 
 const fileTypes = ["JSON"];
 
+const icon = <CgPokemon />;
+const checkedIcon = <MdOutlineCatchingPokemon />;
 class State {
     public collection = ""
     public collectionCards = Array<Card>()
@@ -41,6 +50,7 @@ class State {
     public renameDialogOpen = false
     public importDialogOpen = false
     public searchValue = ""
+    public rareSelected: string[] = []
     public sort = ""
     public page = 0
     public totalValue = 0
@@ -254,7 +264,7 @@ export class Collections extends React.Component<{}, State> {
         this.setCollection(coll, 0)
     }
 
-    private setCollection(_collection: string, page: number, _delete?: boolean, searchValue?: string, sort?: string) {
+    private setCollection(_collection: string, page: number, _delete?: boolean, searchValue?: string, rarityFilter?: string[], sort?: string) {
         let collection = _collection
         if (_delete) {
             if (this.state.collections.length !== 0) {
@@ -273,7 +283,7 @@ export class Collections extends React.Component<{}, State> {
                         this.setState({ ...this.state, totalValue: value.data.totalValue })
                     }
                 )
-            getCollectionCards(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
+            getCollectionCards(collection, page, searchValue ?? this.state.searchValue, rarityFilter ?? this.state.rareSelected, sort ?? this.state.sort)
                 .then(
                     (search) => {
                         this.setState(
@@ -283,6 +293,7 @@ export class Collections extends React.Component<{}, State> {
                                 collectionCards: search.cards,
                                 collection: collection,
                                 searchValue: searchValue ?? this.state.searchValue,
+                                rareSelected: rarityFilter ?? this.state.rareSelected,
                                 sort: sort ?? this.state.sort,
                                 page: page
                             }
@@ -290,7 +301,6 @@ export class Collections extends React.Component<{}, State> {
                     }
                 )
         }
-
     }
 
     private generateTabs(): JSX.Element[] {
@@ -382,6 +392,44 @@ export class Collections extends React.Component<{}, State> {
                                     this.setCollection(this.state.collection, 0, false, this.searchTerm)
                                 }
                             }} />
+                        <Autocomplete
+                        className='pl-4 min-w-min w-72'
+                        multiple
+                        limitTags={1}
+                        id="rarities-sel"
+                        options={rarities}
+                        getOptionLabel={(option) => option}
+                        defaultValue={this.state.rareSelected}
+                        disableCloseOnSelect
+                        renderOption={(props, option, { selected }) => (
+                            <li {...props} id={`option-${option.replace(" ", "-")}`} className="flex justify-items-center items-center">
+                                <Checkbox
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    style={{ marginRight: 8 }}
+                                    checked={selected}
+                                />
+                                <span>{option}</span>
+                                <div className='flex-grow' />
+                                <div className='m-4'>
+                                    {getRarity(option)}
+                                </div>
+                            </li>
+                        )}
+                        onChange={
+                            (_, value) => {
+                                this.setCollection(this.state.collection, 0, false, this.state.searchValue, value, this.state.sort)
+                            }
+                        }
+                        renderInput={(params) => (
+                            <TextField
+                                className='focus:bg-slate-400'
+                                {...params}
+                                label="Rarities"
+                                placeholder="Rarities"
+                            />
+                        )}
+                    />
                         <div className='flex-grow'></div>
                         <div className='w-4'></div>
                         <ToggleButtonGroup

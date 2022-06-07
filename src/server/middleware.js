@@ -367,7 +367,7 @@ app.delete("/collections/card", bodyParser.json(),
  * Get Collection cards
  */
 app.get("/collections/:collection/cards/:page", (req, res) => {
-    let nameFilter = ``
+    let NAME_FILTER = ``
     let order
     switch (req.query.sort) {
         case "name":
@@ -392,20 +392,26 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
             order = ``
     }
     if (req.query.name != null && req.query.name != '') {
-        nameFilter = `AND _collections.cardId like '%${decodeURI(req.query.name)}%'`
+        NAME_FILTER = `AND _collections.cardId like '%${decodeURI(req.query.name)}%'`
     }
-    let db = DB.pricesDB()
+    let rarities = req.query.rarities != null ? JSON.parse(decodeURIComponent(req.query.rarities)) : []
+    let FILTER_RARE = ""
+    if (rarities != null && rarities.length != 0) {
+        let rareFilter = JSON.stringify(rarities).replaceAll("[", "(").replaceAll("]", ")").replaceAll("\"", "\'")
+        FILTER_RARE = `AND rarity in ${rareFilter}`
+    }
 
+    let db = DB.pricesDB()
     let sqlSelect =
         `SELECT max(date) as date, _price.variant, _collections.*, _cards.*, _price.price
-    FROM prices _price
-    INNER JOIN collectionDB.collectionCards _collections 
-        ON _price.cardId = _collections.cardId 
-        AND _price.variant = _collections.variant
-    INNER JOIN cardDB.cards _cards
-        ON _price.cardId = _cards.cardId
-    WHERE _collections.collection = $collection ${nameFilter}
-    GROUP BY _price.cardId, _price.variant
+        FROM prices _price
+        INNER JOIN collectionDB.collectionCards _collections 
+            ON _price.cardId = _collections.cardId 
+            AND _price.variant = _collections.variant
+        INNER JOIN cardDB.cards _cards
+            ON _price.cardId = _cards.cardId
+        WHERE _collections.collection = $collection ${NAME_FILTER} ${FILTER_RARE}
+        GROUP BY _price.cardId, _price.variant
     ${order}`
     let limit = `LIMIT 25 OFFSET ${(req.params.page) * 25}`
 

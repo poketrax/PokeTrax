@@ -8,6 +8,7 @@ import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
 import { CgPokemon } from "react-icons/cg"
 import { from } from 'rxjs';
 import { Collection } from "../model/Collection";
+
 export class DbState {
     public ready: boolean = false
     public updated: boolean = false
@@ -73,13 +74,23 @@ export function getCollections(): Promise<Array<Collection>> {
     )
 }
 
-export async function getCollectionCards(collection: string, page: number, searchVal?: string, sort?: string): Promise<CardSearch> {
+export async function getCollectionCards(collection: string, page: number, searchVal?: string, rarity?: string[], sort?: string): Promise<CardSearch> {
     return new Promise<CardSearch>(
         (resolve, reject) => {
             if (collection === '') {
                 resolve(new CardSearch())
             }
-            axios.get(`${baseURL}/collections/${collection}/cards/${page}?name=${encodeURI(searchVal ?? "")}&sort=${sort ?? ""}`)
+            let url = new URL(`${baseURL}/collections/${collection}/cards/${page ?? 0}`)
+            if (searchVal != null) {
+                url.searchParams.set(`name`, searchVal)
+            }
+            if (sort != null) {
+                url.searchParams.set('sort', sort)
+            }
+            if (rarity != null && rarity.length !== 0) {
+                url.searchParams.set(`rarities`, JSON.stringify(rarity))
+            }
+            axios.get(url.toString())
                 .then(
                     (res) => {
                         resolve(res.data)
