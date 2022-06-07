@@ -80,7 +80,7 @@ export async function getCollectionCards(collection: string, page: number, searc
             if (collection === '') {
                 resolve(new CardSearch())
             }
-            let url = new URL(`${baseURL}/collections/${collection}/${page ?? 0}`)
+            let url = new URL(`${baseURL}/collections/${collection}/cards/${page ?? 0}`)
             if (searchVal != null) {
                 url.searchParams.set(`name`, searchVal)
             }

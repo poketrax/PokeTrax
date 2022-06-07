@@ -283,7 +283,7 @@ export class Collections extends React.Component<{}, State> {
                         this.setState({ ...this.state, totalValue: value.data.totalValue })
                     }
                 )
-            getCollectionCards(collection, page, searchValue ?? this.state.searchValue, this.state.rareSelected, sort ?? this.state.sort)
+            getCollectionCards(collection, page, searchValue ?? this.state.searchValue, rarityFilter ?? this.state.rareSelected, sort ?? this.state.sort)
                 .then(
                     (search) => {
                         this.setState(
@@ -293,6 +293,7 @@ export class Collections extends React.Component<{}, State> {
                                 collectionCards: search.cards,
                                 collection: collection,
                                 searchValue: searchValue ?? this.state.searchValue,
+                                rareSelected: rarityFilter ?? this.state.rareSelected,
                                 sort: sort ?? this.state.sort,
                                 page: page
                             }
