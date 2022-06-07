@@ -320,13 +320,13 @@ app.delete("/collections", bodyParser.json(),
  * Update Collection card
  */
 app.put("/collections/card", bodyParser.json(),
-    (req, res) => {
+    async (req, res) => {
         let db = DB.collectionDB()
         let card = req.body
         try {
             let findSql = "SELECT * from collectionCards WHERE cardId = $cardId AND variant = $variant AND collection = $collection AND grade = $grade"
             let found = db.prepare(findSql).get(card)
-            DB.getPrices(card)
+            await DB.getPrices(card)
             if (found != null) {
                 db.prepare("UPDATE collectionCards SET count = $count, grade = $grade, paid = $paid WHERE cardId = $cardId AND variant = $variant AND grade = $grade")
                     .run({ 'count': card.count, 'grade': card.grade, 'paid': card.paid, 'cardId': card.cardId, 'variant': card.variant })
@@ -480,3 +480,4 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
     console.log(`body empty ${JSON.stringify(req.body)}`)
     res.sendStatus(400)
 })
+

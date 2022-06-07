@@ -155,7 +155,7 @@ export function deleteCardFromCollection(card: Card) {
     )
 }
 
-export function addCardToCollection(card: Card) {
+export async function addCardToCollection(card: Card) {
     return new Promise<void>(
         (resolve, reject) => {
             if (card.collection != null &&
