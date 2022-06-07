@@ -301,7 +301,6 @@ export class Collections extends React.Component<{}, State> {
                     }
                 )
         }
-
     }
 
     private generateTabs(): JSX.Element[] {
