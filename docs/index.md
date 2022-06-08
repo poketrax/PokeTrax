@@ -3,6 +3,7 @@
 PokeTrax is an open source and free to use Pokémon TCG collection management tool.
 
 -   Track your collections
+-   Create decks and export as TCGP buy list.
 -   Monitor price changes
 -   Search for Cards
 
@@ -40,3 +41,5 @@ PokeTrax is an open source and free to use Pokémon TCG collection management to
     - ![System Prefs](assets/macos_sec.png)
 1. Click Open on the next dialog.  
     - ![System Prefs](assets/macos_accept.png)
+
+The information presented on this application about the Pokémon Trading Card Game, including images and text, is copyright of The Pokémon Company, Nintendo, Game Freak, Creatures and/or Wizards of the Coast. This website is not produced by, endorsed by, supported by, or affiliated with any of these companies.
