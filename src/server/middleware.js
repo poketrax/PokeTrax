@@ -405,7 +405,7 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
     INNER JOIN cardDB.cards _cards
         ON _price.cardId = _cards.cardId
     WHERE _collections.collection = $collection ${nameFilter}
-    GROUP BY _price.cardId, _price.variant
+    GROUP BY _price.cardId, _price.variant, _collections.grade
     ${order}`
     let limit = `LIMIT 25 OFFSET ${(req.params.page) * 25}`
 
