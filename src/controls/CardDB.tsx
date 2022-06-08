@@ -222,6 +222,42 @@ export function expansions(): Promise<Expansion[]> {
     )
 }
 
+export class Grade {
+    public grader: string
+    public grade: string
+    public modifier?: string
+
+    constructor(grader: string, grade: string, modifier?: string) {
+        this.grade = grade
+        this.grader = grader
+        this.modifier = modifier
+    }
+}
+
+const gradeRegEx = [
+    /(PSA)-(1\.5|10|[1-9])-?(OC|MK|MC|ST|PD|OF)?/g,
+    /(CGC)-(10|[1-9]\.?5?)-?(P|E)?/g,
+    /(BGS)-(10|[1-9]\.?5?)-?(P)?/g,
+    /(ACE)-(10|[1-9])/g
+]
+/**
+ * returns parsed grade or null if invalid
+ * @param grade 
+ * @returns 
+ */
+export function parseGrade(grade: string): Grade | null {
+    let normalGrade = grade.toUpperCase().trim()
+    let parsedGrade = null
+    for (let regex of gradeRegEx) {
+        regex.lastIndex = 0
+        let parts = regex.exec(normalGrade)
+        if (parts != null) {
+            parsedGrade = new Grade(parts[1], parts[2], parts[3])
+        }
+    }
+    return parsedGrade
+}
+
 export const rarities = [
     "Common",
     "Uncommon",
@@ -265,7 +301,7 @@ export function download(collection: string, type: string) {
     )
 }
 
-export async function renameCollection(collection: string, newName: string, update: (percent: number, done: boolean) => void){
+export async function renameCollection(collection: string, newName: string, update: (percent: number, done: boolean) => void) {
     let total = 0
     let processed = 0
     let pages = 0
@@ -295,8 +331,8 @@ export async function renameCollection(collection: string, newName: string, upda
     update(1, true)
 }
 
-export function openLink(type: string, card: Card){
-    axios.post(`${baseURL}/openlink`, {type: type, card: card})
+export function openLink(type: string, card: Card) {
+    axios.post(`${baseURL}/openlink`, { type: type, card: card })
 }
 
 export function getCollectionValue(collection: string) {

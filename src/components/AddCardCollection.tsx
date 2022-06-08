@@ -4,9 +4,9 @@ import NumberFormat from 'react-number-format';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { TextField, Autocomplete, Button } from '@mui/material'
+import { TextField, Autocomplete, Button, Tooltip } from '@mui/material'
 import { Card, Price } from '../model/Card'
-import { getCollections, addCardToCollection, addCollection } from "../controls/CardDB"
+import { getCollections, addCardToCollection, addCollection, parseGrade } from "../controls/CardDB"
 
 interface Props {
     card: Card
@@ -24,8 +24,10 @@ class State {
     public displayCollections = new Array<string>()
     public price = 0
     public count = 1
+    public grade = ""
     public collErr = false
     public countErr = false
+    public gradeErr = false
     public errorText = ""
     public wishlist = false
 }
@@ -35,7 +37,6 @@ export class AddCardCollection extends React.Component<Props, State> {
         super(props)
         this.state = new State()
         this.variants = JSON.parse(props.card.variants ?? '[]')
-        console.log(this.variants)
         this.selectedVariant = this.variants ? this.variants[0] : ""
         getCollections().then(
             (value) => {
@@ -105,8 +106,8 @@ export class AddCardCollection extends React.Component<Props, State> {
         let err = ""
         let collError = false
         let countError = false
+        let gradeError = false
 
-        console.log(`count ${this.state.count}`)
         if (this.selectedColl === "") {
             err = "Collection must be set "
             collError = true
@@ -119,28 +120,33 @@ export class AddCardCollection extends React.Component<Props, State> {
             err += "Count must be greater than 0"
             countError = true
         }
-        if (collError === true || countError === true) {
-            this.setState({ ...this.state, errorText: err, collErr: collError, countErr: countError })
-            return
+        let grade = parseGrade(this.state.grade)
+        if (this.state.grade !== "" && grade == null) {
+            err += "Invalid grade format! ex: PSA-10, CGC-9.5, BGS-10-P, CGC-10-P, PSA-10-OC"
+            gradeError = true
         }
-        let add = JSON.parse(JSON.stringify(this.props.card)) //deep copy
-        add.collection = this.selectedColl
-        add.count = this.state.wishlist ? 0 : this.state.count
-        add.variant = this.selectedVariant
-        add.paid = this.state.price
-        add.grade = ""
-        if (this.state.collections.indexOf(this.selectedColl) === -1) {
-            addCollection(this.selectedColl)
+        if (collError || countError || gradeError) {
+            this.setState({ ...this.state, errorText: err, collErr: collError, countErr: countError, gradeErr: gradeError })
+        } else {
+            let add = JSON.parse(JSON.stringify(this.props.card)) //deep copy
+            add.collection = this.selectedColl
+            add.count = this.state.wishlist ? 0 : this.state.count
+            add.variant = this.selectedVariant
+            add.paid = this.state.price
+            add.grade = this.state.grade.trim().toUpperCase()
+            if (this.state.collections.indexOf(this.selectedColl) === -1) {
+                addCollection(this.selectedColl)
+            }
+            addCardToCollection(add).then(
+                () => {
+                    this.props.close()
+                }
+            ).catch(
+                () => {
+                    this.setState({ ...this.state, errorText: "Failed to add :(" })
+                }
+            )
         }
-        addCardToCollection(add).then(
-            () => {
-                this.props.close()
-            }
-        ).catch(
-            () => {
-                this.setState({ ...this.state, errorText: "Failed to add :(" })
-            }
-        )
     }
 
     render() {
@@ -208,8 +214,23 @@ export class AddCardCollection extends React.Component<Props, State> {
                     variant="outlined"
                 />
                 <div className='h-4'></div>
+                <Tooltip title="Grade Format: PSA-10, CGC-8.5, BGS-10-P, CGC10-P, PSA-8-OC">
+                    <TextField
+                        id="grade-input"
+                        className='w-full'
+                        label="Grade (optional)"
+                        error={this.state.gradeErr}
+                        value={this.state.grade}
+                        onChange={(ev) => {
+                            this.setState({ ...this.state, grade: ev.target.value })
+                        }}
+                        variant="outlined"
+                    />
+                </Tooltip>
+
+                <div className='h-4'></div>
                 <FormGroup>
-                    <FormControlLabel control={<Switch onChange={(ev) => {this.setState({...this.state, wishlist: ev.target.checked})}}/>} label="Wishlist" />
+                    <FormControlLabel control={<Switch onChange={(ev) => { this.setState({ ...this.state, wishlist: ev.target.checked }) }} />} label="Wishlist" />
                 </FormGroup>
                 <div className='h-4'></div>
                 <TextField
