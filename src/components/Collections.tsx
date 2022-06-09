@@ -22,7 +22,6 @@ import {
     deleteCollection,
     getCollectionCards,
     getCollectionValue,
-    renameCollection,
     rarities,
     getRarity,
     addCardToCollection
@@ -54,6 +53,7 @@ class State {
     public sort = ""
     public page = 0
     public totalValue = 0
+    public rarities = []
 }
 
 interface DialogProps {
@@ -236,6 +236,11 @@ export class Collections extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props)
         this.state = new State()
+        rarities().then(
+            (value) => {
+                this.setState({...this.state, rarities: value})
+            }
+        )
         getCollections().then(
             (value) => {
                 let selected = ""
@@ -397,7 +402,7 @@ export class Collections extends React.Component<{}, State> {
                         multiple
                         limitTags={1}
                         id="rarities-sel"
-                        options={rarities}
+                        options={this.state.rarities}
                         getOptionLabel={(option) => option}
                         defaultValue={this.state.rareSelected}
                         disableCloseOnSelect
