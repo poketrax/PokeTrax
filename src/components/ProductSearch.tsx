@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton';
+import { TablePagination } from '@mui/material';
 import { SealedProduct, ProductList } from '../model/SealedProduct';
 import { searchProducts } from '../controls/CardDB';
 import { ProductCase } from './ProductCase';
@@ -92,11 +93,29 @@ export class ProductSearch extends React.Component<{}, State>{
         return items
     }
 
+    private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
+        this.searchSealed(newPage)
+    };
+
+    private pagination() {
+        return (
+            <TablePagination
+                component="div"
+                count={this.state.total}
+                page={this.state.page}
+                rowsPerPage={25}
+                rowsPerPageOptions={[25]}
+                onPageChange={this.handleChangePage}
+            />
+        )
+    }
+
     render(): React.ReactNode {
         return (
             <div>
                 {this.searchbar()}
                 <div className='h-[calc(100vh-12rem)] overflow-auto'>
+                    {this.pagination()}
                     <div className='flex'>
                         <div className='flex-grow'></div>
                         <div className='grid h-full grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4'
@@ -105,6 +124,7 @@ export class ProductSearch extends React.Component<{}, State>{
                         </div>
                         <div className='flex-grow'></div>
                     </div>
+                    {this.pagination()}
                 </div>
             </div>
         )

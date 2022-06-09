@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { SealedProduct } from '../model/SealedProduct';
-import { Paper, CircularProgress } from '@mui/material';
+import { Paper, CircularProgress, Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { baseURL } from '..';
 
 class State {
@@ -22,8 +24,8 @@ export class ProductCase extends React.Component<Props, State>{
 
     public getProdImg() {
         return (
-            <div className="flex w-max-20 h-max-20 justify-center align-middle m-4">
-                <img className={`rounded-xl cursor-pointer w-max-20 h-max-20`}
+            <div className="flex w-48 h-48 justify-center align-middle m-4">
+                <img className={`cursor-pointer w-auto h-auto`}
                     id={`card-img${this.props.id}`}
                     style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
                     src={baseURL + "/sealedImg/" + encodeURIComponent(this.props.product.name)}
@@ -50,19 +52,26 @@ export class ProductCase extends React.Component<Props, State>{
 
     private productInfo() {
         return (
-            <div className='w-64'>
+            <div className='w-min-32 w-full p-2'>
                 <div className='h-4'></div>
-                <div className='text-lg'>{this.props.product.name}</div>
-                <table>
-                    <tr>
-                        <td>Market Price:</td>
-                        <td>${this.props.product.price?.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                        <td>Type:</td>
-                        <td>{this.props.product.type}</td>
-                    </tr>
-                </table>
+                <div className='text-xl'>{this.props.product.name}</div>
+                <div className='text-slate-500'>{this.props.product.type}</div>
+                <div className='text-stone-700'>Market: ${this.props.product.price?.toFixed(2)}</div>
+            </div>
+        )
+    }
+
+    private buttons() {
+        return (
+            <div className='flex p-4'>
+                <div className='flex-grow'></div>
+                <Fab>
+                    <ShoppingCartIcon></ShoppingCartIcon>
+                </Fab>
+                <div className='w-4'></div>
+                <Fab>
+                    <AddIcon></AddIcon>
+                </Fab>
             </div>
         )
     }
@@ -71,12 +80,17 @@ export class ProductCase extends React.Component<Props, State>{
         return (
             <div>
                 <Paper elevation={2}>
-                    <div className='flex'>
+                    <div className='flex h-auto'>
                         <div className="relative">
                             {this.imgSpinner()}
                             {this.getProdImg()}
                         </div>
-                        {this.productInfo()}
+                        <div className='flex-grow'></div>
+                        <div className='flex flex-col h-auto w-auto'>
+                            {this.productInfo()}
+                            <div className='flex-grow'></div>
+                            {this.buttons()}
+                        </div>
                     </div>
                 </Paper>
             </div>

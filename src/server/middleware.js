@@ -326,7 +326,7 @@ app.get("/sealed/:page", (req, res) =>{
     try{
         let total = db.prepare(count).get()
         let products = db.prepare(sql).all()
-        res.send({total: total, products: products})
+        res.send({total: total.total, products: products})
     }catch(err){
         console.log(err)
         res.status(500).send(err)
