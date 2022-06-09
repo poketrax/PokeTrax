@@ -6,6 +6,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { Subject, timer } from 'rxjs'
 import { DbState, getDbState } from '../controls/CardDB';
 import { Collections } from './Collections';
+import { ProductSearch } from './ProductSearch';
 
 class State {
     page: string = ""
@@ -71,6 +72,9 @@ export class App extends React.Component<{}, State> {
             case 'collections':
                 content = <Collections></Collections>
                 break
+            case 'sealed':
+                content = <ProductSearch></ProductSearch>
+                break
             default:
                 message = (this.state.dbState.updated ? "Downloading New Data" : "Loading Database") + "...";
                 content = (
@@ -91,9 +95,13 @@ export class App extends React.Component<{}, State> {
                     <div className="h-16 flex-none flex flex-row">
                         <img className="h-16 w-16 p-1" src={"./assests/poketrax.png"} alt="" />
                         <span className="font-sans text-3xl pt-3 pl-2">PokéTrax</span>
-                        <span className="pl-6 grid grid-cols-3">
+                        <span className="pl-6 flex ">
                             <button id="cards-page" className='hover:text-blue-700' onClick={() => this.setPage("cards")}>Cards</button>
+                            <div className="w-6"></div>
                             <button id="sets-page" className='hover:text-blue-700' onClick={() => this.setPage("sets")}>Sets</button>
+                            <div className="w-6"></div>
+                            <button id="sealed-page" className='hover:text-blue-700' onClick={() => this.setPage("sealed")}>Sealed Products</button>
+                            <div className="w-6"></div>
                             <button id="collection-page" className='hover:text-blue-700' onClick={() => this.setPage("collections")}>Collections</button>
                         </span>
                     </div>

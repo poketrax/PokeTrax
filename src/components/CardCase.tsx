@@ -261,7 +261,6 @@ export class CardCase extends React.Component<Props, State> {
                     className = 'w-14 border-2 bg-black opacity-100 rounded-md border-gray-600 bg m-2 text-yellow-600 flex flex-col items-center'
                 }
             }
-
             return (
                 <div className={className}>
                     <div className="text-2xl">{grade?.grade}</div>
