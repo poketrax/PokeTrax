@@ -125,6 +125,33 @@ export async function getCollectionCards(collection: string, page: number, searc
     )
 }
 
+export async function getCollectionSealed(collection:string, page: number, searchVal?: string, sort?: string): Promise<ProductList> {
+    return new Promise<ProductList>(
+        (resolve, reject) => {
+            if (collection === '') {
+                resolve(new ProductList())
+            }
+            let url = new URL(`${baseURL}/collections/${collection}/sealed/${page ?? 0}`)
+            if (searchVal != null) {
+                url.searchParams.set(`name`, searchVal)
+            }
+            if (sort != null) {
+                url.searchParams.set('sort', sort)
+            }
+            axios.get(url.toString())
+                .then(
+                    (res) => {
+                        resolve(res.data)
+                    }
+                ).catch(
+                    (err) => {
+                        reject(err)
+                    }
+                )
+        }
+    )
+}
+
 export function addCollection(name: string): Promise<any> {
     return new Promise<any>(
         (resolve, reject) => {
@@ -176,6 +203,25 @@ export function deleteCardFromCollection(card: Card) {
     )
 }
 
+export function deleteSealedFromCollection(product: SealedProduct) {
+    return new Promise<void>(
+        (resolve, reject) => {
+            axios.delete(
+                `${baseURL}/collections/card`,
+                { data: product }
+            ).then(
+                (res) => {
+                    resolve()
+                }
+            ).catch(
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
 export async function addCardToCollection(card: Card) {
     return new Promise<void>(
         (resolve, reject) => {
@@ -183,6 +229,27 @@ export async function addCardToCollection(card: Card) {
                 card.variant != null &&
                 card.count != null) {
                 axios.put(`${baseURL}/collections/card`, card).then(
+                    (res) => {
+                        resolve()
+                    }
+                ).catch(
+                    (err) => {
+                        reject(err)
+                    }
+                )
+            } else {
+                reject("missing data")
+            }
+        }
+    )
+}
+
+export async function addSealedToCollection(product: SealedProduct) {
+    return new Promise<void>(
+        (resolve, reject) => {
+            if (product.collection != null &&
+                product.count != null) {
+                axios.put(`${baseURL}/collections/sealed`, product).then(
                     (res) => {
                         resolve()
                     }

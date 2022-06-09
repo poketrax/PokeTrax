@@ -4,7 +4,10 @@ export class SealedProduct {
     public expIdTCGP: string
     public expName: string
     public type?: string
+    public collection?: string
     public img?: string 
+    public paid?: number
+    public count?: number
 
     constructor(name: string, expName: string, expIdTCGP: string){
         this.name = name
