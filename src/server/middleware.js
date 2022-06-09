@@ -320,7 +320,7 @@ app.get("/sealed/:page", (req, res) =>{
         NAME_FILTER = `'%${name}%'`
     }
     
-    let count = `SELECT count(name) as total FROM sealed LIMIT 1`
+    let count = `SELECT count(name) as total FROM sealed WHERE name like ${NAME_FILTER} LIMIT 1`
     let sql = `SELECT * FROM sealed WHERE name like ${NAME_FILTER} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * limit}`
     let db = DB.cardDB()
     try{
