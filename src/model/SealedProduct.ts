@@ -12,3 +12,8 @@ export class SealedProduct {
         this.expName = expName
     }
 }
+
+export class ProductList {
+    public total: number = 0
+    public products: SealedProduct[] = []
+}

@@ -8,6 +8,7 @@ import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
 import { CgPokemon } from "react-icons/cg"
 import { from } from 'rxjs';
 import { Collection } from "../model/Collection";
+import { ProductList } from "../model/SealedProduct";
 
 export class DbState {
     public ready: boolean = false
@@ -38,6 +39,26 @@ export function search(page: number, term?: string, sets?: string[], rarity?: st
                     reject(err)
                 }
             )
+        }
+    )
+}
+
+export function searchProducts(page: number, searchTerm?: string, sort?: string): Promise<ProductList> {
+    return new Promise(
+        (resolve, reject) => {
+            let url = new URL(`${baseURL}/sealed/${page}`)
+            url.searchParams.set('name', searchTerm)
+            url.searchParams.set('sort', sort)
+            axios.get(url.toString())
+                .then(
+                    (res) => {
+                        resolve(res.data)
+                    },
+                    (err) => {
+                        console.log(err.body)
+                        reject()
+                    }
+                )
         }
     )
 }
@@ -258,22 +279,19 @@ export function parseGrade(grade: string): Grade | null {
     return parsedGrade
 }
 
-export const rarities = [
-    "Common",
-    "Uncommon",
-    "Rare",
-    "Promo",
-    "Holo Rare",
-    "Ultra Rare",
-    "Secret Rare",
-    "Code Card",
-    "Shiny Holo Rare",
-    "Prism Rare",
-    "Rare BREAK",
-    "Classic Collection",
-    "Rare Ace",
-    "Amazing Rare"
-]
+export async function rarities(): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        axios.get(`${baseURL}/card/rarities`).then(
+            (value) => {
+                resolve(value.data)
+            },
+            (err) => {
+                reject(err)
+            }
+        )
+
+    })
+}
 
 function downloadURI(uri: string, name: string) {
     var link = document.createElement("a");
@@ -365,6 +383,8 @@ export function getRarity(rarity: string) {
             return (<IoStarSharp></IoStarSharp>)
         case "Promo":
             return (<img className='w-5 h-5' alt="" src={`${baseURL}/expSymbol/Sword%20&%20Shield%20Promos`}></img>)
+        case "Radiant Rare":
+            return (<IoStarSharp></IoStarSharp>)
         default:
             return (<BsFillCircleFill></BsFillCircleFill>)
     }

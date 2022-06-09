@@ -64,6 +64,38 @@ app.get("/cardImg/:asset_id",
 );
 
 /**
+ * Get Product Img assest.  Will pull from local cache or the interwebz
+ */
+ app.get("/sealedImg/:asset_name",
+ (req, res, next) => {
+     let db = DB.cardDB()
+     try {
+         let card = db.prepare('SELECT img FROM sealed WHERE name = $name').get({ "name": decodeURIComponent(req.params.asset_name) })
+         if (card != null) {
+             res.locals.fetchUrl = card.img;
+             res.locals.cacheKey = req.params.asset_name;
+             next();
+         } else {
+             res.status(403).send(`No product with id: ${req.params.asset_name}`)
+         }
+     } catch (err) {
+         console.error(err)
+         res.status(500).send('sqlerr: ' + err)
+     } finally {
+         db.close()
+     }
+ },
+ fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./productImg"), maxSize: 1024 * 1024 * 1024 }),
+ (_, res) => {
+     res.set({
+         "Content-Type": res.locals.contentType,
+         "Content-Length": res.locals.contentLength,
+     });
+     res.end(res.locals.buffer, "binary");
+ }
+);
+
+/**
  * Get Series Img assest.  Will pull from local cache or the interwebz
  */
 app.get("/seriesImg/:asset_id",
@@ -186,6 +218,22 @@ app.get("/series", async (_, res) => {
     }
 })
 
+app.get("/card/rarities", (_, res) => {
+    let db = DB.cardDB()
+    try{
+        let rarities = db.prepare(`SELECT DISTINCT rarity FROM cards`).all()
+        let payload = []
+        rarities.forEach(element => {
+            payload.push(element.rarity)
+        });
+        res.send(payload)
+    }catch(err){
+        res.status(500).send(`sqlErr: ${err}`)
+    }finally{   
+        db.close()
+    }
+})
+
 /**
  * Search for card
  * /cards/{page number}
@@ -236,7 +284,7 @@ app.get("/cards/:page", async (req, res) => {
     let db = DB.cardDB()
     try {
         let countSQL = `SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
-        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, expCodeTCGP, rarity, cardType, energyType, variants, pokedex, price FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, expCodeTCGP, rarity, cardType, energyType, variants, pokedex, price FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * limit}`
         // console.log(countSQL)
         /// console.log(sql)
         let countRes = db.prepare(countSQL).get()
@@ -246,6 +294,43 @@ app.get("/cards/:page", async (req, res) => {
         console.log(err)
         res.status(500).send(err)
     } finally {
+        db.close()
+    }
+})
+
+app.get("/sealed/:page", (req, res) =>{
+    let limit = 25
+    let order
+    switch (req.query.sort) {
+        case "name":
+            order = `ORDER BY name ASC`
+            break
+        case "priceASC":
+            order = `ORDER BY price ASC`
+            break
+        case "priceDSC":
+            order = `ORDER BY price DESC`
+            break
+        default:
+            order = ``
+    }
+    let NAME_FILTER = `'%%'`
+    if(req.query.name != null && req.query.name !== ''){
+        let name = decodeURIComponent(req.query.name)
+        NAME_FILTER = `'%${name}%'`
+    }
+    
+    let count = `SELECT count(name) as total FROM sealed LIMIT 1`
+    let sql = `SELECT * FROM sealed WHERE name like ${NAME_FILTER} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * limit}`
+    let db = DB.cardDB()
+    try{
+        let total = db.prepare(count).get()
+        let products = db.prepare(sql).all()
+        res.send({total: total, products: products})
+    }catch(err){
+        console.log(err)
+        res.status(500).send(err)
+    }finally{
         db.close()
     }
 })
@@ -480,4 +565,3 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
     console.log(`body empty ${JSON.stringify(req.body)}`)
     res.sendStatus(400)
 })
-
