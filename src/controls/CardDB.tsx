@@ -8,7 +8,7 @@ import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
 import { CgPokemon } from "react-icons/cg"
 import { from } from 'rxjs';
 import { Collection } from "../model/Collection";
-import { ProductList } from "../model/SealedProduct";
+import { ProductList, SealedProduct } from "../model/SealedProduct";
 
 export class DbState {
     public ready: boolean = false
@@ -349,8 +349,8 @@ export async function renameCollection(collection: string, newName: string, upda
     update(1, true)
 }
 
-export function openLink(type: string, card: Card) {
-    axios.post(`${baseURL}/openlink`, { type: type, card: card })
+export function openLink(type: string, product: Card | SealedProduct) {
+    axios.post(`${baseURL}/openlink`, { type: type, card: product })
 }
 
 export function getCollectionValue(collection: string) {

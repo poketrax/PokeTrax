@@ -557,7 +557,7 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
             res.sendStatus(200)
             break;
         case 'ebay':
-            shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(linkReq.card?.cardId)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
+            shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(linkReq.card?.cardId ?? linkReq.card?.name)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
             res.sendStatus(200)
             break;
         default:

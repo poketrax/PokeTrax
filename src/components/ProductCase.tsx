@@ -5,6 +5,7 @@ import { Paper, CircularProgress, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { baseURL } from '..';
+import {openLink} from '../controls/CardDB'
 
 class State {
     public imgLoaded = false
@@ -25,7 +26,7 @@ export class ProductCase extends React.Component<Props, State>{
     public getProdImg() {
         return (
             <div className="flex w-48 h-48 justify-center align-middle m-4">
-                <img className={`cursor-pointer w-auto h-auto`}
+                <img className={`cursor-pointer object-contain`}
                     id={`card-img${this.props.id}`}
                     style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
                     src={baseURL + "/sealedImg/" + encodeURIComponent(this.props.product.name)}
@@ -65,7 +66,7 @@ export class ProductCase extends React.Component<Props, State>{
         return (
             <div className='flex p-4'>
                 <div className='flex-grow'></div>
-                <Fab>
+                <Fab onClick={() => {this.onClickShop()}}>
                     <ShoppingCartIcon></ShoppingCartIcon>
                 </Fab>
                 <div className='w-4'></div>
@@ -74,6 +75,10 @@ export class ProductCase extends React.Component<Props, State>{
                 </Fab>
             </div>
         )
+    }
+
+    private onClickShop(){
+        openLink('tcgp', this.props.product)
     }
 
     render(): React.ReactNode {
