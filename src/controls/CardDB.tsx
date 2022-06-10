@@ -207,7 +207,7 @@ export function deleteSealedFromCollection(product: SealedProduct) {
     return new Promise<void>(
         (resolve, reject) => {
             axios.delete(
-                `${baseURL}/collections/card`,
+                `${baseURL}/collections/sealed`,
                 { data: product }
             ).then(
                 (res) => {

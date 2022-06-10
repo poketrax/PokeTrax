@@ -604,7 +604,7 @@ app.get("/collections/:collection/sealed/:page", (req, res) => {
         db.prepare(sqlAttachCard).run()
         let count = db.prepare(`SELECT count(name) as count FROM (${sqlSelect})`).get({ collection: req.params.collection })
         let cards = db.prepare(`${sqlSelect} ${limit}`).all({ collection: req.params.collection })
-        res.send({ "total": count.count, "cards": cards })
+        res.send({ "total": count.count, "products": cards })
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
@@ -620,7 +620,7 @@ app.get("/collections/download/:collection/:type", (req, res) => {
 
 app.get("/collections/:collection/value", (req, res) => {
     let sqlSelect = `
-    SELECT max(date) as date, _price.price, _collections.paid
+    SELECT max(date) as date, _price.price, _collections.paid, _collections.count
     FROM prices _price
     INNER JOIN collectionDB.collectionCards _collections 
         ON _price.cardId = _collections.cardId 
@@ -636,7 +636,7 @@ app.get("/collections/:collection/value", (req, res) => {
     try {
         db.prepare(sqlAttachCard).run()
         db.prepare(sqlAttachColl).run()
-        let totalValue = db.prepare(`SELECT sum(price) as totalValue, sum(paid) as totalPaid from(${sqlSelect})`).get({ collection: req.params.collection })
+        let totalValue = db.prepare(`SELECT sum(price * count) as totalValue, sum(paid) as totalPaid from(${sqlSelect})`).get({ collection: req.params.collection })
         res.send(totalValue)
     } catch (err) {
         console.log(err)
