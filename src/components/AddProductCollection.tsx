@@ -4,12 +4,12 @@ import NumberFormat from 'react-number-format';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { TextField, Autocomplete, Button, Tooltip } from '@mui/material'
-import { Card, Price } from '../model/Card'
-import { getCollections, addCardToCollection, addCollection, parseGrade } from "../controls/CardDB"
+import { TextField, Autocomplete, Button } from '@mui/material'
+import { getCollections, addSealedToCollection, addCollection } from "../controls/CardDB"
+import { SealedProduct } from '../model/SealedProduct';
 
 interface Props {
-    card: Card
+    product: SealedProduct
     close: () => void
 }
 
@@ -19,25 +19,21 @@ interface FormatProps {
 }
 
 class State {
-    public prices = new Array<Price>()
     public collections = new Array<string>()
     public displayCollections = new Array<string>()
+    public selectedColl = ""
+    public errorText = ""
     public price = 0
     public count = 1
-    public grade = ""
     public collErr = false
     public countErr = false
-    public gradeErr = false
-    public errorText = ""
     public wishlist = false
 }
 
-export class AddCardCollection extends React.Component<Props, State> {
+export class AddProductCollection extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        this.variants = JSON.parse(props.card.variants ?? '[]')
-        this.selectedVariant = this.variants ? this.variants[0] : ""
         getCollections().then(
             (value) => {
                 this.setState({
@@ -48,10 +44,6 @@ export class AddCardCollection extends React.Component<Props, State> {
             }
         )
     }
-
-    private variants: Array<string> = []
-    private selectedVariant: string = ""
-    private selectedColl: string = ""
 
     private PriceFormat = React.forwardRef<NumberFormat<string>, FormatProps>(
         function NumberFormatCustom(props, ref) {
@@ -102,13 +94,13 @@ export class AddCardCollection extends React.Component<Props, State> {
         },
     );
 
-    private addCard() {
+    private addProduct() {
         let err = ""
         let collError = false
         let countError = false
         let gradeError = false
 
-        if (this.selectedColl === "") {
+        if (this.state.selectedColl === "") {
             err = "Collection must be set "
             collError = true
         }
@@ -120,24 +112,17 @@ export class AddCardCollection extends React.Component<Props, State> {
             err += "Count must be greater than 0"
             countError = true
         }
-        let grade = parseGrade(this.state.grade)
-        if (this.state.grade !== "" && grade == null) {
-            err += "Invalid grade format! ex: PSA-10, CGC-9.5, BGS-10-P, CGC-10-P, PSA-10-OC"
-            gradeError = true
-        }
         if (collError || countError || gradeError) {
-            this.setState({ ...this.state, errorText: err, collErr: collError, countErr: countError, gradeErr: gradeError })
+            this.setState({ ...this.state, errorText: err, collErr: collError, countErr: countError })
         } else {
-            let add = JSON.parse(JSON.stringify(this.props.card)) //deep copy
-            add.collection = this.selectedColl
+            let add: SealedProduct = JSON.parse(JSON.stringify(this.props.product)) //deep copy
+            add.collection = this.state.selectedColl
             add.count = this.state.wishlist ? 0 : this.state.count
-            add.variant = this.selectedVariant
             add.paid = this.state.price
-            add.grade = this.state.grade.trim().toUpperCase()
-            if (this.state.collections.indexOf(this.selectedColl) === -1) {
-                addCollection(this.selectedColl)
+            if (this.state.collections.indexOf(this.state.selectedColl) === -1) {
+                addCollection(this.state.selectedColl)
             }
-            addCardToCollection(add).then(
+            addSealedToCollection(add).then(
                 () => {
                     this.props.close()
                 }
@@ -151,13 +136,13 @@ export class AddCardCollection extends React.Component<Props, State> {
 
     render() {
         return (
-            <div className='w-96 p-8'>
+            <div className='p-8'>
                 <Autocomplete
                     id="collection-input"
                     className='w-full'
                     options={this.state.displayCollections}
                     getOptionLabel={(option) => option}
-                    defaultValue={this.selectedColl}
+                    defaultValue={this.state.selectedColl}
                     freeSolo
                     renderInput={(params) => (
                         <TextField
@@ -169,33 +154,12 @@ export class AddCardCollection extends React.Component<Props, State> {
                         />
                     )}
                     onInputChange={
-                        (ev, value) => {
+                        (_, value) => {
                             if (value) {
-                                this.selectedColl = value
+                                this.setState({ ...this.state, selectedColl: value })
                             }
                         }
                     }
-                />
-                <div className='h-4'></div>
-                <Autocomplete
-                    id="variant-select"
-                    className='w-full'
-                    options={this.variants}
-                    getOptionLabel={(option) => option}
-                    defaultValue={this.selectedVariant}
-                    onChange={
-                        (_, value) => {
-                            this.selectedVariant = value ?? this.selectedVariant
-                        }
-                    }
-                    renderInput={(params) => (
-                        <TextField
-                            className='focus:bg-slate-400'
-                            {...params}
-                            label="Variant"
-                            placeholder="Variant"
-                        />
-                    )}
                 />
                 <div className='h-4'></div>
                 <TextField
@@ -213,21 +177,6 @@ export class AddCardCollection extends React.Component<Props, State> {
                     }}
                     variant="outlined"
                 />
-                <div className='h-4'></div>
-                <Tooltip title="Grade Format: PSA-10, CGC-8.5, BGS-10-P, CGC10-P, PSA-8-OC">
-                    <TextField
-                        id="grade-input"
-                        className='w-full'
-                        label="Grade (optional)"
-                        error={this.state.gradeErr}
-                        value={this.state.grade}
-                        onChange={(ev) => {
-                            this.setState({ ...this.state, grade: ev.target.value })
-                        }}
-                        variant="outlined"
-                    />
-                </Tooltip>
-
                 <div className='h-4'></div>
                 <FormGroup>
                     <FormControlLabel control={<Switch onChange={(ev) => { this.setState({ ...this.state, wishlist: ev.target.checked }) }} />} label="Wishlist" />
@@ -249,7 +198,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                 />
                 <div className='h-4'></div>
                 <div className="w-full pt-2 pb-2 flex items-center justify-center">
-                    <Button id="confirm-add-button" className="w-full" variant='contained' onClick={() => { this.addCard() }} startIcon={<AddIcon />}>Add</Button>
+                    <Button id="confirm-add-button" className="w-full" variant='contained' onClick={() => { this.addProduct() }} startIcon={<AddIcon />}>Add</Button>
                 </div>
                 {
                     this.state.errorText !== "" &&

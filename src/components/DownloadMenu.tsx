@@ -31,16 +31,6 @@ export default class DownloadMenu extends React.Component<Collection, State>  {
         this.handleClose()
     }
 
-    private downloadURI(uri: string, name: string) {
-        var link = document.createElement("a");
-        link.download = name;
-        link.href = uri;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        link.remove()
-    }
-
     render(): React.ReactNode {
         return (
             <div>

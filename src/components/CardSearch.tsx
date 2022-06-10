@@ -24,6 +24,7 @@ class State {
     page: number = 0
     count: number = 0
     sort: string = ""
+    rarities: string[] =[]
 
     constructor(set?: string) {
         if (set != null) {
@@ -51,6 +52,10 @@ export class CardSearch extends React.Component<Props, State> {
                 this.setState({ ...this.state, sets: data.map((exp) => exp.name) })
             }
         )
+        rarities().then((value) => {
+            console.log(value)
+            this.setState({...this.state, rarities: value})
+        })
         this.setSearch(0)
     }
 
@@ -136,8 +141,7 @@ export class CardSearch extends React.Component<Props, State> {
                         multiple
                         limitTags={1}
                         id="rarities-sel"
-                        options={rarities}
-                        getOptionLabel={(option) => option}
+                        options={this.state.rarities}
                         defaultValue={this.state.rareSelected}
                         disableCloseOnSelect
                         renderOption={(props, option, { selected }) => (
@@ -194,7 +198,7 @@ export class CardSearch extends React.Component<Props, State> {
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </div>
-                <div className='h-[calc(100vh-10rem)] overflow-auto'>
+                <div className='h-[calc(100vh-11rem)] overflow-auto'>
                     <TablePagination
                         id="card-search-pagination"
                         component="div"
@@ -206,7 +210,7 @@ export class CardSearch extends React.Component<Props, State> {
                     />
                     <div className='flex'>
                         <div className='flex-grow'></div>
-                        <div className='grid h-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4'
+                        <div className='grid h-full grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 p-4'
                             id="card-grid">
                             {this.renderCards()}
                         </div>

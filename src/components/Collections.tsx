@@ -4,7 +4,10 @@ import Tab from '@mui/material/Tab';
 import Fab from '@mui/material/Fab';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import Autocomplete from '@mui/material/Autocomplete';
+import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import { Tooltip } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
@@ -20,6 +23,10 @@ import {
     deleteCollection,
     getCollectionCards,
     getCollectionValue,
+    rarities,
+    getRarity,
+    addCardToCollection,
+    getCollectionSealed,
     renameCollection
 } from '../controls/CardDB'
 import LinearProgress from '@mui/material/LinearProgress';
@@ -27,19 +34,33 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardCase } from './CardCase';
 import { Card } from '../model/Card'
 import DownloadMenu from './DownloadMenu';
+import { CgPokemon } from "react-icons/cg"
+import { MdOutlineCatchingPokemon } from "react-icons/md"
+import { FileUploader } from "react-drag-drop-files";
+import { SealedProduct } from '../model/SealedProduct';
+import { ProductCase } from './ProductCase';
 
+const fileTypes = ["JSON"];
+
+const icon = <CgPokemon />;
+const checkedIcon = <MdOutlineCatchingPokemon />;
 class State {
     public collection = ""
     public collectionCards = Array<Card>()
+    public collectionProducts = Array<SealedProduct>()
     public total = 0
     public collections = new Array<Collection>()
     public addDialogOpen = false
     public deleteDialogOpen = false
     public renameDialogOpen = false
+    public importDialogOpen = false
     public searchValue = ""
+    public rareSelected: string[] = []
     public sort = ""
+    public display = "cards"
     public page = 0
     public totalValue = 0
+    public rarities = []
 }
 
 interface DialogProps {
@@ -48,6 +69,126 @@ interface DialogProps {
     collections?: Array<Collection>
     onClose: () => void;
     onConfirm: (name: string) => void;
+}
+
+function AddDialog(props: DialogProps) {
+    const { onClose, onConfirm, open, collections } = props;
+    const [name, setName] = React.useState('');
+    const [inProg, setInProg] = React.useState(false)
+    const [prog, setProg] = React.useState(0)
+    const [addCollError, setAddCollError] = React.useState(false)
+    const [addCollErrorText, setAddCollErrorText] = React.useState("")
+    const [file, setFile] = React.useState(null)
+
+    const handleClose = () => {
+        setName("")
+        onClose();
+    };
+
+    function addColl() {
+        setInProg(true)
+        if (collections?.find((coll) => coll.name === name)) {
+            setAddCollError(true)
+            setAddCollErrorText(`Collection ${name} Already Exists`)
+            setInProg(false)
+        } else {
+            addCollection(name).then(
+                (_) => {
+                    setInProg(false)
+                    setName("")
+                    onConfirm(name)
+                    onClose()
+                }
+            )
+        }
+    }
+
+    function uploadColl() {
+        setInProg(true)
+        if (collections?.find((coll) => coll.name === name)) {
+            setAddCollError(true)
+            setAddCollErrorText(`Collection ${name} Already Exists`)
+            setInProg(false)
+        } else {
+            if (file != null) {
+                var reader = new FileReader()
+                console.log(file)
+                reader.readAsText(file)
+                reader.onload = async () => {
+                    if (typeof (reader.result) === 'string') {
+                        let cards: Array<Card> = JSON.parse(reader.result)
+                        addCollection(name)
+                        for (let i = 0; i < cards.length; i++) {
+                            let card = cards[i]
+                            setProg((i / cards.length) * 100)
+                            console.log(card)
+                            card.collection = name
+                            await addCardToCollection(card)
+                        }
+                        setInProg(false)
+                        setName("")
+                        onConfirm(name)
+                        onClose()
+                    }
+                }
+            }
+        }
+    }
+
+    const addUploadClick = () => {
+        if (name != null && name !== "") {
+            if (file != null) {
+                uploadColl()
+            } else {
+                addColl()
+            }
+        } else {
+            setAddCollErrorText("Collection Name Cannot be Empty")
+            setAddCollError(true)
+        }
+    }
+
+    return (
+        <Dialog
+            id="add-collection-dialog"
+            onClose={handleClose}
+            open={open}>
+            <DialogTitle>Add/Upload Collection</DialogTitle>
+            <div className='w-96 m-4'>
+                <TextField
+                    className="w-full"
+                    id="add-collection-name"
+                    label="Name"
+                    variant="outlined"
+                    error={addCollError}
+                    value={name}
+                    onChange={(ev) => { setName(ev.target.value) }} />
+                <div className='pt-2'>{file != null ? `File: ${file.name}` : `Collection file upload *optional`}</div>
+                <FileUploader
+                    label="Upload or Drop JSON file here"
+                    handleChange={(file) => { setFile(file); console.log(file) }}
+                    name="file"
+                    types={fileTypes} />
+                {addCollError && (<div className='text-red-600' id="add-collection-error">{addCollErrorText}</div>)}
+                <div className="w-full pt-4 pb-2 flex items-center justify-center">
+                    <Button
+                        id="add-collection-confirm-button"
+                        className="w-full"
+                        variant='contained'
+                        onClick={addUploadClick}
+                        startIcon={<AddCircleOutlineIcon />}>Add</Button>
+                    <div className='w-2'></div>
+                    <Button
+                        id="add-collection-cancel-button"
+                        className="w-full"
+                        variant='contained'
+                        onClick={handleClose}
+                        startIcon={<CloseIcon />}>Cancel</Button>
+                </div>
+                {inProg && <LinearProgress variant='determinate' value={prog} />}
+            </div>
+        </Dialog>
+    );
 }
 
 function RenameDialog(props: DialogProps) {
@@ -119,72 +260,6 @@ function RenameDialog(props: DialogProps) {
     );
 }
 
-function AddDialog(props: DialogProps) {
-    const { onClose, onConfirm, open, collections } = props;
-    const [name, setName] = React.useState('');
-    const [inProg, setInProg] = React.useState(false)
-    const [addCollError, setAddCollError] = React.useState(false)
-    const [addCollErrorText, setAddCollErrorText] = React.useState("")
-
-    const handleClose = () => {
-        setName("")
-        onClose();
-    };
-
-    const addColl = () => {
-        setInProg(true)
-        if (collections?.find((coll) => coll.name === name)) {
-            setAddCollError(true)
-            setAddCollErrorText(`Collection ${name} Already Exists`)
-            setInProg(false)
-        } else {
-            addCollection(name).then(
-                (_) => {
-                    setInProg(false)
-                    setName("")
-                    onConfirm(name)
-                    onClose()
-                }
-            )
-        }
-    }
-
-    return (
-        <Dialog
-            id="add-collection-dialog"
-            onClose={handleClose}
-            open={open}>
-            <DialogTitle>Add Collection</DialogTitle>
-            <div className='w-96 m-4'>
-                <TextField
-                    className="w-full"
-                    id="add-collection-name"
-                    label="Name"
-                    variant="outlined"
-                    error={addCollError}
-                    value={name}
-                    onChange={(ev) => { setName(ev.target.value) }} />
-                {addCollError && (<div id="add-collection-error">{addCollErrorText}</div>)}
-                <div className="w-full pt-2 pb-2 flex items-center justify-center">
-                    <Button
-                        id="add-collection-confirm-button"
-                        className="w-full"
-                        variant='contained'
-                        onClick={addColl} startIcon={<AddCircleOutlineIcon />}>Add</Button>
-                    <div className='w-2'></div>
-                    <Button
-                        id="add-collection-cancel-button"
-                        className="w-full"
-                        variant='contained'
-                        onClick={handleClose}
-                        startIcon={<CloseIcon />}>Cancel</Button>
-                </div>
-                {inProg && <LinearProgress />}
-            </div>
-        </Dialog>
-    );
-}
-
 function DeleteDialog(props: DialogProps) {
     const { onClose, onConfirm, name, open } = props;
     const [inProg, setInProg] = React.useState(false)
@@ -232,10 +307,16 @@ function DeleteDialog(props: DialogProps) {
         </Dialog>
     );
 }
+
 export class Collections extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props)
         this.state = new State()
+        rarities().then(
+            (value) => {
+                this.setState({ ...this.state, rarities: value })
+            }
+        )
         getCollections().then(
             (value) => {
                 let selected = ""
@@ -264,7 +345,7 @@ export class Collections extends React.Component<{}, State> {
         this.setCollection(coll, 0)
     }
 
-    private setCollection(_collection: string, page: number, _delete?: boolean, searchValue?: string, sort?: string) {
+    private setCollection(_collection: string, page: number, _delete?: boolean, searchValue?: string, rarityFilter?: string[], sort?: string, display?: string) {
         let collection = _collection
         if (_delete) {
             if (this.state.collections.length !== 0) {
@@ -283,24 +364,47 @@ export class Collections extends React.Component<{}, State> {
                         this.setState({ ...this.state, totalValue: value.data.totalValue })
                     }
                 )
-            getCollectionCards(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
-                .then(
-                    (search) => {
-                        this.setState(
-                            {
-                                ...this.state,
-                                total: search.total,
-                                collectionCards: search.cards,
-                                collection: collection,
-                                searchValue: searchValue ?? this.state.searchValue,
-                                sort: sort ?? this.state.sort,
-                                page: page
-                            }
-                        )
-                    }
-                )
+            let _display = display ?? this.state.display
+            if (_display === "cards") {
+                getCollectionCards(collection, page, searchValue ?? this.state.searchValue, rarityFilter ?? this.state.rareSelected, sort ?? this.state.sort)
+                    .then(
+                        (search) => {
+                            this.setState(
+                                {
+                                    ...this.state,
+                                    total: search.total,
+                                    collectionCards: search.cards,
+                                    collection: collection,
+                                    searchValue: searchValue ?? this.state.searchValue,
+                                    rareSelected: rarityFilter ?? this.state.rareSelected,
+                                    sort: sort ?? this.state.sort,
+                                    display: display ?? this.state.display,
+                                    page: page
+                                }
+                            )
+                        }
+                    )
+            } else {
+                getCollectionSealed(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
+                    .then(
+                        (search) => {
+                            this.setState(
+                                {
+                                    ...this.state,
+                                    total: search.total,
+                                    collectionProducts: search.products,
+                                    collection: collection,
+                                    searchValue: searchValue ?? this.state.searchValue,
+                                    rareSelected: rarityFilter ?? this.state.rareSelected,
+                                    sort: sort ?? this.state.sort,
+                                    display: display ?? this.state.display,
+                                    page: page
+                                }
+                            )
+                        }
+                    )
+            }
         }
-
     }
 
     private generateTabs(): JSX.Element[] {
@@ -336,9 +440,32 @@ export class Collections extends React.Component<{}, State> {
         return items
     }
 
+    private renderProducts() {
+        let items = []
+        for (let i = 0; i < this.state.collectionProducts.length; i++) {
+            let prod = this.state.collectionProducts[i]
+            items.push(
+                <ProductCase
+                    id={`${i}`}
+                    product={prod}
+                    onDelete={() => { this.setCollection(this.state.collection, this.state.page) }}>
+                </ProductCase>
+            )
+        }
+        return items
+    }
+
+    private gridStyle(): string {
+        if (this.state.display === "cards") {
+            return 'grid h-full grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 p-4'
+        } else {
+            return 'grid h-full grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4'
+        }
+    }
+
     private cardContainer() {
         if (this.state.collectionCards.length !== 0) {
-            return (<div className='h-[calc(100vh-14rem)] overflow-auto'>
+            return (
                 <div id="collection-cards" className='w-full'>
                     <div className='flex justify-center items-center'>
                         <div className='flex-grow'></div>
@@ -358,9 +485,10 @@ export class Collections extends React.Component<{}, State> {
                     </div>
                     <div className='flex'>
                         <div className='flex-grow'></div>
-                        <div className='grid h-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4'
+                        <div className={this.gridStyle()}
                             id="card-grid">
-                            {this.renderCards()}
+                            {this.state.display === "cards" && this.renderCards()}
+                            {this.state.display === "products" && this.renderProducts()}
                         </div>
                         <div className='flex-grow'></div>
                     </div>
@@ -373,8 +501,143 @@ export class Collections extends React.Component<{}, State> {
                         onPageChange={this.handleChangePage}
                     />
                 </div>
-            </div>)
+            )
         }
+    }
+
+    private raritiyFilter() {
+        return (
+            <Autocomplete
+                className='pl-4 min-w-min w-72'
+                multiple
+                limitTags={1}
+                id="rarities-sel"
+                options={this.state.rarities}
+                getOptionLabel={(option) => option}
+                defaultValue={this.state.rareSelected}
+                disableCloseOnSelect
+                renderOption={(props, option, { selected }) => (
+                    <li {...props} id={`option-${option.replace(" ", "-")}`} className="flex justify-items-center items-center">
+                        <Checkbox
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={selected}
+                        />
+                        <span>{option}</span>
+                        <div className='flex-grow' />
+                        <div className='m-4'>
+                            {getRarity(option)}
+                        </div>
+                    </li>
+                )}
+                onChange={
+                    (_, value) => {
+                        this.setCollection(this.state.collection, 0, false, this.state.searchValue, value, this.state.sort)
+                    }
+                }
+                renderInput={(params) => (
+                    <TextField
+                        className='focus:bg-slate-400'
+                        {...params}
+                        label="Rarities"
+                        placeholder="Rarities"
+                    />
+                )}
+            />
+        )
+    }
+
+    private collectionDisplayToggle() {
+        return (
+            <ToggleButtonGroup
+                className='h-10'
+                value={this.state.display}
+                exclusive
+                onChange={(_, value) => {
+                    this.setCollection(this.state.collection, 0, false, this.state.searchValue, null, null, value)
+                }}>
+                <ToggleButton value="cards" id="display-cards">
+                    <div>Cards</div>
+                </ToggleButton>
+                <ToggleButton value="products" id="display-products">
+                    <div>Sealed Products</div>
+                </ToggleButton>
+            </ToggleButtonGroup>
+        )
+    }
+
+    private sortButtons() {
+        return (
+            <ToggleButtonGroup
+                className='h-10'
+                value={this.state.sort}
+                exclusive
+                onChange={(_, value) => {
+                    this.setCollection(this.state.collection, 0, false, null, null, value)
+                }}>
+                <ToggleButton value="wish" id="sort-wish">
+                    <div>Wishlist</div>
+                </ToggleButton>
+                <ToggleButton value="name" id="sort-name">
+                    <div>Name</div>
+                </ToggleButton>
+                {this.state.display === "cards" &&
+                    <ToggleButton value="setNumber" id="sort-set-number">
+                        <div>Set #</div>
+                    </ToggleButton>
+                }
+                {this.state.display === "cards" &&
+                    <ToggleButton value="pokedex" id="sort-dex-number">
+                        <div>Dex #</div>
+                    </ToggleButton>
+                }
+                <ToggleButton value="priceASC" id="sort-price-asc">
+                    <div>$ ⬆︎</div>
+                </ToggleButton>
+                <ToggleButton value="priceDSC" id="sort-price-dsc">
+                    <div>$ ⬇︎</div>
+                </ToggleButton>
+            </ToggleButtonGroup>
+        )
+    }
+
+    private fabButtons() {
+        return (
+            <div className='flex'>
+                <Tooltip title="Add New Collection">
+                    <Fab
+                        size='small'
+                        id="add-collection-button"
+                        color="primary"
+                        onClick={() => { this.setState({ ...this.state, addDialogOpen: true }) }}>
+                        <AddIcon></AddIcon>
+                    </Fab>
+                </Tooltip>
+                <div className='w-4'></div>
+                <Tooltip title="Rename Collection">
+                    <Fab
+                        size='small'
+                        id="rename-collection-button"
+                        color="primary"
+                        onClick={() => { this.setState({ ...this.state, renameDialogOpen: true }) }}>
+                        <EditIcon />
+                    </Fab>
+                </Tooltip>
+                <div className='w-4'></div>
+                <DownloadMenu name={this.state.collection}></DownloadMenu>
+                <div className='w-4'></div>
+                <Tooltip title="Delete Collection">
+                    <Fab
+                        id="delete-collection-button"
+                        size="small"
+                        color="error"
+                        onClick={() => { this.setState({ ...this.state, deleteDialogOpen: true }) }}>
+                        <DeleteForeverIcon />
+                    </Fab>
+                </Tooltip>
+            </div>
+        )
     }
 
     private searchbar() {
@@ -392,56 +655,11 @@ export class Collections extends React.Component<{}, State> {
                                     this.setCollection(this.state.collection, 0, false, this.searchTerm)
                                 }
                             }} />
+                        {this.raritiyFilter()}
                         <div className='flex-grow'></div>
+                        {this.collectionDisplayToggle()}
                         <div className='w-4'></div>
-                        <ToggleButtonGroup
-                            className='h-10'
-                            value={this.state.sort}
-                            exclusive
-                            onChange={(_, value) => {
-                                this.setCollection(this.state.collection, 0, false, this.state.searchValue, value)
-                            }}>
-                            <ToggleButton value="wish" id="sort-wish">
-                                <div>Wishlist</div>
-                            </ToggleButton>
-                            <ToggleButton value="name" id="sort-name">
-                                <div>Name</div>
-                            </ToggleButton>
-                            <ToggleButton value="setNumber" id="sort-set-number">
-                                <div>Set #</div>
-                            </ToggleButton>
-                            <ToggleButton value="pokedex" id="sort-dex-number">
-                                <div>Dex #</div>
-                            </ToggleButton>
-                            <ToggleButton value="priceASC" id="sort-price-asc">
-                                <div>$ ⬆︎</div>
-                            </ToggleButton>
-                            <ToggleButton value="priceDSC" id="sort-price-dsc">
-                                <div>$ ⬇︎</div>
-                            </ToggleButton>
-                        </ToggleButtonGroup>
-                        <div className='w-4'></div>
-                        <Tooltip title="Rename Collection">
-                            <Fab
-                                size='small'
-                                id="rename-collection-button"
-                                color="primary"
-                                onClick={() => { this.setState({ ...this.state, renameDialogOpen: true })}}>
-                                <EditIcon />
-                            </Fab>
-                        </Tooltip>
-                        <div className='w-4'></div>
-                        <DownloadMenu name={this.state.collection}></DownloadMenu>
-                        <div className='w-4'></div>
-                        <Tooltip title="Delete Collection">
-                            <Fab
-                                id="delete-collection-button"
-                                size="small"
-                                color="error"
-                                onClick={() => { this.setState({ ...this.state, deleteDialogOpen: true }) }}>
-                                <DeleteForeverIcon />
-                            </Fab>
-                        </Tooltip>
+                        {this.sortButtons()}
                     </div>
                 </div>
             )
@@ -459,17 +677,13 @@ export class Collections extends React.Component<{}, State> {
                         onChange={this.setCollectionEvent} variant="scrollable" scrollButtons="auto">
                         {this.generateTabs()}
                     </Tabs>
-                    <Button
-                        id="add-collection-button"
-                        variant='contained'
-                        startIcon={<AddCircleOutlineIcon />}
-                        onClick={() => { this.setState({ ...this.state, addDialogOpen: true }) }}>
-                        New
-                    </Button>
+                    {this.fabButtons()}
                 </div>
                 <div>
                     {this.searchbar()}
-                    {this.cardContainer()}
+                    <div className='h-[calc(100vh-13rem)] overflow-auto'>
+                        {this.cardContainer()}
+                    </div>
                 </div>
                 <AddDialog
                     open={this.state.addDialogOpen}
