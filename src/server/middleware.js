@@ -64,6 +64,38 @@ app.get("/cardImg/:asset_id",
 );
 
 /**
+ * Get Product Img assest.  Will pull from local cache or the interwebz
+ */
+app.get("/sealedImg/:asset_name",
+    (req, res, next) => {
+        let db = DB.cardDB()
+        try {
+            let card = db.prepare('SELECT img FROM sealed WHERE name = $name').get({ "name": decodeURIComponent(req.params.asset_name) })
+            if (card != null) {
+                res.locals.fetchUrl = card.img;
+                res.locals.cacheKey = req.params.asset_name;
+                next();
+            } else {
+                res.status(403).send(`No product with id: ${req.params.asset_name}`)
+            }
+        } catch (err) {
+            console.error(err)
+            res.status(500).send('sqlerr: ' + err)
+        } finally {
+            db.close()
+        }
+    },
+    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./productImg"), maxSize: 1024 * 1024 * 1024 }),
+    (_, res) => {
+        res.set({
+            "Content-Type": res.locals.contentType,
+            "Content-Length": res.locals.contentLength,
+        });
+        res.end(res.locals.buffer, "binary");
+    }
+);
+
+/**
  * Get Series Img assest.  Will pull from local cache or the interwebz
  */
 app.get("/seriesImg/:asset_id",
@@ -186,6 +218,22 @@ app.get("/series", async (_, res) => {
     }
 })
 
+app.get("/card/rarities", (_, res) => {
+    let db = DB.cardDB()
+    try {
+        let rarities = db.prepare(`SELECT DISTINCT rarity FROM cards`).all()
+        let payload = []
+        rarities.forEach(element => {
+            payload.push(element.rarity)
+        });
+        res.send(payload)
+    } catch (err) {
+        res.status(500).send(`sqlErr: ${err}`)
+    } finally {
+        db.close()
+    }
+})
+
 /**
  * Search for card
  * /cards/{page number}
@@ -236,12 +284,49 @@ app.get("/cards/:page", async (req, res) => {
     let db = DB.cardDB()
     try {
         let countSQL = `SELECT count(cardId) as cardCount FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE}`
-        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, expCodeTCGP, rarity, cardType, energyType, variants, pokedex, price FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * 25}`
+        let sql = `SELECT name, cardId, idTCGP, expName, expCardNumber, expCodeTCGP, rarity, cardType, energyType, variants, pokedex, price FROM cards WHERE cardId like '%${nameFilter}%' ${FILTER_EXP} ${FILTER_RARE} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * limit}`
         // console.log(countSQL)
         /// console.log(sql)
         let countRes = db.prepare(countSQL).get()
         let results = db.prepare(sql).all()
         res.send({ "total": countRes.cardCount, "cards": results })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    } finally {
+        db.close()
+    }
+})
+
+app.get("/sealed/:page", (req, res) => {
+    let limit = 25
+    let order
+    switch (req.query.sort) {
+        case "name":
+            order = `ORDER BY name ASC`
+            break
+        case "priceASC":
+            order = `ORDER BY price ASC`
+            break
+        case "priceDSC":
+            order = `ORDER BY price DESC`
+            break
+        default:
+            order = ``
+    }
+    let NAME_FILTER = `'%%'`
+    if (req.query.name != null && req.query.name !== '') {
+        let name = decodeURIComponent(req.query.name)
+        NAME_FILTER = `'%${name}%'`
+    }
+
+    let count = `SELECT count(name) as total FROM sealed WHERE name like ${NAME_FILTER} LIMIT 1`
+    let sql = `SELECT * FROM sealed WHERE name like ${NAME_FILTER} ${order} LIMIT ${limit} OFFSET ${(req.params.page) * limit}`
+    let db = DB.cardDB()
+    try {
+        let total = db.prepare(count).get()
+        let products = db.prepare(sql).all()
+        res.send({ total: total.total, products: products })
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
@@ -432,13 +517,110 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
     }
 })
 
+/**
+ * Update Collection product
+ */
+app.put("/collections/sealed", bodyParser.json(),
+    async (req, res) => {
+        let db = DB.collectionDB()
+        let sealed = req.body
+        try {
+            let findSql = "SELECT * from collectionProducts WHERE name = $name AND collection = $collection"
+            let found = db.prepare(findSql).get(sealed)
+            if (found != null) {
+                db.prepare("UPDATE collectionProducts SET count = $count, grade = $grade, paid = $paid WHERE name = $name")
+                    .run(sealed)
+                res.status(201).send()
+            } else {
+                db.prepare("INSERT INTO collectionProducts (name, collection, paid, count) VALUES ($name, $collection, $paid, $count)")
+                    .run(sealed)
+                res.status(201).send()
+            }
+        } catch (err) {
+            console.log(err)
+            res.status(500).send(JSON.stringify(err))
+        } finally {
+            db.close()
+        }
+    }
+)
+
+/**
+* Delete Collection product
+*/
+app.delete("/collections/sealed", bodyParser.json(),
+    (req, res) => {
+        let sealed = req.body
+        let db = DB.collectionDB()
+        try {
+            let del = "DELETE FROM collectionProducts WHERE name = $name AND collection = $collection"
+            db.prepare(del).run(sealed)
+            res.send()
+        } catch (err) {
+            console.log(err)
+            res.status(500).send()
+        }
+    }
+)
+
+/**
+ * Get Collection prodcuts
+ */
+app.get("/collections/:collection/sealed/:page", (req, res) => {
+    let NAME_FILTER = ``
+    let order
+    switch (req.query.sort) {
+        case "name":
+            order = `ORDER BY name ASC`
+            break
+        case "priceASC":
+            order = `ORDER BY price ASC`
+            break
+        case "priceDSC":
+            order = `ORDER BY price DESC`
+            break
+        case "wish":
+            order = `ORDER BY count ASC`
+            break
+        default:
+            order = ``
+    }
+    if (req.query.name != null && req.query.name != '') {
+        NAME_FILTER = `AND _collections.cardId like '%${decodeURI(req.query.name)}%'`
+    }
+
+    let db = DB.collectionDB()
+    let sqlSelect =
+        `SELECT _sealed.*, _collection.collection, _collection.paid, _collection.count
+        FROM collectionProducts _collection
+        INNER JOIN cardDB.sealed _sealed
+        WHERE _collection.collection = $collection AND _collection.name == _sealed.name
+        ${NAME_FILTER}
+        ${order}`
+    let limit = `LIMIT 25 OFFSET ${(req.params.page) * 25}`
+    let sqlAttachCard = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
+
+    try {
+        db.prepare(sqlAttachCard).run()
+        let count = db.prepare(`SELECT count(name) as count FROM (${sqlSelect})`).get({ collection: req.params.collection })
+        let cards = db.prepare(`${sqlSelect} ${limit}`).all({ collection: req.params.collection })
+        res.send({ "total": count.count, "products": cards })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    } finally {
+        db.close()
+    }
+})
+
+
 app.get("/collections/download/:collection/:type", (req, res) => {
     res.send(DB.getCollectionDownload(req.params.collection, req.params.type))
 })
 
 app.get("/collections/:collection/value", (req, res) => {
     let sqlSelect = `
-    SELECT max(date) as date, _price.price, _collections.paid
+    SELECT max(date) as date, _price.price, _collections.paid, _collections.count
     FROM prices _price
     INNER JOIN collectionDB.collectionCards _collections 
         ON _price.cardId = _collections.cardId 
@@ -454,7 +636,7 @@ app.get("/collections/:collection/value", (req, res) => {
     try {
         db.prepare(sqlAttachCard).run()
         db.prepare(sqlAttachColl).run()
-        let totalValue = db.prepare(`SELECT sum(price) as totalValue, sum(paid) as totalPaid from(${sqlSelect})`).get({ collection: req.params.collection })
+        let totalValue = db.prepare(`SELECT sum(price * count) as totalValue, sum(paid) as totalPaid from(${sqlSelect})`).get({ collection: req.params.collection })
         res.send(totalValue)
     } catch (err) {
         console.log(err)
@@ -472,7 +654,7 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
             res.sendStatus(200)
             break;
         case 'ebay':
-            shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(linkReq.card?.cardId)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
+            shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(linkReq.card?.cardId ?? linkReq.card?.name)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
             res.sendStatus(200)
             break;
         default:
@@ -480,4 +662,3 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
     console.log(`body empty ${JSON.stringify(req.body)}`)
     res.sendStatus(400)
 })
-

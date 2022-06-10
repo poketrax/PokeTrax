@@ -8,6 +8,7 @@ import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
 import { CgPokemon } from "react-icons/cg"
 import { from } from 'rxjs';
 import { Collection } from "../model/Collection";
+import { ProductList, SealedProduct } from "../model/SealedProduct";
 
 export class DbState {
     public ready: boolean = false
@@ -38,6 +39,26 @@ export function search(page: number, term?: string, sets?: string[], rarity?: st
                     reject(err)
                 }
             )
+        }
+    )
+}
+
+export function searchProducts(page: number, searchTerm?: string, sort?: string): Promise<ProductList> {
+    return new Promise(
+        (resolve, reject) => {
+            let url = new URL(`${baseURL}/sealed/${page}`)
+            url.searchParams.set('name', searchTerm)
+            url.searchParams.set('sort', sort)
+            axios.get(url.toString())
+                .then(
+                    (res) => {
+                        resolve(res.data)
+                    },
+                    (err) => {
+                        console.log(err.body)
+                        reject()
+                    }
+                )
         }
     )
 }
@@ -104,6 +125,33 @@ export async function getCollectionCards(collection: string, page: number, searc
     )
 }
 
+export async function getCollectionSealed(collection:string, page: number, searchVal?: string, sort?: string): Promise<ProductList> {
+    return new Promise<ProductList>(
+        (resolve, reject) => {
+            if (collection === '') {
+                resolve(new ProductList())
+            }
+            let url = new URL(`${baseURL}/collections/${collection}/sealed/${page ?? 0}`)
+            if (searchVal != null) {
+                url.searchParams.set(`name`, searchVal)
+            }
+            if (sort != null) {
+                url.searchParams.set('sort', sort)
+            }
+            axios.get(url.toString())
+                .then(
+                    (res) => {
+                        resolve(res.data)
+                    }
+                ).catch(
+                    (err) => {
+                        reject(err)
+                    }
+                )
+        }
+    )
+}
+
 export function addCollection(name: string): Promise<any> {
     return new Promise<any>(
         (resolve, reject) => {
@@ -155,6 +203,25 @@ export function deleteCardFromCollection(card: Card) {
     )
 }
 
+export function deleteSealedFromCollection(product: SealedProduct) {
+    return new Promise<void>(
+        (resolve, reject) => {
+            axios.delete(
+                `${baseURL}/collections/sealed`,
+                { data: product }
+            ).then(
+                (res) => {
+                    resolve()
+                }
+            ).catch(
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
 export async function addCardToCollection(card: Card) {
     return new Promise<void>(
         (resolve, reject) => {
@@ -162,6 +229,27 @@ export async function addCardToCollection(card: Card) {
                 card.variant != null &&
                 card.count != null) {
                 axios.put(`${baseURL}/collections/card`, card).then(
+                    (res) => {
+                        resolve()
+                    }
+                ).catch(
+                    (err) => {
+                        reject(err)
+                    }
+                )
+            } else {
+                reject("missing data")
+            }
+        }
+    )
+}
+
+export async function addSealedToCollection(product: SealedProduct) {
+    return new Promise<void>(
+        (resolve, reject) => {
+            if (product.collection != null &&
+                product.count != null) {
+                axios.put(`${baseURL}/collections/sealed`, product).then(
                     (res) => {
                         resolve()
                     }
@@ -258,22 +346,19 @@ export function parseGrade(grade: string): Grade | null {
     return parsedGrade
 }
 
-export const rarities = [
-    "Common",
-    "Uncommon",
-    "Rare",
-    "Promo",
-    "Holo Rare",
-    "Ultra Rare",
-    "Secret Rare",
-    "Code Card",
-    "Shiny Holo Rare",
-    "Prism Rare",
-    "Rare BREAK",
-    "Classic Collection",
-    "Rare Ace",
-    "Amazing Rare"
-]
+export async function rarities(): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        axios.get(`${baseURL}/card/rarities`).then(
+            (value) => {
+                resolve(value.data)
+            },
+            (err) => {
+                reject(err)
+            }
+        )
+
+    })
+}
 
 function downloadURI(uri: string, name: string) {
     var link = document.createElement("a");
@@ -331,8 +416,8 @@ export async function renameCollection(collection: string, newName: string, upda
     update(1, true)
 }
 
-export function openLink(type: string, card: Card) {
-    axios.post(`${baseURL}/openlink`, { type: type, card: card })
+export function openLink(type: string, product: Card | SealedProduct) {
+    axios.post(`${baseURL}/openlink`, { type: type, card: product })
 }
 
 export function getCollectionValue(collection: string) {
@@ -365,6 +450,8 @@ export function getRarity(rarity: string) {
             return (<IoStarSharp></IoStarSharp>)
         case "Promo":
             return (<img className='w-5 h-5' alt="" src={`${baseURL}/expSymbol/Sword%20&%20Shield%20Promos`}></img>)
+        case "Radiant Rare":
+            return (<IoStarSharp></IoStarSharp>)
         default:
             return (<BsFillCircleFill></BsFillCircleFill>)
     }

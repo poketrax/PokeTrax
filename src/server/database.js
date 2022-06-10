@@ -78,7 +78,6 @@ const checkForDbUpdate = () => {
             if (fs.existsSync(path.join(pwd(), DB_META)) === false) {
                 dbUpdate = { ready: false, updated: true }
                 try {
-                    
                     await pullDb(meta)
                     resolve()
                 } catch (err) {
@@ -297,6 +296,7 @@ const init = async () => {
         let collections = collectionDB()
         collections.prepare(`CREATE TABLE IF NOT EXISTS collections (name TEXT UNIQUE, img TEXT)`).run()
         collections.prepare(`CREATE TABLE IF NOT EXISTS collectionCards (cardId TEXT, collection TEXT, variant TEXT, paid REAL, count INTEGER, grade TEXT)`).run()
+        collections.prepare(`CREATE TABLE IF NOT EXISTS collectionProducts (name TEXT, collection TEXT, paid REAL, count INTEGER)`).run()
         collections.close()
     } catch (err) {
         console.error(err)
@@ -311,8 +311,8 @@ module.exports.pwd = pwd
 module.exports.pricesDB = pricesDB
 module.exports.collectionDB = collectionDB
 module.exports.cardDB = cardDB
+module.exports.checkForDbUpdate = checkForDbUpdate
+module.exports.getPrices = getPrices
 module.exports.CARD_DB_FILE = CARD_DB_FILE
 module.exports.COLLECTION_DB_FILE = COLLECTION_DB_FILE
 module.exports.PRICE_DB_FILE = PRICE_DB_FILE
-module.exports.checkForDbUpdate = checkForDbUpdate
-module.exports.getPrices = getPrices
