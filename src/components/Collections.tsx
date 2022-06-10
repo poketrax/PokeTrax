@@ -26,7 +26,8 @@ import {
     rarities,
     getRarity,
     addCardToCollection,
-    getCollectionSealed
+    getCollectionSealed,
+    renameCollection
 } from '../controls/CardDB'
 import LinearProgress from '@mui/material/LinearProgress';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -176,6 +177,75 @@ function AddDialog(props: DialogProps) {
                         variant='contained'
                         onClick={addUploadClick}
                         startIcon={<AddCircleOutlineIcon />}>Add</Button>
+                    <div className='w-2'></div>
+                    <Button
+                        id="add-collection-cancel-button"
+                        className="w-full"
+                        variant='contained'
+                        onClick={handleClose}
+                        startIcon={<CloseIcon />}>Cancel</Button>
+                </div>
+                {inProg && <LinearProgress variant='determinate' value={prog} />}
+            </div>
+        </Dialog>
+    );
+}
+
+function RenameDialog(props: DialogProps) {
+    const { onClose, onConfirm, open, collections } = props;
+    const [name, setName] = React.useState('');
+    const [prog, setProg] = React.useState(0)
+    const [inProg, setInProg] = React.useState(false)
+    const [renameError, setRenameError] = React.useState(false)
+    const [renameErrorText, setRenameErrorText] = React.useState("")
+
+    const handleClose = () => {
+        setName("")
+        onClose();
+    };
+
+    const progressCallback = (progress: number, finished: boolean): void => {
+        console.log(`prog: ${progress} finish: ${finished}`)
+        setProg(progress)
+        if (finished) {
+            handleClose();
+            onConfirm(name)
+        }
+    }
+
+    const rename = () => {
+        if (name != null && name !== '') {
+            renameCollection(props.name, name, progressCallback)
+            setInProg(true)
+            setRenameErrorText("In Progress don't close dialog")
+        } else {
+            setRenameError(true)
+            setRenameErrorText("Please set a new Collection name")
+        }
+    }
+
+    return (
+        <Dialog
+            id="rename-collection-dialog"
+            onClose={handleClose}
+            open={open}>
+            <DialogTitle>Rename Collection {props.name}</DialogTitle>
+            <div className='w-96 m-4'>
+                <TextField
+                    className="w-full"
+                    id="rename-collection-name"
+                    label="Name"
+                    variant="outlined"
+                    error={renameError}
+                    value={name}
+                    onChange={(ev) => { setName(ev.target.value) }} />
+                {renameError && (<div id="rename-collection-error">{renameErrorText}</div>)}
+                <div className="w-full pt-2 pb-2 flex items-center justify-center">
+                    <Button
+                        id="rename-collection-confirm-button"
+                        className="w-full"
+                        variant='contained'
+                        onClick={rename} startIcon={<EditIcon />}>Rename</Button>
                     <div className='w-2'></div>
                     <Button
                         id="add-collection-cancel-button"
@@ -374,11 +444,13 @@ export class Collections extends React.Component<{}, State> {
         let items = []
         for (let i = 0; i < this.state.collectionProducts.length; i++) {
             let prod = this.state.collectionProducts[i]
-            items.push(<ProductCase
-                id={`${i}`}
-                product={prod}
-                onDelete={() => {this.setCollection(this.state.collection, this.state.page)}}>
-            </ProductCase>)
+            items.push(
+                <ProductCase
+                    id={`${i}`}
+                    product={prod}
+                    onDelete={() => { this.setCollection(this.state.collection, this.state.page) }}>
+                </ProductCase>
+            )
         }
         return items
     }
@@ -628,6 +700,19 @@ export class Collections extends React.Component<{}, State> {
                         this.setCollection(this.state.collection, 0, true)
                     }}
                     onClose={() => { this.closeDialog() }}
+                />
+                <RenameDialog
+                    open={this.state.renameDialogOpen}
+                    name={this.state.collection}
+                    collections={this.state.collections}
+                    onConfirm={
+                        (name) => {
+                            this.setCollection(name, 0)
+                        }
+                    }
+                    onClose={
+                        () => { this.closeDialog() }
+                    }
                 />
             </div>
         )
