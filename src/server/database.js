@@ -63,17 +63,17 @@ const dbStatus = () => {
 }
 
 const checkForDbUpdate = () => {
-   // updateCollections()
+    // updateCollections()
     return new Promise(
         async (resolve, reject) => {
             //search for folder
-            
+
             if (fs.existsSync(path.join(pwd(), "./sql")) === false) {
-                fs.mkdirSync(path.join(pwd(), "./sql"), {recursive: true})
+                fs.mkdirSync(path.join(pwd(), "./sql"), { recursive: true })
             }
             //Init databases
             let meta = await pullDbMeta()
-            
+
             //if new and no meta file exists
             if (fs.existsSync(path.join(pwd(), DB_META)) === false) {
                 dbUpdate = { ready: false, updated: true }
@@ -144,13 +144,13 @@ async function pullDb(meta) {
                 //write database file
                 let writer = fs.createWriteStream(path.join(pwd(), CARD_DB_FILE))
                 stream.pipe(writer)
-                
+
                 writer.on('finish', () => {
                     fs.writeFileSync(path.join(pwd(), "./sql/meta.json"), JSON.stringify(meta))
                     dbUpdate = { ready: true, updated: true }
                     resolve()
                 })
-                writer.on('error', () => { console.log("ERROR");reject() })
+                writer.on('error', () => { console.log("ERROR"); reject() })
             })
         }
     )
@@ -162,7 +162,7 @@ async function pullDb(meta) {
  * @returns 
  */
 function getTcgpPrice(card) {
-    console.log("call tcgp")
+    console.log("Call TCGP")
     let db = pricesDB()
     return new Promise(
         (resolve, reject) => {
@@ -170,6 +170,28 @@ function getTcgpPrice(card) {
                 (res) => {
                     let prices = []
                     if (res.data.count === 0) {
+                        console.log("price")
+                        for (let variant of JSON.parse(card.variants)) {
+                            let price = {
+                                "date": Date.now(),
+                                "cardId": card.cardId,
+                                "variant": variant,
+                                "vendor": "tcgp",
+                                "price": 0.0
+                            }
+                            let sql = `INSERT OR IGNORE INTO prices 
+                                (id, date, cardId, variant, vendor, price) 
+                                VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
+                            db.prepare(sql).run({
+                                "id": hash(price.date + card.cardId + variant + "tcgp"),
+                                "date": price.date,
+                                "cardId": price.cardId,
+                                "variant": variant,
+                                "vendor": price.vendor,
+                                "price": price.price
+                            })
+                            prices.push(price)
+                        }
                         resolve(prices)
                     }
                     for (let result of res.data.result) {
