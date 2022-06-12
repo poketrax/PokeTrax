@@ -22,7 +22,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
-        run: artifact=`` | $GITHUB_ENV
       - run: npm install
       - name: build
         run: npm run make
