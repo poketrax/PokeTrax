@@ -10,13 +10,10 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            artifact_name: 'poketrax_${{ GITHUB_REF#refs/*/ }}_amd64.snap'
             asset_name: poketrax.snap
           - os: windows-latest
-            artifact_name: 'PokeTrax.Setup.${{ GITHUB_REF#refs/*/ }}.exe'
             asset_name: poketrax.exe
           - os: macos-latest
-            artifact_name: 'PokeTrax-${{ GITHUB_REF#refs/*/ }}.dmg'
             asset_name: poketrax.dmg
     env:
       GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
@@ -25,6 +22,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
+      - name: set artifact
+        run: artifact=`node ./config/get_name.js windows-latest` >> $GITHUB_ENV
       - run: npm install
       - name: build
         run: npm run make
@@ -32,7 +31,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.JPG_ACTION_TOKEN }}
-          file: build/${{ matrix.artifact_name }}
+          file: build/${{ env.artifact }}
           asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
           overwrite: true
