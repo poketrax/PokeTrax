@@ -16,7 +16,7 @@ jobs:
             artifact_name: 'PokeTrax.Setup.${{ GITHUB_REF#refs/*/ }}.exe'
             asset_name: poketrax.exe
           - os: macos-latest
-            artifact_name: 'PokeTrax-${{ GITHUB_REF#refs/*/ }}.dmg'
+            artifact_name: 'PokeTrax-${{GITHUB_REF#refs/*/}}.dmg'
             asset_name: poketrax.dmg
     env:
       GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
@@ -25,6 +25,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
+      - name: set artifact
+        env:
+          ARTIFACT: ${{ export ARTIFACT=`node ./config/get_name.js windows-latest` }}
       - run: npm install
       - name: build
         run: npm run make
