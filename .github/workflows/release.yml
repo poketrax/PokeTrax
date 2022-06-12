@@ -21,9 +21,6 @@ jobs:
     env:
       GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
     steps:
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
