@@ -650,15 +650,17 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
     let linkReq = req.body
     switch (linkReq.type) {
         case 'tcgp':
-            shell.openExternal('https://tcgplayer.com/product/' + linkReq.card?.idTCGP)
-            res.sendStatus(200)
+            let code = typeof (linkReq.card?.idTCGP) === 'string' ? parseInt(linkReq.card?.idTCGP).toFixed(0) : linkReq.card?.idTCGP
+            console.log('https://tcgplayer.com/product/' + code)
+            shell.openExternal('https://tcgplayer.com/product/' + code)
+            res.send()
             break;
         case 'ebay':
             shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(linkReq.card?.cardId ?? linkReq.card?.name)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
-            res.sendStatus(200)
+            res.send()
             break;
         default:
+            console.log(`body empty ${JSON.stringify(req.body)}`)
+            res.sendStatus(400)
     }
-    console.log(`body empty ${JSON.stringify(req.body)}`)
-    res.sendStatus(400)
 })
