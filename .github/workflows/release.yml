@@ -22,8 +22,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
-      - name: set artifact
-        run: artifact=`node ./config/get_name.js windows-latest` >> $GITHUB_ENV
+        run: artifact=`` | $GITHUB_ENV
       - run: npm install
       - name: build
         run: npm run make
@@ -31,7 +30,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.JPG_ACTION_TOKEN }}
-          file: build/${{ env.artifact }}
+          file: build/${{ node ./config/get_name.js windows-latest }}
           asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
           overwrite: true
