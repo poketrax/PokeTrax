@@ -110,8 +110,9 @@
       "icon": "icon.icns",
       "artifactName": "poketrax.dmg"
     },
-    "nsis": {
-      "artifactName": "poketrax.nsi"
+    "win": {
+      "artifactName": "poketrax.msi",
+      "target" : "msi"
     },
     "snap":{
       "artifactName": "poketrax.snap"
