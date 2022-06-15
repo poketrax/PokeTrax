@@ -111,8 +111,7 @@
       "artifactName": "poketrax.dmg"
     },
     "win": {
-      "artifactName": "poketrax.msi",
-      "target" : "msi"
+      "artifactName": "poketrax.exe"
     },
     "snap":{
       "artifactName": "poketrax.snap"
