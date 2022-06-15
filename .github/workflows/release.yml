@@ -12,7 +12,7 @@ jobs:
           - os: ubuntu-latest
             asset_name: poketrax.snap
           - os: windows-latest
-            asset_name: poketrax.msi
+            asset_name: poketrax.exe
           - os: macos-latest
             asset_name: poketrax.dmg
     env:
