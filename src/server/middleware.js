@@ -648,19 +648,32 @@ app.get("/collections/:collection/value", (req, res) => {
 
 app.post("/openlink", bodyParser.json(), (req, res) => {
     let linkReq = req.body
+    let card = linkReq.card
+    let product = linkReq.product
     switch (linkReq.type) {
         case 'tcgp':
-            let code = typeof (linkReq.card?.idTCGP) === 'string' ? parseInt(linkReq.card?.idTCGP).toFixed(0) : linkReq.card?.idTCGP
+            let code = 0
+            if(card){
+                code = typeof (card?.idTCGP) === 'string' ? parseInt(card?.idTCGP).toFixed(0) : card?.idTCGP
+            }else{
+                code = typeof (product?.idTCGP) === 'string' ? parseInt(product?.idTCGP).toFixed(0) : product?.idTCGP
+            }
             console.log('https://tcgplayer.com/product/' + code)
             shell.openExternal('https://tcgplayer.com/product/' + code)
             res.send()
             break;
         case 'ebay':
-            shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(linkReq.card?.cardId ?? linkReq.card?.name)}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
+            let name = ""
+            if(card){
+                name = encodeURIComponent(linkReq.card?.cardId ?? linkReq.card?.name)
+            }else{
+                name = encodeURIComponent(linkReq.product?.name)
+            }
+            shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${name}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
             res.send()
             break;
         default:
-            console.log(`body empty ${JSON.stringify(req.body)}`)
-            res.sendStatus(400)
+            console.log(`Body empty ${JSON.stringify(req.body)}`)
+            res.status(400).send(`Body empty ${JSON.stringify(req.body)}`)
     }
 })
