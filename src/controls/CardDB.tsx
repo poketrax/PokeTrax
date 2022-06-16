@@ -13,6 +13,7 @@ import { ProductList, SealedProduct } from "../model/SealedProduct";
 export class DbState {
     public ready: boolean = false
     public updated: boolean = false
+    public newSoftware: boolean = false
 }
 
 export function search(page: number, term?: string, sets?: string[], rarity?: string[], sort?: string): Promise<CardSearch> {
