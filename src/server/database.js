@@ -86,6 +86,7 @@ const checkForDbUpdate = () => {
                     reject("can't pull data base")
                 }
             } else { // look for update
+                updateCollections()
                 let current = JSON.parse(fs.readFileSync(path.join(pwd(), DB_META), { encoding: 'utf8', flag: 'r' }))
                 if (compver(meta.version, current.version) > 0) {
                     dbUpdate = { ready: false, updated: true, newSoftware: softwareUpdate }
@@ -174,12 +175,12 @@ async function pullDb(meta) {
 }
 
 
-function addPrice(db, price, card) {
+function addPrice(db, price) {
     let sql = `INSERT OR IGNORE INTO prices  
                     (id, date, cardId, variant, vendor, price) 
                     VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
     db.prepare(sql).run({
-        "id": hash(date + card.cardId + variant.variant + "tcgp"),
+        "id": hash(price.date + price.cardId + price.variant + "tcgp"),
         "date": price.date,
         "cardId": price.cardId,
         "variant": price.variant,
@@ -211,7 +212,7 @@ function getTcgpPrice(card) {
                                 "price": 0.0
                             }
                             prices.push(price)
-                            addPrice(db, price, card)
+                            addPrice(db, price)
                         }
                         resolve(prices)
                     }
@@ -226,7 +227,7 @@ function getTcgpPrice(card) {
                                 "price": parseFloat(variant.marketPrice)
                             }
                             prices.push(price)
-                            addPrice(db, price, card)
+                            addPrice(db, price)
                         }
                     }
                     resolve(prices)
