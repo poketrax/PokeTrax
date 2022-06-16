@@ -156,6 +156,21 @@ async function pullDb(meta) {
     )
 }
 
+
+function addPrice(db, price, card) {
+    let sql = `INSERT OR IGNORE INTO prices  
+                    (id, date, cardId, variant, vendor, price) 
+                    VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
+    db.prepare(sql).run({
+        "id": hash(date + card.cardId + variant.variant + "tcgp"),
+        "date": price.date,
+        "cardId": price.cardId,
+        "variant": price.variant,
+        "vendor": price.vendor,
+        "price": price.price
+    })
+}
+
 /**
  * Return TCGPrice 
  * @param {Card} card 
@@ -170,7 +185,6 @@ function getTcgpPrice(card) {
                 (res) => {
                     let prices = []
                     if (res.data.count === 0) {
-                        console.log("price")
                         for (let variant of JSON.parse(card.variants)) {
                             let price = {
                                 "date": Date.now(),
@@ -179,18 +193,8 @@ function getTcgpPrice(card) {
                                 "vendor": "tcgp",
                                 "price": 0.0
                             }
-                            let sql = `INSERT OR IGNORE INTO prices 
-                                (id, date, cardId, variant, vendor, price) 
-                                VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
-                            db.prepare(sql).run({
-                                "id": hash(price.date + card.cardId + variant + "tcgp"),
-                                "date": price.date,
-                                "cardId": price.cardId,
-                                "variant": variant,
-                                "vendor": price.vendor,
-                                "price": price.price
-                            })
                             prices.push(price)
+                            addPrice(db, price, card)
                         }
                         resolve(prices)
                     }
@@ -205,17 +209,7 @@ function getTcgpPrice(card) {
                                 "price": parseFloat(variant.marketPrice)
                             }
                             prices.push(price)
-                            let sql = `INSERT OR IGNORE INTO prices 
-                                (id, date, cardId, variant, vendor, price) 
-                                VALUES ($id, $date, $cardId, $variant, $vendor, $price)`
-                            db.prepare(sql).run({
-                                "id": hash(date + card.cardId + variant.variant + "tcgp"),
-                                "date": price.date,
-                                "cardId": price.cardId,
-                                "variant": price.variant,
-                                "vendor": price.vendor,
-                                "price": price.price
-                            })
+                            addPrice(db, price, card)
                         }
                     }
                     resolve(prices)
@@ -240,7 +234,6 @@ const getPrices = (card, _start, _end) => {
         (resolve, reject) => {
             let yesterday = new Date(Date.now())
             yesterday.setDate(yesterday.getDate() - 2)
-
             let timeFilter = ``
             let limit = ``
             if (_start != null && _end != null) {
