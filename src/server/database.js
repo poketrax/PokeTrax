@@ -73,34 +73,50 @@ const checkForDbUpdate = () => {
             }
             //Init databases
             let meta = await pullDbMeta()
-
+            let softwareUpdate = await checkForSoftwareUpdate()
             //if new and no meta file exists
             if (fs.existsSync(path.join(pwd(), DB_META)) === false) {
-                dbUpdate = { ready: false, updated: true }
+                dbUpdate = { ready: false, updated: true, newSoftware: softwareUpdate }
                 try {
                     await pullDb(meta)
                     resolve()
                 } catch (err) {
-                    dbUpdate = { ready: false, updated: false, error: err }
+                    dbUpdate = { ready: false, updated: false, error: err, newSoftware: softwareUpdate }
                     console.log(err)
                     reject("can't pull data base")
                 }
             } else { // look for update
                 let current = JSON.parse(fs.readFileSync(path.join(pwd(), DB_META), { encoding: 'utf8', flag: 'r' }))
                 if (compver(meta.version, current.version) > 0) {
-                    dbUpdate = { ready: false, updated: true }
+                    dbUpdate = { ready: false, updated: true, newSoftware: softwareUpdate }
                     try {
                         await pullDb(meta)
                         resolve()
                     } catch (err) {
-                        dbUpdate = { ready: false, updated: false, error: err }
+                        dbUpdate = { ready: false, updated: false, error: err, newSoftware: softwareUpdate }
                         console.log(err)
                         reject("cant pull database")
                     }
                 } else {
-                    dbUpdate = { ready: true, updated: false }
+                    dbUpdate = { ready: true, updated: false, newSoftware: softwareUpdate }
                     resolve()
                 }
+            }
+        }
+    )
+}
+
+async function checkForSoftwareUpdate() {
+    return new Promise(
+        async (resolve, _) => {
+            try {
+                let currentVerion = app.getVersion()
+                let release = await axios.get('https://api.github.com/repos/poketrax/poketrax/releases/latest')
+                let latestVersion = release.data.name.replace("v", "").replace("-beta", "")
+                resolve(compver(currentVerion, latestVersion) < 0 ? true : false)
+            } catch (err) {
+                console.log(err)
+                resolve(false)
             }
         }
     )
@@ -115,6 +131,7 @@ async function updateCollections() {
             let carddb = cardDB()
             let card = carddb.prepare(`SELECT * FROM cards WHERE cardId = $cardId`).get({ cardId: cardC.cardId })
             await getTcgpPrice(card)
+            await new Promise(resolve => setTimeout(resolve, 1000));
             carddb.close()
         }
     }
@@ -125,7 +142,7 @@ async function pullDbMeta() {
     return new Promise(
         async (resolve, reject) => {
             try {
-                let release = await axios.get('https://api.github.com/repos/jgunzelman88/pokepull/releases/latest')
+                let release = await axios.get('https://api.github.com/repos/poketrax/pokepull/releases/latest')
                 let asset = release.data.assets.find((value) => value.name === "data.sqlite3")
                 let meta = { 'version': release.data.name, 'asset': asset.browser_download_url }
                 resolve(meta)
