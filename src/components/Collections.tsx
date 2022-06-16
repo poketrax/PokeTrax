@@ -561,7 +561,7 @@ export class Collections extends React.Component<{}, State> {
                     <div>Cards</div>
                 </ToggleButton>
                 <ToggleButton value="products" id="display-products">
-                    <div>Sealed Products</div>
+                    <div>Sealed</div>
                 </ToggleButton>
             </ToggleButtonGroup>
         )
@@ -589,14 +589,30 @@ export class Collections extends React.Component<{}, State> {
                 }
                 {this.state.display === "cards" &&
                     <ToggleButton value="pokedex" id="sort-dex-number">
-                        <div>Dex #</div>
+                        <Tooltip title="National Pokedex Number">
+                            <div className='flex items-center'>{icon}#</div>
+                        </Tooltip>
                     </ToggleButton>
                 }
                 <ToggleButton value="priceASC" id="sort-price-asc">
-                    <div>$ ⬆︎</div>
+                    <Tooltip title="Price Low to High">
+                        <div>$⬆︎</div>
+                    </Tooltip>
                 </ToggleButton>
                 <ToggleButton value="priceDSC" id="sort-price-dsc">
-                    <div>$ ⬇︎</div>
+                    <Tooltip title="Price High to Low">
+                        <div>$⬇︎</div>
+                    </Tooltip>
+                </ToggleButton>
+                <ToggleButton value="dateASC" id="sort-date-up">
+                    <Tooltip title="Date High to Low">
+                        <div>📅 ⬆︎</div>
+                    </Tooltip>
+                </ToggleButton>
+                <ToggleButton value="dateDSC" id="sort-date-down">
+                    <Tooltip title="Date High to Low">
+                        <div>📅 ⬇︎</div>
+                    </Tooltip>
                 </ToggleButton>
             </ToggleButtonGroup>
         )

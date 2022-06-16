@@ -4,9 +4,12 @@ import Cards from "./CardSearch"
 import { Expansions } from "./Expansions"
 import LinearProgress from '@mui/material/LinearProgress';
 import { Subject, timer } from 'rxjs'
-import { DbState, getDbState } from '../controls/CardDB';
+import { DbState, getDbState, openLink } from '../controls/CardDB';
 import { Collections } from './Collections';
 import { ProductSearch } from './ProductSearch';
+import Snackbar from '@mui/material/Snackbar';
+
+import { Button } from '@mui/material';
 
 class State {
     page: string = ""
@@ -26,9 +29,9 @@ export class App extends React.Component<{}, State> {
         this.state = new State()
         AppController.subscribe(
             (msg) => {
-                if(msg.selectedSet === ""){
-                    this.setState({...this.state, selectedSet : ""})
-                }else{
+                if (msg.selectedSet === "") {
+                    this.setState({ ...this.state, selectedSet: "" })
+                } else {
                     this.setPage(msg.page, msg.selectedSet)
                 }
             }
@@ -57,6 +60,10 @@ export class App extends React.Component<{}, State> {
                 selectedSet: selectedSet ?? this.state.selectedSet
             })
         }
+    }
+
+    downloadNewVersion(){
+
     }
 
     render() {
@@ -106,9 +113,16 @@ export class App extends React.Component<{}, State> {
                         </span>
                     </div>
                 </div>
+                <Snackbar
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                    open={this.state.dbState.newSoftware}
+                    onClose={() => {this.setState({...this.state, dbState : {ready: this.state.dbState.ready, updated: this.state.dbState.updated, newSoftware: false}})}}
+                    message="New Version Available!! "
+                    action={<Button onClick={() => openLink("newSoftware", null)}>Download</Button>}
+                />
                 {content}
                 <div className='text-xs'>The information presented on this application about the Pokémon Trading Card Game, including images and text, is copyright of The Pokémon Company, Nintendo, Game Freak, Creatures and/or Wizards of the Coast. This website is not produced by, endorsed by, supported by, or affiliated with any of these companies.</div>
-             </div>
+            </div>
         )
     }
 }

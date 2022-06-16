@@ -6,6 +6,7 @@ const app = express();
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const bodyParser = require('body-parser');
 const DB = require('./database');
+const os = require('os');
 
 let server
 
@@ -278,6 +279,12 @@ app.get("/cards/:page", async (req, res) => {
         case "priceDSC":
             order = `ORDER BY price DESC`
             break
+        case "dateASC":
+            order = `ORDER BY datetime(releaseDate) ASC`
+            break
+        case "dateDSC":
+            order = `ORDER BY datetime(releaseDate) DESC`
+            break
         default:
             order = ``
     }
@@ -473,6 +480,12 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
         case "wish":
             order = `ORDER BY count ASC`
             break
+        case "dateASC":
+            order = `ORDER BY datetime(releaseDate) ASC`
+            break
+        case "dateDSC":
+            order = `ORDER BY datetime(releaseDate) DESC`
+            break
         default:
             order = ``
     }
@@ -653,9 +666,9 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
     switch (linkReq.type) {
         case 'tcgp':
             let code = 0
-            if(card){
+            if (card) {
                 code = typeof (card?.idTCGP) === 'string' ? parseInt(card?.idTCGP).toFixed(0) : card?.idTCGP
-            }else{
+            } else {
                 code = typeof (product?.idTCGP) === 'string' ? parseInt(product?.idTCGP).toFixed(0) : product?.idTCGP
             }
             console.log('https://tcgplayer.com/product/' + code)
@@ -664,13 +677,28 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
             break;
         case 'ebay':
             let name = ""
-            if(card){
+            if (card) {
                 name = encodeURIComponent(linkReq.card?.cardId ?? linkReq.card?.name)
-            }else{
+            } else {
                 name = encodeURIComponent(linkReq.product?.name)
             }
             shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${name}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
             res.send()
+            break;
+        case 'newSoftware':
+            switch (os.platform()) {
+                case 'win32':
+                    shell.openExternal(`https://github.com/poketrax/PokeTrax/releases/latest/download/poketrax.exe`)
+                    break;
+                case 'darwin':
+                    shell.openExternal(`https://github.com/poketrax/PokeTrax/releases/latest/download/poketrax.dmg`)
+                    break;
+                case 'linux':
+                    shell.openExternal(`https://github.com/poketrax/PokeTrax/releases/latest/download/poketrax.snap`)
+                    break;
+                default:
+                    shell.openExternal(`https://poketrax.github.io/PokeTrax/`)
+            }
             break;
         default:
             console.log(`Body empty ${JSON.stringify(req.body)}`)
