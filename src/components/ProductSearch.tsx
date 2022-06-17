@@ -57,7 +57,7 @@ export class ProductSearch extends React.Component<{}, State>{
                 id="card-test-search-bar"
                 label="Search"
                 variant="outlined"
-                onChange={(e) => this.searchSealed(this.state.page, e.target.value)}
+                onChange={(e) => this.searchSealed(0, e.target.value)}
             />
         )
     }
@@ -69,7 +69,7 @@ export class ProductSearch extends React.Component<{}, State>{
                 value={this.state.sort}
                 exclusive
                 onChange={(_, value) => {
-                    this.searchSealed(this.state.page, null, value)
+                    this.searchSealed(0, null, value)
                 }}>
                 <ToggleButton value="name" id="sort-name">
                     <div>Name</div>
@@ -88,7 +88,7 @@ export class ProductSearch extends React.Component<{}, State>{
         let items = []
         for (let i = 0; i < this.state.products.length; i++) {
             let prod = this.state.products[i]
-            items.push(<ProductCase id={`${i}`} product={prod}></ProductCase>)
+            items.push(<ProductCase id={`${i}`} product={prod} onDelete={() => {}}></ProductCase>)
         }
         return items
     }
@@ -126,6 +126,7 @@ export class ProductSearch extends React.Component<{}, State>{
                     </div>
                     {this.pagination()}
                 </div>
+
             </div>
         )
     }
