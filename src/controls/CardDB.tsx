@@ -126,6 +126,14 @@ export async function getCollectionCards(collection: string, page: number, searc
     )
 }
 
+/**
+ * 
+ * @param collection 
+ * @param page 
+ * @param searchVal 
+ * @param sort 
+ * @returns 
+ */
 export async function getCollectionSealed(collection: string, page: number, searchVal?: string, sort?: string): Promise<ProductList> {
     return new Promise<ProductList>(
         (resolve, reject) => {
@@ -153,6 +161,11 @@ export async function getCollectionSealed(collection: string, page: number, sear
     )
 }
 
+/**
+ * Add new collection. name must be unique
+ * @param name 
+ * @returns 
+ */
 export function addCollection(name: string): Promise<any> {
     return new Promise<any>(
         (resolve, reject) => {
@@ -169,6 +182,11 @@ export function addCollection(name: string): Promise<any> {
     )
 }
 
+/**
+ * Delete dentire collection
+ * @param name 
+ * @returns 
+ */
 export function deleteCollection(name: string): Promise<any> {
     return new Promise<any>(
         (resolve, reject) => {
@@ -185,6 +203,11 @@ export function deleteCollection(name: string): Promise<any> {
     )
 }
 
+/**
+ * Delete card from collection. collection field must be set
+ * @param card 
+ * @returns 
+ */
 export function deleteCardFromCollection(card: Card) {
     return new Promise<void>(
         (resolve, reject) => {
@@ -204,6 +227,11 @@ export function deleteCardFromCollection(card: Card) {
     )
 }
 
+/**
+ * Delete sealed product from collection. Collection field must be set
+ * @param product 
+ * @returns 
+ */
 export function deleteSealedFromCollection(product: SealedProduct) {
     return new Promise<void>(
         (resolve, reject) => {
@@ -223,6 +251,11 @@ export function deleteSealedFromCollection(product: SealedProduct) {
     )
 }
 
+/**
+ * Add card to collection. collection field must be set
+ * @param card 
+ * @returns 
+ */
 export async function addCardToCollection(card: Card) {
     return new Promise<void>(
         (resolve, reject) => {
@@ -245,6 +278,11 @@ export async function addCardToCollection(card: Card) {
     )
 }
 
+/**
+ * Add sealed product to collection. collection field must be set
+ * @param product 
+ * @returns 
+ */
 export async function addSealedToCollection(product: SealedProduct) {
     return new Promise<void>(
         (resolve, reject) => {
@@ -296,7 +334,7 @@ export function getCardPrices(card: Card, start: Date, end: Date): Promise<Price
  * @param type 'json' or 'csv'
  */
 export async function downloadCardPrices(card: Card, start: Date, end: Date, type: string) {
-    console.log("hello")
+    //Get results
     let results = await axios.post(`${baseURL}/cards/price?start=${encodeURI(start.toISOString())}&end=${encodeURI(end.toISOString())}&type=${type}`, card)
     let data = ""
     if(type === 'json'){
@@ -304,11 +342,13 @@ export async function downloadCardPrices(card: Card, start: Date, end: Date, typ
     }else{
         data = results.data
     }
+    //attach to local storage
     const blob = new Blob([data], { type: `application/${type}` });
     const url = URL.createObjectURL(blob);
     var link = document.createElement("a");
     link.download = `${card.name}-prices.${type}`;
     link.href = url;
+    //create link and start download
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
