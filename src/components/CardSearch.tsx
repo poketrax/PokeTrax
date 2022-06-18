@@ -3,16 +3,19 @@ import { Card } from '../model/Card'
 import { CardCase } from './CardCase'
 import { Subject } from 'rxjs'
 import { AppController } from './App'
-import TablePagination from '@mui/material/TablePagination';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import {
+    TablePagination,
+    Autocomplete,
+    TextField,
+    Checkbox,
+    ToggleButton,
+    ToggleButtonGroup,
+    Tooltip
+} from '@mui/material';
 import { CgPokemon } from "react-icons/cg"
 import { MdOutlineCatchingPokemon } from "react-icons/md"
 import { search, expansions, rarities, getRarity } from '../controls/CardDB'
-import { baseURL } from "../index";
+import { baseURL } from "../index"
 
 const icon = <CgPokemon />;
 const checkedIcon = <MdOutlineCatchingPokemon />;
@@ -24,7 +27,7 @@ class State {
     page: number = 0
     count: number = 0
     sort: string = ""
-    rarities: string[] =[]
+    rarities: string[] = []
 
     constructor(set?: string) {
         if (set != null) {
@@ -46,7 +49,7 @@ export class CardSearch extends React.Component<Props, State> {
         if (props.selectedSet !== '') {
             this.state = new State(props.selectedSet)
         }
-        AppController.next({page: "", selectedSet: ""})
+        AppController.next({ page: "", selectedSet: "" })
         expansions().then(
             (data) => {
                 this.setState({ ...this.state, sets: data.map((exp) => exp.name) })
@@ -54,7 +57,7 @@ export class CardSearch extends React.Component<Props, State> {
         )
         rarities().then((value) => {
             console.log(value)
-            this.setState({...this.state, rarities: value})
+            this.setState({ ...this.state, rarities: value })
         })
         this.setSearch(0)
     }
@@ -84,6 +87,11 @@ export class CardSearch extends React.Component<Props, State> {
         )
     }
 
+    private onSearchTerm(value: string){
+        this.searchTerm = value
+        this.setSearch(0)
+    }
+
     render() {
         return (
             <div className='w-full'>
@@ -92,12 +100,10 @@ export class CardSearch extends React.Component<Props, State> {
                         id="card-test-search-bar"
                         label="Search"
                         variant="outlined"
-                        onChange={(e) => this.searchTerm = e.target.value}
-                        onKeyPress={(e) => {
-                            if (e.key === "Enter") {
-                                this.setSearch(0)
+                        onChange={(e) => {
+                                this.onSearchTerm(e.target.value)
                             }
-                        }} />
+                        }/>
                     <div className='pl-4 min-w-min w-72'>
                         <Autocomplete
                             multiple
@@ -188,13 +194,29 @@ export class CardSearch extends React.Component<Props, State> {
                             <div>Set #</div>
                         </ToggleButton>
                         <ToggleButton value="pokedex" id="sort-dex-number">
-                            <div>Dex #</div>
+                            <Tooltip title="National Pokedex Number">
+                                <div className='flex items-center'>{icon}#</div>
+                            </Tooltip>
                         </ToggleButton>
-                        <ToggleButton value="priceASC" id="sort-price">
-                            <div>$ ⬆︎</div>
+                        <ToggleButton value="priceASC" id="sort-price-up">
+                            <Tooltip title="Price Low to High">
+                                <div>$⬆︎</div>
+                            </Tooltip>
                         </ToggleButton>
-                        <ToggleButton value="priceDSC" id="sort-price">
-                            <div>$ ⬇︎</div>
+                        <ToggleButton value="priceDSC" id="sort-price-down">
+                            <Tooltip title="Price High to Low">
+                                <div>$⬇︎</div>
+                            </Tooltip>
+                        </ToggleButton>
+                        <ToggleButton value="dateASC" id="sort-date-up">
+                            <Tooltip title="Date High to Low">
+                                <div>📅⬆︎</div>
+                            </Tooltip>
+                        </ToggleButton>
+                        <ToggleButton value="dateDSC" id="sort-date-down">
+                            <Tooltip title="Date High to Low">
+                                <div>📅⬇︎</div>
+                            </Tooltip>
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </div>

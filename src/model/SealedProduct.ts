@@ -16,6 +16,20 @@ export class SealedProduct {
     }
 }
 
+export class SealedPrice {
+    public name: string
+    public date: string
+    public vendor: string
+    public price?: number
+
+    constructor(name: string, date: string, vendor: string, price?: number){
+        this.name = name
+        this.date = date
+        this.vendor = vendor
+        this.price = price
+    }
+}
+
 export class ProductList {
     public total: number = 0
     public products: SealedProduct[] = []

@@ -59,7 +59,6 @@ export class CardCase extends React.Component<Props, State> {
         this.state = new State(props.card.count ?? 0)
     }
 
-
     private cardFooter() {
         return (
             <div className='h-8 pl-2 pr-2 flex justify-center items-center'>
@@ -183,7 +182,6 @@ export class CardCase extends React.Component<Props, State> {
             } else {
                 card.count = this.state.count - 1
             }
-
             addCardToCollection(card).then(
                 (_) => {
                     this.setState({ ...this.state, count: card.count ?? 0 })
@@ -253,7 +251,7 @@ export class CardCase extends React.Component<Props, State> {
             return (
                 <div className="h-full" style={{ position: 'absolute' }}>
                     <div className='flex items-center justify-center w-64 h-full'>
-                        <CircularProgress className="flex" size={100} ></CircularProgress>
+                        <CircularProgress className="flex" size={100}></CircularProgress>
                     </div>
                 </div>
             )

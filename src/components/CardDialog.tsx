@@ -3,6 +3,7 @@ import { baseURL } from '../index'
 import { Card, Price } from '../model/Card'
 import { CardBuyLink } from '../components/CardBuyLink'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PricesDownload from './PricesDownload';
 import {
     VictoryChart,
     VictoryLine,
@@ -11,7 +12,7 @@ import {
     VictoryTooltip,
     VictoryZoomContainer
 } from 'victory'
-import { getTCGPprices } from "../controls/CardDB"
+import { getPrices } from "../controls/CardDB"
 interface Props {
     card: Card
     price?: string | JSX.Element
@@ -20,13 +21,12 @@ class State {
     public inProg = false
     public imgLoaded = false
     public prices = new Array<Price>()
-    public start: number
+    public start: Date
 
     constructor() {
         let _start = new Date(Date.now())
         _start.setMonth(_start.getMonth() - 1)
-        this.start = _start.getTime()
-
+        this.start = _start
     }
 }
 
@@ -34,7 +34,7 @@ export class CardDialog extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        getTCGPprices(props.card, this.state.start, Date.now())
+        getPrices(props.card, this.state.start, new Date(Date.now()))
             .then(
                 (value) => {
                     this.setState({ ...this.state, prices: value })
@@ -151,14 +151,12 @@ export class CardDialog extends React.Component<Props, State> {
                     <div className="flex w-full justify-center items-center">
                         <div className="text-2xl" >Prices</div>
                         <div className="flex-grow"></div>
-                        <div>Market Price: ${this.props.card.price != null ? this.props.card.price.toFixed(2).toString() : "$-.--"}</div>
+                        <div>Market Price: ${this.props.card.price != null ? this.props.card.price.toFixed(2).toString() : "-.--"}</div>
                     </div>
                     <div className='h-80'>
                         <VictoryChart
                             domainPadding={{ y: [32, 32], x: 32 }}
-                            containerComponent={
-                                <VictoryZoomContainer />
-                            }
+                            containerComponent={<VictoryZoomContainer />}
                             width={700}
                             theme={VictoryTheme.material}>
                             {this.getLines()}
@@ -180,13 +178,23 @@ export class CardDialog extends React.Component<Props, State> {
                         </tr>
                         {this.getTableRows()}
                     </table>
-                </div>
-                <div className='flex flex-col w-24 items-center'>
-                    <div className='w-24 flex justify-center items-center mb-2'>
-                        <ShoppingCartIcon></ShoppingCartIcon> Buy
+                    <div className='h-4'></div>
+                    <div className='flex w-full items-center'>
+                        <div className='flex justify-center items-center mb-2'>
+                            <ShoppingCartIcon></ShoppingCartIcon>
+                        </div>
+                        <div className='w-4'></div>
+                        <CardBuyLink type="tcgp" item={this.props.card}></CardBuyLink>
+                        <CardBuyLink type="ebay" item={this.props.card}></CardBuyLink>
+                        <div className='flex-grow'></div>
+                        <PricesDownload
+                            item={this.props.card}
+                            start={this.state.start}
+                            type={'card'}
+                            end={new Date(Date.now())}
+                        />
+                        <div className='h-4'></div>
                     </div>
-                    <CardBuyLink type="tcgp" card={this.props.card}></CardBuyLink>
-                    <CardBuyLink type="ebay" card={this.props.card}></CardBuyLink>
                 </div>
             </div>
         )

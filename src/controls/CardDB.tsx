@@ -8,7 +8,7 @@ import { IoStarOutline, IoStarSharp, IoStarHalfSharp } from "react-icons/io5"
 import { CgPokemon } from "react-icons/cg"
 import { from } from 'rxjs';
 import { Collection } from "../model/Collection";
-import { ProductList, SealedProduct } from "../model/SealedProduct";
+import { ProductList, SealedProduct, SealedPrice } from "../model/SealedProduct";
 
 export class DbState {
     public ready: boolean = false
@@ -126,7 +126,7 @@ export async function getCollectionCards(collection: string, page: number, searc
     )
 }
 
-export async function getCollectionSealed(collection:string, page: number, searchVal?: string, sort?: string): Promise<ProductList> {
+export async function getCollectionSealed(collection: string, page: number, searchVal?: string, sort?: string): Promise<ProductList> {
     return new Promise<ProductList>(
         (resolve, reject) => {
             if (collection === '') {
@@ -269,7 +269,7 @@ export async function addSealedToCollection(product: SealedProduct) {
 export function getTCGPprice(card: Card): Promise<Price[]> {
     return new Promise<Price[]>(
         (reslove, reject) => {
-            axios.post(`${baseURL}/price`, card).then(
+            axios.post(`${baseURL}/cards/price`, card).then(
                 (res) => {
                     reslove(res.data)
                 },
@@ -281,10 +281,10 @@ export function getTCGPprice(card: Card): Promise<Price[]> {
     )
 }
 
-export function getTCGPprices(card: Card, start: number, end: number): Promise<Price[]> {
+export function getPrices(card: Card, start: Date, end: Date): Promise<Price[]> {
     return new Promise<Price[]>(
         (reslove, reject) => {
-            axios.post(`${baseURL}/price?start=${start}&end=${end}`, card).then(
+            axios.post(`${baseURL}/cards/price?start=${encodeURI(start.toISOString())}&end=${encodeURI(end.toISOString())}`, card).then(
                 (res) => {
                     reslove(res.data)
                 },
@@ -294,6 +294,55 @@ export function getTCGPprices(card: Card, start: number, end: number): Promise<P
             )
         }
     )
+}
+
+export async function downloadCardPrices(card: Card, start: Date, end: Date, type: string) {
+    console.log("hello")
+    let results = await axios.post(`${baseURL}/cards/price?start=${encodeURI(start.toISOString())}&end=${encodeURI(end.toISOString())}&type=${type}`, card)
+    let data = ""
+    if(type === 'json'){
+        data = JSON.stringify(results.data)
+    }else{
+        data = results.data
+    }
+    const blob = new Blob([data], { type: `application/${type}` });
+    const url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.download = `${card.name}-prices.${type}`;
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    link.remove()
+}
+
+
+export function getProductPrices(product: SealedProduct, start: Date, end: Date): Promise<SealedPrice[]> {
+    return new Promise<SealedPrice[]>(
+        (reslove, reject) => {
+            axios.post(`${baseURL}/sealed/price?start=${encodeURI(start.toISOString())}&end=${encodeURI(end.toISOString())}`, product).then(
+                (res) => {
+                    reslove(res.data)
+                },
+                (err) => {
+                    reject(err)
+                }
+            )
+        }
+    )
+}
+
+export async function downloadProductPrices(product: SealedProduct, start: Date, end: Date, type: string) {
+    let results = await axios.post(`${baseURL}/sealed/price?start=${encodeURI(start.toISOString())}&end=${encodeURI(end.toISOString())}`, product)
+    const blob = new Blob([results.data], { type: `application/${type}` });
+    const url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.download = `${product.name}-prices.${type}`;
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    link.remove()
 }
 
 export function expansions(): Promise<Expansion[]> {
@@ -371,7 +420,7 @@ function downloadURI(uri: string, name: string) {
     link.remove()
 }
 
-export function download(collection: string, type: string) {
+export function downloadCollection(collection: string, type: string) {
     axios.get(`${baseURL}/collections/download/${collection}/${type}`).then(
         (res) => {
             let data = res.data

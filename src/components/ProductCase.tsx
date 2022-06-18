@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { SealedProduct } from '../model/SealedProduct';
+import { ProductDialog } from './ProductDialog';
+import LaunchIcon from '@mui/icons-material/Launch';
 import {
     Paper,
     CircularProgress,
@@ -20,11 +22,13 @@ import { AddProductCollection } from './AddProductCollection';
 class State {
     public imgLoaded = false
     public addDialogShow = false
+    public productDialogShow = false
 }
 
 class Props {
     id: string
     product: SealedProduct
+    
     onDelete: () => void
 }
 
@@ -42,7 +46,7 @@ export class ProductCase extends React.Component<Props, State>{
                     style={{ visibility: this.state.imgLoaded ? 'visible' : 'hidden' }}
                     src={baseURL + "/sealedImg/" + encodeURIComponent(this.props.product.name)}
                     alt={this.props.product.name}
-                    onClick={() => { }}
+                    onClick={() => {}}
                     onLoad={() => this.setState({ ...this.state, imgLoaded: true })}
                     onError={(ev) => { if (ev.target instanceof HTMLImageElement) ev.target.src = './assests/pokemon-back.png' }}
                 />
@@ -110,8 +114,8 @@ export class ProductCase extends React.Component<Props, State>{
             return (
                 <div className='flex p-4'>
                     <div className='flex-grow'></div>
-                    <Fab onClick={() => { this.onClickShop() }}>
-                        <ShoppingCartIcon></ShoppingCartIcon>
+                    <Fab onClick={() => {this.setState({...this.state, productDialogShow: true})}}>
+                        <LaunchIcon></LaunchIcon>
                     </Fab>
                     <div className='w-4'></div>
                     <Fab onClick={() => { this.setState({ ...this.state, addDialogShow: true }) }}>
@@ -158,13 +162,38 @@ export class ProductCase extends React.Component<Props, State>{
         )
     }
 
+    private productDialog() {
+        return (
+            <Dialog
+                id="card-dialog"
+                maxWidth='xl'
+                open={this.state.productDialogShow}
+                onClose={() => this.setState({ ...this.state, productDialogShow: false })}>
+                <div className='flex justify-center items-center w-full p-2 pr-4'>
+                    <DialogTitle className='flex items-center'>
+                        {this.props.product.name}
+                    </DialogTitle>
+                    <div className="flex-grow"></div>
+                    <IconButton
+                        id="close-card-dialog"
+                        className="w-8 h-8"
+                        size="large"
+                        onClick={() => this.setState({ ...this.state, productDialogShow: false })}>
+                        <ClearIcon />
+                    </IconButton>
+                </div>
+                <ProductDialog product={this.props.product}></ProductDialog>
+            </Dialog>
+        )
+    }
+
     render(): React.ReactNode {
         return (
             <div>
                 <Paper elevation={2}>
                     <div className='flex h-full w-full justify-center items-center'>
                         <div className='h-full flex justify-center items-center'>
-                            <div className="relative">
+                            <div className="relative" onClick={() => {this.setState({...this.state, productDialogShow: true})}}>
                                 {this.imgSpinner()}
                                 {this.getProdImg()}
                             </div>
@@ -179,6 +208,7 @@ export class ProductCase extends React.Component<Props, State>{
                     </div>
                 </Paper>
                 {this.addDialog()}
+                {this.productDialog()}
             </div>
         )
     }
