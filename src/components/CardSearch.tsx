@@ -87,6 +87,11 @@ export class CardSearch extends React.Component<Props, State> {
         )
     }
 
+    private onSearchTerm(value: string){
+        this.searchTerm = value
+        this.setSearch(0)
+    }
+
     render() {
         return (
             <div className='w-full'>
@@ -95,12 +100,10 @@ export class CardSearch extends React.Component<Props, State> {
                         id="card-test-search-bar"
                         label="Search"
                         variant="outlined"
-                        onChange={(e) => this.searchTerm = e.target.value}
-                        onKeyPress={(e) => {
-                            if (e.key === "Enter") {
-                                this.setSearch(0)
+                        onChange={(e) => {
+                                this.onSearchTerm(e.target.value)
                             }
-                        }} />
+                        }/>
                     <div className='pl-4 min-w-min w-72'>
                         <Autocomplete
                             multiple

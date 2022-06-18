@@ -4,17 +4,25 @@ import Menu from '@mui/material/Menu';
 import Fab from '@mui/material/Fab';
 import MenuItem from '@mui/material/MenuItem';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Collection } from '../model/Collection';
-import { downloadCollection } from '../controls/CardDB'
+import { downloadCardPrices, downloadProductPrices } from '../controls/CardDB'
+import { SealedProduct } from '../model/SealedProduct';
+import { Card } from '../model/Card';
 
 class State {
     public anchorEl?: HTMLElement
     public open: boolean = false
 }
 
-export default class DownloadMenu extends React.Component<Collection, State>  {
+interface Props {
+    item: SealedProduct | Card
+    type: string
+    start: Date
+    end: Date
+}
 
-    constructor(props: Collection) {
+export default class PricesDownload extends React.Component<Props, State>  {
+
+    constructor(props: Props) {
         super(props)
         this.state = new State()
     }
@@ -27,7 +35,11 @@ export default class DownloadMenu extends React.Component<Collection, State>  {
     }
 
     private clickItem(type: string) {
-        downloadCollection(this.props.name, type)
+        if(this.props.type === 'card'){
+            downloadCardPrices(this.props.item as Card, this.props.start, this.props.end, type)
+        }else{
+            downloadProductPrices(this.props.item as SealedProduct, this.props.start, this.props.end, type)
+        }
         this.handleClose()
     }
 
@@ -39,7 +51,6 @@ export default class DownloadMenu extends React.Component<Collection, State>  {
                         id="download-menu-open"
                         aria-haspopup="true"
                         size="small"
-                        color="primary"
                         onClick={(ev) => this.handleClick(ev)}>
                         <DownloadIcon />
                     </Fab>
@@ -59,9 +70,8 @@ export default class DownloadMenu extends React.Component<Collection, State>  {
                         horizontal: 'left',
                     }}
                 >
-                    <MenuItem onClick={() => this.clickItem("JSON")}>JSON</MenuItem>
-                    <MenuItem onClick={() => this.clickItem("CSV")}>CSV/Excel</MenuItem>
-                    <MenuItem onClick={() => this.clickItem("txt-TCGP")}>TCG Player Mass Entry</MenuItem>
+                    <MenuItem onClick={() => this.clickItem("json")}>JSON</MenuItem>
+                    <MenuItem onClick={() => this.clickItem("csv")}>CSV/Excel</MenuItem>
                 </Menu>
             </div>
         )

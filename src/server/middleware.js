@@ -1,5 +1,6 @@
 const express = require("express");
 const shell = require('electron').shell;
+const { parse } = require('json2csv');
 const cors = require('cors')
 const path = require('path')
 const app = express();
@@ -349,10 +350,47 @@ app.get("/sealed/:page", (req, res) => {
  * start?: start time ISO string
  * end?: end time ISO string 
  */
-app.post("/price", bodyParser.json(), async (req, res) => {
-    DB.getPrices(req.body, req.query.start, req.query.end, req.query.variant).then(
+app.post("/cards/price", bodyParser.json(), async (req, res) => {
+    DB.getPrices(req.body, req.query.start, req.query.end).then(
         (value) => {
-            res.send(value)
+            switch(req.query.type){
+                case "json":
+                    res.send(value)
+                    break
+                case "csv":
+                    res.send(parse(value))
+                    break
+                default:
+                    res.send(value)
+            }
+        }
+    ).catch(
+        (err) => {
+            res.status(500).send('sqlerr: ' + err)
+            console.log(err)
+        }
+    )
+})
+
+/**
+ * Get prices of a posted SealedProduct
+ * body card object see SealedProduct.tsx
+ * query:
+ * start?: start time ISO string
+ * end?: end time ISO string 
+ * type?: {json, csv}
+ */
+ app.post("/sealed/price", bodyParser.json(), async (req, res) => {
+    DB.getProductPrice(req.body, req.query.start, req.query.end).then(
+        (value) => {
+            switch(req.query.type){
+                case "json":
+                    res.send(value)
+                case "csv":
+                    res.send(parse(value))
+                default:
+                    res.send(value)
+            }
         }
     ).catch(
         (err) => {

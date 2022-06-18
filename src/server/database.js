@@ -162,7 +162,6 @@ async function pullDb(meta) {
                 //write database file
                 let writer = fs.createWriteStream(path.join(pwd(), CARD_DB_FILE))
                 stream.pipe(writer)
-
                 writer.on('finish', () => {
                     fs.writeFileSync(path.join(pwd(), "./sql/meta.json"), JSON.stringify(meta))
                     dbUpdate = { ready: true, updated: true }
@@ -195,7 +194,6 @@ function addPrice(db, price) {
  * @returns 
  */
 function getTcgpPrice(card) {
-    console.log("Call TCGP")
     let db = pricesDB()
     return new Promise(
         (resolve, reject) => {
@@ -205,7 +203,7 @@ function getTcgpPrice(card) {
                     if (res.data.count === 0) {
                         for (let variant of JSON.parse(card.variants)) {
                             let price = {
-                                "date": Date.now(),
+                                "date": new Date(Date.now()).toISOString(),
                                 "cardId": card.cardId,
                                 "variant": variant,
                                 "vendor": "tcgp",
@@ -217,10 +215,10 @@ function getTcgpPrice(card) {
                         resolve(prices)
                     }
                     for (let result of res.data.result) {
-                        let date = Date.parse(result.date)
+                        let date = new Date(Date.parse(result.date))
                         for (let variant of result.variants) {
                             let price = {
-                                "date": date,
+                                "date": date.toISOString(),
                                 "cardId": card.cardId,
                                 "variant": variant.variant,
                                 "vendor": "tcgp",
@@ -228,6 +226,65 @@ function getTcgpPrice(card) {
                             }
                             prices.push(price)
                             addPrice(db, price)
+                        }
+                    }
+                    resolve(prices)
+                }
+            ).catch((err) => {
+                reject(err)
+            }
+            )
+        }
+    )
+}
+
+function addPriceProduct(db, price) {
+    let sql = `INSERT OR IGNORE INTO productPrices  
+                    (id, date, name, vendor, price) 
+                    VALUES ($id, $date, $name, $vendor, $price)`
+    db.prepare(sql).run({
+        "id": hash(price.date + price.name + price.vendor),
+        "date": price.date,
+        "name": price.name,
+        "vendor": price.vendor,
+        "price": price.price
+    })
+}
+
+/**
+ * Return TCGPrice 
+ * @param {Card} product 
+ * @returns 
+ */
+function getTcgpPriceProduct(product) {
+    let db = pricesDB()
+    return new Promise(
+        (resolve, reject) => {
+            axios.get(`https://infinite-api.tcgplayer.com/price/history/${product.idTCGP}?range=month`).then(
+                (res) => {
+                    let prices = []
+                    if (res.data.count === 0) {
+                        let price = {
+                            "date": new Date(Date.now()).toISOString(),
+                            "name": product.name,
+                            "vendor": "tcgp",
+                            "price": 0.0
+                        }
+                        prices.push(price)
+                        addPriceProduct(db, price)
+                        resolve(prices)
+                    }
+                    for (let result of res.data.result) {
+                        let date = new Date(Date.parse(result.date))
+                        for (let variant of result.variants) {
+                            let price = {
+                                "date": date.toISOString(),
+                                "name": product.name,
+                                "vendor": "tcgp",
+                                "price": parseFloat(variant.marketPrice)
+                            }
+                            prices.push(price)
+                            addPriceProduct(db, price)
                         }
                     }
                     resolve(prices)
@@ -255,16 +312,61 @@ const getPrices = (card, _start, _end) => {
             let timeFilter = ``
             let limit = ``
             if (_start != null && _end != null) {
-                timeFilter = `AND date > $start AND date < $end`
+                timeFilter = `AND dateTime(date) > dateTime($start) AND dateTime(date) < dateTime($end)`
             } else {
                 limit = "LIMIT 1"
             }
-            let sql = `SELECT * FROM prices WHERE cardId = $cardId ${timeFilter} ORDER BY date DESC ${limit}`
+            let sql = `SELECT date(date) as date, cardId, variant, vendor, price FROM prices WHERE cardId = $cardId ${timeFilter} ORDER BY dateTime(date) DESC ${limit}`
             let db = pricesDB()
             try {
                 let rows = db.prepare(sql).all({ "cardId": card.cardId, "start": _start, "end": _end })
                 if (rows.length === 0 || rows[0].date < yesterday.getTime()) {
                     getTcgpPrice(card).then(
+                        (value) => {
+                            resolve(value)
+                        }
+                    ).catch(
+                        (err) => {
+                            reject(err)
+                        }
+                    )
+                } else {
+                    resolve(rows)
+                }
+            } catch (err) {
+                reject(err)
+            } finally {
+                db.close()
+            }
+        }
+    )
+}
+
+/**
+ * Returns the product prices for a given range or the latest price if no range is provided
+ * @param {SealedProdcut} product 
+ * @param {string} _start 
+ * @param {string} _end 
+ * @returns 
+ */
+const getProductPrice = (product, _start, _end) => {
+    return new Promise(
+        (resolve, reject) => {
+            let yesterday = new Date(Date.now())
+            yesterday.setDate(yesterday.getDate() - 2)
+            let timeFilter = ``
+            let limit = ``
+            if (_start != null && _end != null) {
+                timeFilter = `AND dateTime(date) > dateTime($start) AND dateTime(date) < dateTime($end)`
+            } else {
+                limit = "LIMIT 1"
+            }
+            let sql = `SELECT name, date(date) as date, vendor, price FROM productPrices WHERE name = $name ${timeFilter} ORDER BY datetime(date) DESC ${limit}`
+            let db = pricesDB()
+            try {
+                let rows = db.prepare(sql).all({ "name": product.name, "start": _start, "end": _end })
+                if (rows.length === 0 || rows[0].date < yesterday.getTime()) {
+                    getTcgpPriceProduct(product).then(
                         (value) => {
                             resolve(value)
                         }
@@ -312,7 +414,6 @@ const getCollectionDownload = (collection, type) => {
                 }
                 return list
         }
-
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
@@ -321,10 +422,24 @@ const getCollectionDownload = (collection, type) => {
     }
 }
 
+/**
+ * Removes old time format.  can be removed @ v1
+ * @param {*} prices 
+ */
+function upgradePrices(prices){
+    let oldprices = prices.prepare(`SELECT * FROM prices where dateTime(date) is null`).all()
+    for(let price of oldprices){
+        let date = new Date(price.date)
+        prices.prepare(`UPDATE prices SET date = $date`).run({date: date.toISOString()})
+    }
+}
+
 const init = async () => {
     try {
         let prices = pricesDB()
-        prices.prepare(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date INTEGER, cardId TEXT, variant TEXT, vendor TEXT, price REAL)`).run()
+        prices.prepare(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date TEXT, cardId TEXT, variant TEXT, vendor TEXT, price REAL)`).run()
+        prices.prepare(`CREATE TABLE IF NOT EXISTS productPrices (id TEXT UNIQUE, date TEXT, name TEXT, vendor TEXT, price REAL)`).run()
+        upgradePrices(prices)
         prices.close()
         let collections = collectionDB()
         collections.prepare(`CREATE TABLE IF NOT EXISTS collections (name TEXT UNIQUE, img TEXT)`).run()
@@ -341,10 +456,11 @@ module.exports.getCollectionDownload = getCollectionDownload
 module.exports.dbStatus = dbStatus
 module.exports.init = init
 module.exports.pwd = pwd
-module.exports.pricesDB = pricesDB
+module.exports.pricesDB = pricesDB 
 module.exports.collectionDB = collectionDB
 module.exports.cardDB = cardDB
 module.exports.checkForDbUpdate = checkForDbUpdate
+module.exports.getProductPrice = getProductPrice
 module.exports.getPrices = getPrices
 module.exports.CARD_DB_FILE = CARD_DB_FILE
 module.exports.COLLECTION_DB_FILE = COLLECTION_DB_FILE

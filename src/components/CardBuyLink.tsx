@@ -1,9 +1,10 @@
 import React from 'react';
 import { Card } from '../model/Card';
 import { openLink } from '../controls/CardDB'
+import { SealedProduct } from '../model/SealedProduct';
 
 interface Props {
-    card: Card
+    item: Card | SealedProduct
     type: string
 }
 
@@ -21,12 +22,12 @@ export class CardBuyLink extends React.Component<Props, {}> {
     }
 
     private onclick(){
-        openLink(this.props.type, this.props.card)
+        openLink(this.props.type, this.props.item)
     }
 
     render() {
         return (
-            <div className='flex w-20 h-10 border-2 rounded-lg p-2 hover:shadow-2xl align-middle justify-center' 
+            <div className='flex w-20 h-10 border-2 rounded-lg p-2 hover:bg-gray-200 align-middle justify-center' 
                 onClick={() => this.onclick()}> 
                 {this.getImage()}
             </div>
