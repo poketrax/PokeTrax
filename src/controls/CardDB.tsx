@@ -266,22 +266,14 @@ export async function addSealedToCollection(product: SealedProduct) {
     )
 }
 
-export function getTCGPprice(card: Card): Promise<Price[]> {
-    return new Promise<Price[]>(
-        (reslove, reject) => {
-            axios.post(`${baseURL}/cards/price`, card).then(
-                (res) => {
-                    reslove(res.data)
-                },
-                (err) => {
-                    reject(err)
-                }
-            )
-        }
-    )
-}
-
-export function getPrices(card: Card, start: Date, end: Date): Promise<Price[]> {
+/**
+ * Get card prices
+ * @param card 
+ * @param start 
+ * @param end 
+ * @returns 
+ */
+export function getCardPrices(card: Card, start: Date, end: Date): Promise<Price[]> {
     return new Promise<Price[]>(
         (reslove, reject) => {
             axios.post(`${baseURL}/cards/price?start=${encodeURI(start.toISOString())}&end=${encodeURI(end.toISOString())}`, card).then(
@@ -296,6 +288,13 @@ export function getPrices(card: Card, start: Date, end: Date): Promise<Price[]> 
     )
 }
 
+/**
+ * Download a csv or json file with pricing data for the card provided
+ * @param product 
+ * @param start 
+ * @param end 
+ * @param type 'json' or 'csv'
+ */
 export async function downloadCardPrices(card: Card, start: Date, end: Date, type: string) {
     console.log("hello")
     let results = await axios.post(`${baseURL}/cards/price?start=${encodeURI(start.toISOString())}&end=${encodeURI(end.toISOString())}&type=${type}`, card)
@@ -316,7 +315,13 @@ export async function downloadCardPrices(card: Card, start: Date, end: Date, typ
     link.remove()
 }
 
-
+/**
+ * Get product prices
+ * @param product 
+ * @param start 
+ * @param end 
+ * @returns 
+ */
 export function getProductPrices(product: SealedProduct, start: Date, end: Date): Promise<SealedPrice[]> {
     return new Promise<SealedPrice[]>(
         (reslove, reject) => {
@@ -332,6 +337,13 @@ export function getProductPrices(product: SealedProduct, start: Date, end: Date)
     )
 }
 
+/**
+ * Download a csv or json file with pricing data for the product provided
+ * @param product 
+ * @param start 
+ * @param end 
+ * @param type 'json' or 'csv'
+ */
 export async function downloadProductPrices(product: SealedProduct, start: Date, end: Date, type: string) {
     let results = await axios.post(`${baseURL}/sealed/price?start=${encodeURI(start.toISOString())}&end=${encodeURI(end.toISOString())}`, product)
     const blob = new Blob([results.data], { type: `application/${type}` });
@@ -345,6 +357,10 @@ export async function downloadProductPrices(product: SealedProduct, start: Date,
     link.remove()
 }
 
+/**
+ * Get set expantions
+ * @returns 
+ */
 export function expansions(): Promise<Expansion[]> {
     return new Promise<Expansion[]>(
         (resolve, reject) => {

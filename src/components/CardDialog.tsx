@@ -12,7 +12,7 @@ import {
     VictoryTooltip,
     VictoryZoomContainer
 } from 'victory'
-import { getPrices } from "../controls/CardDB"
+import { getCardPrices } from "../controls/CardDB"
 interface Props {
     card: Card
     price?: string | JSX.Element
@@ -34,7 +34,7 @@ export class CardDialog extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
-        getPrices(props.card, this.state.start, new Date(Date.now()))
+        getCardPrices(props.card, this.state.start, new Date(Date.now()))
             .then(
                 (value) => {
                     this.setState({ ...this.state, prices: value })

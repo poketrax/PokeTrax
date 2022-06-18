@@ -139,10 +139,6 @@ export class ProductCase extends React.Component<Props, State>{
         )
     }
 
-    private onClickShop() {
-        openLink('tcgp', this.props.product)
-    }
-
     private addDialog() {
         return (
             <Dialog open={this.state.addDialogShow} onClose={() => this.setState({ ...this.state, addDialogShow: false })} fullWidth={true}>
