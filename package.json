@@ -1,7 +1,7 @@
 {
   "name": "poketrax",
   "productName": "PokeTrax",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "main": "src/server/main.js",
   "homepage": ".",
   "private": true,
@@ -60,7 +60,9 @@
   },
   "scripts": {
     "start": "export BROWSER=none && vite",
+    "start-win": "set BROWSER=none && vite",
     "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && export NODE_ENV=development && electron .",
+    "start-electron-win": "set ELECTRON_START_URL=http://localhost:3000 && set NODE_ENV=development && electron .",
     "start-test-server": "export NODE_ENV=development && node src/server/test-server.js",
     "build": "vite build",
     "test": "export NODE_ENV=test && mocha --timeout 5000",
