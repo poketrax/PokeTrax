@@ -43,7 +43,6 @@ app.get("/cardImg/:asset_id",
             let card = db.prepare('SELECT img FROM cards WHERE cardId = $id').get({ "id": decodeURIComponent(req.params.asset_id) })
             if (card != null) {
                 res.locals.fetchUrl = card.img;
-                res.locals.cacheKey = req.params.asset_id;
                 next();
             } else {
                 res.status(403).send(`No card with id: ${req.params.asset_id}`)
@@ -716,12 +715,34 @@ app.post("/openlink", bodyParser.json(), (req, res) => {
         case 'ebay':
             let name = ""
             if (card) {
-                name = encodeURIComponent(linkReq.card?.cardId ?? linkReq.card?.name)
+                name = linkReq.card?.cardId.replaceAll("-", " ") ?? linkReq.card?.name
             } else {
-                name = encodeURIComponent(linkReq.product?.name)
+                name = linkReq.product?.name
             }
-            shell.openExternal(`https://www.ebay.com/sch/i.html?_nkw=${name}&siteid=0&campid=5338928550&customid=&toolid=10001&mkevt=1`)
+            let ebayUrl = new URL('https://www.ebay.com/sch')
+            ebayUrl.searchParams.set('kw', name)
+            ebayUrl.searchParams.set('mkevt', '1')
+            ebayUrl.searchParams.set('mkcid', '1')
+            ebayUrl.searchParams.set('mkrid', '711-53200-19255-0')
+            ebayUrl.searchParams.set('campid', '5338928550')
+            ebayUrl.searchParams.set('toolid', '10001')
+            ebayUrl.searchParams.set('customid', `pt-${os.platform()}`)
+            shell.openExternal(ebayUrl.toString())
             res.send()
+            break;
+        case 'amazon':
+            let aname = ""
+            if (card) {
+                aname = linkReq.card?.cardId.replaceAll("-", " ") ?? linkReq.card?.name
+            } else {
+                aname = linkReq.product?.name
+            }
+            let amazonUrl = new URL('https://www.amazon.com/s')
+            amazonUrl.searchParams.set('k', aname)
+            amazonUrl.searchParams.set('linkCode', 'll2')
+            amazonUrl.searchParams.set('tag', 'poketrax-20')
+            amazonUrl.searchParams.set('language', 'en_US')
+            shell.openExternal(amazonUrl.toString())
             break;
         case 'newSoftware':
             switch (os.platform()) {

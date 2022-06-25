@@ -71,6 +71,7 @@ const checkForDbUpdate = () => {
             if (fs.existsSync(path.join(pwd(), "./sql")) === false) {
                 fs.mkdirSync(path.join(pwd(), "./sql"), { recursive: true })
             }
+            console.log(`database: ${path.join(pwd(), "./sql")}`)
             //Init databases
             let meta = await pullDbMeta()
             let softwareUpdate = await checkForSoftwareUpdate()
