@@ -22,6 +22,7 @@ This will start the electron framework and tie it to the vite devopment server. 
 ## Build Electron app
 
 1. Build installer for your host
+   * Note: on windows you may need to run in administrative mode 
    ```
    npm run make
    ```
