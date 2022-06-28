@@ -16,6 +16,8 @@ export class CardBuyLink extends React.Component<Props, {}> {
                 return (<img className='object-contain' src="assests/tcgp.png" alt="tcgp"/>)
             case 'ebay' :
                 return (<img className='object-contain' src="assests/ebay.png" alt="ebay"/>)
+            case 'amazon' :
+                return (<img className='object-contain' src="assests/amazon.png" alt="amazon"/>)
             default:
                 return {}
         }

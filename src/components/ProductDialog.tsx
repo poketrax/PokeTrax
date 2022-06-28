@@ -84,6 +84,8 @@ export class ProductDialog extends React.Component<Props, State> {
                 <CardBuyLink type="tcgp" item={this.props.product}></CardBuyLink>
                 <div className='w-2'></div>
                 <CardBuyLink type="ebay" item={this.props.product}></CardBuyLink>
+                <div className='w-2'></div>
+                <CardBuyLink type="amazon" item={this.props.product}></CardBuyLink>
                 <div className='flex-grow'></div>
                 <PricesDownload
                     item={this.props.product}
