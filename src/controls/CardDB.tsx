@@ -523,7 +523,8 @@ export async function renameCollection(collection: string, newName: string, upda
 }
 
 export function openLink(type: string, product: Card | SealedProduct) {
-    if(product instanceof Card){
+    let card = product as Card
+    if(card.cardId != null){
         axios.post(`${baseURL}/openlink`, { type: type, card: product })
     }else{
         axios.post(`${baseURL}/openlink`, { type: type, product: product })
