@@ -1,4 +1,4 @@
 {
     "projectId": "bjcr3a",
-    "defaultCommandTimeout": 15000
+    "defaultCommandTimeout": 30000
 }

@@ -65,7 +65,7 @@
     "start-electron-win": "set ELECTRON_START_URL=http://localhost:3000 && set NODE_ENV=development && electron .",
     "start-test-server": "export NODE_ENV=development && node src/server/test-server.js",
     "build": "vite build",
-    "test": "export NODE_ENV=test && mocha --timeout 5000",
+    "test": "export NODE_ENV=test && mocha --timeout 10000",
     "test-cypress": "npx cypress run",
     "make": "vite build && electron-builder"
   },
