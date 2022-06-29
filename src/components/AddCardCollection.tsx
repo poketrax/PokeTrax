@@ -122,7 +122,7 @@ export class AddCardCollection extends React.Component<Props, State> {
         }
         let grade = parseGrade(this.state.grade)
         if (this.state.grade !== "" && grade == null) {
-            err += "Invalid grade format! ex: PSA-10, CGC-9.5, BGS-10-P, CGC-10-P, PSA-10-OC"
+            err += "Invalid grade format! ex: PSA-10, CGC-9.5, BGS-10-P, CGC-10-P, PSA-10-OC, ACE-9, AGS-8"
             gradeError = true
         }
         if (collError || countError || gradeError) {

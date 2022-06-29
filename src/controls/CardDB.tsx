@@ -432,7 +432,8 @@ const gradeRegEx = [
     /(PSA)-(1\.5|10|[1-9])-?(OC|MK|MC|ST|PD|OF)?/g,
     /(CGC)-(10|[1-9]\.?5?)-?(P|E)?/g,
     /(BGS)-(10|[1-9]\.?5?)-?(P)?/g,
-    /(ACE)-(10|[1-9])/g
+    /(ACE)-(10|[1-9])/g,
+    /(AGS)-(10|[1-9])/g
 ]
 /**
  * returns parsed grade or null if invalid
