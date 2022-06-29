@@ -112,7 +112,7 @@ async function checkForSoftwareUpdate() {
     return new Promise(
         async (resolve, _) => {
             try {
-                let currentVerion = process.env.NODE_ENV === 'development' ? '1.0.0' : app.getVersion()
+                let currentVerion = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development' ? '1.0.0' : app.getVersion()
                 let release = await axios.get('https://api.github.com/repos/poketrax/poketrax/releases/latest')
                 let latestVersion = release.data.name.replace("v", "").replace("-beta", "")
                 resolve(compver(currentVerion, latestVersion) < 0 ? true : false)
