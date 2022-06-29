@@ -123,8 +123,7 @@ describe(
         })
 
         it('Test Get Cards', async () => {
-            await new Promise(resolve => setTimeout(resolve, 5000));
-            console.log("Done waiting, Calling get cards")
+            //await new Promise(resolve => setTimeout(resolve, 5000));
             let resCol1 = await axios.get("http://localhost:3030/collections/collection1/cards/0")
             let resCol2 = await axios.get("http://localhost:3030/collections/collection2/cards/0")
             assert.equal(resCol1.data.total, 3, `Number of cards in Collection 1 not right ${JSON.stringify(resCol1.data)}`)
