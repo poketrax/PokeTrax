@@ -39,6 +39,7 @@ const rainbowHolo = `linear-gradient(
     rgba(255, 0, 0, 1) 100%`
 interface Props {
     id?: string
+    key?: string
     card: Card
     onDelete: () => void
 }
@@ -307,11 +308,11 @@ export class CardCase extends React.Component<Props, State> {
         </div>)
     }
 
-    componentWillReceiveProps(props: Props) {
-        if (props.card.cardId !== this.props.card.cardId) {
-            this.setState(new State(props.card.count ?? 0))
+   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        if (prevProps.card.cardId !== this.props.card.cardId) {
+            this.setState(new State(this.props.card.count ?? 0))
         }
-    }
+   }
 
     render() {
         return (

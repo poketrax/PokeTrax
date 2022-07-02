@@ -38,6 +38,9 @@ export class AddCardCollection extends React.Component<Props, State> {
         this.state = new State()
         this.variants = JSON.parse(props.card.variants ?? '[]')
         this.selectedVariant = this.variants ? this.variants[0] : ""
+    }
+    
+    componentDidMount(): void {
         getCollections().then(
             (value) => {
                 this.setState({

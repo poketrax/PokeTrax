@@ -95,7 +95,7 @@ function AddDialog(props: DialogProps) {
             addCollection(name).then(
                 (_) => {
                     setInProg(false)
-                    setName("")
+                    // setName("")
                     onConfirm(name)
                     onClose()
                 }
@@ -312,31 +312,28 @@ export class Collections extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props)
         this.state = new State()
-        rarities().then(
-            (value) => {
-                this.setState({ ...this.state, rarities: value })
-            }
-        )
-        getCollections().then(
-            (value) => {
-                let selected = ""
-                if (value.length !== 0 && this.state.collection === "") {
-                    selected = value[0].name
-                } else {
-                    selected = this.state.collection
+    }
+    
+    componentDidMount(): void {
+        Promise.all([rarities(), getCollections()])
+            .then(
+                ([rarities, collections]) => {
+                    this.setState({rarities, collections}, () => {
+                        const selected = collections.length > 0 && this.state.collection === "" ?
+                            collections[0].name : this.state.collection;
+                        this.setCollection(selected, this.state.page)
+                    })
                 }
-                this.setState({ ...this.state, collections: value })
-                this.setCollection(selected, this.state.page)
-            }
-        )
+            );
     }
 
     public searchTerm = ""
 
     private _getCollections() {
         getCollections().then(
-            (value) => {
-                this.setState({ ...this.state, collections: value })
+            (collections) => {
+                console.log(this.state);
+                this.setState({ collections })
             }
         )
     }
@@ -353,7 +350,7 @@ export class Collections extends React.Component<{}, State> {
             }
             this.setState({
                 ...this.state,
-                collection: collection,
+                collection,
                 collections: this.state.collections.filter((value) => value.name !== _collection)
             })
         }
@@ -361,7 +358,7 @@ export class Collections extends React.Component<{}, State> {
             getCollectionValue(_collection)
                 .then(
                     (value) => {
-                        this.setState({ ...this.state, totalValue: value.data.totalValue })
+                        this.setState({ totalValue: value.data.totalValue })
                     }
                 )
             let _display = display ?? this.state.display
@@ -371,15 +368,14 @@ export class Collections extends React.Component<{}, State> {
                         (search) => {
                             this.setState(
                                 {
-                                    ...this.state,
                                     total: search.total,
                                     collectionCards: search.cards,
-                                    collection: collection,
+                                    collection,
                                     searchValue: searchValue ?? this.state.searchValue,
                                     rareSelected: rarityFilter ?? this.state.rareSelected,
                                     sort: sort ?? this.state.sort,
                                     display: display ?? this.state.display,
-                                    page: page
+                                    page
                                 }
                             )
                         }
@@ -390,15 +386,14 @@ export class Collections extends React.Component<{}, State> {
                         (search) => {
                             this.setState(
                                 {
-                                    ...this.state,
                                     total: search.total,
                                     collectionProducts: search.products,
-                                    collection: collection,
+                                    collection,
                                     searchValue: searchValue ?? this.state.searchValue,
                                     rareSelected: rarityFilter ?? this.state.rareSelected,
                                     sort: sort ?? this.state.sort,
                                     display: display ?? this.state.display,
-                                    page: page
+                                    page
                                 }
                             )
                         }
@@ -408,15 +403,18 @@ export class Collections extends React.Component<{}, State> {
     }
 
     private generateTabs(): JSX.Element[] {
-        let tabs = []
-        for (let coll of this.state.collections) {
-            tabs.push((<Tab id={`tab-${coll.name.replace(" ", "-")}`} label={coll.name} value={coll.name} />))
-        }
-        return tabs;
+        return this.state.collections.map((coll, i) => (
+            <Tab
+                key={i}
+                id={`tab-${coll.name.replace(" ", "-")}`}
+                label={coll.name}
+                value={coll.name}
+            />
+        ));
     }
 
     private closeDialog() {
-        this.setState({ ...this.state, addDialogOpen: false, deleteDialogOpen: false, renameDialogOpen: false })
+        this.setState({addDialogOpen: false, deleteDialogOpen: false, renameDialogOpen: false })
         this._getCollections()
     }
 
@@ -425,19 +423,16 @@ export class Collections extends React.Component<{}, State> {
     };
 
     private renderCards() {
-        let items = []
-        for (let i = 0; i < this.state.collectionCards.length; i++) {
-            let card = this.state.collectionCards[i]
-            items.push(
-                <CardCase
-                    id={`card-case-${i}`}
-                    card={card}
-                    onDelete={() => {
-                        this.setCollection(this.state.collection, this.state.page)
-                    }}>
-                </CardCase>)
-        }
-        return items
+        return this.state.collectionCards.map((card, i) => (
+            <CardCase
+                key={`${i}`}
+                id={`card-case-${i}`}
+                card={card}
+                onDelete={() => {
+                    this.setCollection(this.state.collection, this.state.page);
+                }}
+            ></CardCase>
+        ));
     }
 
     private renderProducts() {
@@ -505,7 +500,7 @@ export class Collections extends React.Component<{}, State> {
         }
     }
 
-    private raritiyFilter() {
+    private rarityFilter() {
         return (
             <Autocomplete
                 className='pl-4 min-w-min w-72'
@@ -626,31 +621,37 @@ export class Collections extends React.Component<{}, State> {
                         size='small'
                         id="add-collection-button"
                         color="primary"
-                        onClick={() => { this.setState({ ...this.state, addDialogOpen: true }) }}>
+                        onClick={() => { this.setState({ addDialogOpen: true }) }}>
                         <AddIcon></AddIcon>
                     </Fab>
                 </Tooltip>
                 <div className='w-4'></div>
                 <Tooltip title="Rename Collection">
-                    <Fab
-                        size='small'
-                        id="rename-collection-button"
-                        color="primary"
-                        onClick={() => { this.setState({ ...this.state, renameDialogOpen: true }) }}>
-                        <EditIcon />
-                    </Fab>
+                    <span>
+                        <Fab
+                            disabled={this.state.collections.length === 0}
+                            size='small'
+                            id="rename-collection-button"
+                            color="primary"
+                            onClick={() => { this.setState({ renameDialogOpen: true }) }}>
+                            <EditIcon />
+                        </Fab>
+                    </span>
                 </Tooltip>
                 <div className='w-4'></div>
                 <DownloadMenu name={this.state.collection}></DownloadMenu>
                 <div className='w-4'></div>
                 <Tooltip title="Delete Collection">
-                    <Fab
-                        id="delete-collection-button"
-                        size="small"
-                        color="error"
-                        onClick={() => { this.setState({ ...this.state, deleteDialogOpen: true }) }}>
-                        <DeleteForeverIcon />
-                    </Fab>
+                    <span>
+                        <Fab
+                            disabled={this.state.collections.length === 0}
+                            id="delete-collection-button"
+                            size="small"
+                            color="error"
+                            onClick={() => { this.setState({ deleteDialogOpen: true }) }}>
+                            <DeleteForeverIcon />
+                        </Fab>
+                    </span>
                 </Tooltip>
             </div>
         )
@@ -671,7 +672,7 @@ export class Collections extends React.Component<{}, State> {
                                     this.setCollection(this.state.collection, 0, false, this.searchTerm)
                                 }
                             }} />
-                        {this.raritiyFilter()}
+                        {this.rarityFilter()}
                         <div className='flex-grow'></div>
                         {this.collectionDisplayToggle()}
                         <div className='w-4'></div>
@@ -686,13 +687,18 @@ export class Collections extends React.Component<{}, State> {
         return (
             <div>
                 <div className="flex h-16 w-full justify-center items-center pr-4 bg-gray-200">
-                    <Tabs
-                        id="collection-tabs"
-                        className="flex-grow"
-                        value={this.state.collection}
-                        onChange={this.setCollectionEvent} variant="scrollable" scrollButtons="auto">
-                        {this.generateTabs()}
-                    </Tabs>
+                    {this.state.collections.length > 0 && (
+                            <Tabs
+                                id="collection-tabs"
+                                className="flex-grow"
+                                value={this.state.collection !== "" ? this.state.collection : false}
+                                onChange={this.setCollectionEvent}
+                                variant="scrollable"
+                                scrollButtons="auto"
+                            >
+                                {this.generateTabs()}
+                            </Tabs>
+                        )}
                     {this.fabButtons()}
                 </div>
                 <div>
