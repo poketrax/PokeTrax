@@ -93,9 +93,9 @@ function AddDialog(props: DialogProps) {
             setInProg(false)
         } else {
             addCollection(name).then(
-                (_) => {
+                () => {
                     setInProg(false)
-                    // setName("")
+                    setName("")
                     onConfirm(name)
                     onClose()
                 }
@@ -332,7 +332,6 @@ export class Collections extends React.Component<{}, State> {
     private _getCollections() {
         getCollections().then(
             (collections) => {
-                console.log(this.state);
                 this.setState({ collections })
             }
         )
@@ -345,16 +344,22 @@ export class Collections extends React.Component<{}, State> {
     private setCollection(_collection: string, page: number, _delete?: boolean, searchValue?: string, rarityFilter?: string[], sort?: string, display?: string) {
         let collection = _collection
         if (_delete) {
-            if (this.state.collections.length !== 0) {
-                collection = this.state.collections[0].name
-            }
-            this.setState({
-                ...this.state,
-                collection,
-                collections: this.state.collections.filter((value) => value.name !== _collection)
-            })
+            const collections = this.state.collections.filter((value) => value.name !== _collection);
+            // Two state changes to ensure that our Tabs menu can appropriately respond.
+            // Recurse once everything's in order.
+            return this.setState(
+                { collection: collections[0]?.name ?? "" },
+                () => this.setState({ collections }, () => this.setCollection(this.state.collection, 0))
+            );
         }
         if (_collection != null && _collection !== "") {
+            // This is a newly created collection. Update state and recurse.
+            if (!this.state.collections.some((coll) => coll.name === _collection)) {
+                return this.setState(
+                    { collections: this.state.collections.concat(new Collection(_collection)) },
+                    () => this.setCollection(_collection, 0)
+                );
+            }
             getCollectionValue(_collection)
                 .then(
                     (value) => {
