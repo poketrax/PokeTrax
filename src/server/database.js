@@ -67,7 +67,6 @@ const checkForDbUpdate = () => {
     return new Promise(
         async (resolve, reject) => {
             //search for folder
-
             if (fs.existsSync(path.join(pwd(), "./sql")) === false) {
                 fs.mkdirSync(path.join(pwd(), "./sql"), { recursive: true })
             }
@@ -198,7 +197,7 @@ function getTcgpPrice(card) {
     let db = pricesDB()
     return new Promise(
         (resolve, reject) => {
-            axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=month`).then(
+            axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=quarter`, {decompress: true}).then(
                 (res) => {
                     let prices = []
                     if (res.data.count === 0) {
@@ -232,7 +231,8 @@ function getTcgpPrice(card) {
                     resolve(prices)
                 }
             ).catch((err) => {
-                reject(err)
+                console.log(err.message)
+                reject()
             }
             )
         }
@@ -440,7 +440,7 @@ const init = async () => {
         let prices = pricesDB()
         prices.prepare(`CREATE TABLE IF NOT EXISTS prices (id TEXT UNIQUE, date TEXT, cardId TEXT, variant TEXT, vendor TEXT, price REAL)`).run()
         prices.prepare(`CREATE TABLE IF NOT EXISTS productPrices (id TEXT UNIQUE, date TEXT, name TEXT, vendor TEXT, price REAL)`).run()
-        upgradePrices(prices)
+        //upgradePrices(prices)
         prices.close()
         let collections = collectionDB()
         collections.prepare(`CREATE TABLE IF NOT EXISTS collections (name TEXT UNIQUE, img TEXT)`).run()

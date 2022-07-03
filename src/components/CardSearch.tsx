@@ -49,7 +49,10 @@ export class CardSearch extends React.Component<Props, State> {
         if (props.selectedSet !== '') {
             this.state = new State(props.selectedSet)
         }
-        AppController.next({ page: "", selectedSet: "" })
+    }
+    
+    componentDidMount() {
+        AppController.next({ page: "", selectedSet: "" });
         expansions().then(
             (data) => {
                 this.setState({ ...this.state, sets: data.map((exp) => exp.name) })
@@ -59,7 +62,7 @@ export class CardSearch extends React.Component<Props, State> {
             console.log(value)
             this.setState({ ...this.state, rarities: value })
         })
-        this.setSearch(0)
+        this.setSearch(0);
     }
 
     private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
@@ -252,12 +255,14 @@ export class CardSearch extends React.Component<Props, State> {
     }
 
     renderCards() {
-        let items = []
-        for (let i = 0; i < this.state.cards.length; i++) {
-            let card = this.state.cards[i]
-            items.push(<CardCase id={`${i}`} card={card} onDelete={() => { }} ></CardCase>)
-        }
-        return items
+        return this.state.cards.map((card, i) => (
+            <CardCase
+                id={`${i}`}
+                key={card.cardId}
+                card={card}
+                onDelete={() => {}}
+            ></CardCase>
+        ));
     }
 }
 

@@ -67,7 +67,8 @@
     "build": "vite build",
     "test": "export NODE_ENV=test && mocha --timeout 60000",
     "test-cypress": "npx cypress run",
-    "make": "vite build && electron-builder"
+    "make": "vite build && electron-builder",
+    "dev": "concurrently --names server,webapp 'npm:start-test-server' 'npm:start'"
   },
   "eslintConfig": {
     "extends": [
@@ -88,6 +89,7 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^7.2.2",
     "cypress": "^9.6.1",
     "electron": "^17.4.0",
     "electron-builder": "^23.0.3",
@@ -115,7 +117,7 @@
     "win": {
       "artifactName": "poketrax.exe"
     },
-    "snap":{
+    "snap": {
       "artifactName": "poketrax.snap"
     },
     "directories": {
