@@ -9,6 +9,7 @@ import {
 } from './common'
 describe('Collection Meta Tests', () => {
   beforeEach(() => {
+    cy.viewport('macbook-15')
     cy.visit('http://localhost:3000/')
     cy.get('#card-grid')
     gotoCollections()

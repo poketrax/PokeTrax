@@ -2,7 +2,7 @@ import { defineConfig } from "cypress";
 
 export default defineConfig({
   projectId: "bjcr3a",
-  defaultCommandTimeout: 180000,
+  defaultCommandTimeout: 30000,
 
   e2e: {
     // We've imported your old cypress plugins here.

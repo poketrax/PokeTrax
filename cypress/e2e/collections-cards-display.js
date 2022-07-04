@@ -11,6 +11,7 @@ import {
 describe('Collection Card Tests display', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/')
+        cy.viewport('macbook-15')
         sortSet("Brilliant-Stars")
     })
 

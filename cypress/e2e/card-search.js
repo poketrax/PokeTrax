@@ -3,6 +3,7 @@
 describe('Card Serach tests', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/')
+        cy.viewport('macbook-15')
         cy.get('#card-grid')
     })
 
