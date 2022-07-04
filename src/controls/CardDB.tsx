@@ -164,43 +164,19 @@ export async function getCollectionSealed(collection: string, page: number, sear
 /**
  * Add new collection. name must be unique
  * @param name 
- * @returns 
+ * @returns empty string
  */
 export function addCollection(name: string): Promise<any> {
-    return new Promise<any>(
-        (resolve, reject) => {
-            axios.put(`${baseURL}/collections`, { name: name }).then(
-                (_) => {
-                    resolve("")
-                }
-            ).catch(
-                (err) => {
-                    reject(err)
-                }
-            )
-        }
-    )
+    return axios.put(`${baseURL}/collections`, { name: name }).then(() => "");
 }
 
 /**
- * Delete dentire collection
+ * Delete entire collection
  * @param name 
- * @returns 
+ * @returns empty string
  */
 export function deleteCollection(name: string): Promise<any> {
-    return new Promise<any>(
-        (resolve, reject) => {
-            axios.delete(`${baseURL}/collections`, { data: { name: name } }).then(
-                (_) => {
-                    resolve("")
-                }
-            ).catch(
-                (err) => {
-                    reject(err)
-                }
-            )
-        }
-    )
+    return axios.delete(`${baseURL}/collections`, { data: { name: name } }).then(() => "");
 }
 
 /**

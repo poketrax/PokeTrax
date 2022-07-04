@@ -5,8 +5,7 @@ This will start the node backend and the web page for testing and development.  
 
 1. Start dev server and web app
     ```
-    npm run start-test-server
-    npm start
+    npm run dev
     ```
 2. Open web browser to http://localhost:3000
 
