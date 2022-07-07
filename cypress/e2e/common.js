@@ -48,4 +48,5 @@ export function gotoCollections(){
 export function deleteCurrentCollection(){
     cy.get('#delete-collection-button').click();
     cy.get('#delete-confirm-button').click();
+    cy.get('#delete-confirm-dialog').should('not.exist');
 }

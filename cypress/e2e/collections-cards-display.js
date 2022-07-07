@@ -28,7 +28,7 @@ describe('Collection Card Tests display', () => {
 
     it('Test add failure conditions', () => {
         //click add card
-        cy.get('#add-card-button0').click();
+        cy.get('#add-card-button0').click({force:true});
         // test no collection
         cy.get('#confirm-add-button').click();
         cy.get("#add-card-error")
@@ -43,8 +43,8 @@ describe('Collection Card Tests display', () => {
 
     it('Test variants card', () => {
         //add rev holo card
-        cy.get('#add-card-button1').click();
-        cy.get('#collection-input').click().type('TEST1')
+        cy.get('#add-card-button1').click({force:true});
+        cy.get('#collection-input').click({force:true}).type('TEST1')
         cy.get('.pr-4').click()
         cy.get('#variant-select').click();
         cy.get('#variant-select-option-1').click();
@@ -126,7 +126,7 @@ describe('Collection Card Tests display', () => {
         cy.contains("Exeggcute")
 
         deleteCurrentCollection()
-        deleteCurrentCollection()
+        
     })
 
     it('Test pagination', () => {
