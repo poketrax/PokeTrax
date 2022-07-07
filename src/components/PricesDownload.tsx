@@ -46,7 +46,7 @@ export default class PricesDownload extends React.Component<Props, State>  {
     render(): React.ReactNode {
         return (
             <div>
-                <Tooltip title="Download Collection">
+                <Tooltip title="Download Prices">
                     <Fab
                         id="download-menu-open"
                         aria-haspopup="true"
