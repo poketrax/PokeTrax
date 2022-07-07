@@ -1,7 +1,7 @@
 {
   "name": "poketrax",
   "productName": "PokeTrax",
-  "version": "0.8.0",
+  "version": "0.7.1",
   "main": "src/server/main.js",
   "homepage": ".",
   "private": true,
