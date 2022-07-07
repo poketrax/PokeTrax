@@ -36,6 +36,7 @@
     "jsdom": "^20.0.0",
     "json2csv": "^5.0.7",
     "mini-css-extract-plugin": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "object-hash": "^3.0.0",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
