@@ -12,6 +12,7 @@ const CARD_DB_FILE = "./sql/data.sqlite3"
 const PRICE_DB_FILE = "./sql/prices.sqlite3"
 const COLLECTION_DB_FILE = "./sql/collections.sqlite3"
 const Database = require('better-sqlite3');
+const fetch = require('node-fetch');
 
 /* Print the working directory for the application to get date files */
 const pwd = () => {
@@ -197,10 +198,12 @@ function getTcgpPrice(card) {
     let db = pricesDB()
     return new Promise(
         (resolve, reject) => {
-            axios.get(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=quarter`, {decompress: true}).then(
-                (res) => {
+            fetch(`https://infinite-api.tcgplayer.com/price/history/${card.idTCGP}?range=quarter`, {decompress: true})
+            .then(res => res.json())
+            .then(
+                (data) => {
                     let prices = []
-                    if (res.data.count === 0) {
+                    if (data.count === 0) {
                         for (let variant of JSON.parse(card.variants)) {
                             let price = {
                                 "date": new Date(Date.now()).toISOString(),
@@ -214,7 +217,7 @@ function getTcgpPrice(card) {
                         }
                         resolve(prices)
                     }
-                    for (let result of res.data.result) {
+                    for (let result of data.result) {
                         let date = new Date(Date.parse(result.date))
                         for (let variant of result.variants) {
                             let price = {
@@ -261,10 +264,12 @@ function getTcgpPriceProduct(product) {
     let db = pricesDB()
     return new Promise(
         (resolve, reject) => {
-            axios.get(`https://infinite-api.tcgplayer.com/price/history/${product.idTCGP}?range=month`).then(
-                (res) => {
+            fetch(`https://infinite-api.tcgplayer.com/price/history/${product.idTCGP}?range=month`)
+            .then(res => res.json())
+            .then(
+                (data) => {
                     let prices = []
-                    if (res.data.count === 0) {
+                    if (data.count === 0) {
                         let price = {
                             "date": new Date(Date.now()).toISOString(),
                             "name": product.name,
@@ -275,7 +280,7 @@ function getTcgpPriceProduct(product) {
                         addPriceProduct(db, price)
                         resolve(prices)
                     }
-                    for (let result of res.data.result) {
+                    for (let result of data.result) {
                         let date = new Date(Date.parse(result.date))
                         for (let variant of result.variants) {
                             let price = {
