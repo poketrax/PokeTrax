@@ -66,7 +66,9 @@
     "start-test-server": "export NODE_ENV=development && node src/server/test-server.js",
     "start-test-server-win": "set NODE_ENV=development&&node src/server/test-server.js",
     "build": "vite build",
-    "test": "export NODE_ENV=test && mocha --timeout 60000",
+    "test-rest": "export NODE_ENV=test && mocha --timeout 60000",
+    "test": "rm -R -f dev-data/sql/* && concurrently --names server,webapp,cypress 'npm:start-test-server' 'npm:start' 'npm:test-cypress'",
+    "reset-data": "rm -R -f dev-data/sql/*",
     "test-cypress": "npx cypress run",
     "make": "vite build && electron-builder",
     "dev": "concurrently --names server,webapp 'npm:start-test-server' 'npm:start'"
@@ -90,10 +92,10 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^7.2.2",
     "cypress": "^10.3.0",
     "electron": "^19.0.7",
     "electron-builder": "^23.1.0",
-    "concurrently": "^7.2.2",
     "electron-squirrel-startup": "^1.0.0",
     "eslint": "^8.19.0",
     "eslint-config-react-app": "^7.0.1",

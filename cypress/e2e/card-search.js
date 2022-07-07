@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Card Serach tests', () => {
+describe('Card Search tests', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/')
         cy.viewport('macbook-15')
