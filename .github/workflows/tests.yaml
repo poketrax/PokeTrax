@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 16
       - run: npm install
-      - run: npm test
+      - run: npm run test-rest
   cypress-test:
     runs-on: self-hosted
     env:
@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: 16
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           build: npm rebuild
           start: npm run start-test-server,npm start

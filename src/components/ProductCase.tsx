@@ -28,7 +28,6 @@ class State {
 class Props {
     id: string
     product: SealedProduct
-    
     onDelete: () => void
 }
 

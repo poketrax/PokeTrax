@@ -5,7 +5,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import { TablePagination } from '@mui/material';
 import { SealedProduct, ProductList } from '../model/SealedProduct';
 import { searchProducts } from '../controls/CardDB';
-import { ProductCase } from './ProductCase';
+import { ProductCase } from '../components/ProductCase';
 
 class State {
     public searchTerm: string = ""
