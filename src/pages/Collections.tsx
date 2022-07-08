@@ -31,14 +31,14 @@ import {
 } from '../controls/CardDB'
 import LinearProgress from '@mui/material/LinearProgress';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { CardCase } from './CardCase';
+import { CardCase } from '../components/CardCase';
 import { Card } from '../model/Card'
-import DownloadMenu from './DownloadMenu';
+import DownloadMenu from '../components/DownloadMenu';
 import { CgPokemon } from "react-icons/cg"
 import { MdOutlineCatchingPokemon } from "react-icons/md"
 import { FileUploader } from "react-drag-drop-files";
 import { SealedProduct } from '../model/SealedProduct';
-import { ProductCase } from './ProductCase';
+import { ProductCase } from '../components/ProductCase';
 
 const fileTypes = ["JSON"];
 
@@ -448,8 +448,7 @@ export class Collections extends React.Component<{}, State> {
                 <ProductCase
                     id={`${i}`}
                     product={prod}
-                    onDelete={() => { this.setCollection(this.state.collection, this.state.page) }}>
-                </ProductCase>
+                    onDelete={() => { this.setCollection(this.state.collection, this.state.page) }}/>
             )
         }
         return items
