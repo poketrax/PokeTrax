@@ -34,6 +34,9 @@ export class CollectionButtons extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = new State()
+    }
+    
+    componentDidMount(): void {
         getCollections().then(
             (value) => {
                 this.setState({ ...this.state, collections: value })

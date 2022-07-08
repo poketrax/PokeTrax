@@ -164,43 +164,19 @@ export async function getCollectionSealed(collection: string, page: number, sear
 /**
  * Add new collection. name must be unique
  * @param name 
- * @returns 
+ * @returns empty string
  */
 export function addCollection(name: string): Promise<any> {
-    return new Promise<any>(
-        (resolve, reject) => {
-            axios.put(`${baseURL}/collections`, { name: name }).then(
-                (_) => {
-                    resolve("")
-                }
-            ).catch(
-                (err) => {
-                    reject(err)
-                }
-            )
-        }
-    )
+    return axios.put(`${baseURL}/collections`, { name: name }).then(() => "");
 }
 
 /**
- * Delete dentire collection
+ * Delete entire collection
  * @param name 
- * @returns 
+ * @returns empty string
  */
 export function deleteCollection(name: string): Promise<any> {
-    return new Promise<any>(
-        (resolve, reject) => {
-            axios.delete(`${baseURL}/collections`, { data: { name: name } }).then(
-                (_) => {
-                    resolve("")
-                }
-            ).catch(
-                (err) => {
-                    reject(err)
-                }
-            )
-        }
-    )
+    return axios.delete(`${baseURL}/collections`, { data: { name: name } }).then(() => "");
 }
 
 /**
@@ -432,7 +408,8 @@ const gradeRegEx = [
     /(PSA)-(1\.5|10|[1-9])-?(OC|MK|MC|ST|PD|OF)?/g,
     /(CGC)-(10|[1-9]\.?5?)-?(P|E)?/g,
     /(BGS)-(10|[1-9]\.?5?)-?(P)?/g,
-    /(ACE)-(10|[1-9])/g
+    /(ACE)-(10|[1-9])/g,
+    /(AGS)-(10|[1-9])/g
 ]
 /**
  * returns parsed grade or null if invalid

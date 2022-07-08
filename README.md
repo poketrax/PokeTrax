@@ -5,8 +5,7 @@ This will start the node backend and the web page for testing and development.  
 
 1. Start dev server and web app
     ```
-    npm run start-test-server
-    npm start
+    npm run dev
     ```
 2. Open web browser to http://localhost:3000
 
@@ -38,4 +37,8 @@ This will start the electron framework and tie it to the vite devopment server. 
    npx cypress open
    ```   
 
-The information presented on this application about the Pokémon Trading Card Game, including images and text, is copyright of The Pokémon Company, Nintendo, Game Freak, Creatures and/or Wizards of the Coast. This website is not produced by, endorsed by, supported by, or affiliated with any of these companies.
+## Troubleshooting
+
+* 
+
+The information presented on this application about the Pokémon Trading Card Game, including images and text, is copyright of The Pokémon Company, Nintendo, Game Freak, Creatures and/or Wizards of the Coast. This website is not produced by, endorsed by, supported by, or affiliated with any of these companies.npm install

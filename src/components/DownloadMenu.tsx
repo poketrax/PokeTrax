@@ -35,14 +35,17 @@ export default class DownloadMenu extends React.Component<Collection, State>  {
         return (
             <div>
                 <Tooltip title="Download Collection">
-                    <Fab
-                        id="download-menu-open"
-                        aria-haspopup="true"
-                        size="small"
-                        color="primary"
-                        onClick={(ev) => this.handleClick(ev)}>
-                        <DownloadIcon />
-                    </Fab>
+                    <span>
+                        <Fab
+                            disabled={this.props.name === ""}
+                            id="download-menu-open"
+                            aria-haspopup="true"
+                            size="small"
+                            color="primary"
+                            onClick={(ev) => this.handleClick(ev)}>
+                            <DownloadIcon />
+                        </Fab>
+                    </span>
                 </Tooltip>
                 <Menu
                     id="download-menu"

@@ -38,10 +38,12 @@ export class AddCardCollection extends React.Component<Props, State> {
         this.state = new State()
         this.variants = JSON.parse(props.card.variants ?? '[]')
         this.selectedVariant = this.variants ? this.variants[0] : ""
+    }
+    
+    componentDidMount(): void {
         getCollections().then(
             (value) => {
                 this.setState({
-                    ...this.state,
                     collections: value.map((val) => val.name),
                     displayCollections: value.map((val) => val.name)
                 })
@@ -122,7 +124,7 @@ export class AddCardCollection extends React.Component<Props, State> {
         }
         let grade = parseGrade(this.state.grade)
         if (this.state.grade !== "" && grade == null) {
-            err += "Invalid grade format! ex: PSA-10, CGC-9.5, BGS-10-P, CGC-10-P, PSA-10-OC"
+            err += "Invalid grade format! ex: PSA-10, CGC-9.5, BGS-10-P, CGC-10-P, PSA-10-OC, ACE-9, AGS-8"
             gradeError = true
         }
         if (collError || countError || gradeError) {
@@ -143,7 +145,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                 }
             ).catch(
                 () => {
-                    this.setState({ ...this.state, errorText: "Failed to add :(" })
+                    this.setState({ errorText: "Failed to add :(" })
                 }
             )
         }
@@ -204,7 +206,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                     label="Price Paid (optional)"
                     value={this.state.price}
                     onChange={(ev) => {
-                        this.setState({ ...this.state, price: Number.parseFloat(ev.target.value) })
+                        this.setState({ price: Number.parseFloat(ev.target.value) })
                     }
                     }
                     name="numberformat"
@@ -222,7 +224,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                         error={this.state.gradeErr}
                         value={this.state.grade}
                         onChange={(ev) => {
-                            this.setState({ ...this.state, grade: ev.target.value })
+                            this.setState({ grade: ev.target.value })
                         }}
                         variant="outlined"
                     />
@@ -230,7 +232,7 @@ export class AddCardCollection extends React.Component<Props, State> {
 
                 <div className='h-4'></div>
                 <FormGroup>
-                    <FormControlLabel control={<Switch onChange={(ev) => { this.setState({ ...this.state, wishlist: ev.target.checked }) }} />} label="Wishlist" />
+                    <FormControlLabel control={<Switch onChange={(ev) => { this.setState({ wishlist: ev.target.checked }) }} />} label="Wishlist" />
                 </FormGroup>
                 <div className='h-4'></div>
                 <TextField
@@ -240,7 +242,7 @@ export class AddCardCollection extends React.Component<Props, State> {
                     error={this.state.countErr}
                     value={this.state.count}
                     disabled={this.state.wishlist}
-                    onChange={(ev) => this.setState({ ...this.state, count: Number.parseFloat(ev.target.value) })}
+                    onChange={(ev) => this.setState({ count: Number.parseFloat(ev.target.value) })}
                     name="numberformat"
                     InputProps={{
                         inputComponent: this.CountFormat as any,
