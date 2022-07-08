@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '../model/Card'
-import { CardCase } from './CardCase'
+import { CardCase } from '../components/CardCase'
 import { Subject } from 'rxjs'
 import { AppController } from './App'
 import {
