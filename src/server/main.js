@@ -4,12 +4,13 @@ const path = require('path');
 const url = require('url');
 const mw = require("./middleware")
 const DB = require("./database")
+const { appPath, pwd } = require("./utils");
 
 let mainWindow;
 
 function createWindow () {
   const startUrl = process.env.ELECTRON_START_URL ||url.format({
-        pathname: path.join(DB.appPath(), './index.html'),
+        pathname: path.join(appPath(), './index.html'),
         protocol: 'file:',
         slashes: true,
       });
@@ -21,8 +22,8 @@ function createWindow () {
 }
 
 //Start
-if(fs.existsSync(path.join(DB.pwd(),"sql/")) === false){
-  fs.mkdirSync(path.join(DB.pwd(),'sql/'))
+if(fs.existsSync(path.join(pwd(),"sql/")) === false){
+  fs.mkdirSync(path.join(pwd(),'sql/'))
 }
 
 mw.start()

@@ -43,7 +43,7 @@ export class App extends React.Component<{}, State> {
         let dbcheck = timer(0, 100).subscribe(() => {
             getDbState().then((state) => {
                 this.setState({ ...this.state, dbState: state });
-                if (state.ready) {
+                if (state.ready || state.error != null) {
                     this.setPage("cards");
                     dbcheck.unsubscribe();
                 }
