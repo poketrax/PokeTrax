@@ -7,13 +7,14 @@ const app = express();
 const fileCacheMiddleware = require("express-asset-file-cache-middleware");
 const bodyParser = require('body-parser');
 const DB = require('./database');
+const { pwd } = require("./utils");
 const os = require('os');
 
 let server
 
 //Start web server
 const start = async () => {
-    await DB.checkForDbUpdate().catch((err) => console.log(err))
+    await DB.checkForDbUpdate().catch((err) => console.error(err));
     DB.init()
     server = app.listen(3030)
 }
@@ -54,7 +55,7 @@ app.get("/cardImg/:asset_id",
             db.close()
         }
     },
-    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./cardImg"), maxSize: 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./cardImg"), maxSize: 1024 * 1024 * 1024 }),
     (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -86,7 +87,7 @@ app.get("/sealedImg/:asset_name",
             db.close()
         }
     },
-    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./productImg"), maxSize: 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./productImg"), maxSize: 1024 * 1024 * 1024 }),
     (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -117,7 +118,7 @@ app.get("/seriesImg/:asset_id",
             db.close()
         }
     },
-    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./seriesImg"), maxSize: 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./seriesImg"), maxSize: 1024 * 1024 * 1024 }),
     (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -148,7 +149,7 @@ app.get("/expLogo/:asset_id",
             db.close()
         }
     },
-    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./expLogo"), maxSize: 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./expLogo"), maxSize: 1024 * 1024 * 1024 }),
     (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -179,7 +180,7 @@ app.get("/expSymbol/:asset_id",
             db.close()
         }
     },
-    fileCacheMiddleware({ cacheDir: path.join(DB.pwd(), "./expSymbol"), maxSize: 1024 * 1024 * 1024 }),
+    fileCacheMiddleware({ cacheDir: path.join(pwd(), "./expSymbol"), maxSize: 1024 * 1024 * 1024 }),
     (_, res) => {
         res.set({
             "Content-Type": res.locals.contentType,
@@ -407,7 +408,7 @@ app.get("/collections", (_, res) => {
     try {
         let collections = db.prepare(`SELECT * FROM collections`).all()
         res.send(collections)
-    } catch {
+    } catch (err) {
         console.log(err)
         res.status(500).send(err)
     } finally {
@@ -550,8 +551,8 @@ app.get("/collections/:collection/cards/:page", (req, res) => {
     ${order}`
     let limit = `LIMIT 25 OFFSET ${(req.params.page) * 25}`
 
-    let sqlAttachCard = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
-    let sqlAttachColl = `ATTACH DATABASE '${path.join(DB.pwd(), DB.COLLECTION_DB_FILE)}' AS collectionDB;`
+    let sqlAttachCard = `ATTACH DATABASE '${path.join(pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
+    let sqlAttachColl = `ATTACH DATABASE '${path.join(pwd(), DB.COLLECTION_DB_FILE)}' AS collectionDB;`
 
     try {
         db.prepare(sqlAttachCard).run()
@@ -648,7 +649,7 @@ app.get("/collections/:collection/sealed/:page", (req, res) => {
         ${NAME_FILTER}
         ${order}`
     let limit = `LIMIT 25 OFFSET ${(req.params.page) * 25}`
-    let sqlAttachCard = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
+    let sqlAttachCard = `ATTACH DATABASE '${path.join(pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
 
     try {
         db.prepare(sqlAttachCard).run()
@@ -680,8 +681,8 @@ app.get("/collections/:collection/value", (req, res) => {
     WHERE _collections.collection = $collection
     GROUP BY _price.cardId, _price.variant`
 
-    let sqlAttachCard = `ATTACH DATABASE '${path.join(DB.pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
-    let sqlAttachColl = `ATTACH DATABASE '${path.join(DB.pwd(), DB.COLLECTION_DB_FILE)}' AS collectionDB;`
+    let sqlAttachCard = `ATTACH DATABASE '${path.join(pwd(), DB.CARD_DB_FILE)}' AS cardDB;`
+    let sqlAttachColl = `ATTACH DATABASE '${path.join(pwd(), DB.COLLECTION_DB_FILE)}' AS collectionDB;`
     let db = DB.pricesDB()
     try {
         db.prepare(sqlAttachCard).run()
