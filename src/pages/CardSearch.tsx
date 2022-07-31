@@ -30,7 +30,7 @@ class State {
     rarities: string[] = []
 
     constructor(set?: string) {
-        if (set != null) {
+        if (![null, ""].includes(set)) {
             this.setsSelected.push(set)
         }
     }
@@ -42,53 +42,59 @@ class Props {
 export const setFilter = new Subject<string[]>()
 export const rareFilter = new Subject<string[]>()
 export class CardSearch extends React.Component<Props, State> {
-    private searchTerm = ""
+
+    private searchTerm = "";
+    private scrollableBody: HTMLElement;
+
     constructor(props: Props) {
-        super(props)
-        this.state = new State()
-        if (props.selectedSet !== '') {
-            this.state = new State(props.selectedSet)
-        }
+        super(props);
+        this.state = new State(props.selectedSet);
     }
     
     componentDidMount() {
         AppController.next({ page: "", selectedSet: "" });
-        expansions().then(
-            (data) => {
-                this.setState({ ...this.state, sets: data.map((exp) => exp.name) })
-            }
-        )
-        rarities().then((value) => {
-            console.log(value)
-            this.setState({ ...this.state, rarities: value })
-        })
-        this.setSearch(0);
+        Promise.all([
+            expansions().then((xps) => xps.map((xp) => xp.name)),
+            rarities(),
+        ]).then(([sets, rarities]) =>
+            this.setState({ sets, rarities }, () => this.setSearch(0))
+        );
     }
 
-    private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
-        this.setSearch(newPage)
+    private handleChangePage = async (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
+        await this.setSearch(newPage);
+        this.scrollableBody.scrollTop = 0;
     };
 
-    private setSearch(page?: number, sets?: string[], rareSelected?: string[], sort?: string) {
-        search(page ?? this.state.page, this.searchTerm, sets ?? this.state.setsSelected, rareSelected ?? this.state.rareSelected, sort ?? this.state.sort).then(
+    private setSearch(
+        page?: number,
+        sets?: string[],
+        rareSelected?: string[],
+        sort?: string
+    ) {
+        return search(
+            page ?? this.state.page,
+            this.searchTerm,
+            sets ?? this.state.setsSelected,
+            rareSelected ?? this.state.rareSelected,
+            sort ?? this.state.sort
+        ).then(
             (res) => {
-                this.setState(
-                    {
-                        ...this.state,
-                        cards: res.cards,
-                        sort: (sort ?? this.state.sort),
-                        page: (page ?? this.state.page),
-                        setsSelected: (sets ?? this.state.setsSelected),
-                        rareSelected: (rareSelected ?? this.state.rareSelected),
-                        count: res.total
-                    }
-                )
+                this.setState({
+                    cards: res.cards,
+                    sort: sort ?? this.state.sort,
+                    page: page ?? this.state.page,
+                    setsSelected: sets ?? this.state.setsSelected,
+                    rareSelected: rareSelected ?? this.state.rareSelected,
+                    count: res.total,
+                });
             },
             (err) => {
-                console.log(err)
+                console.log(err);
             }
-        )
+        );
     }
+    
 
     private onSearchTerm(value: string){
         this.searchTerm = value
@@ -223,7 +229,7 @@ export class CardSearch extends React.Component<Props, State> {
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </div>
-                <div className='h-[calc(100vh-11rem)] overflow-auto'>
+                <div className='h-[calc(100vh-11rem)] overflow-auto' ref={(e) => (this.scrollableBody = e)}>
                     <TablePagination
                         id="card-search-pagination"
                         component="div"
