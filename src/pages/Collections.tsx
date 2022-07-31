@@ -309,6 +309,9 @@ function DeleteDialog(props: DialogProps) {
 }
 
 export class Collections extends React.Component<{}, State> {
+
+    private scrollableBody: HTMLElement;
+
     constructor(props: {}) {
         super(props)
         this.state = new State()
@@ -368,7 +371,7 @@ export class Collections extends React.Component<{}, State> {
                 )
             let _display = display ?? this.state.display
             if (_display === "cards") {
-                getCollectionCards(collection, page, searchValue ?? this.state.searchValue, rarityFilter ?? this.state.rareSelected, sort ?? this.state.sort)
+                return getCollectionCards(collection, page, searchValue ?? this.state.searchValue, rarityFilter ?? this.state.rareSelected, sort ?? this.state.sort)
                     .then(
                         (search) => {
                             this.setState(
@@ -386,7 +389,7 @@ export class Collections extends React.Component<{}, State> {
                         }
                     )
             } else {
-                getCollectionSealed(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
+                return getCollectionSealed(collection, page, searchValue ?? this.state.searchValue, sort ?? this.state.sort)
                     .then(
                         (search) => {
                             this.setState(
@@ -423,8 +426,9 @@ export class Collections extends React.Component<{}, State> {
         this._getCollections()
     }
 
-    private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-        this.setCollection(this.state.collection, newPage)
+    private handleChangePage = async (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        await this.setCollection(this.state.collection, newPage);
+        this.scrollableBody.scrollTop = 0;
     };
 
     private renderCards() {
@@ -707,7 +711,7 @@ export class Collections extends React.Component<{}, State> {
                 </div>
                 <div>
                     {this.searchbar()}
-                    <div className='h-[calc(100vh-13rem)] overflow-auto'>
+                    <div className='h-[calc(100vh-13rem)] overflow-auto' ref={(e) => (this.scrollableBody = e)}>
                         {this.cardContainer()}
                     </div>
                 </div>

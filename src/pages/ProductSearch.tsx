@@ -16,20 +16,25 @@ class State {
 }
 
 export class ProductSearch extends React.Component<{}, State>{
-    constructor() {
-        super({})
+
+    private scrollableBody: HTMLElement;
+
+    constructor(props: {}) {
+        super(props);
         this.state = new State()
-        this.searchSealed(0)
     }
 
+    componentDidMount() {
+        this.searchSealed(0);
+    }
+
+
     private searchSealed(page: number, searchTerm?: string, sort?: string) {
-        searchProducts(page, searchTerm ?? this.state.searchTerm, sort ?? this.state.sort)
+        return searchProducts(page, searchTerm ?? this.state.searchTerm, sort ?? this.state.sort)
             .then(
                 (results: ProductList) => {
-                    console.log(results)
                     this.setState(
                         {
-                            ...this.state,
                             page: page,
                             searchTerm: searchTerm ?? this.state.searchTerm,
                             sort: sort ?? this.state.sort,
@@ -85,16 +90,19 @@ export class ProductSearch extends React.Component<{}, State>{
     }
 
     private renderProducts() {
-        let items = []
-        for (let i = 0; i < this.state.products.length; i++) {
-            let prod = this.state.products[i]
-            items.push(<ProductCase id={`${i}`} product={prod} onDelete={() => {}}></ProductCase>)
-        }
-        return items
+        return this.state.products.map((product, i) => (
+            <ProductCase
+                id={`${i}`}
+                key={i}
+                product={product}
+                onDelete={() => {}}
+            ></ProductCase>
+        ));
     }
 
-    private handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
-        this.searchSealed(newPage)
+    private handleChangePage = async (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
+        await this.searchSealed(newPage);
+        this.scrollableBody.scrollTop = 0;
     };
 
     private pagination() {
@@ -114,7 +122,7 @@ export class ProductSearch extends React.Component<{}, State>{
         return (
             <div>
                 {this.searchbar()}
-                <div className='h-[calc(100vh-12rem)] overflow-auto'>
+                <div className='h-[calc(100vh-12rem)] overflow-auto' ref={(e) => (this.scrollableBody = e)}>
                     {this.pagination()}
                     <div className='flex'>
                         <div className='flex-grow'></div>
