@@ -335,7 +335,7 @@ const getPrices = async (card, _start, _end) => {
             .prepare(sql)
             .all({ cardId: card.cardId, start: _start, end: _end });
         db.close();
-        if (rows.length === 0 || rows[0].date < yesterday.getTime()) {
+        if (rows.length < 10 || rows[0].date < yesterday.getTime()) {
             return await getTcgpPrice(card);
         } else {
             return rows;
