@@ -14,17 +14,7 @@ jobs:
           node-version: 16
       - run: npm install
       - run: npm run build
-  rest-tests:
-    runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16
-      - run: npm install
-      - run: npm run test-rest
+
   cypress-test:
     runs-on: self-hosted
     env:

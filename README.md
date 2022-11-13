@@ -1,4 +1,4 @@
-# PokeTrax
+# <img src="public/poketrax.png" width="50" height="50"> PokeTrax
 
 Pokemon Card Data tracking card collection
 
