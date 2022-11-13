@@ -328,7 +328,7 @@ const getPrices = async (card, _start, _end) => {
     } else {
         limit = "LIMIT 1";
     }
-    let sql = `SELECT date(date) as date, cardId, variant, vendor, price FROM prices WHERE cardId = $cardId ${timeFilter} ORDER BY dateTime(date) DESC ${limit}`;
+    let sql = `SELECT date(date) as date, cardId, variant, vendor, price FROM prices WHERE cardId = $cardId ${timeFilter} AND CAST(price as decimal) > 0 ORDER BY dateTime(date) DESC ${limit}`;
     let db = pricesDB();
     try {
         let rows = db
