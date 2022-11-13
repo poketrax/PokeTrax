@@ -7,7 +7,7 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "CardTrax",
+    "productName": "PokeTrax",
     "version": "1.0.0"
   },
   "tauri": {

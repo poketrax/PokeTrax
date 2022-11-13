@@ -32,6 +32,12 @@ npm run dev
 
 This will build an executeable for your Operating system.
 
+Mac OS/ Linux: 
+```sh
+./build.sh
+```
+
+Windows:
 ```sh
 cd src-web 
 npm run build
