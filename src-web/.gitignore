@@ -1,0 +1,33 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+test/data/cardImg
+test/data/expLogo
+test/data/expSymbol
+test/data/seriesImg
+test/data/sql
+
+# production
+build/
+/data
+/out
+/dist
+out/
+dev-data/
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+test.json

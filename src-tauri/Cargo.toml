@@ -1,0 +1,50 @@
+[package]
+name = "pokeadmin"
+version = "1.0.0"
+description = "Pokemon Card Data tracking card collection"
+authors = ["jgunzelman88"]
+license = "MIT"
+repository = ""
+edition = "2021"
+rust-version = "1.57"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.0.0", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+actix-web = "4"
+actix-cors = "0.6"
+urlencoding = "2.1.0"
+log = "0.4.17"
+simple-error = "0.1"
+regex = "1"
+futures = "0.3"
+version-compare = "0.1"
+lazy_static = "1.4.0"
+simple_logger = "2.3"
+futures-util = "0.3"
+jsonwebtoken = "8.1"
+webbrowser = "0.8"
+indicatif = "0.17"
+tokio = "1.21"
+directories = "4.0"
+rusqlite = { version = "0.28.0", features = ["bundled"] }
+reqwest = { version = "0.11", features = ["json", "stream"] }
+serde = { version = "1.0", features = ["derive"] }
+tauri = { version = "1.1.0", features = ["api-all"] }
+clap = { version = "3.2.20", features = ["derive"] }
+
+[dependencies.tauri-plugin-log]
+git = "https://github.com/tauri-apps/tauri-plugin-log"
+branch = "dev"
+
+[features]
+# by default Tauri runs in production mode
+# when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
+default = [ "custom-protocol" ]
+# this feature is used used for production builds where `devPath` points to the filesystem
+# DO NOT remove this
+custom-protocol = [ "tauri/custom-protocol" ]
