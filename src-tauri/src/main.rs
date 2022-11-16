@@ -1,3 +1,4 @@
+#![windows_subsystem = "windows"]
 extern crate simple_error;
 extern crate reqwest;
 use actix_web::{HttpServer, rt, App};
