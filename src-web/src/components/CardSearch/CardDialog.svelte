@@ -5,7 +5,7 @@
     import { Energy, CardImageFancy, CardImage } from "tcg-case";
     import { LineChart } from "@carbon/charts-svelte";
     import { ScaleTypes } from "@carbon/charts/interfaces";
-    import { mdiClose } from "@mdi/js";
+    import { mdiClose, mdiContentSave } from "@mdi/js";
     import Icon from "../Shared/Icon.svelte";
     import { formatDate, baseURL } from "../../lib/Utils";
     import type { Card, Price } from "../../lib/Card";
@@ -28,44 +28,36 @@
     export let show: boolean;
     export let collection: boolean = false;
 
-    let holoPattern = "basic";
+    let save = false;
     let chartData: any[];
-    let tags: string[];
-    let expNum: string;
+    let expNum: string = "";
 
-    async function updatePrice() {
-        let prices = await getCardPrices(card);
-        chartData = prices.map((val: Price) => {
+    $: holoPattern = getHolo(card);
+
+    $: getCardPrices(card).then((val) => {
+        chartData = val.map((val: Price) => {
             return {
                 group: val.variant,
                 key: new Date(val.date),
                 value: val.price,
             };
         });
-    }
+    });
 
-    $: if (card) {
-        tags = card.tags;
-        updatePrice();
-        formatExpansionNumber(card.expCardNumber, card.expName).then(
-            (val) => (expNum = val)
-        );
-        holoPattern = getHolo(card);
-    }
+    $: formatExpansionNumber(card.expCardNumber, card.expName).then(
+        (val) => (expNum = val)
+    );
 
     function confirmDelete() {
         removeCardCollection(card);
         show = false;
     }
 
-    function updateTags() {
-        card.tags = tags;
+    function saveCard() {
         addCardCollection(card);
+        save = false;
     }
 
-    function updateCount() {
-        addCardCollection(card);
-    }
 </script>
 
 <input type="checkbox" id="dialog" class="modal-toggle" bind:checked={show} />
@@ -82,14 +74,18 @@
                 <div class="w-2" />
                 <span class="text-xl">{card.name}</span>
                 <div class="grow" />
-
                 {#if collection}
                     <TagSelect
-                        selected={tags}
-                        on:change={updateTags}
+                        selected={card.tags}
+                        on:change={saveCard}
                         class="mr-2"
                     />
                     <DeleteButton on:confirm={confirmDelete} />
+                    {#if save}
+                        <button class="btn btn-circle btn-primary mr-1" on:click={saveCard}>
+                            <Icon class="h-5" path={mdiContentSave} />
+                        </button>
+                    {/if}
                 {/if}
                 <button
                     id={`close-card-dialog`}
@@ -104,11 +100,11 @@
             </div>
             <div class="flex">
                 <div>
-                    <div class = "h-8"/>
+                    <div class="h-8" />
                     {#if collection}
                         <CountControl
                             bind:count={card.count}
-                            on:change={updateCount}
+                            on:change={saveCard}
                             class="w-[330px] mb-2"
                         />
                     {/if}
@@ -179,28 +175,30 @@
                                     <td>{card.variant}</td>
                                 </tr>
                             {/if}
-                            {#if card.grade != null}
+                            {#if collection}
                                 <tr>
                                     <td>Grade</td>
                                     <td
                                         ><input
                                             type="text"
                                             placeholder="Grade"
-                                            value={card.grade}
+                                            bind:value={card.grade}
                                             class="input input-bordered input-xs w-full max-w-xs"
+                                            on:input={() => (save = true)}
                                         />
                                     </td>
                                 </tr>
                             {/if}
-                            {#if card.paid != null}
+                            {#if collection}
                                 <tr>
                                     <td>Paid</td>
                                     <td
                                         ><input
-                                            type="text"
-                                            placeholder="Grade"
-                                            value={card.paid}
+                                            type="number"
+                                            placeholder="Paid"
+                                            bind:value={card.paid}
                                             class="input input-bordered input-xs w-full max-w-xs"
+                                            on:input={() => (save = true)}
                                         />
                                     </td>
                                 </tr>
@@ -233,3 +231,8 @@
         </div>
     </label>
 </label>
+<!-- Importing styles that are missed with tree-shaking -->
+<style>
+    .text-green-600{}
+    .text-red-600{}
+</style>

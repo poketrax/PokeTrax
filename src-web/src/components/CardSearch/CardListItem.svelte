@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Card } from "../../lib/Card";
+    import type{ Card } from "../../lib/Card";
     import { Energy, CardImage, PokeRarity } from "tcg-case";
     import { baseURL } from "../../lib/Utils";
     import {
@@ -14,11 +14,11 @@
 
     export let card: Card;
     export let id: number;
-    export let selectedGroup: Map<string, string>;
+    export let selectedGroup: Map<string, [string, Card]>;
     let expNumber = "";
 
     $: checked = selectedGroup.has(card.name);
-    $: variant = selectedGroup.get(card.name);
+    $: variant = selectedGroup.get(card.name) == null ? "" : selectedGroup.get(card.name)[0];
 
     $: formatExpansionNumber(card.expCardNumber, card.expName).then(
         (val) => (expNumber = val)
@@ -29,16 +29,15 @@
             selectedGroup.delete(card.name);
         } else {
             if(variant == null || variant === ""){
-                variant = card.variants != null ? card.variants[0] : "";
+                variant = card.variants != null ? card.variants[0] : ""
             }
-            selectedGroup.set(card.name, variant);
+            selectedGroup.set(card.name, [variant, card]);
         }
     }
 
     function variantClick(_var) {
-        selectedGroup.set(card.name, _var);
+        selectedGroup.set(card.name, [_var, card]);
         variant = _var;
-        console.log(selectedGroup.size)
     }
 
     function onClick(event) {

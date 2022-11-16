@@ -127,7 +127,7 @@ export function removeCardCollection(card: Card){
     );
 }
 
-export function getTagFromCard(tags: string[]) {
+export function getTagFromCard(tags: string[]) : Tag[]{
     let tagArray = new Array<Tag>();
     for (let tagName of tags) {
         let tag = tagOpions.find(val => val.name === tagName);

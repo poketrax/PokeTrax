@@ -30,7 +30,7 @@
     let showAddMultiCardDialog = false;
     let dialogCard = new Card("", 0, "", "", "", "", "");
     let display = "grid";
-    let selectedCards = new Map<string, string>();
+    let selectedCards = new Map<string, [string, Card]>();
 
     cardSearchDisplay.subscribe((val) => (display = val));
     cardResultStore.subscribe((val) => (results = val));
@@ -63,7 +63,10 @@
                 id={`mass-add-collection`}
                 aria-label="Add Cards to Collection"
                 class="btn btn-circle h-12 w-12 shadow-lg m-2"
-                on:click={() => showAddMultiCardDialog = true}
+                on:click={() => {
+                    showAddMultiCardDialog = true;
+                    selectedCards = selectedCards;//WHY?? svelte non-sense this is used to trigger redraw of dialog; //todo change to a store
+                }}
             >
                 <Icon path={mdiPlus} class="w-6 h-6" />
             </button>
@@ -133,5 +136,8 @@
     selectedVariant={dialogCard.variants != null ? dialogCard.variants[0] : ""}
     card={dialogCard}
 />
-<AddMultipleCardsDialog bind:show={showAddMultiCardDialog} cards={selectedCards}/>
+<AddMultipleCardsDialog
+    bind:show={showAddMultiCardDialog}
+    bind:cards={selectedCards}
+/>
 <Disclaimer />

@@ -176,4 +176,3 @@ export function getCardPrices(card: Card): Promise<Price[]> {
         }
     )
 }
-

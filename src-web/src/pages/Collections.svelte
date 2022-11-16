@@ -1,10 +1,7 @@
 <script lang="ts">
-    import { mdiPlus } from "@mdi/js";
-    import Icon from "../components/Shared/Icon.svelte";
     import CardDisplay from "./../components/CardSearch/CardDisplay.svelte";
     import CardFilters from "./../components/CardSearch/CardFilters.svelte";
     import CardPagination from "../components/Shared/Pagination.svelte";
-    import CardListItem from "./../components/CardSearch/CardListItem.svelte";
     import CardDialog from "../components/CardSearch/CardDialog.svelte";
     import CardSort from "../components/CardSearch/CardSort.svelte";
     import TagSelect from "../components/Collection/TagSelect.svelte";
@@ -22,9 +19,9 @@
         searchTermStore,
         sortStore,
     } from "../lib/CollectionStore";
+    import CollectionListItem from "../components/Collection/CollectionListItem.svelte";
 
     let results: CardSearchResults = new CardSearchResults();
-    let selectedCards = new Map<string, string>();
     let display = "grid";
     let showCardDialog = false;
     let dialogCard = new Card("", 0, "", "", "", "", "");
@@ -35,6 +32,14 @@
     function openCardDialog(card: Card) {
         dialogCard = card;
         showCardDialog = true;
+    }
+
+    function getRevHolo(card: Card): string{
+        if(card.variant === "Reverse Holofoil"){
+            return `assets/revholo/${formatEnergy(card)}-rev.png`
+        }else{
+            return ""
+        }
     }
 </script>
 
@@ -51,15 +56,6 @@
     </div>
     <div class="flex h-20 items-center">
         <div class="sm:w-2 lg:flex-grow" />
-        {#if display === "list" && selectedCards.size == 0}
-            <button
-                id={`mass-add-collection`}
-                aria-label="Add Cards to Collection"
-                class="btn btn-circle h-12 w-12 shadow-lg m-2"
-            >
-                <Icon path={mdiPlus} class="w-6 h-6" />
-            </button>
-        {/if}
         <CardDisplay displayStore={cardSearchDisplay} />
         <div class="w-1" />
         <CardSort {sortStore} executeSearch={executeCardSearch} />
@@ -99,22 +95,23 @@
             <table class="table w-full ml-4 mr-2">
                 <thead>
                     <tr>
-                        <th>Select</th>
                         <th class="text-center">Image</th>
                         <th>Energy</th>
                         <th>Card Name</th>
-                        <th>Variants</th>
+                        <th>Tags</th>
+                        <th>Count</th>
                         <th>Release Date</th>
-                        <th>Price</th>
+                        <th>value</th>
                         <th class="text-center">Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     {#each results.cards as card, i}
-                        <CardListItem
+                        <CollectionListItem
                             {card}
                             id={i}
-                            selectedGroup={selectedCards}
+                            revFoil={getRevHolo(card)}
+                            on:click={() => openCardDialog(card)}
                         />
                     {/each}
                 </tbody>

@@ -61,7 +61,7 @@
         </div>
     </button>
 {:else if store === "ebay" && !sealedProduct }
-    <div class="dropdown dropdown-top z-[120]">
+    <div class="dropdown dropdown-top z-[150] safari-z-200">
         <label tabindex="0" class="btn btn-ghost m-1 w-20 h-12">
             <div
                 class="flex w-full h-full p-1 align-center justify-items-center"
@@ -102,3 +102,8 @@
         </div>
     </button>
 {/if}
+<style>
+  .safari-z-200{
+        transform: translate3d(0, 0, 200px);
+    }
+</style>
