@@ -1,39 +1,27 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-test/data/cardImg
-test/data/expLogo
-test/data/expSymbol
-test/data/seriesImg
-test/data/sql
-
-# production
-build/
-/data
-/out
-/dist
-out/
-dev-data/
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+data/
+src/*
+node_modules
+dist
+dist-ssr
+*.local
+poketrax
 
-test.json
-
-#cypress
-cypress/screenshots
-cypress/videos
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+/src-tauri/data/

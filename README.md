@@ -1,44 +1,62 @@
-# <img src="public/assests/poketrax.png" width="50" height="50"> Pokétrax: Pokémon TCG Collection Manger
+# <img src="src-web/public/poketrax.png" width="50" height="50"> PokeTrax
 
-## UI Development 
-This will start the node backend and the web page for testing and development.  This will not start the electon framework.
+Pokemon Card Data tracking card collection
 
-1. Start dev server and web app
-    ```
-    npm run dev
-    ```
-2. Open web browser to http://localhost:3000
+## Recommended IDE Setup
 
-## Electron Testing
-This will start the electron framework and tie it to the vite devopment server. This will execute the electron framework.
+- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 
-1. Start test electron and web server
-   ```
-   npm start
-   npm run start-electron
-   ```
 
-## Build Electron app
+## Development
+The Applicaiton has two part a rust tauri backend and a Single page svelte applicaiton 
+### Backend tauri server
+Will lauch a window with what ever ui is in the src folder.
 
-1. Build installer for your host
-   * Note: on windows you may need to run in administrative mode 
-   ```
-   npm run make
-   ```
+Normal
+```sh
+cargo tauri dev
+```
+Stack Trace
+```sh
+RUST_BACKTRACE=1 cargo tauri dev 
+```
+### Frontend Svelete app
 
-## Run Cypress End-to-End Tests
+Will lauch a browser to load web app.  Server needs to be running on you will get nothing but a loading screen. If you lauch the server after lauching web app refresh the page to get past loading screen
 
-* Run all tests headless
-   ```
-   npm run test-cypress
-   ```
-* Start Cypress UI
-   ```
-   npx cypress open
-   ```   
+```sh
+npm run dev
+```
 
-## Troubleshooting
+## Build whole app
 
-* 
+This will build an executeable for your Operating system.
 
-The information presented on this application about the Pokémon Trading Card Game, including images and text, is copyright of The Pokémon Company, Nintendo, Game Freak, Creatures and/or Wizards of the Coast. This website is not produced by, endorsed by, supported by, or affiliated with any of these companies.npm install
+Mac OS/ Linux: 
+```sh
+./build.sh
+```
+
+Windows:
+```sh
+cd src-web 
+npm run build
+cd ..
+cargo tauri build
+```
+
+## ENV variables
+
+PK_DATA_DIR="./data" Data directory for data files
+
+## Headless Usage
+
+Symlink to executable for headless
+
+```sh
+ln -s /Applications/CardTrax.app/Contents/MacOS/CardTrax poketrax
+```
+
+```sh
+poketrax -h
+```
