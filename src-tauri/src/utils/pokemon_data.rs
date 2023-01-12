@@ -153,10 +153,10 @@ pub async fn get_expansion(
     let statement = String::from(
         "SELECT name, series, tcgName, numberOfCards, releaseDate, logoURL, SymbolURL 
         FROM expansions 
-        WHERE name = ?",
+        WHERE name = ?1",
     );
     let mut query = connection.prepare(&statement)?;
-    let rows = query.query_map([name], |row| {
+    let rows = query.query_map([&name], |row| {
         let exp: Expantion;
         exp = Expantion {
             name: row.get(0)?,
@@ -260,9 +260,9 @@ pub async fn get_series(name: String, db_path: Option<String>) -> Result<Series,
     } else {
         connection = Connection::open(db_path.unwrap_or_default().as_str())?;
     }
-    let statement = String::from("SELECT name, releaseDate, icon FROM series WHERE name = ?");
+    let statement = String::from("SELECT name, releaseDate, icon FROM series WHERE name = ?1");
     let mut query = connection.prepare(&statement)?;
-    let row = query.query_row([name], |row| {
+    let row = query.query_row([&name], |row| {
         Ok(Series {
             name: row.get(0)?,
             releaseDate: row.get(1)?,
@@ -471,7 +471,13 @@ pub async fn product_search_sql(
     let limit = 25;
     let limit_str = format!("{}", limit);
     let mut products: Vec<SealedProduct> = Vec::new();
-    let connection = Connection::open(POKE_DB_PATH.as_str())?;
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
+
     let statement = format!(
         "SELECT name, price, idTCGP, expIdTCGP, expName, type, img
         FROM sealed 

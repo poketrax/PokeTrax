@@ -16,6 +16,7 @@ lazy_static! {
         format!("{}{}", get_data_dir(), "/collections.sql");
 }
 
+/// Initializes the Collection database if it doesn't exists
 pub fn initialize_data() {
     log::info!("Creating collection tables");
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
@@ -24,6 +25,7 @@ pub fn initialize_data() {
     connection.execute(ADD_COLLECTION_TABLE, []).unwrap();
 }
 
+/// Get all Tags for collections 
 pub fn get_tags() -> Result<Vec<Tag>, Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
     let mut query =connection.prepare("SELECT name, color FROM collections")?;
@@ -40,6 +42,9 @@ pub fn get_tags() -> Result<Vec<Tag>, Box<dyn std::error::Error>> {
     Ok(collections)
 }
 
+/// Add a tag
+/// # Arguments
+///    * 'collection' - add a tag to the database
 pub fn add_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
     let statement = "INSERT INTO collections (name, color) VALUES (?1, ?2)";
@@ -47,6 +52,9 @@ pub fn add_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+/// Delete a tag and remove it from any cards in collection
+/// # Arguments
+///    * 'collection' - remove this tag and remove the tag from all cards with this tag
 pub fn delete_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
     let tags = format!("[\"{}\"]", collection.name);
@@ -69,6 +77,9 @@ pub fn delete_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+/// Upsert a card into the collection database
+/// # Argument
+///    * 'card' - Card to upsert
 pub fn upsert_card(card: &Card) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
     let tags: String;
@@ -132,6 +143,9 @@ pub fn upsert_card(card: &Card) -> Result<(), Box<dyn std::error::Error>> {
     }
 }
 
+/// Delete card from collection database
+/// # Argument
+///    * 'card' - card to delete
 pub fn delete_card(card: Card) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
     let variant = card.variant.unwrap();
@@ -171,6 +185,12 @@ pub fn delete_card(card: Card) -> Result<(), Box<dyn std::error::Error>> {
     }
 }
 
+/// Search for cards in the collection
+/// #Argumnet
+///    * 'name_filter' - search term for cards in collection
+///    * 'exp_filter' - list of the expantion to include (urlencoded json array)
+///    * 'rare_filter' - list of the rarities to include (urlencoded json array)
+///    * 'tag_filter' - list of the tags to include (urlencoded json array)
 pub fn search_card_collection_count(
     name_filter: Option<String>,
     exp_filter: Option<String>,
@@ -202,6 +222,15 @@ pub fn search_card_collection_count(
     }
 }
 
+/// Search for cards in the collection
+/// #Argumnet
+///    * 'page' - page number of the query (pages are currently 25 elements long)
+///    * 'name_filter' - search term for the name of the card
+///    * 'exp_filter' - list of the expantion to include (urlencoded json array)
+///    * 'rare_filter' - list of the rarities to include (urlencoded json array)
+///    * 'tag_filter' - list of the tags to include (urlencoded json array)
+///    * 'sort' - ORDER BY statement for sorting results
+///    * 'limit' - sql limit for the query
 pub fn search_card_collection(
     page: u32,
     name_filter: Option<String>,

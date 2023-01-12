@@ -14,6 +14,7 @@ static DATA_STORE_BASE: &str =
     "https://firestore.googleapis.com/v1/projects/alpine-air-331321/databases/(default)/documents";
 static LIMIT: u32 = 100;
 
+
 fn format_array(strs: Vec<String>) -> Vec<Value> {
     let mut str_ary: Vec<Value> = Vec::new();
     for s in strs {

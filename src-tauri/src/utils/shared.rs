@@ -5,6 +5,7 @@ use regex::Regex;
 use serde_json::{json, Value};
 use std::{fs::File, io::Write, path::Path};
 
+/// Retieves the absolute path of the data dir based on OS.
 pub fn get_data_dir() -> String {
     let dir_option = ProjectDirs::from("com", "github", "poketrax");
     match std::env::var("PK_DATA_DIR") {
@@ -21,9 +22,10 @@ pub fn get_data_dir() -> String {
     }
 }
 
-/**
- * Generic File download function
- */
+/// File download utility
+/// # Arguments
+///    * 'url' - url of file to download
+///    * 'path' - path and file name to save to
 pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
     let client = reqwest::Client::new();
     let res = client
@@ -45,11 +47,11 @@ pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
     }
 }
 
+/// Download static resources from the web 
 pub async fn get_static_resources() {
     let file_name = format!("{}/pokemon-back.png",get_data_dir());
     let card_back_path = Path::new(&file_name);
     if card_back_path.exists() == false {
-        
         download_file(
             "https://raw.githubusercontent.com/poketrax/pokedata/main/images/cards/pokemon-back.png",
             &file_name)
@@ -78,14 +80,14 @@ pub fn string_ary_to_gcp_ary(vals: Vec<String>) -> Result<Value, Box<dyn std::er
     Ok(gcp_ary)
 }
 
-/**
- * Will search a col_name json array for the values in value, value is a url endcoded json array
- */
+/// SQL util to search for a value in a JSON array value uses json functions
+/// # Arguments
+///    * col_name - name of the column that is a json list
+///    * value - list of values urlencoded json array
 pub fn json_list_value(col_name: String, value: Option<String>) -> String {
     if value.is_none() {
         return String::from("");
     } else {
-        
         let _value = value.unwrap();
         log::debug!("json list col: {} value: {}", col_name, _value);
         let decoded = urlencoding::decode(&_value);
@@ -125,9 +127,10 @@ pub fn json_list_value(col_name: String, value: Option<String>) -> String {
     }
 }
 
-/**
- * Will create a sql where statement with given col name and the options, the options are a urlencoded json array.
- */
+/// SQL util to search for a value in a JSON array value uses chain of equals (DEPRICATED)
+/// # Arguments
+///    * col_name - name of the column that is a json list
+///    * value - list of values urlencoded json array
 pub fn in_list(col_name: String, values: Option<String>) -> String {
     if values.is_none() {
         return String::from("");
