@@ -36,13 +36,13 @@ pub struct CardSearchResults {
  */
 #[get("/pokemon/expansions")]
 pub async fn expansions() -> Result<impl Responder> {
-    let mut _expansions: Vec<Expantion> = get_expansions().await?;
+    let mut _expansions: Vec<Expantion> = get_expansions(None).await?;
     Ok(web::Json(_expansions))
 }
 
 #[get("/pokemon/expansion/{name}")]
 pub async fn expantion_by_name(name: web::Path<String>) -> Result<impl Responder> {
-    match get_expansion(name.to_string()).await {
+    match get_expansion(name.to_string(), None).await {
         Ok(data) => Ok(web::Json(data)),
         Err(e) => Err(error::ErrorBadRequest(e)),
     }
@@ -72,13 +72,13 @@ mod expansion_tests {
  */
 #[get("/pokemon/series")]
 pub async fn series() -> Result<impl Responder> {
-    let mut _series: Vec<Series> = get_series_list().await.unwrap();
+    let mut _series: Vec<Series> = get_series_list(None).await.unwrap();
     Ok(web::Json(_series))
 }
 
 #[get("/pokemon/series/{name}")]
 pub async fn series_by_name(name: web::Path<String>) -> Result<impl Responder> {
-    match get_series(name.to_string()).await {
+    match get_series(name.to_string(), None).await {
         Ok(data) => Ok(web::Json(data)),
         Err(e) => Err(error::ErrorBadRequest(e)),
     }
@@ -106,7 +106,7 @@ mod series_tests {
  */
 #[get("/pokemon/card/rarities")]
 pub async fn rarities() -> Result<impl Responder> {
-    let rarities = get_rarities().await.unwrap();
+    let rarities = get_rarities(None).await.unwrap();
     Ok(web::Json(rarities))
 }
 
@@ -167,6 +167,7 @@ pub async fn card_search(
         Some(name_filter.clone()),
         search_params.expansions.clone(),
         search_params.rarities.clone(),
+        None
     )
     .await
     {
@@ -181,6 +182,7 @@ pub async fn card_search(
         search_params.expansions.clone(),
         search_params.rarities.clone(),
         Some(sort),
+        None
     )
     .await
     {
@@ -248,7 +250,7 @@ pub async fn card_prices(
     _: web::Query<PriceSearch>,
 ) -> Result<impl Responder> {
     let _id = urlencoding::decode(id.as_str()).unwrap().to_string();
-    match get_card(_id).await {
+    match get_card(_id, None).await {
         Ok(card) => {
             let mut prices: Vec<Price> = Vec::new();
             let data_url = format!(

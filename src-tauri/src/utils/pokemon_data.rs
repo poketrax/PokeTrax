@@ -1,3 +1,4 @@
+/// This file pretains to all Pokemon database interactions and meta data for the database
 use crate::models::pokemon::{Card, Expantion, SealedProduct, Series};
 use crate::utils::shared::{download_file, get_data_dir};
 use lazy_static::lazy_static;
@@ -28,6 +29,12 @@ lazy_static! {
 
 static GH_POKE_REL_URL: &str = "https://api.github.com/repos/poketrax/pokepull/releases/latest";
 
+/// Update the meta data file and saves the file
+/// # Arguments
+///    * 'ready' - sets the ready value in database status
+///    * 'updated' - sets te update value in database status
+///    * 'version' - sets the version value in the database status
+///    * 'error' - sets the version value in the database status
 fn update_meta_file(ready: bool, updated: bool, version: String, error: String) -> Result<()> {
     let meta_file = std::fs::File::create(POKE_DB_META_PATH.as_str()).unwrap();
     let new_meta = DbStatus {
@@ -40,6 +47,7 @@ fn update_meta_file(ready: bool, updated: bool, version: String, error: String) 
     Ok(())
 }
 
+/// Reads the meta data file and binds to DbStatus
 fn read_meta_file() -> Result<DbStatus> {
     let file = File::open(POKE_DB_META_PATH.as_str()).unwrap();
     let mut json_reader = serde_json::Deserializer::from_reader(file);
@@ -47,6 +55,7 @@ fn read_meta_file() -> Result<DbStatus> {
     Ok(saved_status)
 }
 
+/// Initializes the database and metadata files and checks for updates online
 pub async fn initialize_data() -> Result<DbStatus, Box<dyn std::error::Error>> {
     //search for meta data file
     log::debug!("meta path: {}", POKE_DB_META_PATH.as_str());
@@ -67,9 +76,9 @@ pub async fn initialize_data() -> Result<DbStatus, Box<dyn std::error::Error>> {
     }
 }
 
-/**
- * Check if the db on github is newer if so download and update metadata file.
- */
+/// Check if the db on github is newer if so download and update metadata file.
+/// # Arguments
+///    * 'version' - version to compare
 async fn check_poke_data(version: String) -> Result<DbStatus, Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let gh_rel_latest: Value = client
@@ -124,37 +133,42 @@ async fn check_poke_data(version: String) -> Result<DbStatus, Box<dyn std::error
     }
 }
 
-/**
- * Get a single expansion by name
- */
-pub async fn get_expansion(name: String) -> Result<Expantion, Box<dyn std::error::Error>> {
-    let connection = Connection::open(POKE_DB_PATH.as_str()).unwrap();
+/// Get expantion via its name
+/// # Arguments
+///    * 'name' - name of the expantion to retrieve
+///    * 'db_path' -path to sqlite database defaults to POKE_DB_PATH
+pub async fn get_expansion(
+    name: String,
+    db_path: Option<String>,
+) -> Result<Expantion, Box<dyn std::error::Error>> {
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
     let _name = urlencoding::decode(name.as_str())
         .expect("UTF-8")
         .to_string();
-    let statement = format!(
+    let statement = String::from(
         "SELECT name, series, tcgName, numberOfCards, releaseDate, logoURL, SymbolURL 
         FROM expansions 
-        WHERE name = \"{}\"",
-        _name);
-    let mut query = connection
-        .prepare(&statement)?;
-
-    let rows = query
-        .query_map([], |row| {
-            let exp: Expantion;
-            exp = Expantion {
-                name: row.get(0)?,
-                series: row.get(1)?,
-                tcgName: row.get(2)?,
-                numberOfCards: row.get(3)?,
-                releaseDate: row.get(4)?,
-                logoURL: row.get(5)?,
-                symbolURL: row.get(6)?,
-            };
-            Ok(exp)
-        })
-        .unwrap();
+        WHERE name = ?",
+    );
+    let mut query = connection.prepare(&statement)?;
+    let rows = query.query_map([name], |row| {
+        let exp: Expantion;
+        exp = Expantion {
+            name: row.get(0)?,
+            series: row.get(1)?,
+            tcgName: row.get(2)?,
+            numberOfCards: row.get(3)?,
+            releaseDate: row.get(4)?,
+            logoURL: row.get(5)?,
+            symbolURL: row.get(6)?,
+        };
+        Ok(exp)
+    })?;
     for row in rows {
         match row {
             Ok(val) => return Ok(val),
@@ -164,8 +178,18 @@ pub async fn get_expansion(name: String) -> Result<Expantion, Box<dyn std::error
     Err(Box::from("Expantion not found"))
 }
 
-pub async fn get_expansions() -> Result<Vec<Expantion>, Box<dyn std::error::Error>> {
-    let connection = Connection::open(POKE_DB_PATH.as_str()).unwrap();
+/// Get All Expantions
+/// # Arguments
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
+pub async fn get_expansions(
+    db_path: Option<String>
+) -> Result<Vec<Expantion>, Box<dyn std::error::Error>> {
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
     let mut _expansions: Vec<Expantion> = Vec::new();
     let mut statement = connection
         .prepare("SELECT name, series, tcgName, numberOfCards, releaseDate, logoURL, SymbolURL FROM expansions")?;
@@ -193,9 +217,17 @@ pub async fn get_expansions() -> Result<Vec<Expantion>, Box<dyn std::error::Erro
     Ok(_expansions)
 }
 
-pub async fn get_series_list() -> Result<Vec<Series>, Box<dyn std::error::Error>> {
+/// Get series List
+/// # Arguments
+///    * 'db_path' : Option<String> path to sqlite database defaults to POKE_DB_PATH
+pub async fn get_series_list(db_path: Option<String>) -> Result<Vec<Series>, Box<dyn std::error::Error>> {
     let mut _series: Vec<Series> = Vec::new();
-    let connection = Connection::open(POKE_DB_PATH.as_str()).unwrap();
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
     let mut statement = connection
         .prepare("SELECT name, releaseDate, icon FROM series")
         .unwrap();
@@ -217,11 +249,20 @@ pub async fn get_series_list() -> Result<Vec<Series>, Box<dyn std::error::Error>
     Ok(_series)
 }
 
-pub async fn get_series(name: String) -> Result<Series, Box<dyn std::error::Error>> {
-    let connection = Connection::open(POKE_DB_PATH.as_str())?;
-    let statement = format!("SELECT name, releaseDate, icon FROM series WHERE name = \"{}\"", name);
-    let mut query = connection.prepare(&statement)?;;
-    let row = query.query_row([], |row| {
+/// Get a Series via provided name
+/// # Arguments
+///    * 'name' - name of the series to retieve
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
+pub async fn get_series(name: String, db_path: Option<String>) -> Result<Series, Box<dyn std::error::Error>> {
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
+    let statement = String::from("SELECT name, releaseDate, icon FROM series WHERE name = ?");
+    let mut query = connection.prepare(&statement)?;
+    let row = query.query_row([name], |row| {
         Ok(Series {
             name: row.get(0)?,
             releaseDate: row.get(1)?,
@@ -234,9 +275,17 @@ pub async fn get_series(name: String) -> Result<Series, Box<dyn std::error::Erro
     }
 }
 
-pub async fn get_rarities() -> Result<Vec<String>, Box<dyn std::error::Error>> {
+/// Get list of rarities
+/// # Arguments
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
+pub async fn get_rarities(db_path: Option<String>) -> Result<Vec<String>, Box<dyn std::error::Error>> {
     let mut _rarities: Vec<String> = Vec::new();
-    let connection = Connection::open(POKE_DB_PATH.as_str()).unwrap();
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
     let mut statement = connection
         .prepare("SELECT DISTINCT rarity FROM cards")
         .unwrap();
@@ -250,15 +299,24 @@ pub async fn get_rarities() -> Result<Vec<String>, Box<dyn std::error::Error>> {
     Ok(_rarities)
 }
 
-/**
- * Get the number of cards that match a set of filters
- */
+/// Get the number of cards that match a set of filters
+/// # Arguments
+///    * 'name_filter' - search term for the name of the card
+///    * 'exp_filter' - list of the expantion to include (urlencoded json array)
+///    * 'rare_filter - list of the rarities to include (urlencoded json array)
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
 pub async fn card_count(
     name_filter: Option<String>,
     exp_filter: Option<String>,
     rare_filter: Option<String>,
+    db_path: Option<String>
 ) -> Result<i64, Box<dyn std::error::Error>> {
-    let connection = Connection::open(POKE_DB_PATH.as_str()).unwrap();
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
     let statement = format!(
         "SELECT count(cardId) as cardCount 
         FROM cards 
@@ -268,29 +326,38 @@ pub async fn card_count(
         in_list(String::from("rarity"), rare_filter),
     );
     //Determine count
-    let mut query = connection
-        .prepare(&statement)?;
-    let row = query.query_row([],|row| Ok(row.get(0)),)?;
+    let mut query = connection.prepare(&statement)?;
+    let row = query.query_row([], |row| Ok(row.get(0)))?;
     match row {
         Ok(val) => return Ok(val),
         Err(e) => return Err(Box::from(e)),
     }
 }
 
-/**
- * Search for Cards
- */
+/// Search for cards
+/// # Arguments
+///    * 'page' - page number of the query (pages are currently 25 elements long)
+///    * 'name_filter' - search term for the name of the card
+///    * 'exp_filter' - list of the expantion to include (urlencoded json array)
+///    * 'rare_filter' - list of the rarities to include (urlencoded json array)
+///    * 'sort' - ORDER BY statement for sorting results
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
 pub async fn card_search_sql(
     page: u32,
     name_filter: Option<String>,
     exp_filter: Option<String>,
     rare_filter: Option<String>,
     sort: Option<String>,
+    db_path: Option<String>
 ) -> Result<Vec<Card>, Box<dyn std::error::Error>> {
     let limit = 25;
     let mut _cards: Vec<Card> = Vec::new();
-    let connection = Connection::open(POKE_DB_PATH.as_str())?;
-
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
     let statement = format!(
         "SELECT name, cardId, idTCGP, 
         expName, expCardNumber, expCodeTCGP, expIdTCGP,
@@ -345,9 +412,13 @@ pub async fn card_search_sql(
     Ok(_cards)
 }
 
-pub async fn get_card(name_filter: String) -> Result<Card, Box<dyn std::error::Error>> {
+/// Get a single card via a name filter
+/// # Arguments
+///    * 'name_filter' - search term for the name of the card
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
+pub async fn get_card(name_filter: String, db_path: Option<String>) -> Result<Card, Box<dyn std::error::Error>> {
     let cards;
-    match card_search_sql(0, Some(name_filter.clone()), None, None, None).await {
+    match card_search_sql(0, Some(name_filter.clone()), None, None, None, db_path).await {
         Ok(val) => cards = val,
         Err(e) => return Err(Box::from(e)),
     }
@@ -358,11 +429,18 @@ pub async fn get_card(name_filter: String) -> Result<Card, Box<dyn std::error::E
     }
 }
 
-/**
- * Get total of sealed products in a given search
- */
-pub async fn product_count(name_filter: Option<String>) -> Result<i64, Box<dyn std::error::Error>> {
-    let connection = Connection::open(POKE_DB_PATH.as_str())?;
+
+/// Get total of sealed products in a given search
+/// # Arguments
+///    * 'name_filter' - search term for the name of the card
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
+pub async fn product_count(name_filter: Option<String>, db_path: Option<String>) -> Result<i64, Box<dyn std::error::Error>> {
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
     let statement = format!(
         "SELECT count(name) as total 
             FROM cards 
@@ -378,13 +456,17 @@ pub async fn product_count(name_filter: Option<String>) -> Result<i64, Box<dyn s
     }
 }
 
-/**
- * Search for sealed products in the sql database
- */
+/// Search for sealed products in the sql database
+/// # Arguments
+///    * 'page' - page number of the query (pages are currently 25 elements long)
+///    * 'name_filter' - search term for the name of the card
+///    * 'sort' - ORDER BY statement for sorting results
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
 pub async fn product_search_sql(
     page: u32,
     name_filter: Option<String>,
     sort: Option<String>,
+    db_path: Option<String>
 ) -> Result<Vec<SealedProduct>, Box<dyn std::error::Error>> {
     let limit = 25;
     let limit_str = format!("{}", limit);
@@ -404,24 +486,22 @@ pub async fn product_search_sql(
     );
     //Query page
     let mut query = connection.prepare(&statement)?;
-
-    let rows = query
-        .query_map([], |row| {
-            let id_tcgp_row: String = row.get(2).unwrap_or_default();
-            let id_tcgp_str = id_tcgp_row.replace(".0", "");
-            Ok(SealedProduct {
-                name: row.get(0).unwrap_or_default(),
-                price: row.get(1).unwrap_or_default(),
-                idTCGP: id_tcgp_str.parse::<i64>().unwrap_or_default(),
-                expIdTCGP: row.get(3).unwrap_or_default(),
-                expName: row.get(4).unwrap_or_default(),
-                productType: row.get(5).unwrap_or_default(),
-                img: row.get(6).unwrap_or_default(),
-                collection: None,
-                paid: None,
-                count: None,
-            })
-        })?;
+    let rows = query.query_map([], |row| {
+        let id_tcgp_row: String = row.get(2).unwrap_or_default();
+        let id_tcgp_str = id_tcgp_row.replace(".0", "");
+        Ok(SealedProduct {
+            name: row.get(0).unwrap_or_default(),
+            price: row.get(1).unwrap_or_default(),
+            idTCGP: id_tcgp_str.parse::<i64>().unwrap_or_default(),
+            expIdTCGP: row.get(3).unwrap_or_default(),
+            expName: row.get(4).unwrap_or_default(),
+            productType: row.get(5).unwrap_or_default(),
+            img: row.get(6).unwrap_or_default(),
+            collection: None,
+            paid: None,
+            count: None,
+        })
+    })?;
     for row in rows {
         match row {
             Ok(val) => products.push(val),
@@ -435,10 +515,9 @@ pub async fn product_search_sql(
 mod product_tests {
     use super::*;
     use serde_json::to_string_pretty;
-
     #[actix_web::test]
     async fn get_product_count() {
-        let count = product_count(None).await;
+        let count = product_count(None, None).await;
         match count {
             Ok(val) => {
                 assert!(val > 0)
@@ -451,7 +530,7 @@ mod product_tests {
 
     #[actix_web::test]
     async fn get_products() {
-        let products = product_search_sql(0, None, None).await;
+        let products = product_search_sql(0, None, None, None).await;
         match products {
             Ok(val) => {
                 let msg = to_string_pretty(&val).unwrap();
