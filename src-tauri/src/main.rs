@@ -3,12 +3,10 @@ extern crate simple_error;
 extern crate reqwest;
 use actix_web::{HttpServer, rt, App};
 use actix_cors::Cors;
-use utils::gcp::upsert_cards;
 use std::{sync::mpsc, thread, fs::create_dir_all, path::PathBuf};
 use log::LevelFilter;
-use clap::{Parser};
+use clap::Parser;
 use simple_logger::SimpleLogger;
-use tokio::runtime::Runtime;
 use log::{info, error, debug};
 
 mod routes;
@@ -64,7 +62,6 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(poke_card::card_search)
             .service(poke_card::card_prices)
             .service(poke_card::expantion_by_name)
-            .service(poke_card::card_search_gcp)
             .service(poke_product::product_search)
             .service(collections::get_all_tags)
             .service(collections::put_tag)
@@ -103,17 +100,12 @@ fn main(){
     //Check for cli commands
     let data_type = args.data.clone().unwrap_or_default().to_lowercase();
     if data_type.eq("cards") {
-        let runtime = Runtime::new().unwrap();
         let command = args.command.clone();
         if command.is_none() {
             error!("no compatible command found. cards only works with upsert and delete");
         }else{
             let command_str = command.unwrap().to_lowercase();
             if command_str.eq("upsert"){
-                match runtime.block_on(upsert_cards(args)) {
-                    Ok(()) => (),
-                    Err(e) => { error!("Failed to Upsert Cards: {}", e) }
-                }
             }else if command_str.eq("delete"){
                 info!("Delete is not yet supported");
             } else if command_str.eq("export"){

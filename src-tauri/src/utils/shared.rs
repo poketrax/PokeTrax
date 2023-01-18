@@ -1,9 +1,35 @@
 extern crate directories;
 use directories::ProjectDirs;
 use futures_util::StreamExt;
+use lazy_static::lazy_static;
 use regex::Regex;
-use serde_json::{json, Value};
-use std::{fs::File, io::Write, path::Path};
+use std::{fs::File, io::Write, path::Path, sync::RwLock};
+
+lazy_static! {
+    pub static ref ADMIN_DB_FILE: RwLock<String> = RwLock::new(String::new());
+}
+
+pub fn get_admin_file_path() -> String{
+    return ADMIN_DB_FILE.read().unwrap().clone()
+}
+
+pub fn update_admin_file_path(path: String){
+    let mut settings = ADMIN_DB_FILE.write().unwrap();
+    *settings = path;
+}
+
+#[cfg(test)]
+mod admin_file_tests{
+    use super::*;
+    #[test]
+    fn test_admin_right_read() {
+        let path = get_admin_file_path();
+        assert!(path.eq(""), "Path not initialized: {}", &path);
+        update_admin_file_path(String::from("./test-data/data.sql"));
+        let path = get_admin_file_path();
+        assert!(path == "./test-data/data.sql",  "Path not updating: {}", &path)
+    }
+}
 
 /// Retieves the absolute path of the data dir based on OS.
 pub fn get_data_dir() -> String {
@@ -12,14 +38,13 @@ pub fn get_data_dir() -> String {
         Ok(val) => return String::from(val),
         Err(_) => (),
     }
-    if dir_option.is_none() == false {
-        let project_dirs = dir_option.unwrap();
-        let dir_path = project_dirs.config_dir();
-        let path = String::from(dir_path.as_os_str().to_str().unwrap());
-        return path;
-    } else {
+    if dir_option.is_none() {
         return String::from("./data");
     }
+    let project_dirs = dir_option.unwrap();
+    let dir_path = project_dirs.config_dir();
+    let path = String::from(dir_path.as_os_str().to_str().unwrap());
+    return path;
 }
 
 /// File download utility
@@ -47,9 +72,9 @@ pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
     }
 }
 
-/// Download static resources from the web 
+/// Download static resources from the web
 pub async fn get_static_resources() {
-    let file_name = format!("{}/pokemon-back.png",get_data_dir());
+    let file_name = format!("{}/pokemon-back.png", get_data_dir());
     let card_back_path = Path::new(&file_name);
     if card_back_path.exists() == false {
         download_file(
@@ -58,26 +83,6 @@ pub async fn get_static_resources() {
             .await
             .expect("Failed to download Pokemone back")
     }
-}
-
-pub fn gcp_ary_to_string_ary(val: Value) -> Result<Vec<String>, Box<dyn std::error::Error>> {
-    let mut strings: Vec<String> = Vec::new();
-    let gcp_array = val.as_array().unwrap();
-    for i in gcp_array {
-        let str_val = String::from(i["stringValue"].as_str().unwrap());
-        strings.push(str_val);
-    }
-    Ok(strings)
-}
-
-pub fn string_ary_to_gcp_ary(vals: Vec<String>) -> Result<Value, Box<dyn std::error::Error>> {
-    let mut list: Vec<Value> = Vec::new();
-    for value in vals {
-        let json_val = json!({ "stringValue": value });
-        list.push(json_val);
-    }
-    let gcp_ary = json!(list);
-    Ok(gcp_ary)
 }
 
 /// SQL util to search for a value in a JSON array value uses json functions
@@ -131,11 +136,11 @@ pub fn json_list_value(col_name: String, value: Option<String>) -> String {
 /// # Arguments
 ///    * col_name - name of the column that is a json list
 ///    * value - list of values urlencoded json array
-pub fn in_list(col_name: String, values: Option<String>) -> String {
+pub fn in_list(col_name: String, values: &Option<String>) -> String {
     if values.is_none() {
         return String::from("");
     } else {
-        let _value = values.unwrap();
+        let _value = values.to_owned().unwrap();
         let decoded = urlencoding::decode(&_value);
         match decoded {
             Ok(_decode) => {
