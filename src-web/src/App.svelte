@@ -33,7 +33,7 @@
     <Collections />
 {/if}
 
-{#if pageVal === "admin"}
+{#if pageVal === "admin" }
     <Mod />
 {/if}
 

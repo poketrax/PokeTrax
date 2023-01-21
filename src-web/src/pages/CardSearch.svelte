@@ -46,8 +46,8 @@
     }
 </script>
 
-<div class="grid grid-cols-2 h-20">
-    <div class="p-4">
+<div class="grid sm:grid-cols-1 lg:grid-cols-2">
+    <div class="p-2">
         <CardFilters
             selRareStore={selectedRaritiesStore}
             selSetsStore={selectedSetsStore}
@@ -56,8 +56,8 @@
             executeSearch={executeCardSearch}
         />
     </div>
-    <div class="flex h-20 items-center">
-        <div class="flex-grow" />
+    <div class="flex items-center">
+        <div class="sm:w-2 lg:flex-grow" />
         {#if display === "list"}
             <button
                 id={`mass-add-collection`}
@@ -72,9 +72,9 @@
             </button>
         {/if}
         <CardDisplay displayStore={cardSearchDisplay} />
-        <div class="w-4" />
+        <div class="w-2" />
         <CardSort {sortStore} executeSearch={executeCardSearch} />
-        <div class="w-4" />
+        <div class="w-2" />
     </div>
 </div>
 <CardPagination

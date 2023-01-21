@@ -2,8 +2,8 @@ import type { Expansion } from "./CardMeta";
 import { writable } from 'svelte/store';
 import type { Card } from "./Card";
 import { initCardStore } from "./CardSearchStore";
-import { initMod } from "./ModDataStore";
 import { initCollectionStore } from "./CollectionStore";
+import { initAdminStore } from "./AdminDataStore";
 
 export const baseURL = "http://localhost:3131"
 
@@ -36,7 +36,7 @@ export function formatExpansionNumber(expNumber: string, expName: string): Promi
 
 export function init() {
     initCardStore();
-    initMod();
+    initAdminStore();
     initCollectionStore();
 }
 

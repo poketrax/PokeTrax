@@ -43,8 +43,8 @@
     }
 </script>
 
-<div class="grid sm:grid-cols-1 lg:grid-cols-2 lg:h-20 sm:h-40">
-    <div class="flex items-center pl-2 pr-2">
+<div class="grid sm:grid-cols-1 lg:grid-cols-2">
+    <div class="flex items-center p-2">
         <CardFilters
             selRareStore={selectedRaritiesStore}
             selSetsStore={selectedSetsStore}
@@ -54,10 +54,10 @@
         />
         <TagSelect class="ml-2" search on:change={executeCardSearch} />
     </div>
-    <div class="flex h-20 items-center">
+    <div class="flex items-center">
         <div class="sm:w-2 lg:flex-grow" />
         <CardDisplay displayStore={cardSearchDisplay} />
-        <div class="w-1" />
+        <div class="w-2" />
         <CardSort {sortStore} executeSearch={executeCardSearch} />
         <div class="w-2" />
     </div>

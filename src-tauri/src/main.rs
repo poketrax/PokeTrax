@@ -13,13 +13,14 @@ mod routes;
 use routes::poke_card;
 use routes::meta;
 use routes::img_handler;
-use routes::auth;
+use routes::admin;
 use routes::poke_product;
 use routes::collections;
 
 mod models;
 mod utils;
 use utils::collection_data;
+use utils::shared::update_admin_mode;
 
 const PORT: u16 = 3131;
 
@@ -32,6 +33,9 @@ pub struct Cli {
     ///Run in verboss mode
     #[clap(short, long, value_parser, default_value_t = false)]
     verbose: bool,
+    ///Run in Admin Mode
+    #[clap(short, long, value_parser, default_value_t = true)]
+    admin: bool,
     ///GCP key file for authorization
     #[clap(long, value_parser, value_name = "KEY_FILE")]
     gcp_key: Option<PathBuf>,
@@ -62,22 +66,37 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(poke_card::card_search)
             .service(poke_card::card_prices)
             .service(poke_card::expantion_by_name)
+            
             .service(poke_product::product_search)
+            
             .service(collections::get_all_tags)
             .service(collections::put_tag)
             .service(collections::remove_tag)
             .service(collections::search_cards)
             .service(collections::put_card)
             .service(collections::remove_card)
+            
             .service(meta::init)
             .service(meta::open)
+            .service(meta::set_admin_db)
+            
             .service(img_handler::card_img)
             .service(img_handler::exp_symbol)
             .service(img_handler::exp_logo)
-            .service(auth::auth_callback)
-            .service(auth::login)
-            .service(auth::expire)
-            .service(auth::jwt_token)
+            
+            .service(admin::admin_mode)
+            .service(admin::admin_card_search)
+            .service(admin::admin_upsert_card)
+            .service(admin::admin_delete_card)
+            .service(admin::admin_expansions)
+            .service(admin::admin_expantion_by_name)
+            .service(admin::admin_delete_expansion)
+            .service(admin::admin_rarities)
+            .service(admin::admin_series)
+            .service(admin::admin_series_by_name)
+            .service(admin::admin_upsert_series)
+            .service(admin::admin_delete_series)
+            
     })
     .bind(("127.0.0.1", PORT))?
     .workers(2)
@@ -94,9 +113,8 @@ fn main(){
     if args.verbose { level = LevelFilter::Debug;}
     SimpleLogger::new().with_level(level).init().unwrap();
     init_data_paths();
-
+    update_admin_mode(args.admin);
     collection_data::initialize_data();
-
     //Check for cli commands
     let data_type = args.data.clone().unwrap_or_default().to_lowercase();
     if data_type.eq("cards") {

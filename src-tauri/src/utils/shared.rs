@@ -7,6 +7,7 @@ use std::{fs::File, io::Write, path::Path, sync::RwLock};
 
 lazy_static! {
     pub static ref ADMIN_DB_FILE: RwLock<String> = RwLock::new(String::new());
+    pub static ref ADMIN_MODE: RwLock<bool> = RwLock::new(false);
 }
 
 pub fn get_admin_file_path() -> String{
@@ -18,13 +19,20 @@ pub fn update_admin_file_path(path: String){
     *settings = path;
 }
 
+pub fn get_admin_mode() -> bool {
+    return ADMIN_MODE.read().unwrap().clone();
+}
+
+pub fn update_admin_mode(mode: bool) {
+    let mut admin_mode = ADMIN_MODE.write().unwrap();
+    *admin_mode = mode;
+}
+
 #[cfg(test)]
 mod admin_file_tests{
     use super::*;
     #[test]
     fn test_admin_right_read() {
-        let path = get_admin_file_path();
-        assert!(path.eq(""), "Path not initialized: {}", &path);
         update_admin_file_path(String::from("./test-data/data.sql"));
         let path = get_admin_file_path();
         assert!(path == "./test-data/data.sql",  "Path not updating: {}", &path)

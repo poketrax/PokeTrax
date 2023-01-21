@@ -5,18 +5,9 @@ import type { Expansion, Series } from './CardMeta';
 import { writable } from 'svelte/store';
 import { baseURL } from './Utils';
 
-export class SearchTerms {
-    public keyword: string = ""
-    public selectedSets: Array<string> = []
-    public selectedRarities: Array<string> = []
-    public sort: string = ""
-}
-
-export class DbState {
-    public ready: boolean = false
-    public updated: boolean = false
-    public version: string = "0.0.0"
-    public error: string = ""
+export class AdminSettings {
+    public admin: boolean = false;
+    public path: string = ""
 }
 
 /////////////
@@ -29,8 +20,7 @@ export const setStore = writable(new Array<Expansion>)
 export const seriesStore = writable(new Array<Series>)
 //Rarity options
 export const rarityStore = writable(new Array<string>)
-//database status (ensures db is ready and not updating)
-export const dbStatus = writable(new DbState())
+
 
 ////////////////////////////////
 /*Global card search variables*/
@@ -56,11 +46,25 @@ sortStore.subscribe((val) => sort = val)
 export const cardResultStore = writable(new CardSearchResults())
 //Selected display option [case, table]
 export const cardSearchDisplay = writable("grid")
-//Admin (Mod)
-export const auth_exp = writable(0)
+//Current page
+export let page = 0;
+export const pageStore = writable(0);
+pageStore.subscribe((val) => page = val)
+//AdminPage
+export let adminSettingStore = writable(new AdminSettings())
 
-export function executeCardSearch(){
-    let url = new URL(`${baseURL}/gcp/pokemon/cards`)
+export function initAdminStore() {
+    getAdminSettings()
+        .then((val) => {
+            adminSettingStore.set(val);
+            executeCardSearch();
+        })
+        .catch((e) => console.log(e))
+
+}
+
+export function executeCardSearch() {
+    let url = new URL(`${baseURL}/admin/pokemon/cards/${page}`)
     if (selectedSets.length !== 0) {
         url.searchParams.set(`expansions`, encodeURI(JSON.stringify(selectedSets)))
     }
@@ -75,11 +79,11 @@ export function executeCardSearch(){
         .then(res => res.json())
         .then(
             (data) => {
-                if(sort && sort !== ""){
+                if (sort && sort !== "") {
                     let result = new CardSearchResults();
                     result.cards = sortSearch(sort, data.cards);
                     cardResultStore.set(result)
-                }else{
+                } else {
                     cardResultStore.set(data)
                 }
             },
@@ -90,25 +94,25 @@ export function executeCardSearch(){
 }
 
 function sortSearch(sort: string, cardList: Card[]): Card[] {
-    switch(sort){
+    switch (sort) {
         case "name":
             return cardList;
         case "setNumber":
-            return cardList.sort((a,b) => a.expCardNumber < b.expCardNumber ? -1 : 1);
+            return cardList.sort((a, b) => a.expCardNumber < b.expCardNumber ? -1 : 1);
         case "pokedex":
-            return cardList.sort((a,b) => a.pokedex < b.pokedex ? -1 : 1);
+            return cardList.sort((a, b) => a.pokedex < b.pokedex ? -1 : 1);
         case "priceDSC":
-            return cardList.sort((a,b) => a.price < b.price ? -1 : 1);
+            return cardList.sort((a, b) => a.price < b.price ? -1 : 1);
         case "priceASC":
-            return cardList.sort((a,b) => a.price > b.price ? -1 : 1);
+            return cardList.sort((a, b) => a.price > b.price ? -1 : 1);
         case "dateDSC":
-            return cardList.sort((a,b) => {
+            return cardList.sort((a, b) => {
                 let aDate = new Date(a.releaseDate);
                 let bDate = new Date(b.releaseDate);
                 return aDate.getTime() < bDate.getTime() ? -1 : 1
             });
         case "dateASC":
-            return cardList.sort((a,b) => {
+            return cardList.sort((a, b) => {
                 let aDate = new Date(a.releaseDate);
                 let bDate = new Date(b.releaseDate);
                 return aDate.getTime() > bDate.getTime() ? -1 : 1
@@ -118,12 +122,6 @@ function sortSearch(sort: string, cardList: Card[]): Card[] {
     }
 }
 
-export function initMod() {
-    fetch(`${baseURL}/gcp/auth/exp`)
-        .then(res => res.json())
-        .then(data => auth_exp.set(data.exp))
-        .catch(e => console.log(`failed to talk to get login status ${e}`))
-}
 
 /**
  * Get set expantions
@@ -132,7 +130,7 @@ export function initMod() {
 function expansions(): Promise<Expansion[]> {
     return new Promise<Expansion[]>(
         (resolve, reject) => {
-            fetch(`${baseURL}/pokemon/expansions`)
+            fetch(`${baseURL}/admin/pokemon/expansions`)
                 .then(res => res.json())
                 .then(data => resolve(data))
                 .catch(err => reject(err))
@@ -147,7 +145,7 @@ function expansions(): Promise<Expansion[]> {
 function series(): Promise<Series[]> {
     return new Promise<Series[]>(
         (resolve, reject) => {
-            fetch(`${baseURL}/pokemon/series`)
+            fetch(`${baseURL}/admin/pokemon/series`)
                 .then(res => res.json())
                 .then(data => resolve(data))
                 .catch(err => reject(err))
@@ -162,10 +160,39 @@ function series(): Promise<Series[]> {
 function rarities(): Promise<string[]> {
     return new Promise<string[]>(
         (resolve, reject) => {
-            fetch(`${baseURL}/pokemon/card/rarities`)
+            fetch(`${baseURL}/admin/pokemon/card/rarities`)
                 .then(res => res.json())
                 .then(data => resolve(data))
                 .catch(err => reject(err))
         }
     )
+}
+
+/**
+ * Gets state of the admin page
+ */
+export function getAdminSettings(): Promise<AdminSettings> {
+    return new Promise<AdminSettings>(
+        (resolve, reject) => {
+            fetch(`${baseURL}/admin_settings`)
+                .then(res => res.json())
+                .then(data => resolve(data))
+                .catch(err => reject(err))
+        }
+    )
+}
+
+export function updateDbPath(path: string): Promise<boolean> {
+    return new Promise<boolean>(
+        (resolve, reject) => {
+            fetch(`${baseURL}/meta/admindb`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ data_path: path })
+            })
+                .then(res => {res.json(); initAdminStore();})
+                .then(data => resolve(true))
+                .catch(err => reject(false))
+
+        })
 }

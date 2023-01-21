@@ -15,7 +15,7 @@
         selectedSetsStore,
         executeCardSearch,
         sortStore,
-    } from "../../lib/ModDataStore";
+    } from "../../lib/AdminDataStore";
 
     //Search term
     let searchTerm = "";
@@ -43,8 +43,8 @@
     }
 </script>
 
-<div class="grid grid-cols-2 h-20">
-    <div>
+<div class="grid sm:grid-cols-1 lg:grid-cols-2">
+    <div class="flex w-full items-center m-2">
         <CardFilters
             selRareStore={selectedRaritiesStore}
             selSetsStore={selectedSetsStore}
@@ -53,9 +53,9 @@
             executeSearch={executeCardSearch}
         />
     </div>
-    <div class="flex h-20 items-center">
-        <div class="flex-grow" />
-        <CardDisplay displayStore={cardSearchDisplay}/>
+    <div class="flex items-center">
+        <div class="sm:w-2 lg:flex-grow" />
+        <CardDisplay displayStore={cardSearchDisplay} />
         <div class="w-4" />
         <CardSort {sortStore} executeSearch={executeCardSearch} />
         <div class="w-2" />
@@ -81,7 +81,7 @@
         </div>
         <div class="flex-grow" />
     {:else}
-        <table class="table w-full ml-4 mr-2">
+        <table class="table w-full m-2">
             <thead>
                 <tr>
                     <th>Select</th>
@@ -90,7 +90,6 @@
                     <th>Card Name</th>
                     <th>Variants</th>
                     <th>Release Date</th>
-                    <th>Set Number</th>
                     <th>Price</th>
                     <th class="text-center">Details</th>
                 </tr>

@@ -56,7 +56,7 @@
     }
 </script>
 
-<div class="flex">
+<div class="flex w-full">
     <input type="text" placeholder="🔍 Search" class="input input-bordered flex-grow max-w-xs" autocomplete="off" bind:value={searchTerm} on:input={keywordSearch}/>
     <div class="w-2" />
     <MultiSelect label="Sets" options={setOptions} dataStore={selSetsStore} on:change={filterSets}/>
