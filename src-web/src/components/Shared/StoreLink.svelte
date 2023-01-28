@@ -35,7 +35,8 @@
         ebayUrl.searchParams.set("mkrid", "711-53200-19255-0");
         ebayUrl.searchParams.set("campid", "5338928550");
         ebayUrl.searchParams.set("toolid", "10001");
-        ebayUrl.searchParams.set("customid", `pt-cardtrax`);
+        ebayUrl.searchParams.set("customid", `pt-cardtrax`)
+        ebayUrl.searchParams.set("_sop", "15");
         return ebayUrl.toString();
     }
 
