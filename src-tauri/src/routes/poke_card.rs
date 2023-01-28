@@ -240,7 +240,7 @@ pub async fn card_search(
     page: web::Path<u32>,
     search_params: web::Query<CardSearch>,
 ) -> Result<impl Responder> {
-    match(card_search_helper(*page, search_params.0, None).await){
+    match card_search_helper(*page, search_params.0, None).await {
         Ok(results) => {Ok(web::Json(results))},
         Err(e) => {Err(error::ErrorBadRequest(e))}
     }
