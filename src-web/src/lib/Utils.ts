@@ -7,6 +7,9 @@ import { initAdminStore } from "./AdminDataStore";
 
 export const baseURL = "http://localhost:3131"
 
+export const wotc_path_rev = `clip-path: polygon(0% 0%, 0% 100%, 12% 100%, 11% 11%, 89% 11%, 89% 52%, 11% 52%, 11% 100%, 100% 100%, 100% 0%);`
+export const modern_path_rev = `clip-path: polygon(4% 3%, 4% 97%, 7% 97%, 7% 9%, 93% 9%, 93% 48%, 7% 49%, 7% 97%, 97% 97%, 96% 3%);`
+
 export interface PaginatedResults {
     count: number;
 }
@@ -17,7 +20,6 @@ export interface PaginatedResults {
  */
 export const page = writable("loading")
 /** DB status */
-
 
 export function formatExpansionNumber(expNumber: string, expName: string): Promise<string> {
     return new Promise<string>(
@@ -45,7 +47,6 @@ export function getTextColorBgContrast(hexcolor){
         if (hexcolor.slice(0, 1) === '#') {
             hexcolor = hexcolor.slice(1);
         }
-    
         // Convert to RGB value
         var r = parseInt(hexcolor.substr(0,2),16);
         var g = parseInt(hexcolor.substr(2,2),16);

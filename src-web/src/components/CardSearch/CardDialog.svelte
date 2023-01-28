@@ -15,6 +15,7 @@
         formatPrice,
         getHolo,
         formatExpansionNumber,
+        modern_path_rev
     } from "../../lib/Utils";
     import StoreLink from "../Shared/StoreLink.svelte";
     import DeleteButton from "../Collection/DeleteButton.svelte";
@@ -115,6 +116,7 @@
                             overlay={`assets/revholo/${formatEnergy(
                                 card
                             )}-rev.png`}
+                            overlay_mask={modern_path_rev}
                             cardImg={`${baseURL}/pokemon/card_img/${encodeURI(
                                 card.expName
                             )}/${encodeURI(card.cardId)}`}

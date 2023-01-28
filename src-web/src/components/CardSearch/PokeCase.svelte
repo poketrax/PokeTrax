@@ -8,7 +8,7 @@
         CardGradeStamp,
     } from "tcg-case";
     import { Grade } from "../../lib/CardMeta";
-    import { formatEnergy, formatPrice, baseURL } from "../../lib/Utils";
+    import { formatEnergy, formatPrice, baseURL, modern_path_rev } from "../../lib/Utils";
     import { createEventDispatcher } from "svelte";
     import Icon from "../Shared/Icon.svelte";
     import type { Card } from "../../lib/Card";
@@ -78,16 +78,16 @@
         slot="image"
         class="rounded-md z-10 cursor-pointer"
         overlay={revFoil}
+        overlay_mask={modern_path_rev}
         on:click={(event) => dispatch("clickImage", event)}
         cardImg={`${baseURL}/pokemon/card_img/${encodeURI(
             card.expName
         )}/${encodeURI(card.cardId)}`}
         {id}
     />
-
     <img
         slot="footer1"
-        class="w-6 h-6 ml-2 mb-2"
+        class="w-6 h-6 ml-2 mb-2 object-contain"
         src={`${baseURL}/pokemon/expansion/symbol/${encodeURI(card.expName)}`}
         alt={card.expName}
     />
