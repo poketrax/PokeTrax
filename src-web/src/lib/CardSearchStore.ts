@@ -2,6 +2,7 @@ import { Card, CardSearchResults, Price } from './Card';
 import type { Expansion, Series } from './CardMeta';
 import { writable } from 'svelte/store';
 import { baseURL, page as mainPage } from './Utils';
+import { timer } from "rxjs";
 
 export class SearchTerms {
     public keyword: string = ""
@@ -11,10 +12,12 @@ export class SearchTerms {
 }
 
 export class DbState {
-    public ready: boolean = false
-    public updated: boolean = false
-    public version: string = "0.0.0"
-    public error: string = ""
+    public data_ready: boolean = false
+    public prices_ready: boolean = false
+    public eta_version: string = "0.0.0"
+    public data_version: number = 0
+    public price_version: number = 0
+    public msg: string = ""
 }
 
 /////////////
@@ -63,16 +66,25 @@ export const cardSearchDisplay = writable("grid")
  * Init Card Card store and check database status
  */
 export function initCardStore() {
-    fetch(`${baseURL}/meta/db_status`)
-        .then(res => res.json())
-        .then(data => {
-            dbStatus.set(data)
+    fetch(`${baseURL}/meta/init`, { method: "POST" }).then();
+    statusLoop();
+}
+
+async function statusLoop() {
+    let loop = timer(0,300)
+    let sub = loop.subscribe(async _ => {
+        let resp = await fetch(`${baseURL}/meta/db_status`)
+        let status: DbState = await resp.json();
+        let ready = status.data_ready && status.prices_ready;
+        dbStatus.set(status);
+        if(ready){
+            sub.unsubscribe();
             init_local()
             mainPage.set("cards")
             executeCardSearch();
-            
+            console.log(status)
         }
-        ).catch(err => dbStatus.update((status) => status.error = err))
+    })
 }
 
 export function executeCardSearch() {

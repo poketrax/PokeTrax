@@ -77,6 +77,7 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(collections::remove_card)
             
             .service(meta::init)
+            .service(meta::get_status)
             .service(meta::open)
             .service(meta::set_admin_db)
             

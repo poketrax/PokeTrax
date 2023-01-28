@@ -1,14 +1,20 @@
 <script>
+    import { DbState, dbStatus } from "../lib/CardSearchStore";
     import PokeBallSpinner from "../components/Shared/PokeBallSpinner.svelte";
+    let status = new DbState();
+    dbStatus.subscribe((val) => {
+        status = val;
+    });
 </script>
 
 <div class="flex h-[500px]">
-    <div class="flex-grow"/>
+    <div class="flex-grow" />
     <div class="grid">
-        <div class="classic-10"/>
-        <PokeBallSpinner/>
+        <div>{status.msg}</div>
+        <div class="classic-10" />
+        <PokeBallSpinner />
     </div>
-    <div class="flex-grow"/>
+    <div class="flex-grow" />
 </div>
 
 <style>
@@ -23,15 +29,10 @@
         overflow: hidden;
         white-space: nowrap;
         color: #0000;
-        text-shadow: 
-            calc(0 * var(--w)) 0 #000,
-            calc(-1 * var(--w)) 0 #000,
-            calc(-2 * var(--w)) 0 #000,
-             calc(-3 * var(--w)) 0 #000,
-            calc(-4 * var(--w)) 0 #000,
-             calc(-5 * var(--w)) 0 #000,
-            calc(-6 * var(--w)) 0 #000,
-             calc(-7 * var(--w)) 0 #000,
+        text-shadow: calc(0 * var(--w)) 0 #000, calc(-1 * var(--w)) 0 #000,
+            calc(-2 * var(--w)) 0 #000, calc(-3 * var(--w)) 0 #000,
+            calc(-4 * var(--w)) 0 #000, calc(-5 * var(--w)) 0 #000,
+            calc(-6 * var(--w)) 0 #000, calc(-7 * var(--w)) 0 #000,
             calc(-8 * var(--w)) 0 #000, calc(-9 * var(--w)) 0 #000;
         animation: c10 2s infinite linear;
     }

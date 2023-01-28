@@ -2,6 +2,7 @@ extern crate directories;
 use directories::ProjectDirs;
 use futures_util::StreamExt;
 use lazy_static::lazy_static;
+use log::debug;
 use regex::Regex;
 use std::{fs::File, io::Write, path::Path, sync::RwLock};
 
@@ -52,6 +53,7 @@ pub fn get_data_dir() -> String {
     let project_dirs = dir_option.unwrap();
     let dir_path = project_dirs.config_dir();
     let path = String::from(dir_path.as_os_str().to_str().unwrap());
+    debug!("Data Path: {}", path);
     return path;
 }
 
