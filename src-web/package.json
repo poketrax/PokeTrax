@@ -38,6 +38,6 @@
     "daisyui": "^2.47.0",
     "rxjs": "^7.8.0",
     "rxjs-compat": "^6.6.7",
-    "tcg-case": "^0.2.1"
+    "tcg-case": "^0.3.0"
   }
 }
