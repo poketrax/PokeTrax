@@ -22,7 +22,7 @@
             <div class="flex">
                 <div class="h-6 grow" />
                 <img
-                    class="h-6 w-6 m-2"
+                    class="h-6 w-6 m-2 object-contain"
                     src="{baseURL}/pokemon/expansion/symbol/{encodeURIComponent(
                         name
                     )}"
