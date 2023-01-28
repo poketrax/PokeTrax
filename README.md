@@ -70,13 +70,14 @@ PK_DATA_DIR="./data" Data directory for data files
 | Name | Function |
 | --- | --- |
 | -h | headless |
+| -a | Admin mode |
 
 ### Create symlink to executable
 
 Symlink to executable for headless
 
 ```sh
-ln -s /Applications/CardTrax.app/Contents/MacOS/CardTrax poketrax
+ln -s /Applications/PokeTrax.app/Contents/MacOS/PokeTrax poketrax
 ```
 
 ```sh
