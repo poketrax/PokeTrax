@@ -1,15 +1,15 @@
 <script lang="ts">
-    import Icon from "./../components/Shared/Icon.svelte";
-    import ModCardSearch from "./../components/Mod/ModCardSearch.svelte";
+    import Icon from "../components/Shared/Icon.svelte";
+    import ModCardSearch from "../components/Mod/ModCardSearch.svelte";
+    import ModSetSearch from "../components/Mod/ModSetSearch.svelte";
+    import ModSeriesSearch from "../components/Mod/ModSeriesSearch.svelte";
     import {
-        executeCardSearch,
         adminSettingStore,
         AdminSettings,
         updateDbPath,
-        initAdminStore,
     } from "../lib/AdminDataStore";
     import { mdiArrowRightThinCircleOutline } from "@mdi/js";
-
+    
     let adminSettings = new AdminSettings();
     let cardSearch = "tab-active";
     let setSearch = "";
@@ -46,8 +46,8 @@
     }
 </script>
 
-<div class="navbar rounded-xl w-[calc(100vw-1rem)]">
-    <span class="text-lg ml-6"> Admin Console</span>
+<div class="navbar rounded-xl w-screen">
+    <span class="text-lg ml-2"> Admin Console</span>
     <div class="flex-grow" />
     <div class="tabs">
         <button
@@ -86,4 +86,8 @@
     </div>
 {:else if cardSearch !== ""}
     <ModCardSearch />
-{:else if setSearch !== ""}{:else if seriesSearch !== ""}{/if}
+{:else if setSearch !== ""}
+    <ModSetSearch />
+{:else if seriesSearch !== ""}
+    <ModSeriesSearch />
+{/if}

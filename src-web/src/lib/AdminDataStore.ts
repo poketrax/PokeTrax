@@ -21,6 +21,7 @@ export const seriesStore = writable(new Array<Series>)
 //Rarity options
 export const rarityStore = writable(new Array<string>)
 
+export const variantOptions = ["Holofoil", "Reverse Holofoil", "Normal", "1st Edition", "Unlimited"]
 
 ////////////////////////////////
 /*Global card search variables*/
@@ -53,6 +54,9 @@ pageStore.subscribe((val) => page = val)
 //AdminPage
 export let adminSettingStore = writable(new AdminSettings())
 
+/**
+ * Init admin store
+ */
 export function initAdminStore() {
     getAdminSettings()
         .then((val) => {
@@ -60,7 +64,10 @@ export function initAdminStore() {
             executeCardSearch();
         })
         .catch((e) => console.log(e))
-
+    expansions()
+        .then((val) => setStore.set(val))
+    series()
+        .then((val) => seriesStore.set(val))
 }
 
 export function executeCardSearch() {
@@ -121,7 +128,6 @@ function sortSearch(sort: string, cardList: Card[]): Card[] {
             return cardList;
     }
 }
-
 
 /**
  * Get set expantions
@@ -190,9 +196,61 @@ export function updateDbPath(path: string): Promise<boolean> {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ data_path: path })
             })
-                .then(res => {res.json(); initAdminStore();})
-                .then(data => resolve(true))
-                .catch(err => reject(false))
+                .then(res => res.json())
+                .then(_ => resolve(true))
+                .catch(_ => reject(false))
 
         })
+}
+
+export function upsertExpantion(exp: Expansion) {
+    return new Promise<boolean>(
+        (resolve, reject) => {
+            fetch(`${baseURL}/admin/pokemon/expantion`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(exp)
+            })
+                .then(res => resolve(true))
+                .catch(_ => reject())
+        });
+}
+
+export function deleteExpantion(exp: Expansion){
+    return new Promise<boolean>(
+        (resolve, reject) => {
+            fetch(`${baseURL}/admin/pokemon/expantion`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(exp)
+            })
+                .then(res => resolve(true))
+                .catch(_ => reject())
+        });
+}
+
+export function upsertCard(card: Card) {
+    return new Promise<boolean>(
+        (resolve, reject) => {
+            fetch(`${baseURL}/admin/pokemon/card`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(card)
+            })
+                .then(res => resolve(true))
+                .catch(_ => reject())
+        });
+}
+
+export function deleteCard(card: Card){
+    return new Promise<boolean>(
+        (resolve, reject) => {
+            fetch(`${baseURL}/admin/pokemon/card`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(card)
+            })
+                .then(res => resolve(true))
+                .catch(_ => reject())
+        });
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
     import TitleBar from "./components/Shared/TitleBar.svelte";
     import { page } from "./lib/Utils";
-    import Mod from "./pages/Mod.svelte";
+    import Mod from "./pages/Admin.svelte";
     import CardSearch from "./pages/CardSearch.svelte";
     import Collections from "./pages/Collections.svelte";
     import Loading from "./pages/Loading.svelte";

@@ -2,7 +2,7 @@ export class Expansion {
     public name: string
     public series: string
     public tcgName: string = ""
-    public pokellectorSet: string = ""
+    public releaseDate: String = ""
     public numberOfCards: number = 0
     public logoURL: string
     public symbolURL: string
@@ -22,6 +22,7 @@ export class Expansion {
 export class Series {
     public name: string
     public releaseDate: string
+    public icon: string
 
     constructor(name: string, releaseDate: string) {
         this.name = name

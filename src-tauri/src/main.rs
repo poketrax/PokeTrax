@@ -34,7 +34,7 @@ pub struct Cli {
     #[clap(short, long, value_parser, default_value_t = false)]
     verbose: bool,
     ///Run in Admin Mode
-    #[clap(short, long, value_parser, default_value_t = true)]
+    #[clap(short, long, value_parser, default_value_t = false)]
     admin: bool,
     ///GCP key file for authorization
     #[clap(long, value_parser, value_name = "KEY_FILE")]
@@ -90,6 +90,7 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(admin::admin_upsert_card)
             .service(admin::admin_delete_card)
             .service(admin::admin_expansions)
+            .service(admin::admin_upsert_expansion)
             .service(admin::admin_expantion_by_name)
             .service(admin::admin_delete_expansion)
             .service(admin::admin_rarities)

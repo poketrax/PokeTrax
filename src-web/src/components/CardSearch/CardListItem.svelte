@@ -1,6 +1,6 @@
 <script lang="ts">
     import type{ Card } from "../../lib/Card";
-    import { Energy, CardImage, PokeRarity } from "tcg-case";
+    import { Energy, CardImage } from "tcg-case";
     import { baseURL } from "../../lib/Utils";
     import {
         formatEnergy,
@@ -9,6 +9,7 @@
         formatExpansionNumber,
     } from "../../lib/Utils";
     import { createEventDispatcher } from "svelte";
+    import CardDetails from "../Shared/CardDetails.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -102,28 +103,6 @@
         {formatPrice(card.price)}
     </td>
     <th>
-        <div class="flex flex-col items-center mr-4">
-            <img
-                class="w-24"
-                src="{baseURL}/pokemon/expansion/logo/{encodeURIComponent(
-                    card.expName
-                )}"
-                alt={card.expName}
-            />
-            <div class="flex">
-                <img
-                    class="w-6 h-6"
-                    src={`${baseURL}/pokemon/expansion/symbol/${encodeURI(
-                        card.expName
-                    )}`}
-                    alt={card.expName}
-                />
-                <div class="w-2" />
-                {expNumber}
-                <div class="w-2" />
-
-                <PokeRarity rarity={card.rarity} />
-            </div>
-        </div>
+        <CardDetails card={card}/>
     </th>
 </tr>

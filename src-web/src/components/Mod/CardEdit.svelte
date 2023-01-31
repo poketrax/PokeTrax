@@ -1,34 +1,42 @@
 <script lang="ts">
-    import "@carbon/styles/css/styles.css";
-    import "@carbon/charts/styles.css";
     import { Energy, CardImage } from "tcg-case";
-    import { mdiClose } from "@mdi/js";
+    import {
+        mdiArrowLeft,
+        mdiCheck,
+        mdiCancel,
+        mdiTrashCan,
+        mdiFloppy,
+    } from "@mdi/js";
     import Icon from "../Shared/Icon.svelte";
-    import { formatDate, baseURL } from "../../lib/Utils";
-    import type { Card, Price } from "../../lib/Card";
-    import { getCardPrices } from "../../lib/CardSearchStore";
+    import { baseURL } from "../../lib/Utils";
+    import type { Card } from "../../lib/Card";
+    import { rarityStore, setStore } from "../../lib/CardSearchStore";
     import { formatEnergy } from "../../lib/Utils";
     import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
+    import { writable } from "svelte/store";
+    import BasicToast from "../Shared/BasicToast.svelte";
+    import MultiSelect from "../Shared/MultiSelect.svelte";
+    import { deleteCard, upsertCard, variantOptions } from "../../lib/AdminDataStore";
 
+    const dispatch = createEventDispatcher();
     export let card: Card;
 
-    let chartData: any[];
-    let endDate = new Date(Date.now());
-    let startDate = new Date(Date.now());
-    startDate.setMonth(endDate.getMonth() - 3);
+    let successToast;
+    let errorToast;
+    let showConfirmDelete = false;
+    let showConfirmSave = false;
+    let rarirtyOptions = new Array<string>();
+    let expOptions = new Array<string>();
+    let date = card.releaseDate.slice(0, 10);
+    let variantOptionsForm = variantOptions.map((val) => {
+        return { name: val };
+    });
+    let selectedVariants = writable(Array<string>());
+    selectedVariants.set(card.variants ?? []);
+    selectedVariants.subscribe((val) => (card.variants = val));
 
-    async function updatePrice() {
-        let prices = await getCardPrices(card);
-        chartData = prices.map((val: Price) => {
-            return {
-                group: val.variant,
-                key: new Date(val.date),
-                value: val.price,
-            };
-        });
-        console.log(chartData);
-    }
+    setStore.subscribe((val) => (expOptions = val.map((exp) => exp.name)));
+    rarityStore.subscribe((val) => (rarirtyOptions = val));
 
     function getGitHubImage(): string {
         return encodeURI(
@@ -38,38 +46,111 @@
         );
     }
 
-    $: if (card) {
-        updatePrice();
+    function setDate() {
+        card.releaseDate = new Date(date).toISOString();
+    }
+
+    function save() {
+        upsertCard(card)
+            .then((_) => {
+                successToast.show();
+                showConfirmSave = false;
+            })
+            .catch((_) => {
+                errorToast.show();
+                showConfirmSave = false;
+            });
+    }
+
+    function del() {
+        deleteCard(card)
+        .then((_) => {
+                successToast.show();
+                showConfirmSave = false;
+            })
+            .catch((_) => {
+                errorToast.show();
+                showConfirmSave = false;
+            });
     }
 </script>
 
+<BasicToast message="Success!" type="alert-success" bind:this={successToast} />
+<BasicToast message="Failed!" type="alert-error" bind:this={errorToast} />
 <div
     class="flex items-center m-2 p-3 bg-repeat"
     style={`background-image: url(\"assets/revholo/${formatEnergy(
         card
     )}-rev.png\")`}
 >
-    <Energy type={formatEnergy(card)} class="h-8 w-8" />
-    <div class="w-2" />
-    <span class="text-xl">{card.name}</span>
-    <div class="grow" />
     <button
         id={`close-card-dialog`}
-        aria-label="Close Card Dialgo"
-        class="btn btn-circle"
+        aria-label="Close Card Dialog"
+        class="btn btn-square"
         on:click={() => {
             dispatch("close");
         }}
     >
-        <Icon path={mdiClose} class="w-6 h-6" />
+        <Icon path={mdiArrowLeft} class="w-6 h-6" />
     </button>
+
+    <div class="grow" />
+    <Energy type={formatEnergy(card)} class="h-8 w-8" />
+    <div class="w-2" />
+    <span class="text-xl">{card.name}</span>
+    <div class="grow" />
+    <!--Save-->
+    <div class="btn-group">
+        <button
+            id={`close-card-dialog`}
+            aria-label="Close Card Dialog"
+            class="btn btn-square"
+            on:click={() => (showConfirmSave = true)}
+        >
+            <Icon path={mdiFloppy} class="w-6 h-6" />
+        </button>
+        {#if showConfirmSave}
+            <button on:click={save} class="btn btn-square btn-success">
+                <Icon path={mdiCheck} class="w-6 h-6" />
+            </button>
+            <button
+                on:click={() => (showConfirmSave = false)}
+                class="btn btn-square btn-error"
+            >
+                <Icon path={mdiCancel} class="w-6 h-6" />
+            </button>
+        {/if}
+    </div>
+    <div class="w-1" />
+    <!--Delete-->
+    <div class="btn-group">
+        <button
+            on:click={() => (showConfirmDelete = true)}
+            class="btn btn-square"
+        >
+            <Icon path={mdiTrashCan} class="w-6 h-6" />
+        </button>
+        {#if showConfirmDelete}
+            <button on:click={del} class="btn btn-square btn-success">
+                <Icon path={mdiCheck} class="w-6 h-6" />
+            </button>
+            <button
+                on:click={() => (showConfirmDelete = false)}
+                class="btn btn-square btn-error"
+            >
+                <Icon path={mdiCancel} class="w-6 h-6" />
+            </button>
+        {/if}
+    </div>
+    <div class="w-1" />
 </div>
+<!--Card Form-->
 <div class="h-[calc(100vh-14rem)] w-screen overflow-hidden">
-    <div class="flex h-[calc(100vh-14rem)] w-screen overflow-auto">
+    <div class="flex  h-[calc(100vh-14rem)] w-screen overflow-auto">
         <div class="flex ml-3 w-screen">
             <div>
                 <h2 class="text-lg">Local Image</h2>
-                <div class="divider"/>
+                <div class="divider" />
                 <CardImage
                     width="165px"
                     height="230px"
@@ -81,7 +162,7 @@
                 />
                 <a href={getGitHubImage()}>Git Hib Image </a>
             </div>
-            <div class="flex-grow"/>
+            <div class="flex-grow" />
             <div class="ml-2">
                 <table class="table table-compact ml-2 mb-2">
                     <tr>
@@ -90,6 +171,7 @@
                             ><input
                                 type="text"
                                 placeholder="cardId"
+                                disabled
                                 bind:value={card.cardId}
                                 class="input input-bordered border-solid w-[450px]"
                             />
@@ -107,18 +189,20 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Expansion(expNam)</td>
-                        <td
-                            ><input
-                                type="text"
-                                placeholder="expName"
+                        <td>Expansion (expNam)</td>
+                        <td>
+                            <select
+                                class="select w-full max-w-xs"
                                 bind:value={card.expName}
-                                class="input input-bordered border-solid w-[450px]"
-                            />
+                            >
+                                {#each expOptions as option}
+                                    <option>{option}</option>
+                                {/each}
+                            </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>Expansion Number(expCardNumber)</td>
+                        <td>Expansion Number (expCardNumber)</td>
                         <td
                             ><input
                                 type="text"
@@ -129,7 +213,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Expansion TCGP Number(expIdTCGP)</td>
+                        <td>Expansion TCGP Number (expIdTCGP)</td>
                         <td
                             ><input
                                 type="text"
@@ -140,7 +224,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Expansion TCGP Code(expCodeTCGP)</td>
+                        <td>Expansion TCGP Code (expCodeTCGP)</td>
                         <td
                             ><input
                                 type="text"
@@ -152,17 +236,19 @@
                     </tr>
                     <tr>
                         <td>Rarity</td>
-                        <td
-                            ><input
-                                type="text"
-                                placeholder="rarity"
+                        <td>
+                            <select
+                                class="select w-full max-w-xs"
                                 bind:value={card.rarity}
-                                class="input input-bordered border-solid w-[450px]"
-                            /></td
-                        >
+                            >
+                                {#each rarirtyOptions as option}
+                                    <option>{option}</option>
+                                {/each}
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Energy(energyType)</td>
+                        <td>Energy (energyType)</td>
                         <td
                             ><input
                                 type="text"
@@ -173,12 +259,12 @@
                         >
                     </tr>
                     <tr>
-                        <td>Realease Date(releaseDate)</td>
+                        <td>Realease Date (releaseDate)</td>
                         <td
                             ><input
-                                type="text"
-                                placeholder="releaseDate"
-                                bind:value={card.releaseDate}
+                                type="date"
+                                bind:value={date}
+                                on:change={setDate}
                                 class="input input-bordered border-solid w-[450px]"
                             /></td
                         >
@@ -187,7 +273,7 @@
                         <td>TCGP ID (idTCGP)</td>
                         <td
                             ><input
-                                type="text"
+                                type="number"
                                 placeholder="idTCGP"
                                 bind:value={card.idTCGP}
                                 class="input input-bordered border-solid w-[450px]"
@@ -198,7 +284,7 @@
                         <td>Pokedex number (pokedex)</td>
                         <td
                             ><input
-                                type="text"
+                                type="number"
                                 placeholder="Pokedex"
                                 bind:value={card.pokedex}
                                 class="input input-bordered border-solid w-[450px]"
@@ -207,14 +293,13 @@
                     </tr>
                     <tr>
                         <td>Card Variants</td>
-                        <td
-                            ><input
-                                type="text"
-                                placeholder="Variants"
-                                bind:value={card.variants}
-                                class="input input-bordered border-solid w-[450px]"
-                            /></td
-                        >
+                        <td>
+                            <MultiSelect
+                                label="Variants"
+                                options={variantOptionsForm}
+                                dataStore={selectedVariants}
+                            />
+                        </td>
                     </tr>
                 </table>
             </div>

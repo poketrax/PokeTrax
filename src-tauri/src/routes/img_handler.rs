@@ -42,7 +42,7 @@ async fn card_img(req: HttpRequest) -> Result<impl Responder> {
         //Try to pull card and cache it
         match pokemon_data::get_card(id.to_string(), None) {
             Ok(card) => {
-                match shared::download_file(card.img.as_str().clone(), path_name.as_str()).await {
+                match shared::download_file(card.img.as_str(), path_name.as_str()).await {
                     Ok(()) => {
                         let image_content = web::block(|| std::fs::read(path_name)).await??;
                         log::debug!("Downloading Card Img");
