@@ -8,8 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,svelte}\""
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
@@ -36,6 +35,8 @@
     "cssnano": "^5.1.14",
     "d3": "^7.8.2",
     "daisyui": "^2.47.0",
+    "prettier": "^2.8.3",
+    "prettier-plugin-svelte": "^2.9.0",
     "rxjs": "^7.8.0",
     "rxjs-compat": "^6.6.7",
     "tcg-case": "^0.3.0"

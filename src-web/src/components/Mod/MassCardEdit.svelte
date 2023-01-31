@@ -38,14 +38,23 @@
   setStore.subscribe((val) => (expOptions = val.map((exp) => exp.name)));
   rarityStore.subscribe((val) => (rarirtyOptions = val));
 
-  let date = new Date().toDateString();
+ 
   let expantion = "";
+  let setExpantion = false;
   let expIdTCGP = 0;
+  let setExpIdTCGP = false;
+  let expCode = "";
+  let setExpCode = false;
   let rarity = "";
-  let energy = "";
+  let setRarity = false;
+  let energy = ""; 
+  let setEnergy = false;
+  let date = new Date().toDateString();
+  let setDate = false;
 
   let selectedVariants = writable(Array<string>());
   selectedVariants.set([]);
+  let setVariants = false;
 
   function save() {
     /*
@@ -140,7 +149,7 @@
 <!--Card Form-->
 <div class="h-[calc(100vh-14rem)] w-screen overflow-hidden">
   <div class="flex  h-[calc(100vh-14rem)] w-screen overflow-auto">
-    <div class="flex ml-3 w-screen">
+    <div class="flex mx-2 w-screen">
       <div>
         <ul>
           {#each cards as card}
@@ -151,79 +160,157 @@
       <div class="flex-grow" />
       <div class="ml-2">
         <table class="table table-compact ml-2 mb-2">
-          <tr>
-            <td>Expansion (expNam)</td>
-            <td>
-              <select class="select w-full max-w-xs" bind:value={expantion}>
-                {#each expOptions as option}
-                  <option>{option}</option>
-                {/each}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>Expansion TCGP Number (expIdTCGP)</td>
-            <td
-              ><input
-                type="text"
-                placeholder="expIdTCGP"
-                bind:value={expIdTCGP}
-                class="input input-bordered border-solid w-[450px]"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Expansion TCGP Code (expCodeTCGP)</td>
-            <td
-              ><input
-                type="text"
-                placeholder="expIdTCGP"
-                bind:value={expIdTCGP}
-                class="input input-bordered border-solid w-[450px]"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Rarity</td>
-            <td>
-              <select class="select w-full max-w-xs" bind:value={rarity}>
-                {#each rarirtyOptions as option}
-                  <option>{option}</option>
-                {/each}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>Energy (energyType)</td>
-            <td
-              ><input
-                type="text"
-                placeholder="energyType"
-                bind:value={energy}
-                class="input input-bordered border-solid w-[450px]"
-              /></td
-            >
-          </tr>
-          <tr>
-            <td>Realease Date (releaseDate)</td>
-            <td
-              ><input
-                type="date"
-                bind:value={date}
-                class="input input-bordered border-solid w-[450px]"
-              /></td
-            >
-          </tr>
-          <tr>
-            <td>Card Variants</td>
-            <td>
-              <MultiSelect
-                label="Variants"
-                options={variantOptionsForm}
-                dataStore={selectedVariants}
-              />
-            </td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Change</th>
+              <th>Property</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    class="checkbox border-solid ml-4 border-2 border-black"
+                    bind:checked={setExpantion}
+                  />
+                </label>
+              </td>
+              <td>Expansion (expNam)</td>
+              <td>
+                <select
+                  class="select w-full max-w-xs input input-bordered"
+                  bind:value={expantion}
+                >
+                  {#each expOptions as option}
+                    <option>{option}</option>
+                  {/each}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    class="checkbox border-solid ml-4 border-2 border-black"
+                    bind:checked={setExpIdTCGP}
+                  />
+                </label>
+              </td>
+              <td>Expansion TCGP Number (expIdTCGP)</td>
+              <td
+                ><input
+                  type="text"
+                  placeholder="expIdTCGP"
+                  bind:value={expIdTCGP}
+                  class="input input-bordered border-solid w-[450px]"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    class="checkbox border-solid ml-4 border-2 border-black"
+                    bind:checked={setExpCode}
+                  />
+                </label>
+              </td>
+              <td>Expansion TCGP Code (expCodeTCGP)</td>
+              <td
+                ><input
+                  type="text"
+                  placeholder="expIdTCGP"
+                  bind:value={expIdTCGP}
+                  class="input input-bordered border-solid w-[450px]"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    class="checkbox border-solid ml-4 border-2 border-black"
+                    bind:checked={setRarity}
+                  />
+                </label>
+              </td>
+              <td>Rarity</td>
+              <td>
+                <select
+                  class="select w-full max-w-xs input input-bordered"
+                  bind:value={rarity}
+                >
+                  {#each rarirtyOptions as option}
+                    <option>{option}</option>
+                  {/each}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    class="checkbox border-solid ml-4 border-2 border-black"
+                    bind:checked={setEnergy}
+                  />
+                </label>
+              </td>
+              <td>Energy (energyType)</td>
+              <td
+                ><input
+                  type="text"
+                  placeholder="energyType"
+                  bind:value={energy}
+                  class="input input-bordered border-solid w-[450px]"
+                /></td
+              >
+            </tr>
+            <tr>
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    class="checkbox border-solid ml-4 border-2 border-black"
+                    bind:checked={setDate}
+                  />
+                </label>
+              </td>
+              <td>Realease Date (releaseDate)</td>
+              <td
+                ><input
+                  type="date"
+                  bind:value={date}
+                  class="input input-bordered border-solid w-[450px]"
+                /></td
+              >
+            </tr>
+            <tr>
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    class="checkbox border-solid ml-4 border-2 border-black"
+                    bind:checked={setVariants}
+                  />
+                </label>
+              </td>
+              <td>Card Variants</td>
+              <td>
+                <MultiSelect
+                  label="Variants"
+                  options={variantOptionsForm}
+                  dataStore={selectedVariants}
+                />
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
