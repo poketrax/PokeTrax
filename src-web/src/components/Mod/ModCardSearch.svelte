@@ -4,7 +4,7 @@
   import { CardSearchResults, Card } from "../../lib/Card";
   import { CardImage, Energy } from "tcg-case";
   import CardDetails from "../Shared/CardDetails.svelte";
-  import { mdiPencil, mdiPlaylistEdit } from "@mdi/js";
+  import { mdiPencil, mdiPlaylistEdit, mdiRefresh, mdiPlus } from "@mdi/js";
   import { baseURL, formatEnergy, formatDate } from "../../lib/Utils";
   import CardEdit from "./CardEdit.svelte";
   import Icon from "../Shared/Icon.svelte";
@@ -42,6 +42,7 @@
   let selectedCard: Card | undefined = null;
   let showMassEditButton = false;
   let showMassEdit = false;
+  let addCard = false;
 
   /**
    * Set the edit card page active or not
@@ -75,6 +76,18 @@
         pageStore={writable(0)}
         executeSearch={executeCardSearch}
       />
+      <button class="btn btn-square" on:click={() => {
+        let newCard = new Card("NEW_CARD", 0, "NEW_CARD","","","","")
+        newCard.releaseDate = (new Date()).toISOString();
+        setEditCard(newCard) 
+      }}>
+        <Icon class="h-8" path={mdiPlus} />
+      </button>
+      <div class="w-2" />
+      <button class="btn btn-square" on:click={() => (executeCardSearch())}>
+        <Icon class="h-8" path={mdiRefresh} />
+      </button>
+      <div class="w-2" />
     </div>
     <div class="flex items-center">
       <div class="sm:w-2 lg:flex-grow" />
@@ -164,7 +177,7 @@
               </td>
               <!--Details-->
               <td>
-                <CardDetails {card} />
+                <CardDetails card={card} />
               </td>
               <td>
                 <button
@@ -181,7 +194,7 @@
     </div>
   </div>
 {:else if selectedCard != null}
-  <CardEdit on:close={() => setEditCard(null)} card={selectedCard} />
+  <CardEdit on:close={() => setEditCard(null)} card={selectedCard}/>
 {/if}
 {#if showMassEdit}
   <MassCardEdit on:close={() => (showMassEdit = false)} cards={selectedCards} />

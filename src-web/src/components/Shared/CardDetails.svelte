@@ -5,7 +5,7 @@
 
   export let card: Card;
   let expNum: string;
-  formatExpansionNumber(card.expCardNumber, card.expName).then(
+  $: formatExpansionNumber(card.expCardNumber, card.expName).then(
     (val) => (expNum = val)
   );
 </script>

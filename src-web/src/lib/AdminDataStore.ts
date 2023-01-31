@@ -87,6 +87,9 @@ export function executeCardSearch() {
       encodeURI(JSON.stringify(selectedRarities))
     );
   }
+  if(sort && sort !== ""){
+    url.searchParams.set('sort',sort)
+  }
   fetch(url.toString())
     .then((res) => res.json())
     .then(
@@ -221,6 +224,23 @@ export function deleteExpantion(exp: Expansion) {
     })
       .then((res) => resolve(true))
       .catch((_) => reject());
+  });
+}
+
+export function getCard(cardId: string) {
+  return new Promise<Card>((resolve, reject) => {
+    let url = new URL(`${baseURL}/admin/pokemon/cards/0`);
+    url.searchParams.set(`name`, cardId);
+    fetch(url.toString())
+      .then((res) => res.json())
+      .then(
+        (data) => {
+          resolve(data.cards[0])
+        },
+        (err) => {
+          reject(err);
+        }
+      );
   });
 }
 

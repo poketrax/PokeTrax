@@ -24,7 +24,7 @@
 
   const dispatch = createEventDispatcher();
   export let card: Card;
-
+  let add = card.cardId === "NEW_CARD";
   let successToast;
   let errorToast;
   let showConfirmDelete = false;
@@ -35,6 +35,7 @@
   let variantOptionsForm = variantOptions.map((val) => {
     return { name: val };
   });
+
   let selectedVariants = writable(Array<string>());
   selectedVariants.set(card.variants ?? []);
   selectedVariants.subscribe((val) => (card.variants = val));
@@ -172,7 +173,7 @@
               ><input
                 type="text"
                 placeholder="cardId"
-                disabled
+                disabled={!add}
                 bind:value={card.cardId}
                 class="input input-bordered border-solid w-[450px]"
               />
@@ -295,6 +296,17 @@
                 dataStore={selectedVariants}
               />
             </td>
+          </tr>
+          <tr>
+            <td>Image URL (img)</td>
+            <td
+              ><input
+                type="url"
+                placeholder="URL"
+                bind:value={card.img}
+                class="input input-bordered border-solid w-[450px]"
+              /></td
+            >
           </tr>
         </table>
       </div>
