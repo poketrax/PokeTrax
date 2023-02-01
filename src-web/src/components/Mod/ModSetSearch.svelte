@@ -1,23 +1,36 @@
 <script lang="ts">
   import { baseURL } from "./../../lib/Utils.js";
-  import type { Expansion } from "../../lib/CardMeta";
+  import { Expansion } from "../../lib/CardMeta";
   import { setStore } from "../../lib/AdminDataStore";
   import Icon from "../Shared/Icon.svelte";
-  import { mdiPencil } from "@mdi/js";
+  import { mdiPencil, mdiPlus } from "@mdi/js";
   import ExpantionEdit from "./ExpantionEdit.svelte";
 
-  let selected_set: Expansion | undefined = null;
+  let selectedSet: Expansion | undefined = null;
   let expansions = new Array<Expansion>();
   setStore.subscribe((val) => (expansions = val));
 
   function setSelected(set: Expansion | undefined) {
-    selected_set = set;
+    selectedSet = set;
   }
 </script>
 
-{#if selected_set == null}
-  <div class="h-[calc(100vh-9rem)] w-screen overflow-hidden">
-    <div class="flex h-[calc(100vh-9rem)] w-screen overflow-auto">
+{#if selectedSet == null}
+  <div class="flex mx-2">
+    <div class="flex-grow" />
+    <button
+      class="btn"
+      on:click={() => {
+        selectedSet = new Expansion("NEW_EXPANTION", "", "", "");
+        selectedSet.releaseDate = new Date().toISOString();
+      }}
+    >
+      <Icon class="w-6" path={mdiPlus} />
+      Expantion
+    </button>
+  </div>
+  <div class="h-[calc(100vh-12rem)] w-screen overflow-hidden">
+    <div class="flex h-[calc(100vh-12rem)] w-screen overflow-auto">
       <table class="table table-compact w-full m-2">
         <thead>
           <tr>
@@ -72,5 +85,5 @@
     </div>
   </div>
 {:else}
-  <ExpantionEdit exp={selected_set} on:close={() => setSelected(null)} />
+  <ExpantionEdit exp={selectedSet} on:close={() => setSelected(null)} />
 {/if}
