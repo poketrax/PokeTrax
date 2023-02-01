@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Expansion } from "./../../lib/CardMeta.js";
+  import type { Series } from "./../../lib/CardMeta.js";
   import { createEventDispatcher } from "svelte";
   import {
     mdiArrowLeft,
@@ -12,26 +12,26 @@
   import PokeBallSpinner from "../Shared/PokeBallSpinner.svelte";
   import { baseURL } from "./../../lib/Utils.js";
   import {
-    deleteExpantion,
-    upsertExpantion,
+    deleteSeries,
+    upsertSeries,
   } from "../../lib/AdminDataStore.js";
   import BasicToast from "../Shared/BasicToast.svelte";
 
   const dispatch = createEventDispatcher();
 
-  export let exp: Expansion;
-  let add = exp.name !== "NEW_EXPANTION"
+  export let series: Series;
+  let add = series.name !== "NEW_SERIES";
   let showConfirmSave = false;
   let showConfirmDelete = false;
   let saveInProgress = false;
   let successToast;
   let errorToast;
-  let date = exp.releaseDate.slice(0, 10);
+  let date = series.releaseDate.slice(0, 10);
 
   function save() {
     showConfirmSave = false;
     saveInProgress = true;
-    upsertExpantion(exp)
+    upsertSeries(series)
       .then((_) => {
         successToast.show();
         saveInProgress = false;
@@ -44,7 +44,7 @@
 
   function del() {
     showConfirmDelete = false;
-    deleteExpantion(exp)
+    deleteSeries(series)
       .then((_) => {
         successToast.show();
       })
@@ -54,7 +54,7 @@
   }
 
   function setDate() {
-    exp.releaseDate = new Date(date).toISOString();
+    series.releaseDate = new Date(date).toISOString();
   }
 </script>
 
@@ -70,7 +70,7 @@
           <Icon path={mdiArrowLeft} class="w-6 h-6" />
         </button>
         <spam class="flex-grow" />
-        <span class="ml-4">{exp.name}</span>
+        <span class="ml-4">{series.name}</span>
         <spam class="flex-grow" />
         <!--Save-->
         {#if saveInProgress}
@@ -126,19 +126,9 @@
           <img
             class="h-40 w-80 m-1 object-contain"
             src="{baseURL}/pokemon/expansion/logo/{encodeURIComponent(
-              exp.name
+              series.name
             )}"
-            alt={exp.name}
-          />
-          <div class="divider" />
-          <h2 class="text-lg">Symbol Image</h2>
-          <div class="divider" />
-          <img
-            class="h-12 w-12 m-1 object-contain"
-            src="{baseURL}/pokemon/expansion/symbol/{encodeURIComponent(
-              exp.name
-            )}"
-            alt={exp.name}
+            alt={series.name}
           />
         </div>
         <div class="flex-grow" />
@@ -149,20 +139,9 @@
               <td
                 ><input
                   type="text"
-                  placeholder="Series"
+                  placeholder="Name"
                   disabled={add}
-                  bind:value={exp.name}
-                  class="input input-bordered border-solid w-[450px]"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td class="w-60">Series</td>
-              <td
-                ><input
-                  type="text"
-                  placeholder="Series"
-                  bind:value={exp.series}
+                  bind:value={series.name}
                   class="input input-bordered border-solid w-[450px]"
                 />
               </td>
@@ -178,46 +157,14 @@
                 />
               </td>
             </tr>
+
             <tr>
-              <td class="w-60">Number of Cards</td>
-              <td
-                ><input
-                  type="number"
-                  placeholder="Number of Cards"
-                  bind:value={exp.numberOfCards}
-                  class="input input-bordered border-solid w-[450px]"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td class="w-60">TCG Name</td>
-              <td
-                ><input
-                  type="text"
-                  placeholder="TCG Name"
-                  bind:value={exp.tcgName}
-                  class="input input-bordered border-solid w-[450px]"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td class="w-60">Logo URL</td>
+              <td class="w-60">Icon URL</td>
               <td
                 ><input
                   type="url"
                   placeholder="Logo URL"
-                  bind:value={exp.logoURL}
-                  class="input input-bordered border-solid w-[450px]"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td class="w-60">Symbol URL</td>
-              <td
-                ><input
-                  type="url"
-                  placeholder="Symbol URL"
-                  bind:value={exp.symbolURL}
+                  bind:value={series.icon}
                   class="input input-bordered border-solid w-[450px]"
                 />
               </td>

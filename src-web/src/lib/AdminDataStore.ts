@@ -202,6 +202,30 @@ export function updateDbPath(path: string): Promise<boolean> {
   });
 }
 
+export function upsertSeries(series: Series) {
+  return new Promise<boolean>((resolve, reject) => {
+    fetch(`${baseURL}/admin/pokemon/series`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(series),
+    })
+      .then((res) => resolve(true))
+      .catch((_) => reject());
+  });
+}
+
+export function deleteSeries(series: Series) {
+  return new Promise<boolean>((resolve, reject) => {
+    fetch(`${baseURL}/admin/pokemon/series`, {
+      method: "Delete",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(series),
+    })
+      .then((res) => resolve(true))
+      .catch((_) => reject());
+  });
+}
+
 export function upsertExpantion(exp: Expansion) {
   return new Promise<boolean>((resolve, reject) => {
     fetch(`${baseURL}/admin/pokemon/expantion`, {
