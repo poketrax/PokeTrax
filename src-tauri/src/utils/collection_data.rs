@@ -16,6 +16,7 @@ lazy_static! {
         format!("{}{}", get_data_dir(), "/collections.sql");
 }
 
+/// Initializes the Collection database if it doesn't exists
 pub fn initialize_data() {
     log::info!("Creating collection tables");
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
@@ -24,6 +25,7 @@ pub fn initialize_data() {
     connection.execute(ADD_COLLECTION_TABLE, []).unwrap();
 }
 
+/// Get all Tags for collections 
 pub fn get_tags() -> Result<Vec<Tag>, Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
     let mut query =connection.prepare("SELECT name, color FROM collections")?;
@@ -40,6 +42,9 @@ pub fn get_tags() -> Result<Vec<Tag>, Box<dyn std::error::Error>> {
     Ok(collections)
 }
 
+/// Add a tag
+/// # Arguments
+///    * 'collection' - add a tag to the database
 pub fn add_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
     let statement = "INSERT INTO collections (name, color) VALUES (?1, ?2)";
@@ -47,6 +52,9 @@ pub fn add_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+/// Delete a tag and remove it from any cards in collection
+/// # Arguments
+///    * 'collection' - remove this tag and remove the tag from all cards with this tag
 pub fn delete_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
     let tags = format!("[\"{}\"]", collection.name);
@@ -69,6 +77,9 @@ pub fn delete_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+/// Upsert a card into the collection database
+/// # Argument
+///    * 'card' - Card to upsert
 pub fn upsert_card(card: &Card) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
     let tags: String;
@@ -132,6 +143,9 @@ pub fn upsert_card(card: &Card) -> Result<(), Box<dyn std::error::Error>> {
     }
 }
 
+/// Delete card from collection database
+/// # Argument
+///    * 'card' - card to delete
 pub fn delete_card(card: Card) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
     let variant = card.variant.unwrap();
@@ -146,7 +160,7 @@ pub fn delete_card(card: Card) -> Result<(), Box<dyn std::error::Error>> {
         .unwrap();
     let _row = search.query_row(
         &[card.cardId.as_str(), variant.as_str(), grade.as_str()],
-        |row| Ok(true),
+        |_| Ok(true),
     );
 
     let found: bool;
@@ -171,6 +185,12 @@ pub fn delete_card(card: Card) -> Result<(), Box<dyn std::error::Error>> {
     }
 }
 
+/// Search for cards in the collection
+/// #Argumnet
+///    * 'name_filter' - search term for cards in collection
+///    * 'exp_filter' - list of the expantion to include (urlencoded json array)
+///    * 'rare_filter' - list of the rarities to include (urlencoded json array)
+///    * 'tag_filter' - list of the tags to include (urlencoded json array)
 pub fn search_card_collection_count(
     name_filter: Option<String>,
     exp_filter: Option<String>,
@@ -189,8 +209,8 @@ pub fn search_card_collection_count(
         WHERE _collection.cardId like '%{}%'
         {} {} {}",
         name_filter.unwrap_or_default().as_str(),
-        in_list(String::from("_cards.expName"), exp_filter),
-        in_list(String::from("_cards.rarity"), rare_filter),
+        in_list(String::from("_cards.expName"), &exp_filter),
+        in_list(String::from("_cards.rarity"), &rare_filter),
         json_list_value(String::from("_collection.tags"), tag_filter),
     );
 
@@ -202,6 +222,15 @@ pub fn search_card_collection_count(
     }
 }
 
+/// Search for cards in the collection
+/// #Argumnet
+///    * 'page' - page number of the query (pages are currently 25 elements long)
+///    * 'name_filter' - search term for the name of the card
+///    * 'exp_filter' - list of the expantion to include (urlencoded json array)
+///    * 'rare_filter' - list of the rarities to include (urlencoded json array)
+///    * 'tag_filter' - list of the tags to include (urlencoded json array)
+///    * 'sort' - ORDER BY statement for sorting results
+///    * 'limit' - sql limit for the query
 pub fn search_card_collection(
     page: u32,
     name_filter: Option<String>,
@@ -212,7 +241,7 @@ pub fn search_card_collection(
     limit: Option<u32>
 ) -> Result<Vec<Card>, Box<dyn std::error::Error>> {
     let limit_str: String;
-    let mut offset: String = String::from("0");
+    let offset: String;
     if limit.is_none() {
         limit_str = 25.to_string();
         offset = (page.to_owned() * 25).to_string();
@@ -227,7 +256,8 @@ pub fn search_card_collection(
     let attach = format!("ATTACH DATABASE '{}' AS cardDB", POKE_DB_PATH.as_str());
     log::debug!("attach : {}", attach);
     connection.execute(attach.as_str(), [])?;
-
+    
+    let _name_filter = format!("%{}%",name_filter.unwrap_or_default().as_str());
     let query_sql = format!(
         "SELECT _collection.cardId, _collection.tags, _collection.variant,
         _collection.paid, _collection.grade, _collection.count,
@@ -237,12 +267,11 @@ pub fn search_card_collection(
         _cards.idTCGP, _cards.price
         FROM collectionCards _collection
         INNER JOIN cardDB.cards _cards ON _collection.cardId = _cards.cardId
-        WHERE _collection.cardId like '%{}%'
+        WHERE _collection.cardId like ?1
         {} {} {} {}
         LIMIT {} OFFSET {}",
-        name_filter.unwrap_or_default().as_str(),
-        in_list(String::from("_cards.expName"), exp_filter),
-        in_list(String::from("_cards.rarity"), rare_filter),
+        in_list(String::from("_cards.expName"), &exp_filter),
+        in_list(String::from("_cards.rarity"), &rare_filter),
         json_list_value(String::from("_collection.tags"), tag_filter),
         sort.unwrap_or_default().as_str(),
         &limit_str,
@@ -252,7 +281,7 @@ pub fn search_card_collection(
     log::debug!("collect card search sql: {}",query_sql);
     let mut query = connection.prepare(query_sql.as_str())?;
     let rows = query
-        .query_map([], |row| {
+        .query_map([&_name_filter], |row| {
             let variants_str: String = row.get(14).unwrap_or_default();
             let variants: Vec<String> = serde_json::from_str(variants_str.as_str())
                 .expect("Failed to parse varriants Array");
@@ -293,7 +322,7 @@ pub fn search_card_collection(
     Ok(_cards)
 }
 #[cfg(test)]
-mod product_tests {
+mod collection_tests {
     use super::{*, add_tag};
     use crate::models::pokemon::Card;
     use log::LevelFilter;
@@ -330,15 +359,20 @@ mod product_tests {
 
     #[test]
     fn test_init() {
-        initialize_data()
-    }
-
-    #[test]
-    fn add_card_collection() {
         SimpleLogger::new()
             .with_level(LevelFilter::Debug)
             .init()
             .unwrap();
+        initialize_data()
+    }
+
+    #[test]
+    fn test_add_del_card_collection() {
+        add_card_collection();
+        del_card_collection();
+    }
+
+    fn add_card_collection() {
         let tags = Vec::from([String::from("col1")]);
         let tags2 = Vec::from([String::from("col2")]);
         let tags3: Vec<String> = Vec::new();
@@ -359,12 +393,7 @@ mod product_tests {
         }
     }
 
-    #[test]
     fn del_card_collection() {
-        SimpleLogger::new()
-            .with_level(LevelFilter::Debug)
-            .init()
-            .unwrap();
         let tags = Vec::from([String::from("col1")]);
         let tags2 = Vec::from([String::from("col2")]);
         let tags3: Vec<String> = Vec::new();
@@ -387,10 +416,6 @@ mod product_tests {
 
     #[test]
     fn test_add_tag() {
-        SimpleLogger::new()
-            .with_level(LevelFilter::Debug)
-            .init()
-            .unwrap();
         let tag = Tag{
             name: String::from("col1"), color: String::from("red")
         };
@@ -405,10 +430,6 @@ mod product_tests {
 
     #[test]
     fn test_delete_tag() {
-        SimpleLogger::new()
-            .with_level(LevelFilter::Debug)
-            .init()
-            .unwrap();
         let tag = Tag{
             name: String::from("col1"), color: String::from("red")
         };
@@ -423,10 +444,6 @@ mod product_tests {
 
     #[test]
     fn search_card_collection_test() {
-        SimpleLogger::new()
-            .with_level(LevelFilter::Debug)
-            .init()
-            .unwrap();
         match search_card_collection(0, None, None, None, Some(String::from("[\"col2\",\"col1\"]")), None, None) {
             Ok(val) => {
                 log::debug!("{}", serde_json::to_string_pretty(&val).unwrap());

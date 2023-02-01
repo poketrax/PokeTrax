@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
-import type { Card} from "./Card";
-import {CardSearchResults } from "./Card";
+import type { Card } from "./Card";
+import { CardSearchResults } from "./Card";
 import type { Tag } from "./Collection";
 import { baseURL } from "./Utils";
 
@@ -8,132 +8,120 @@ export let tagOptionStore = writable(new Array<Tag>());
 
 export const selectedTagsStore = writable(new Array<string>());
 export let selectedTags = [];
-selectedTagsStore.subscribe((val) => selectedTags = val)
+selectedTagsStore.subscribe((val) => (selectedTags = val));
 
-export const selectedSetsStore = writable(new Array<string>)
+export const selectedSetsStore = writable(new Array<string>());
 export let selectedSets = [];
-selectedSetsStore.subscribe((val) => selectedSets = val)
+selectedSetsStore.subscribe((val) => (selectedSets = val));
 //List of Card Rarities selected
-export const selectedRaritiesStore = writable(new Array<string>)
-export let selectedRarities = []
-selectedRaritiesStore.subscribe((val) => selectedRarities = val)
+export const selectedRaritiesStore = writable(new Array<string>());
+export let selectedRarities = [];
+selectedRaritiesStore.subscribe((val) => (selectedRarities = val));
 //Search term entered
-export const searchTermStore = writable("")
-export let searchTerm = ""
-searchTermStore.subscribe((val) => searchTerm = val)
+export const searchTermStore = writable("");
+export let searchTerm = "";
+searchTermStore.subscribe((val) => (searchTerm = val));
 //Sort button pressed
-export const sortStore = writable("")
-export let sort = ""
-sortStore.subscribe((val) => sort = val)
+export const sortStore = writable("");
+export let sort = "";
+sortStore.subscribe((val) => (sort = val));
 //Page selected
 export const pageStore = writable(0);
-export let page = 0
-pageStore.subscribe((val) => page = val)
+export let page = 0;
+pageStore.subscribe((val) => (page = val));
 //Card Results
-export const cardResultStore = writable(new CardSearchResults())
+export const cardResultStore = writable(new CardSearchResults());
 //Selected display option [case, table]
-export const cardSearchDisplay = writable("grid")
+export const cardSearchDisplay = writable("grid");
 
 let tagOpions = new Array<Tag>();
-tagOptionStore.subscribe((val => tagOpions = val))
+tagOptionStore.subscribe((val) => (tagOpions = val));
 
 /**
  * Init Card Card store and check database status
  */
- export function initCollectionStore() {
-    executeCardSearch()
-    getTagOptions()
+export function initCollectionStore() {
+  executeCardSearch();
+  getTagOptions();
 }
 
-export function getTagOptions(){
-    fetch(`${baseURL}/pokemon/tags`)
-        .then(res => res.json())
-        .then(data => {
-            tagOptionStore.set(data)
-        });
+export function getTagOptions() {
+  fetch(`${baseURL}/pokemon/tags`)
+    .then((res) => res.json())
+    .then((data) => {
+      tagOptionStore.set(data);
+    });
 }
 
-export function addTag(tag: Tag){
-    fetch(`${baseURL}/pokemon/tag`,
-    {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tag)
-    }).then(
-        () => getTagOptions()
-    );
+export function addTag(tag: Tag) {
+  fetch(`${baseURL}/pokemon/tag`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(tag),
+  }).then(() => getTagOptions());
 }
 
-export function deleteTag(tag: Tag){
-    fetch(`${baseURL}/pokemon/tag`,
-    {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tag)
-    }).then(
-        () => {
-            getTagOptions()
-            executeCardSearch()
-        }
-    );
+export function deleteTag(tag: Tag) {
+  fetch(`${baseURL}/pokemon/tag`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(tag),
+  }).then(() => {
+    getTagOptions();
+    executeCardSearch();
+  });
 }
 
-export function executeCardSearch(){
-    let url = new URL(`${baseURL}/pokemon/collection/cards/${page}`)
-    if (selectedSets.length !== 0) {
-        url.searchParams.set(`expansions`, JSON.stringify(selectedSets))
-    }
-    if (searchTerm !== "") {
-        url.searchParams.set(`name`, searchTerm)
-    }
-    if (sort !== "") {
-        url.searchParams.set('sort', sort)
-    }
-    if (selectedRarities.length !== 0) {
-        url.searchParams.set(`rarities`, JSON.stringify(selectedRarities))
-    }
-    if(selectedTags.length !== 0){
-        url.searchParams.set(`tags`, JSON.stringify(selectedTags))
-    }
-    fetch(url.toString())
-        .then( res => res.json())
-        .then(json => cardResultStore.set(json))
+export function executeCardSearch() {
+  let url = new URL(`${baseURL}/pokemon/collection/cards/${page}`);
+  if (selectedSets.length !== 0) {
+    url.searchParams.set(`expansions`, JSON.stringify(selectedSets));
+  }
+  if (searchTerm !== "") {
+    url.searchParams.set(`name`, searchTerm);
+  }
+  if (sort !== "") {
+    url.searchParams.set("sort", sort);
+  }
+  if (selectedRarities.length !== 0) {
+    url.searchParams.set(`rarities`, JSON.stringify(selectedRarities));
+  }
+  if (selectedTags.length !== 0) {
+    url.searchParams.set(`tags`, JSON.stringify(selectedTags));
+  }
+  fetch(url.toString())
+    .then((res) => res.json())
+    .then((json) => cardResultStore.set(json));
 }
 
-export function addCardCollection(card: Card, mergeTags?: boolean){
-    let url = new URL(`${baseURL}/pokemon/collection/cards`);
+export function addCardCollection(card: Card, mergeTags?: boolean) {
+  let url = new URL(`${baseURL}/pokemon/collection/cards`);
 
-    if(mergeTags !!= null){
-        url.searchParams.set("tag_merge", `${mergeTags}`)
-    }
-    fetch(url.toString(),
-    {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(card)
-    }).then(
-        () => executeCardSearch()
-    );
+  if (mergeTags! != null) {
+    url.searchParams.set("tag_merge", `${mergeTags}`);
+  }
+  fetch(url.toString(), {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(card),
+  }).then(() => executeCardSearch());
 }
 
-export function removeCardCollection(card: Card){
-    fetch(`${baseURL}/pokemon/collection/cards`,
-    {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(card)
-    }).then(
-        () => executeCardSearch()
-    );
+export function removeCardCollection(card: Card) {
+  fetch(`${baseURL}/pokemon/collection/cards`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(card),
+  }).then(() => executeCardSearch());
 }
 
-export function getTagFromCard(tags: string[]) : Tag[]{
-    let tagArray = new Array<Tag>();
-    for (let tagName of tags) {
-        let tag = tagOpions.find(val => val.name === tagName);
-        if(tag != null){
-            tagArray.push(tag);
-        }
+export function getTagFromCard(tags: string[]): Tag[] {
+  let tagArray = new Array<Tag>();
+  for (let tagName of tags) {
+    let tag = tagOpions.find((val) => val.name === tagName);
+    if (tag != null) {
+      tagArray.push(tag);
     }
-    return tagArray;
+  }
+  return tagArray;
 }

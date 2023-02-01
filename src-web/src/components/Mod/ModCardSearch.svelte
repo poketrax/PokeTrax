@@ -1,111 +1,204 @@
 <script lang="ts">
-    import CardListItem from "../CardSearch/CardListItem.svelte";
-    import CardFilters from "../CardSearch/CardFilters.svelte";
-    import CardDisplay from "../CardSearch/CardDisplay.svelte";
-    import CardSort from "../CardSearch/CardSort.svelte";
-    import PokeCase from "../CardSearch/PokeCase.svelte";
-    import { CardSearchResults, Card } from "../../lib/Card";
-    import CardEditDialog from "../Mod/CardEditDialog.svelte";
-    import { writable } from "svelte/store";
-    import {
-        cardResultStore,
-        cardSearchDisplay,
-        searchTermStore,
-        selectedRaritiesStore,
-        selectedSetsStore,
-        executeCardSearch,
-        sortStore,
-    } from "../../lib/ModDataStore";
+  import CardFilters from "../CardSearch/CardFilters.svelte";
+  import CardSort from "../CardSearch/CardSort.svelte";
+  import { CardSearchResults, Card } from "../../lib/Card";
+  import { CardImage, Energy } from "tcg-case";
+  import CardDetails from "../Shared/CardDetails.svelte";
+  import { mdiPencil, mdiPlaylistEdit, mdiRefresh, mdiPlus } from "@mdi/js";
+  import { baseURL, formatEnergy, formatDate } from "../../lib/Utils";
+  import CardEdit from "./CardEdit.svelte";
+  import Icon from "../Shared/Icon.svelte";
+  import { writable } from "svelte/store";
+  import {
+    cardResultStore,
+    cardSearchDisplay,
+    searchTermStore,
+    selectedRaritiesStore,
+    selectedSetsStore,
+    executeCardSearch,
+    sortStore,
+    pageStore,
+    initAdminStore,
+  } from "../../lib/AdminDataStore";
+  import Pagination from "../Shared/Pagination.svelte";
+  import MassCardEdit from "./MassCardEdit.svelte";
 
-    //Search term
-    let searchTerm = "";
-    searchTermStore.subscribe((val) => (searchTerm = val));
-    //Selected Rarities
-    let selectedRarities = [];
-    selectedRaritiesStore.subscribe((val) => (selectedRarities = val));
-    //Selected Sets(Expansions)
-    let selectedSets = [];
-    selectedSetsStore.subscribe((val) => (selectedSets = val));
-    //Display
-    let display = "grid";
-    cardSearchDisplay.subscribe((val) => (display = val));
-    //Results
-    let results: CardSearchResults = new CardSearchResults();
-    cardResultStore.subscribe((val) => (results = val));
+  //Search term
+  let searchTerm = "";
+  searchTermStore.subscribe((val) => (searchTerm = val));
+  //Selected Rarities
+  let selectedRarities = [];
+  selectedRaritiesStore.subscribe((val) => (selectedRarities = val));
+  //Selected Sets(Expansions)
+  let selectedSets = [];
+  selectedSetsStore.subscribe((val) => (selectedSets = val));
+  //Display
+  let display = "grid";
+  cardSearchDisplay.subscribe((val) => (display = val));
+  //Results
+  let results: CardSearchResults = new CardSearchResults();
+  cardResultStore.subscribe((val) => (results = val));
 
-    let showCardDialog = false;
-    let selectedCards = new Map<string, string>();
-    let dialogCard = new Card("", 0, "", "", "", "", "");
+  let selectedCards = new Array<string>();
+  let selectedCard: Card | undefined = null;
+  let showMassEditButton = false;
+  let showMassEdit = false;
+  let addCard = false;
 
-    function openCardDialog(card: Card) {
-        dialogCard = card;
-        showCardDialog = true;
+  /**
+   * Set the edit card page active or not
+   */
+  function setEditCard(card: Card | undefined) {
+    selectedCard = card;
+  }
+
+  function handleCheck(event) {
+    if (event.target.checked) {
+      selectedCards.push(event.target.id);
+    } else {
+      selectedCards.splice(selectedCards.indexOf(event.target.id), 1);
     }
+    showMassEditButton = selectedCards.length !== 0 ? true : false;
+  }
+
+  function getChecked(card: Card) {
+    return selectedCards.indexOf(card.cardId) >= 0;
+  }
 </script>
 
-<div class="grid grid-cols-2 h-20">
-    <div>
-        <CardFilters
-            selRareStore={selectedRaritiesStore}
-            selSetsStore={selectedSetsStore}
-            {searchTermStore}
-            pageStore={writable(0)}
-            executeSearch={executeCardSearch}
-        />
+{#if selectedCard == null && showMassEdit === false}
+  <!--Search Controls-->
+  <div class="grid grid-cols-1 gap-1">
+    <div class="flex w-full items-center">
+      <div class="w-2" />
+      <CardFilters
+        selRareStore={selectedRaritiesStore}
+        selSetsStore={selectedSetsStore}
+        {searchTermStore}
+        pageStore={writable(0)}
+        executeSearch={executeCardSearch}
+      />
+      <button id="add-card-button" class="btn btn-square" on:click={() => {
+        let newCard = new Card("NEW_CARD", 0, "NEW_CARD","","","","")
+        newCard.releaseDate = (new Date()).toISOString();
+        setEditCard(newCard) 
+      }}>
+        <Icon class="h-6" path={mdiPlus} />
+      </button>
+      <div class="w-2" />
+      <button id="refresh-button" class="btn btn-square" on:click={() => initAdminStore()}>
+        <Icon class="h-6" path={mdiRefresh} />
+      </button>
+      <div class="w-2" />
     </div>
-    <div class="flex h-20 items-center">
-        <div class="flex-grow" />
-        <CardDisplay displayStore={cardSearchDisplay}/>
-        <div class="w-4" />
-        <CardSort {sortStore} executeSearch={executeCardSearch} />
-        <div class="w-2" />
-    </div>
-</div>
-<div class="flex h-[calc(100vh-16rem)] w-screen overflow-auto">
-    {#if display === "grid"}
-        <div class="flex-grow" />
-        <div>
-            <div
-                class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 p-4"
-                id="card-grid"
-            >
-                {#each results.cards as card, i}
-                    <PokeCase
-                        {card}
-                        id={i}
-                        edit
-                        on:clickEdit={() => openCardDialog(card)}
-                    />
-                {/each}
-            </div>
+    <div class="flex items-center">
+      <div class="sm:w-2 lg:flex-grow" />
+      {#if showMassEditButton}
+        <div class="tooltip" data-tip="Mass Edit">
+          <button class="btn btn-square" on:click={() => (showMassEdit = true)}>
+            <Icon class="h-8" path={mdiPlaylistEdit} />
+          </button>
         </div>
-        <div class="flex-grow" />
-    {:else}
-        <table class="table w-full ml-4 mr-2">
-            <thead>
-                <tr>
-                    <th>Select</th>
-                    <th class="text-center">Image</th>
-                    <th>Energy</th>
-                    <th>Card Name</th>
-                    <th>Variants</th>
-                    <th>Release Date</th>
-                    <th>Set Number</th>
-                    <th>Price</th>
-                    <th class="text-center">Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each results.cards as card, i}
-                    <CardListItem
-                        {card}
-                        id={i}
-                        selectedGroup={selectedCards}
-                        on:click={() => openCardDialog(card)}
-                    />
-                {/each}
-            </tbody>
-        </table>
-    {/if}
-</div>
-<CardEditDialog bind:show={showCardDialog} card={dialogCard} />
+      {/if}
+      <div class="w-2" />
+      <CardSort {sortStore} executeSearch={executeCardSearch} />
+      <div class="w-2" />
+      <Pagination
+        {pageStore}
+        executeSearch={executeCardSearch}
+        resultStore={cardResultStore}
+      />
+      <div class="w-2" />
+    </div>
+  </div>
+  <!--Card List-->
+  <div class="h-[calc(100vh-15rem)] w-screen overflow-hidden">
+    <div class="flex h-[calc(100vh-15rem)] w-screen overflow-auto">
+      <table class="table table-compact w-full m-2">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th class="text-center">Image</th>
+            <th>Card Name</th>
+            <th>TCGP ID</th>
+            <th>Release Date</th>
+            <th class="text-center">Details</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each results.cards as card, i}
+            <tr>
+              <!--Selection-->
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    id={card.cardId}
+                    class="checkbox border-solid ml-4 border-2 border-black"
+                    checked={getChecked(card)}
+                    on:click={handleCheck}
+                  />
+                </label>
+              </td>
+              <!--Image-->
+              <td>
+                <CardImage
+                  height="96px"
+                  width="65px"
+                  class="rounded-md m-2 object-contain"
+                  cardImg={`${baseURL}/pokemon/card_img/${encodeURI(
+                    card.expName
+                  )}/${encodeURI(card.cardId)}`}
+                  id={i}
+                />
+              </td>
+              <!--Card Name-->
+              <td>
+                <div class="flex items-center">
+                  <Energy type={formatEnergy(card)} />
+                  <span class="text-lg ml-2">{card.name}</span>
+                </div>
+                <div class="flex">
+                  <span>Variants:</span>
+                  {#each card.variants as variant}
+                    <span class="badge mx-1">{variant}</span>
+                  {/each}
+                </div>
+              </td>
+              <!--TCGP ID-->
+              <td>
+                <a
+                  class="link"
+                  href={"https://tcgplayer.com/product/" +
+                    card.idTCGP.toFixed(0)}>{card.idTCGP}</a
+                >
+              </td>
+              <!--Release Date-->
+              <td>
+                {formatDate(card.releaseDate)}
+              </td>
+              <!--Details-->
+              <td>
+                <CardDetails card={card} />
+              </td>
+              <td>
+                <button
+                  class="btn btn-circle"
+                  on:click={() => setEditCard(card)}
+                >
+                  <Icon path={mdiPencil} class="w-6" />
+                </button>
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{:else if selectedCard != null}
+  <CardEdit on:close={() => setEditCard(null)} card={selectedCard}/>
+{/if}
+{#if showMassEdit}
+  <MassCardEdit on:close={() => (showMassEdit = false)} cards={selectedCards} />
+{/if}

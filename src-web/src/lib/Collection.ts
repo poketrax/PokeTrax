@@ -1,8 +1,8 @@
 export class Tag {
-    public name: string
-    public color: string 
+  public name: string;
+  public color: string;
 
-    constructor(name: string){
-        this.name = name
-    }
+  constructor(name: string) {
+    this.name = name;
+  }
 }

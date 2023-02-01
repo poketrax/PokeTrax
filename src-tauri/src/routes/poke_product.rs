@@ -1,7 +1,7 @@
-use actix_web::{web, error, Responder, Result, get};
-use crate::models::pokemon::{SealedProduct};
-use serde::{Serialize, Deserialize};
+use crate::models::pokemon::SealedProduct;
 use crate::utils::pokemon_data;
+use actix_web::{error, get, web, Responder, Result};
+use serde::{Deserialize, Serialize};
 use urlencoding;
 
 #[derive(Deserialize, Serialize, Clone)]
@@ -43,7 +43,7 @@ pub async fn product_search(
     let sort: String;
     if order.eq("name") {
         sort = String::from("ORDER BY name ASC");
-    }  else if order.eq("priceASC") {
+    } else if order.eq("priceASC") {
         sort = String::from("ORDER BY price ASC");
     } else if order.eq("priceDSC") {
         sort = String::from("ORDER BY price DESC");
@@ -53,14 +53,13 @@ pub async fn product_search(
 
     let count: i64;
 
-    match pokemon_data::product_count(Some(name_filter.clone())).await
-    {
+    match pokemon_data::product_count(Some(name_filter.clone()), None).await {
         Ok(val) => count = val,
         Err(e) => return Err(error::ErrorInternalServerError(e)),
     }
 
     let products: Vec<SealedProduct>;
-    match pokemon_data::product_search_sql(*page,Some(name_filter.clone()), Some(sort)).await
+    match pokemon_data::product_search_sql(*page, Some(name_filter.clone()), Some(sort), None).await
     {
         Ok(val) => products = val,
         Err(e) => return Err(error::ErrorInternalServerError(e)),

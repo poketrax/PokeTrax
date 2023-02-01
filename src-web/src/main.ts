@@ -1,10 +1,10 @@
-import App from './App.svelte'
-import { init } from './lib/Utils'
+import App from "./App.svelte";
+import { init } from "./lib/Utils";
 
 const app = new App({
-  target: document.getElementById('app')
-})
+  target: document.getElementById("app"),
+});
 
-init()
+init();
 
-export default app
+export default app;

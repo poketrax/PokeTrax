@@ -8,7 +8,6 @@ use reqwest::StatusCode;
 use std::{fs::create_dir_all, path::Path};
 use urlencoding;
 
-
 lazy_static! {
     static ref DEFAULT_IMG: String = format!("{}{}", get_data_dir(),"/pokemon-back.png");
     pub static ref CARD_IMG_PATH: String = format!("{}{}", get_data_dir(), "/card_imgs/");
@@ -41,9 +40,9 @@ async fn card_img(req: HttpRequest) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_card(id.to_string()).await {
+        match pokemon_data::get_card(id.to_string(), None) {
             Ok(card) => {
-                match shared::download_file(card.img.as_str().clone(), path_name.as_str()).await {
+                match shared::download_file(card.img.as_str(), path_name.as_str()).await {
                     Ok(()) => {
                         let image_content = web::block(|| std::fs::read(path_name)).await??;
                         log::debug!("Downloading Card Img");
@@ -94,7 +93,7 @@ async fn exp_logo(name: web::Path<String>) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_expansion(_name.to_string()).await {
+        match pokemon_data::get_expansion(_name.to_string(), None) {
             Ok(exp) => {
                 match shared::download_file(exp.logoURL.as_str().clone(), path_name.as_str()).await
                 {
@@ -151,7 +150,7 @@ async fn exp_symbol(name: web::Path<String>) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_expansion(_name.to_string()).await {
+        match pokemon_data::get_expansion(_name.to_string(), None) {
             Ok(exp) => {
                 match shared::download_file(exp.symbolURL.as_str().clone(), path_name.as_str())
                     .await
@@ -209,7 +208,7 @@ async fn series_symbol(name: web::Path<String>) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_series(_name.to_string()).await {
+        match pokemon_data::get_series(_name.to_string(), None) {
             Ok(series) => {
                 match shared::download_file(series.icon.as_str().clone(), path_name.as_str()).await
                 {
