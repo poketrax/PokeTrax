@@ -1,12 +1,12 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import Icon from "../Shared/Icon.svelte";
+  import type { Writable } from "svelte/store";
   import { mdiMenuDown } from "@mdi/js";
   import type { Tag } from "../../lib/Collection";
   import { mdiPlus, mdiDelete } from "@mdi/js";
   import {
     tagOptionStore,
-    selectedTagsStore,
     addTag,
     deleteTag,
   } from "../../lib/CollectionStore";
@@ -16,7 +16,9 @@
   let clazz = "";
   export { clazz as class };
   export let search = false;
-  export let selected = new Array<string>();
+  export let selectedTagsStore: Writable<Array<string>>;
+
+  let selected = new Array<string>();
   let newTagValue = "";
   let newTagColor = "";
   let options = new Array<Tag>();

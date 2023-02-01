@@ -15,6 +15,7 @@
     executeCardSearch,
     selectedRaritiesStore,
     selectedSetsStore,
+    selectedTagsStore,
     cardSearchDisplay,
     searchTermStore,
     sortStore,
@@ -25,6 +26,7 @@
   let display = "grid";
   let showCardDialog = false;
   let dialogCard = new Card("", 0, "", "", "", "", "");
+  dialogCard.tags = new Array<string>(); //set to avoid null pointer
 
   cardSearchDisplay.subscribe((val) => (display = val));
   cardResultStore.subscribe((val) => (results = val));
@@ -52,7 +54,12 @@
       {pageStore}
       executeSearch={executeCardSearch}
     />
-    <TagSelect class="ml-2" search on:change={executeCardSearch} />
+    <TagSelect
+      class="ml-2"
+      search
+      on:change={executeCardSearch}
+      {selectedTagsStore}
+    />
   </div>
   <div class="flex items-center">
     <div class="sm:w-2 lg:flex-grow" />
@@ -123,4 +130,6 @@
     {/if}
   </div>
 </div>
-<CardDialog bind:show={showCardDialog} card={dialogCard} collection />
+{#if showCardDialog}
+  <CardDialog bind:show={showCardDialog} card={dialogCard} collection />
+{/if}

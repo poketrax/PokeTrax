@@ -24,17 +24,19 @@
     addCardCollection,
   } from "../../lib/CollectionStore";
   import TagSelect from "../Collection/TagSelect.svelte";
+  import { writable } from "svelte/store";
 
   export let card: Card;
   export let show: boolean;
   export let collection: boolean = false;
 
+  console.log(JSON.stringify(card))
+  let tagStore = writable(card.tags);
   let save = false;
   let chartData: any[];
   let expNum: string = "";
 
   $: holoPattern = getHolo(card);
-
   $: getCardPrices(card).then((val) => {
     chartData = val.map((val: Price) => {
       return {
@@ -75,7 +77,7 @@
         <span class="text-xl">{card.name}</span>
         <div class="grow" />
         {#if collection}
-          <TagSelect selected={card.tags} on:change={saveCard} class="mr-2" />
+          <TagSelect selectedTagsStore={tagStore} on:change={saveCard} class="mr-2" />
           <DeleteButton on:confirm={confirmDelete} />
           {#if save}
             <button class="btn btn-circle btn-primary mr-1" on:click={saveCard}>
