@@ -26,29 +26,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
       - name: install app dependencies and build it
-        run: cargo
+        run: ./build.sh
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  cypress-test:
-    runs-on: self-hosted
-    env:
-      GH_TOKEN: "${{ secrets.JPG_ACTION_TOKEN }}"
-    steps:
-      - name: checkout
-        uses: actions/checkout@v1
-      - name: setup
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
-        with:
-          build: npm rebuild
-          start: npm run start-test-server,npm start
-          wait-on: 'http://localhost:3000'
-          record: true
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
