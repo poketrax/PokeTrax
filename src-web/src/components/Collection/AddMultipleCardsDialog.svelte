@@ -2,14 +2,18 @@
   import { addCardCollection } from "../../lib/CollectionStore";
   import { Card } from "../../lib/Card";
   import { baseURL } from "../../lib/Utils";
+  import { writable } from "svelte/store";
   import TagSelect from "./TagSelect.svelte";
 
   export let show = false;
   export let cards: Map<string, [string, Card]>;
 
-  let selectedTags: string[] = [];
+  let selectedTags = new Array<string>();
+  let tagStore = writable(new Array<string>());
   let inProgress = false;
   let progress = 0;
+
+  tagStore.subscribe((val) => selectedTags = val);
 
   function addCards() {
     inProgress = true;
@@ -47,7 +51,7 @@
     <h3 class="text-lg font-bold">Add Multiple Cards to Collection</h3>
     <div class="w-full flex">
       <div class="flex-grow" />
-      <TagSelect bind:selected={selectedTags} />
+      <TagSelect selectedTagsStore={tagStore}/>
     </div>
     <div
       class="py-4 px-2 grid gap-2 grid-cols-3 max-h-96 h-min overflow-y-auto"
