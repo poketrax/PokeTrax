@@ -18,6 +18,7 @@
     executeCardSearch,
     sortStore,
     pageStore,
+    initAdminStore,
   } from "../../lib/AdminDataStore";
   import Pagination from "../Shared/Pagination.svelte";
   import MassCardEdit from "./MassCardEdit.svelte";
@@ -66,6 +67,7 @@
 </script>
 
 {#if selectedCard == null && showMassEdit === false}
+  <!--Search Controls-->
   <div class="grid grid-cols-1 gap-1">
     <div class="flex w-full items-center">
       <div class="w-2" />
@@ -76,16 +78,16 @@
         pageStore={writable(0)}
         executeSearch={executeCardSearch}
       />
-      <button class="btn btn-square" on:click={() => {
+      <button id="add-card-button" class="btn btn-square" on:click={() => {
         let newCard = new Card("NEW_CARD", 0, "NEW_CARD","","","","")
         newCard.releaseDate = (new Date()).toISOString();
         setEditCard(newCard) 
       }}>
-        <Icon class="h-8" path={mdiPlus} />
+        <Icon class="h-6" path={mdiPlus} />
       </button>
       <div class="w-2" />
-      <button class="btn btn-square" on:click={() => (executeCardSearch())}>
-        <Icon class="h-8" path={mdiRefresh} />
+      <button id="refresh-button" class="btn btn-square" on:click={() => initAdminStore()}>
+        <Icon class="h-6" path={mdiRefresh} />
       </button>
       <div class="w-2" />
     </div>
@@ -109,6 +111,7 @@
       <div class="w-2" />
     </div>
   </div>
+  <!--Card List-->
   <div class="h-[calc(100vh-15rem)] w-screen overflow-hidden">
     <div class="flex h-[calc(100vh-15rem)] w-screen overflow-auto">
       <table class="table table-compact w-full m-2">

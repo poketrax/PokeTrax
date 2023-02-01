@@ -197,8 +197,7 @@ export function updateDbPath(path: string): Promise<boolean> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data_path: path }),
     })
-      .then((res) => res.json())
-      .then((_) => resolve(true))
+      .then((_) => {initAdminStore();resolve(true)})
       .catch((_) => reject(false));
   });
 }
