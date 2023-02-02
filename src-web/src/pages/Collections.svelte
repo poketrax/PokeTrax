@@ -58,7 +58,7 @@
       class="ml-2"
       search
       on:change={executeCardSearch}
-      {selectedTagsStore}
+      selectedTagsStore={selectedTagsStore}
     />
   </div>
   <div class="flex items-center">
