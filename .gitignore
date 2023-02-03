@@ -25,3 +25,4 @@ poketrax
 *.sln
 *.sw?
 /src-tauri/data/
+build.sh
