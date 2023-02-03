@@ -1,0 +1,22 @@
+{
+ "version": "v1.0.1",
+ "pub_date": "2023-02-03T01:46:43.562Z",
+ "platforms": {
+  "darwin-x86_64": {
+   "signature": "",
+   "url": "https://github.com/poketrax/PokeTrax/releases/download/v1.0.1/app.app.tar.gz"
+  },
+  "darwin-aarch64": {
+   "signature": "",
+   "url": "https://github.com/poketrax/PokeTrax/releases/download/v1.0.1/silicon/app.app.tar.gz"
+  },
+  "linux-x86_64": {
+   "signature": "",
+   "url": "https://github.com/poketrax/PokeTrax/releases/download/v1.0.1/app.AppImage.tar.gz"
+  },
+  "windows-x86_64": {
+   "signature": "",
+   "url": "https://github.com/poketrax/PokeTrax/releases/download/v1.0.1/app.x64.msi.zip"
+  }
+ }
+}

@@ -14,7 +14,6 @@
   import mac_sec_13 from "./assets/install/macos13/mac_os_sec_13.png";
   import Icon from "./lib/Icon.svelte";
   
-
   let page = "";
 </script>
 
@@ -108,7 +107,7 @@
         src={macOs}
         alt="macos"
       />
-      <div class="pl-8 text-3xl">Mac OS install instructions</div>
+      <div class="pl-8 text-3xl">Mac OS 13+ install instructions</div>
       <div class="flex-grow" />
       <button
         class="btn btn-circle btn-outline mr-10"
