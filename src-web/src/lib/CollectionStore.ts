@@ -125,3 +125,15 @@ export function getTagFromCard(tags: string[]): Tag[] {
   }
   return tagArray;
 }
+
+export function cardInCollection(cardId: string): Promise<boolean> {
+  return new Promise<boolean>((res, rej) => {
+    let url = new URL(`${baseURL}/pokemon/collection/cards/${page}`);
+    url.searchParams.set(`name`, cardId);
+    fetch(url.toString())
+      .then((res) => res.json())
+      .then((json) => {
+        res(json.count > 0)
+      }).catch((e) => rej(e))
+  });
+}

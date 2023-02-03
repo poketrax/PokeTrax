@@ -129,7 +129,7 @@ pub fn json_list_value(col_name: String, value: Option<String>) -> String {
                         return statement;
                     }
                     Err(e) => {
-                        log::warn!("JSON parse decoding failed {}", e);
+                        log::debug!("json_list_value JSON parse decoding failed {}, values: {}", e, _val);
                         return String::from("");
                     }
                 }
