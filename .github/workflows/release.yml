@@ -40,6 +40,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.JPG_ACTION_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
         with:
           tagName: v__VERSION__ # tauri-action replaces \_\_VERSION\_\_ with the app version
           releaseName: 'v__VERSION__'

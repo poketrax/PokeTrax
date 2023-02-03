@@ -64,6 +64,13 @@
   function getChecked(card: Card) {
     return selectedCards.indexOf(card.cardId) >= 0;
   }
+
+  function addCardCH() {
+    let newCard = new Card("NEW_CARD", 0, "NEW_CARD","","","","")
+        newCard.releaseDate = (new Date()).toISOString();
+        setEditCard(newCard) 
+  }
+
 </script>
 
 {#if selectedCard == null && showMassEdit === false}
@@ -78,15 +85,11 @@
         pageStore={writable(0)}
         executeSearch={executeCardSearch}
       />
-      <button id="add-card-button" class="btn btn-square" on:click={() => {
-        let newCard = new Card("NEW_CARD", 0, "NEW_CARD","","","","")
-        newCard.releaseDate = (new Date()).toISOString();
-        setEditCard(newCard) 
-      }}>
+      <button id="add-card-button" class="btn btn-square" on:click={addCardCH}>
         <Icon class="h-6" path={mdiPlus} />
       </button>
       <div class="w-2" />
-      <button id="refresh-button" class="btn btn-square" on:click={() => initAdminStore()}>
+      <button id="refresh-button" class="btn btn-square" on:click={initAdminStore}>
         <Icon class="h-6" path={mdiRefresh} />
       </button>
       <div class="w-2" />
