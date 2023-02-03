@@ -53,13 +53,13 @@ pub async fn product_search(
 
     let count: i64;
 
-    match pokemon_data::product_count(Some(name_filter.clone()), None).await {
+    match pokemon_data::product_count(Some(name_filter.clone()), None) {
         Ok(val) => count = val,
         Err(e) => return Err(error::ErrorInternalServerError(e)),
     }
 
     let products: Vec<SealedProduct>;
-    match pokemon_data::product_search_sql(*page, Some(name_filter.clone()), Some(sort), None).await
+    match pokemon_data::product_search_sql(*page, Some(name_filter.clone()), Some(sort), None)
     {
         Ok(val) => products = val,
         Err(e) => return Err(error::ErrorInternalServerError(e)),

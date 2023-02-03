@@ -284,7 +284,7 @@ pub async fn card_prices(
     _: web::Query<PriceSearch>,
 ) -> Result<impl Responder> {
     let _id = urlencoding::decode(id.as_str()).unwrap().to_string();
-    match get_card(_id, None) {
+    match get_card(&_id, None) {
         Ok(card) => {
             let mut prices: Vec<Price> = Vec::new();
             let data_url = format!(

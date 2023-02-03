@@ -78,14 +78,3 @@ pub struct SealedProduct {
     pub paid: Option<f64>,
     pub count: Option<i64>,
 }
-
-pub struct SealedPrice {
-    pub name: String,
-    pub date: String,
-    pub vendor: String,
-    pub price: f64,
-}
-pub struct ProductList {
-    pub total: i64,
-    pub products: Vec<SealedProduct>,
-}

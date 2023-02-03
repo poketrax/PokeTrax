@@ -36,7 +36,6 @@ pub fn get_expansion(
         FROM expansions 
         WHERE name = :name",
     );
-    println!("Exp Name {}", _name);
     let mut query = connection.prepare(&statement)?;
     let rows = query.query_map(&[(":name", &_name)],
      |row| {
@@ -505,9 +504,9 @@ mod card_search_tests {
 /// # Arguments
 ///    * 'name_filter' - search term for the name of the card
 ///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
-pub fn get_card(name_filter: String, db_path: Option<String>) -> Result<Card, Box<dyn std::error::Error>> {
+pub fn get_card(name_filter: &str, db_path: Option<String>) -> Result<Card, Box<dyn std::error::Error>> {
     let cards;
-    match card_search_sql(0, Some(name_filter.clone()), None, None, None, db_path) {
+    match card_search_sql(0, Some(String::from(name_filter)), None, None, None, db_path) {
         Ok(val) => cards = val,
         Err(e) => return Err(Box::from(e)),
     }
@@ -601,7 +600,7 @@ pub fn upsert_card(card: &Card) -> Result<(), Box<dyn std::error::Error>> {
 /// Delete Card from admin database
 /// #Argmuents
 ///    * cardId - card id of card to delete
-pub fn delete_card(cardId: String) -> Result<(), Box<dyn std::error::Error>> {
+pub fn delete_card(cardId: &str) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(get_admin_file_path())?;
     let mut statement = connection.prepare("DELETE FROM cards WHERE cardId = :cardId")?;
     statement.execute(named_params!{":cardId": cardId})?;
@@ -641,7 +640,7 @@ mod upsert_card_test {
             Ok(_) => assert!(true),
             Err(e) => assert!(false, "Upsert error {}",e)
         }
-        let result = get_card(card.name.clone(), Some(get_admin_file_path())).unwrap();
+        let result = get_card(&card.name, Some(get_admin_file_path())).unwrap();
         assert!(result.cardId.eq(&card.cardId));
         card.pokedex = 20000;
         //update
@@ -650,10 +649,10 @@ mod upsert_card_test {
             Ok(_) => assert!(true),
             Err(e) => assert!(false, "Upsert error {}",e)
         }
-        let result = get_card(card.name, Some(get_admin_file_path())).unwrap();
+        let result = get_card(&card.name, Some(get_admin_file_path())).unwrap();
         assert!(result.pokedex == card.pokedex);
         //delete
-        delete_card(card.cardId).unwrap();
+        delete_card(&card.cardId).unwrap();
     }
 }
 
@@ -665,7 +664,7 @@ mod upsert_card_test {
 /// # Arguments
 ///    * 'name_filter' - search term for the name of the card
 ///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
-pub async fn product_count(name_filter: Option<String>, db_path: Option<String>) -> Result<i64, Box<dyn std::error::Error>> {
+pub fn product_count(name_filter: Option<String>, db_path: Option<String>) -> Result<i64, Box<dyn std::error::Error>> {
     let connection: Connection;
     if db_path.is_none() {
         connection = Connection::open(POKE_DB_PATH.as_str())?;
@@ -693,7 +692,7 @@ mod product_count_tests {
     #[actix_web::test]
     async fn product_count_test() {
         let name_filter = Some(String::from("Charizard"));
-        let count = product_count(name_filter, None).await;
+        let count = product_count(name_filter, None);
         match count {
             Ok(val) => {
                 assert!(val > 10)
@@ -711,7 +710,7 @@ mod product_count_tests {
 ///    * 'name_filter' - search term for the name of the card
 ///    * 'sort' - ORDER BY statement for sorting results
 ///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
-pub async fn product_search_sql(
+pub fn product_search_sql(
     page: u32,
     name_filter: Option<String>,
     sort: Option<String>,
@@ -769,9 +768,9 @@ pub async fn product_search_sql(
 mod product_tests {
     use super::*;
     use serde_json::to_string_pretty;
-    #[actix_web::test]
-    async fn get_product_count() {
-        let count = product_count(None, None).await;
+    #[test]
+     fn get_product_count() {
+        let count = product_count(None, None);
         match count {
             Ok(val) => {
                 assert!(val > 0)
@@ -782,9 +781,9 @@ mod product_tests {
         }
     }
 
-    #[actix_web::test]
-    async fn get_products() {
-        let products = product_search_sql(0, None, None, None).await;
+    #[test]
+     fn get_products() {
+        let products = product_search_sql(0, None, None, None);
         match products {
             Ok(val) => {
                 let msg = to_string_pretty(&val).unwrap();
