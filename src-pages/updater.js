@@ -21,14 +21,14 @@ async function run() {
     )
   ).text();
 
-  let linux_x86 = `https://github.com/poketrax/PokeTrax/releases/download/v${version}/Poketrax.AppImage.tar.gz`;
+  let linux_x86 = `https://github.com/poketrax/PokeTrax/releases/download/v${version}/poke-trax_${version}_amd64.AppImage.tar.gz`;
   let linux_x86_sig = await (
     await fetch(
       `https://github.com/poketrax/PokeTrax/releases/download/v${version}/poke-trax_${version}_amd64.AppImage.tar.gz.sig`
     )
   ).text();
 
-  let win_x86 = `https://github.com/poketrax/PokeTrax/releases/download/v${version}/PokeTrax.x64.msi.zip`;
+  let win_x86 = `https://github.com/poketrax/PokeTrax/releases/download/v${version}/PokeTrax_${version}_x64_en-US.msi.zip`;
   let win_x86_sig = await (
     await fetch(
       `https://github.com/poketrax/PokeTrax/releases/download/v${version}/PokeTrax_${version}_x64_en-US.msi.zip.sig`
