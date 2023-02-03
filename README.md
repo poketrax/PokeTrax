@@ -38,13 +38,8 @@ npm run dev
 
 This will build an executeable for your Operating system.
 
-Mac OS/ Linux: 
-
-```sh
-./build.sh
-```
-
-Windows:
+Build Process
+Note: TAURI_PRIVATE_KEY needs to set set or you will get an error. You can create your own key or remove the updater options in tauri.conf.json
 
 ```sh
 cd src-web 
@@ -72,6 +67,8 @@ PK_DATA_DIR="./data" Data directory for data files
 | -h | headless |
 | -a | Admin mode |
 
+# Maintainer instuctions
+
 ### Create symlink to executable
 
 Symlink to executable for headless
@@ -83,3 +80,15 @@ ln -s /Applications/PokeTrax.app/Contents/MacOS/PokeTrax poketrax
 ```sh
 poketrax -h
 ```
+
+### Process for Updating Version
+
+   1. Create Release in Github
+   1. Make sure src-tauri/tauri.conf.json version matches Release.
+   1. Action will produce artifacts
+   1. Run 
+      ```sh
+       cd src-pages
+       npm run build-prod
+      ```
+    1. Commit document changes to update update.json.
