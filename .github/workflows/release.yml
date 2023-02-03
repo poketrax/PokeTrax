@@ -39,7 +39,7 @@ jobs:
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
         env:
-          GITHUB_TOKEN: ${{ secrets.JPG_ACTION_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
