@@ -213,7 +213,6 @@ pub async fn card_search_helper(
         Ok(val) => count = val,
         Err(e) => return Err(e),
     }
-
     let _cards: Vec<Card>;
     let search = card_search_sql(
         page,
