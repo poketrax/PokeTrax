@@ -27,6 +27,7 @@ pub async fn card_prices_ebay(
     search_params: web::Query<PriceSearch>,
 ) -> Result<impl Responder> {
     let _id = urlencoding::decode(&id).unwrap();
-    let prices = get_prices(&_id, &search_params.start)?;
+    let start = urlencoding::decode(&search_params.start).unwrap();
+    let prices = get_prices(&_id, &start)?;
     Ok(web::Json(prices))
 }

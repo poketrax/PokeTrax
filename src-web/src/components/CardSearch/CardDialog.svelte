@@ -9,7 +9,7 @@
   import Icon from "../Shared/Icon.svelte";
   import { formatDate, baseURL } from "../../lib/Utils";
   import type { Card, Price } from "../../lib/Card";
-  import { getCardPrices } from "../../lib/CardSearchStore";
+  import { getCardPrices, getPriceChartData } from "../../lib/CardSearchStore";
   import {
     formatEnergy,
     formatPrice,
@@ -37,15 +37,11 @@
   let expNum: string = "";
 
   $: holoPattern = getHolo(card);
-  $: getCardPrices(card).then((val) => {
-    chartData = val.map((val: Price) => {
-      return {
-        group: val.variant,
-        key: new Date(val.date),
-        value: val.price,
-      };
-    });
-  });
+  $: getPriceChartData(card).then(
+    (val) => {
+      chartData = val
+    }
+  )
 
   $: formatExpansionNumber(card.expCardNumber, card.expName).then(
     (val) => (expNum = val)

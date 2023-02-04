@@ -19,6 +19,12 @@ export class Expansion {
   }
 }
 
+export class ChartData {
+  public group: string;
+  public key: Date;
+  public value: number;
+}
+
 export class Series {
   public name: string;
   public releaseDate: string;
