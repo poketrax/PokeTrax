@@ -46,7 +46,7 @@
   }
 </script>
 
-<div class="grid sm:grid-cols-1 lg:grid-cols-2">
+<div class="grid sm:grid-cols-1 lg:grid-cols-2 foggy">
   <div class="p-2">
     <CardFilters
       selRareStore={selectedRaritiesStore}
@@ -77,13 +77,14 @@
     <div class="w-2" />
   </div>
 </div>
-<CardPagination
+  <CardPagination
   {pageStore}
+  class="foggy"
   executeSearch={executeCardSearch}
   resultStore={cardResultStore}
 />
-<div class="h-[calc(100vh-14rem)] w-screen overflow-hidden">
-  <div class="flex h-[calc(100vh-14rem)] w-screen overflow-auto">
+<div class="2xl:h-[calc(100vh-12rem)] lg:h-[calc(100vh-13rem)] md:h-[calc(100vh-17rem)] h-[calc(100vh-18rem)] w-screen overflow-hidden">
+  <div class="flex 2xl:h-[calc(100vh-12rem)] lg:h-[calc(100vh-13rem)] md:h-[calc(100vh-17rem)] h-[calc(100vh-18rem)] w-screen overflow-auto">
     {#if display === "grid"}
       <div class="flex-grow" />
       <div>

@@ -45,7 +45,7 @@
   }
 </script>
 
-<div class="grid sm:grid-cols-1 lg:grid-cols-2">
+<div class="grid sm:grid-cols-1 lg:grid-cols-2 foggy">
   <div class="flex items-center p-2">
     <CardFilters
       selRareStore={selectedRaritiesStore}
@@ -70,6 +70,7 @@
   </div>
 </div>
 <CardPagination
+  class="foggy"
   {pageStore}
   executeSearch={executeCardSearch}
   resultStore={cardResultStore}

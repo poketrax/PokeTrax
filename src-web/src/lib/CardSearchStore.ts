@@ -1,5 +1,5 @@
 import { Card, CardSearchResults, EbayPrice, Price } from "./Card";
-import { type Expansion, type Series, ChartData } from "./CardMeta";
+import type { Expansion, Series, ChartData } from "./CardMeta";
 import { writable } from "svelte/store";
 import { baseURL, page as mainPage } from "./Utils";
 import { timer } from "rxjs";
@@ -211,30 +211,30 @@ export function getPriceChartData(card: Card): Promise<ChartData[]> {
     let ebay: EbayPrice[] = await getEbayCardPrices(card);
     let data = new Array<ChartData>();
     for (let point of tcgp) {
-      if(point.price !== 0){
+      if (point.price !== 0) {
         data.push({
-        group: `TCGP-${point.variant}`,
-        key: new Date(point.date),
-        value: point.price,
-      });
+          group: `TCGP-${point.variant}`,
+          key: new Date(point.date),
+          value: point.price,
+        });
       }
     }
     for (let point of ebay) {
-      if (point.rawPrice !== 0){
+      if (point.rawPrice !== 0) {
         data.push({
           group: `eBay-raw`,
           key: new Date(point.date),
           value: point.rawPrice,
         });
       }
-      if(point.gradedPriceNine !== 0){
+      if (point.gradedPriceNine !== 0) {
         data.push({
           group: `eBay-9`,
           key: new Date(point.date),
           value: point.gradedPriceNine,
         });
       }
-      if(point.gradedPriceTen !== 0){
+      if (point.gradedPriceTen !== 0) {
         data.push({
           group: `eBay-10`,
           key: new Date(point.date),
@@ -242,7 +242,7 @@ export function getPriceChartData(card: Card): Promise<ChartData[]> {
         });
       }
     }
-    console.log(JSON.stringify(data))
+    console.log(JSON.stringify(data));
     resolve(data);
   });
 }
