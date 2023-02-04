@@ -28,6 +28,7 @@
       };
     });
   });
+  
   //Sets rarity(expantion) options
   let rarityOptions = [];
   rarityStore.subscribe((data) => {
@@ -59,8 +60,8 @@
 <div class="flex w-full">
   <input
     type="text"
-    placeholder="🔍 Search"
-    class="input input-bordered flex-grow max-w-xs"
+    placeholder="Search"
+    class="input input-bordered rounded-sm flex-grow max-w-x"
     autocomplete="off"
     bind:value={searchTerm}
     on:input={keywordSearch}

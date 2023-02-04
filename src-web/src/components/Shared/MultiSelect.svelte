@@ -56,7 +56,7 @@
             <PokeRarity class="ml-2 w-6 h-6" rarity={option.name} />
           {/if}
           {#if option.icon != null}
-            <img class="h-4 w-4 ml-2 mr-2" src={option.icon} alt="" />
+            <img class="h-4 w-4 ml-2 mr-2 object-contain" src={option.icon} alt="" />
           {/if}
           <span class="bg-transparent">
             {option.name}

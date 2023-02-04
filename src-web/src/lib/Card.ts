@@ -97,6 +97,15 @@ export class Price {
   }
 }
 
+export class EbayPrice {
+  public date: string;
+  public cardId: string;
+  public variant: string;
+  public rawPrice: number;
+  public gradedPriceTen: number;
+  public gradedPriceNine: number;
+}
+
 export class CardSearchResults implements PaginatedResults {
   public count: number = 0;
   public cards: Array<Card> = new Array<Card>();

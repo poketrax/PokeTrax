@@ -2,7 +2,7 @@ export class Expansion {
   public name: string;
   public series: string;
   public tcgName: string = "";
-  public releaseDate: String = "";
+  public releaseDate: string = "";
   public numberOfCards: number = 0;
   public logoURL: string;
   public symbolURL: string;
@@ -17,6 +17,12 @@ export class Expansion {
   public getId(): string {
     return this.name.toLowerCase().replace(" ", "-");
   }
+}
+
+export class ChartData {
+  public group: string;
+  public key: Date;
+  public value: number;
 }
 
 export class Series {

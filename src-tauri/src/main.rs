@@ -16,6 +16,7 @@ use routes::img_handler;
 use routes::admin;
 use routes::poke_product;
 use routes::collections;
+use routes::prices;
 
 mod models;
 mod utils;
@@ -98,6 +99,8 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(admin::admin_series_by_name)
             .service(admin::admin_upsert_series)
             .service(admin::admin_delete_series)
+
+            .service(prices::card_prices_ebay)
             
     })
     .bind(("127.0.0.1", PORT))?

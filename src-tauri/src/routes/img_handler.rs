@@ -40,7 +40,7 @@ async fn card_img(req: HttpRequest) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_card(id.to_string(), None) {
+        match pokemon_data::get_card(&id, None) {
             Ok(card) => {
                 match shared::download_file(card.img.as_str(), path_name.as_str()).await {
                     Ok(()) => {
@@ -59,7 +59,7 @@ async fn card_img(req: HttpRequest) -> Result<impl Responder> {
                     }
                 }
             }
-            Err(e) => {
+            Err(_) => {
                 log::warn!("Failed to find card : {}", id);
                 let image_content = web::block(|| std::fs::read(DEFAULT_IMG.as_str())).await??;
                 Ok(HttpResponse::build(StatusCode::OK)

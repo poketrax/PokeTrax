@@ -4,3 +4,4 @@ pub mod collections;
 pub mod meta;
 pub mod img_handler;
 pub mod admin;
+pub mod prices;

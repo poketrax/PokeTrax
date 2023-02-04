@@ -17,7 +17,7 @@
   import { createEventDispatcher } from "svelte";
   import Icon from "../Shared/Icon.svelte";
   import type { Card } from "../../lib/Card";
-  import { mdiPlus, mdiPencil } from "@mdi/js";
+  import { mdiPlus, mdiPencil, mdiCheck } from "@mdi/js";
   import { cardInCollection } from "../../lib/CollectionStore";
 
   const dispatch = createEventDispatcher();
@@ -31,16 +31,15 @@
 
   let grade: Grade = null;
   let inCollection = false;
-
+  $:cardInCollection(card).then((val) => (inCollection = val));
   $: if (card) {
     grade = Grade.parseGrade(card.grade ?? "");
-    cardInCollection(card.cardId).then((val) => (inCollection = val));
   }
 </script>
 
 <CardCase
   {id}
-  class="hover:shadow-inner w-[300px] pt-4 truncate"
+  class="hover:shadow-inner w-[300px] pt-4 truncate foggy"
   labelBG={`assets/revholo/${formatEnergy(card)}-rev.png`}
   title={card.name}
 >
@@ -82,9 +81,12 @@
         class="btn btn-circle h-12 w-12 shadow-lg mt-2 mb-2 indicator"
         on:click={(event) => dispatch("clickAdd", event)}
       >
-        {#if inCollection}<span
-            class="indicator-item badge w-3 h-3 p-0 badge-info"
-          ></span>{/if}
+        <!--In collection indicator-->
+        {#if inCollection}
+        <span class="indicator-item badge w-6 h-6 p-0 badge-success">
+          <Icon path={mdiCheck} class="w-4 h-4"/>
+        </span>
+        {/if}
         <Icon path={mdiPlus} class="w-6 h-6" />
       </button>
     {/if}

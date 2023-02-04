@@ -15,7 +15,9 @@
   let start = 0;
   let end = 0;
   let lastPage = 0;
+  let clazz = "";
 
+  export { clazz as class };
   export let pageStore: Writable<number>;
   export let resultStore: Writable<PaginatedResults>;
   export let executeSearch: () => void;
@@ -38,7 +40,7 @@
   });
 </script>
 
-<div class="flex items-center">
+<div class="flex items-center background {clazz}">
   <div class="flex-grow" />
   <div class="pr-2">
     {start + 1}-{end} of {total}

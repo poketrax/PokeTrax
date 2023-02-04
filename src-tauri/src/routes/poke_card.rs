@@ -213,7 +213,6 @@ pub async fn card_search_helper(
         Ok(val) => count = val,
         Err(e) => return Err(e),
     }
-
     let _cards: Vec<Card>;
     let search = card_search_sql(
         page,
@@ -284,7 +283,7 @@ pub async fn card_prices(
     _: web::Query<PriceSearch>,
 ) -> Result<impl Responder> {
     let _id = urlencoding::decode(id.as_str()).unwrap().to_string();
-    match get_card(_id, None) {
+    match get_card(&_id, None) {
         Ok(card) => {
             let mut prices: Vec<Price> = Vec::new();
             let data_url = format!(

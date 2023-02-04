@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import fetch from "node-fetch";
 
-let updateFile = "../docs/update.json";
+let updateFile = "../update.json";
 let tauriFile = fs.readFileSync("../src-tauri/tauri.conf.json");
 let tauri = JSON.parse(tauriFile);
 let version = tauri.package.version;

@@ -1,5 +1,5 @@
-import { Card, CardSearchResults, Price } from "./Card";
-import type { Expansion, Series } from "./CardMeta";
+import { Card, CardSearchResults, EbayPrice, Price } from "./Card";
+import type { Expansion, Series, ChartData } from "./CardMeta";
 import { writable } from "svelte/store";
 import { baseURL, page as mainPage } from "./Utils";
 import { timer } from "rxjs";
@@ -115,7 +115,7 @@ export function executeCardSearch() {
 
 export function init_local() {
   expansions()
-    .then((data) => setStore.set(data))
+    .then((data) => setStore.set(data.sort((a,b) => Date.parse(a.releaseDate) > Date.parse(b.releaseDate)? -1 : 1)))
     .catch((err) => console.log(`Failed to load sets \n ${err}`));
   rarities()
     .then((data) => rarityStore.set(data))
@@ -180,5 +180,69 @@ export function getCardPrices(card: Card): Promise<Price[]> {
       .then((res) => res.json())
       .then((data) => reslove(data))
       .catch((err) => reject(err));
+  });
+}
+
+/**
+ * Get card prices
+ * @param card
+ * @param start
+ * @param end
+ * @returns
+ */
+export function getEbayCardPrices(card: Card): Promise<EbayPrice[]> {
+  let now = new Date();
+  let date = new Date(now.setDate(now.getDate() - 360));
+  return new Promise<EbayPrice[]>((reslove, reject) => {
+    let url = new URL(
+      `${baseURL}/pokemon/card/price/ebay/${encodeURIComponent(card.cardId)}`
+    );
+    url.searchParams.set("start", date.toISOString());
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => reslove(data))
+      .catch((err) => reject(err));
+  });
+}
+
+export function getPriceChartData(card: Card): Promise<ChartData[]> {
+  return new Promise<ChartData[]>(async (resolve, _) => {
+    let tcgp: Price[] = await getCardPrices(card);
+    let ebay: EbayPrice[] = await getEbayCardPrices(card);
+    let data = new Array<ChartData>();
+    for (let point of tcgp) {
+      if (point.price !== 0) {
+        data.push({
+          group: `TCGP-${point.variant}`,
+          key: new Date(point.date),
+          value: point.price,
+        });
+      }
+    }
+    for (let point of ebay) {
+      if (point.rawPrice !== 0) {
+        data.push({
+          group: `eBay-raw`,
+          key: new Date(point.date),
+          value: point.rawPrice,
+        });
+      }
+      if (point.gradedPriceNine !== 0) {
+        data.push({
+          group: `eBay-9`,
+          key: new Date(point.date),
+          value: point.gradedPriceNine,
+        });
+      }
+      if (point.gradedPriceTen !== 0) {
+        data.push({
+          group: `eBay-10`,
+          key: new Date(point.date),
+          value: point.gradedPriceTen,
+        });
+      }
+    }
+    console.log(JSON.stringify(data));
+    resolve(data);
   });
 }
