@@ -28,6 +28,7 @@
       };
     });
   });
+  
   //Sets rarity(expantion) options
   let rarityOptions = [];
   rarityStore.subscribe((data) => {

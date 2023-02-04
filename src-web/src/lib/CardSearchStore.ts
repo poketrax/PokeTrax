@@ -115,7 +115,7 @@ export function executeCardSearch() {
 
 export function init_local() {
   expansions()
-    .then((data) => setStore.set(data))
+    .then((data) => setStore.set(data.sort((a,b) => Date.parse(a.releaseDate) > Date.parse(b.releaseDate)? -1 : 1)))
     .catch((err) => console.log(`Failed to load sets \n ${err}`));
   rarities()
     .then((data) => rarityStore.set(data))

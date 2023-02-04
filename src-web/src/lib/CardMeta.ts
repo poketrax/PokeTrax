@@ -2,7 +2,7 @@ export class Expansion {
   public name: string;
   public series: string;
   public tcgName: string = "";
-  public releaseDate: String = "";
+  public releaseDate: string = "";
   public numberOfCards: number = 0;
   public logoURL: string;
   public symbolURL: string;
