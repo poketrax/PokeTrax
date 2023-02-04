@@ -13,8 +13,8 @@
   }
 </script>
 
-<div
-  class="relative max-w-32 h-24 border-solid border-2 rounded-lg hover:bg-gray-300 border-gray-400 bg-gray-200"
+<button
+  class="relative max-w-32 h-24 border-solid border-2 rounded-lg foggy hover:bg-gray-100"
 >
   <div class="absolute w-full h-24">
     <div class="h-24 w-full flex flex-col" on:click={clickSet}>
@@ -36,4 +36,4 @@
       alt={name}
     />
   </div>
-</div>
+</button>

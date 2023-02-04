@@ -5,7 +5,7 @@
   import { onMount } from "svelte";
 
   let bgSelector;
-  
+
   onMount(() => {
     backgroundStore.subscribe((val) => {
       bgSelector.value = val[0];
@@ -22,21 +22,17 @@
     <Icon path={mdiCog} class="w-6 m-2" />
     <span class="normal-case text-xl">Settings</span>
   </div>
-  <div class="form-control">
-    <label class="label">
-      <span class="label-text">Background Image</span>
-    </label>
-    <label class="input-group ">
-      <span class="w-24">Image</span>
-      <select
-        class="select select-bordered w-96"
-        on:change={updateBgImage}
-        bind:this={bgSelector}
-      >
-        {#each [...bgOptions.keys()] as opt}
-          <option>{opt}</option>
-        {/each}
-      </select>
-    </label>
-  </div>
+  <div class="h-4"/>
+  <label class="input-group ">
+    <span class="w-48 bg-primary">Background Image</span>
+    <select
+      class="select select-bordered w-96"
+      on:change={updateBgImage}
+      bind:this={bgSelector}
+    >
+      {#each [...bgOptions.keys()] as opt}
+        <option>{opt}</option>
+      {/each}
+    </select>
+  </label>
 </div>
