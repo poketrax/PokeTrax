@@ -1,8 +1,11 @@
 <script lang="ts">
+	import ImgOption from './../Shared/AutoMultiSelect/ImgOption.svelte';
   import { setStore, rarityStore } from "../../lib/CardSearchStore";
-  import MultiSelect from "../Shared/MultiSelect.svelte";
   import type { Writable } from "svelte/store";
   import { baseURL } from "../../lib/Utils";
+  import AutoMultiSelect from "../Shared/AutoMultiSelect/AutoMultiSelect.svelte";
+  import type { SelectOption } from "../Shared/AutoMultiSelect/SelectOption";
+  import RarityOption from '../Shared/AutoMultiSelect/RarityOption.svelte';
 
   //Selected Rarities
   export let selRareStore: Writable<string[]>;
@@ -18,13 +21,14 @@
   export let executeSearch: () => void;
 
   //Set (expantion options)
-  let setOptions = [];
+  let setOptions : SelectOption[];
   setStore.subscribe((data) => {
     setOptions = data.map((opt) => {
       return {
-        name: opt.name,
         value: opt.name,
-        icon: baseURL + "/pokemon/expansion/symbol/" + opt.name,
+        metaData: { imgSrc: `${baseURL}/pokemon/expansion/symbol/${opt.name}` },
+        sortProp: Date.parse(opt.releaseDate),
+        component: ImgOption
       };
     });
   });
@@ -34,8 +38,9 @@
   rarityStore.subscribe((data) => {
     rarityOptions = data.map((opt) => {
       return {
-        name: opt,
         value: opt,
+        sortProp: opt,
+        component: RarityOption
       };
     });
   });
@@ -67,18 +72,7 @@
     on:input={keywordSearch}
   />
   <div class="w-2" />
-  <MultiSelect
-    label="Sets"
-    options={setOptions}
-    dataStore={selSetsStore}
-    on:change={filterSets}
-  />
+  <AutoMultiSelect options={setOptions} dataStore={selSetsStore} label="Sets" on:change={filterSets}/>
   <div class="w-2" />
-  <MultiSelect
-    label="Rarity"
-    rarity
-    options={rarityOptions}
-    dataStore={selRareStore}
-    on:change={filterRarity}
-  />
+  <AutoMultiSelect options={rarityOptions} dataStore={selRareStore} label="Rarity" on:change={filterSets}/>
 </div>
