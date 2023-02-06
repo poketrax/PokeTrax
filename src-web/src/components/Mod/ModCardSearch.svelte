@@ -75,7 +75,7 @@
 
 {#if selectedCard == null && showMassEdit === false}
   <!--Search Controls-->
-  <div class="grid grid-cols-1 gap-1">
+  <div class="grid foggy grid-cols-1 gap-1">
     <div class="flex w-full items-center">
       <div class="w-2" />
       <CardFilters

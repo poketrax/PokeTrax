@@ -15,12 +15,12 @@
   import { createEventDispatcher } from "svelte";
   import { writable } from "svelte/store";
   import BasicToast from "../Shared/BasicToast.svelte";
-  import MultiSelect from "../Shared/MultiSelect.svelte";
   import {
     deleteCard,
     upsertCard,
     variantOptions,
   } from "../../lib/AdminDataStore";
+  import AutoMultiSelect from "../Shared/AutoMultiSelect/AutoMultiSelect.svelte";
 
   const dispatch = createEventDispatcher();
   export let card: Card;
@@ -33,7 +33,7 @@
   let expOptions = new Array<string>();
   let date = card.releaseDate.slice(0, 10);
   let variantOptionsForm = variantOptions.map((val) => {
-    return { name: val };
+    return { value: val };
   });
 
   let selectedVariants = writable(Array<string>());
@@ -290,11 +290,7 @@
           <tr>
             <td>Card Variants</td>
             <td>
-              <MultiSelect
-                label="Variants"
-                options={variantOptionsForm}
-                dataStore={selectedVariants}
-              />
+              <AutoMultiSelect options={variantOptionsForm} dataStore={selectedVariants} label="Sets"/>
             </td>
           </tr>
           <tr>

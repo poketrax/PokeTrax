@@ -7,7 +7,7 @@
   });
 </script>
 
-<div class="flex h-[500px]">
+<div class="flex h-screen">
   <div class="flex-grow" />
   <div class="grid">
     <div>{status.msg}</div>

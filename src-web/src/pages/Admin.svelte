@@ -46,7 +46,7 @@
   }
 </script>
 
-<div class="navbar rounded-xl w-screen">
+<div class="navbar foggy rounded-xl w-screen">
   <span class="text-lg ml-2"> Admin Console</span>
   <div class="flex-grow" />
   <div class="tabs">
@@ -81,8 +81,8 @@
   </div>
 </div>
 {#if adminSettings.path == null || adminSettings.path === ""}
-  <div class="flex items-center justify-center h-48">
-    <div>File not set</div>
+  <div class="flex items-center justify-center h-[calc(100vh-8rem)]">
+    <div class="foggy p-4 rounded-3xl">File not set</div>
   </div>
 {:else if cardSearch !== ""}
   <ModCardSearch />
