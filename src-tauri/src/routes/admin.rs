@@ -4,7 +4,7 @@ use crate::utils::sql_pokemon_data::{
     delete_card, delete_expantion, delete_series, get_expansion, get_expansions, get_rarities,
     get_series, get_series_list, upsert_card, upsert_expantion, upsert_series
 };
-use crate::utils::shared::{get_admin_file_path, get_admin_mode};
+use crate::utils::settings::{get_admin_file_path, get_admin_mode};
 use actix_web::{delete, error, get, put, web, HttpResponse, Responder, Result};
 use serde::{Serialize, Deserialize};
 #[derive(Serialize)]

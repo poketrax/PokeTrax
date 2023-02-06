@@ -21,7 +21,7 @@ use routes::prices;
 mod models;
 mod utils;
 use utils::sql_collection_data;
-use utils::shared::update_admin_mode;
+use utils::settings::update_admin_mode;
 
 const PORT: u16 = 3131;
 

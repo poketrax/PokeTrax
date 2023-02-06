@@ -1,6 +1,7 @@
 /// This file pretains to all Pokemon database interactions and meta data for the database
 use crate::models::pokemon::{Card, Expantion, SealedProduct, Series};
-use crate::utils::shared::{get_data_dir, get_admin_file_path, update_admin_file_path};
+use crate::utils::shared::{get_data_dir,};
+use crate::utils::settings::{get_admin_file_path, update_admin_file_path};
 use rusqlite::{Connection, Result, named_params};
 use lazy_static::lazy_static;
 use super::shared::in_list;
