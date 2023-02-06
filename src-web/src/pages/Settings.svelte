@@ -1,28 +1,8 @@
 <script lang="ts">
-	import { baseURL } from './../lib/Utils';
-  import { setStore } from "./../lib/CardSearchStore";
   import Icon from "./../components/Shared/Icon.svelte";
   import { mdiCog } from "@mdi/js";
   import { bgOptions, backgroundStore } from "../lib/SettingStore";
   import { onMount } from "svelte";
-  import AutoMultiSelect from "../components/Shared/AutoMultiSelect/AutoMultiSelect.svelte";
-  import { writable } from "svelte/store";
-  import type { SelectOption } from "../components/Shared/AutoMultiSelect/SelectOption";
-  import ImgOption from '../components/Shared/AutoMultiSelect/ImgOption.svelte';
-
-  let multiOps = new Array<SelectOption>();
-
-  setStore.subscribe((val) => {
-    multiOps = val.map((exp) => {
-      return {
-        value: exp.name,
-        metaData: { imgSrc: `${baseURL}/pokemon/expansion/symbol/${exp.name}` },
-        sortProp: Date.parse(exp.releaseDate),
-        component: ImgOption
-      };
-    });
-  });
-  let selectedOps = writable(new Array<string>());
 
   let bgSelector;
 
@@ -55,5 +35,4 @@
       {/each}
     </select>
   </label>
-  <AutoMultiSelect options={multiOps} dataStore={selectedOps} label="test" />
 </div>
