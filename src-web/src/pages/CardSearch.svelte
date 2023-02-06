@@ -104,7 +104,7 @@
       </div>
       <div class="flex-grow" />
     {:else}
-      <table class="table w-full ml-4 mr-2">
+      <table class="table w-full">
         <thead>
           <tr>
             <th>Select</th>
