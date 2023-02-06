@@ -1,6 +1,6 @@
 use crate::models::pokemon::{Expantion, Series, Card};
 use crate::routes::poke_card::{card_search_helper, CardSearch};
-use crate::utils::pokemon_data::{
+use crate::utils::sql_pokemon_data::{
     delete_card, delete_expantion, delete_series, get_expansion, get_expansions, get_rarities,
     get_series, get_series_list, upsert_card, upsert_expantion, upsert_series
 };

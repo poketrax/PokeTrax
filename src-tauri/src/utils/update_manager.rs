@@ -1,5 +1,5 @@
-use crate::utils::pokemon_data::POKE_DB_PATH;
-use crate::utils::prices_data::PRICES_DB_PATH;
+use crate::utils::sql_pokemon_data::POKE_DB_PATH;
+use crate::utils::sql_prices_data::PRICES_DB_PATH;
 use crate::utils::shared::{download_file, get_data_dir};
 use lazy_static::lazy_static;
 use log::{info, warn};
@@ -219,3 +219,4 @@ async fn get_meta_data(url: Option<&str>) -> Result<PokeDataMeta, Box<dyn std::e
     let mut json_reader = serde_json::Deserializer::from_reader(file);
     Ok(PokeDataMeta::deserialize(&mut json_reader)?)
 }
+

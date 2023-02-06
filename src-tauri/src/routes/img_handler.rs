@@ -1,5 +1,5 @@
 use crate::utils::{
-    pokemon_data,
+    sql_pokemon_data,
     shared::{self, get_data_dir},
 };
 use actix_web::{get, web, HttpRequest, HttpResponse, Responder, Result};
@@ -40,7 +40,7 @@ async fn card_img(req: HttpRequest) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_card(&id, None) {
+        match sql_pokemon_data::get_card(&id, None) {
             Ok(card) => {
                 match shared::download_file(card.img.as_str(), path_name.as_str()).await {
                     Ok(()) => {
@@ -93,7 +93,7 @@ async fn exp_logo(name: web::Path<String>) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_expansion(_name.to_string(), None) {
+        match sql_pokemon_data::get_expansion(_name.to_string(), None) {
             Ok(exp) => {
                 match shared::download_file(exp.logoURL.as_str().clone(), path_name.as_str()).await
                 {
@@ -150,7 +150,7 @@ async fn exp_symbol(name: web::Path<String>) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_expansion(_name.to_string(), None) {
+        match sql_pokemon_data::get_expansion(_name.to_string(), None) {
             Ok(exp) => {
                 match shared::download_file(exp.symbolURL.as_str().clone(), path_name.as_str())
                     .await
@@ -208,7 +208,7 @@ async fn series_symbol(name: web::Path<String>) -> Result<impl Responder> {
             .body(image_content))
     } else {
         //Try to pull card and cache it
-        match pokemon_data::get_series(_name.to_string(), None) {
+        match sql_pokemon_data::get_series(_name.to_string(), None) {
             Ok(series) => {
                 match shared::download_file(series.icon.as_str().clone(), path_name.as_str()).await
                 {

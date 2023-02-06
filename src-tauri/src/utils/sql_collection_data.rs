@@ -1,7 +1,7 @@
-
+/// This Module is used interact with the collections database file.
 use crate::models::pokemon::Card;
 use crate::routes::collections::Tag;
-use crate::utils::pokemon_data::POKE_DB_PATH;
+use crate::utils::sql_pokemon_data::POKE_DB_PATH;
 use crate::utils::shared::{get_data_dir, in_list, json_list_value};
 use lazy_static::lazy_static;
 use rusqlite::{Connection, Result};

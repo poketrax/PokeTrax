@@ -20,7 +20,7 @@ use routes::prices;
 
 mod models;
 mod utils;
-use utils::collection_data;
+use utils::sql_collection_data;
 use utils::shared::update_admin_mode;
 
 const PORT: u16 = 3131;
@@ -119,7 +119,7 @@ fn main(){
     SimpleLogger::new().with_level(level).init().unwrap();
     init_data_paths();
     update_admin_mode(args.admin);
-    collection_data::initialize_data();
+    sql_collection_data::initialize_data();
     //Check for cli commands
     let data_type = args.data.clone().unwrap_or_default().to_lowercase();
     if data_type.eq("cards") {

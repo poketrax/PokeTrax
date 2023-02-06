@@ -1,6 +1,6 @@
 use crate::models::pokemon::Card;
 use crate::routes::poke_card::CardSearch;
-use crate::utils::collection_data::{
+use crate::utils::sql_collection_data::{
     add_tag, delete_card, delete_tag, get_tags, search_card_collection,
     search_card_collection_count, upsert_card,
 };

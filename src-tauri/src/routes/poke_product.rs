@@ -1,5 +1,5 @@
 use crate::models::pokemon::SealedProduct;
-use crate::utils::pokemon_data;
+use crate::utils::sql_pokemon_data;
 use actix_web::{error, get, web, Responder, Result};
 use serde::{Deserialize, Serialize};
 use urlencoding;
@@ -53,13 +53,13 @@ pub async fn product_search(
 
     let count: i64;
 
-    match pokemon_data::product_count(Some(name_filter.clone()), None) {
+    match sql_pokemon_data::product_count(Some(name_filter.clone()), None) {
         Ok(val) => count = val,
         Err(e) => return Err(error::ErrorInternalServerError(e)),
     }
 
     let products: Vec<SealedProduct>;
-    match pokemon_data::product_search_sql(*page, Some(name_filter.clone()), Some(sort), None)
+    match sql_pokemon_data::product_search_sql(*page, Some(name_filter.clone()), Some(sort), None)
     {
         Ok(val) => products = val,
         Err(e) => return Err(error::ErrorInternalServerError(e)),

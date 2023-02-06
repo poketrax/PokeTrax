@@ -1,5 +1,5 @@
 use crate::models::pokemon::{Card, Expantion, Price, Series};
-use crate::utils::pokemon_data::{
+use crate::utils::sql_pokemon_data::{
     card_count, card_search_sql, get_card, get_expansion, get_expansions, get_rarities, get_series,
     get_series_list,
 };

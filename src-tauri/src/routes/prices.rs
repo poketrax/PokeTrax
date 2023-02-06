@@ -1,7 +1,7 @@
 use serde::{Serialize, Deserialize};
 use actix_web::{get, web, Responder, Result};
 use urlencoding;
-use crate::utils::prices_data::get_prices;
+use crate::utils::sql_prices_data::get_prices;
 
 #[allow(non_snake_case)]
 #[derive(Serialize)]
