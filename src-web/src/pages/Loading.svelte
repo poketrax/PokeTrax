@@ -7,12 +7,16 @@
   });
 </script>
 
-<div class="flex h-screen">
+<div class="flex h-[calc(100vh-4rem)]">
   <div class="flex-grow" />
-  <div class="grid">
+  <div class="flex flex-col"> 
     <div>{status.msg}</div>
+    <div class=" h-16"/>
     <div class="classic-10" />
-    <PokeBallSpinner />
+    <div class=" h-24"/>
+    <div>
+      <PokeBallSpinner />
+    </div>
   </div>
   <div class="flex-grow" />
 </div>
