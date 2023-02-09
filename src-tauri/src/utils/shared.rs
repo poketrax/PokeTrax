@@ -3,7 +3,7 @@ use directories::ProjectDirs;
 use futures_util::StreamExt;
 use log::debug;
 use regex::Regex;
-use std::{fs::File, io::Write, path::Path};
+use std::{fs, io::Write, path::Path};
 
 /// Retieves the absolute path of the data dir based on OS.
 pub fn get_data_dir() -> String {
@@ -21,6 +21,25 @@ pub fn get_data_dir() -> String {
     debug!("Data Path: {}", path);
     return path;
 }
+/// Delete all files in a directory
+/// # Arguments
+///    * dir - directory to delete from
+pub fn delete_all_files(dir: &str) {
+    let path = Path::new(dir);
+
+    if path.is_dir() {
+        for entry in fs::read_dir(path).unwrap() {
+            let entry = entry.unwrap();
+            let path = entry.path();
+
+            if path.is_file() {
+                fs::remove_file(path).unwrap();
+            } else if path.is_dir() {
+                fs::remove_dir_all(path).unwrap();
+            }
+        }
+    }
+}
 
 /// File download utility
 /// # Arguments
@@ -36,7 +55,7 @@ pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
     if res.status() == reqwest::StatusCode::NOT_FOUND {
         return Err(String::from("404 error pulling data"));
     } else {
-        let mut file = File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
+        let mut file = fs::File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
         let mut stream = res.bytes_stream();
         while let Some(item) = stream.next().await {
             let chunk = item.or(Err(format!("Error while downloading file")))?;
