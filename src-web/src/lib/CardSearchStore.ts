@@ -90,7 +90,7 @@ async function statusLoop() {
 export function executeCardSearch() {
   let url = new URL(`${baseURL}/pokemon/cards/${page}`);
   if (selectedSets.length !== 0) {
-    url.searchParams.set(`expansions`, encodeURI(JSON.stringify(selectedSets)));
+    url.searchParams.set(`expansions`,JSON.stringify(selectedSets));
   }
   if (searchTerm !== "") {
     url.searchParams.set(`name`, searchTerm);

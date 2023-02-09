@@ -1,4 +1,4 @@
-use crate::utils::settings::{get_admin_file_path, update_admin_file_path};
+use crate::utils::settings::{get_admin_file_path, update_admin_file_path, Settings, get_settings, write_settings, update_settings};
 use crate::utils::shared::get_static_resources;
 use crate::utils::update_manager::{check_for_updates, read_db_status};
 use actix_web::{error, get, post, put, web, HttpResponse, Responder, Result};
@@ -7,10 +7,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Serialize)]
 pub struct OpenReq {
     url: String,
-}
-#[derive(Deserialize, Serialize)]
-pub struct AdminDB {
-    data_path: String,
 }
 
 /// Get Databases status
@@ -40,19 +36,18 @@ pub async fn open(req: web::Json<OpenReq>) -> Result<impl Responder> {
     }
 }
 
-/// Update the admin database location
-#[put("/meta/admindb")]
-pub async fn set_admin_db(req: web::Json<AdminDB>) -> Result<impl Responder> {
-    let path = req.into_inner().data_path;
-    update_admin_file_path(path);
-    Ok(HttpResponse::Accepted())
+// Get the admin database location
+#[get("/meta/settings")]
+pub async fn get_settings_rest() -> Result<impl Responder> {
+    let settings = get_settings();
+    Ok(web::Json(settings))
 }
 
-// Get the admin database location
-#[get("/meta/admindb")]
-pub async fn get_admin_db() -> Result<impl Responder> {
-    let path = AdminDB {
-        data_path: get_admin_file_path(),
-    };
-    Ok(web::Json(path))
+/// Update the admin database location
+#[put("/meta/settings")]
+pub async fn set_settings(req: web::Json<Settings>) -> Result<impl Responder> {
+    let settings = req.0;
+    write_settings(&settings)?;
+    update_settings(settings);
+    Ok(HttpResponse::Accepted())
 }

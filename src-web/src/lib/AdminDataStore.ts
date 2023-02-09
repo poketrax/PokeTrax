@@ -3,11 +3,6 @@ import type { Expansion, Series } from "./CardMeta";
 import { writable } from "svelte/store";
 import { baseURL } from "./Utils";
 
-export class AdminSettings {
-  public admin: boolean = false;
-  public path: string = "";
-}
-
 /////////////
 /*Meta data*/
 /////////////
@@ -55,19 +50,11 @@ export const cardSearchDisplay = writable("grid");
 export let page = 0;
 export const pageStore = writable(0);
 pageStore.subscribe((val) => (page = val));
-//AdminPage
-export let adminSettingStore = writable(new AdminSettings());
 
 /**
  * Init admin store
  */
 export function initAdminStore() {
-  getAdminSettings()
-    .then((val) => {
-      adminSettingStore.set(val);
-      executeCardSearch();
-    })
-    .catch((e) => console.log(e));
   expansions().then((val) => setStore.set(val));
   series().then((val) => seriesStore.set(val));
 }
@@ -172,18 +159,6 @@ function series(): Promise<Series[]> {
 function rarities(): Promise<string[]> {
   return new Promise<string[]>((resolve, reject) => {
     fetch(`${baseURL}/admin/pokemon/card/rarities`)
-      .then((res) => res.json())
-      .then((data) => resolve(data))
-      .catch((err) => reject(err));
-  });
-}
-
-/**
- * Gets state of the admin page
- */
-export function getAdminSettings(): Promise<AdminSettings> {
-  return new Promise<AdminSettings>((resolve, reject) => {
-    fetch(`${baseURL}/admin_settings`)
       .then((res) => res.json())
       .then((data) => resolve(data))
       .catch((err) => reject(err));

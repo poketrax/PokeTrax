@@ -15,7 +15,6 @@ lazy_static! {
     pub static ref POKE_COLLECTION_DB_PATH: String =
         format!("{}{}", get_data_dir(), "/collections.sql");
 }
-
 /// Initializes the Collection database if it doesn't exists
 pub fn initialize_data() {
     log::info!("Creating collection tables");

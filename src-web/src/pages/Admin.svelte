@@ -1,24 +1,23 @@
 <script lang="ts">
+  import { settingStore } from "./../lib/SettingStore";
   import Icon from "../components/Shared/Icon.svelte";
   import ModCardSearch from "../components/Mod/ModCardSearch.svelte";
   import ModSetSearch from "../components/Mod/ModSetSearch.svelte";
   import ModSeriesSearch from "../components/Mod/ModSeriesSearch.svelte";
-  import {
-    adminSettingStore,
-    AdminSettings,
-    updateDbPath,
-  } from "../lib/AdminDataStore";
   import { mdiArrowRightThinCircleOutline } from "@mdi/js";
+  import type { Settings } from "../lib/SettingStore";
+  import { executeCardSearch } from "../lib/AdminDataStore";
 
-  let adminSettings = new AdminSettings();
+  let adminSettings : Settings;
   let cardSearch = "tab-active";
   let setSearch = "";
   let seriesSearch = "";
   let dbPath = "";
 
-  adminSettingStore.subscribe((val) => {
+  settingStore.subscribe((val) => {
     adminSettings = val;
-    dbPath = val.path;
+    
+    executeCardSearch();
   });
 
   function tabClick(tab: string) {
@@ -42,7 +41,10 @@
   }
 
   function setDbPath() {
-    updateDbPath(dbPath);
+    settingStore.update((val) => {
+      val.admin_file = dbPath;
+      return val;
+    });
   }
 </script>
 
@@ -80,7 +82,7 @@
     </div>
   </div>
 </div>
-{#if adminSettings.path == null || adminSettings.path === ""}
+{#if adminSettings.admin_file == null || adminSettings.admin_file === ""}
   <div class="flex items-center justify-center h-[calc(100vh-8rem)]">
     <div class="foggy p-4 rounded-3xl">File not set</div>
   </div>

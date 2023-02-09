@@ -5,8 +5,8 @@
   export let product: SealedProduct;
 </script>
 
-<div class="card card-side bg-base-100 shadow-xl h-72">
-  <div class="bg-white flex items-center justify-center">
+<div class="card card-side bg-base-100 shadow-xl h-72 foggy">
+  <div class="flex rounded-l-xl bg-white items-center justify-center">
     <div class="m-2 w-48 h-48 lg:w-36 lg:h-36">
       <img
         class="object-contain h-48 w-48 lg:w-36 lg:h-36"
@@ -15,7 +15,7 @@
       />
     </div>
   </div>
-  <div class="card-body">
+  <div class="card-body ">
     <h2 class="card-title lg:text-lg">{product.name}</h2>
     <p>{formatPrice(product.price)}</p>
     <div class="card-actions justify-end">

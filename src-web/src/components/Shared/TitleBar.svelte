@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { AdminSettings, adminSettingStore } from "../../lib/AdminDataStore";
+	import { Settings, settingStore } from './../../lib/SettingStore';
   import logo from "../../assets/poketrax.png";
   import { page } from "../../lib/Utils";
   import { mdiCog } from "@mdi/js";
   import Icon from "./Icon.svelte";
 
-  let adminState = new AdminSettings();
-  adminSettingStore.subscribe((val) => (adminState = val));
+  let admin = false;
+  settingStore.subscribe((val) => (admin = val.admin));
 </script>
 
 <div class="sticky top-0 w-full h-16 bg-gray-400 flex flex-row">
@@ -52,7 +52,7 @@
         Collection
       </button>
       <div class="w-6" />
-      {#if adminState.admin}
+      {#if admin}
         <button
           id="collection-page"
           class="hover:text-blue-700"

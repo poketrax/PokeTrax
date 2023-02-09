@@ -3,6 +3,7 @@ extern crate simple_error;
 extern crate reqwest;
 use actix_web::{HttpServer, rt, App};
 use actix_cors::Cors;
+use utils::settings::read_settings;
 use std::{sync::mpsc, thread, fs::create_dir_all, path::PathBuf};
 use log::LevelFilter;
 use clap::Parser;
@@ -80,8 +81,9 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(meta::init)
             .service(meta::get_status)
             .service(meta::open)
-            .service(meta::set_admin_db)
-            
+            .service(meta::get_settings_rest)
+            .service(meta::set_settings)
+
             .service(img_handler::card_img)
             .service(img_handler::exp_symbol)
             .service(img_handler::exp_logo)
@@ -119,6 +121,7 @@ fn main(){
     SimpleLogger::new().with_level(level).init().unwrap();
     init_data_paths();
     update_admin_mode(args.admin);
+    read_settings();
     sql_collection_data::initialize_data();
     //Check for cli commands
     let data_type = args.data.clone().unwrap_or_default().to_lowercase();

@@ -4,6 +4,7 @@ import type { Card } from "./Card";
 import { initCardStore } from "./CardSearchStore";
 import { initCollectionStore } from "./CollectionStore";
 import { initAdminStore } from "./AdminDataStore";
+import { initSettingStore } from "./SettingStore";
 
 export const baseURL = "http://localhost:3131";
 
@@ -41,6 +42,7 @@ export function init() {
   initCardStore();
   initAdminStore();
   initCollectionStore();
+  initSettingStore();
 }
 
 export function getTextColorBgContrast(hexcolor) {

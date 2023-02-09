@@ -21,7 +21,7 @@
   <input
     type="text"
     placeholder="🔍 Search"
-    class="input input-bordered w-full max-w-xs"
+    class="input input-bordered w-96 "
     bind:value={searchTerm}
     on:input={keywordSearch}
   />

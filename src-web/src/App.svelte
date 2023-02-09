@@ -1,6 +1,6 @@
 <script lang="ts">
   import TitleBar from "./components/Shared/TitleBar.svelte";
-  import { backgroundStore } from "./lib/SettingStore";
+  import { settingStore } from "./lib/SettingStore";
   import { page } from "./lib/Utils";
   import Mod from "./pages/Admin.svelte";
   import CardSearch from "./pages/CardSearch.svelte";
@@ -14,7 +14,7 @@
   page.subscribe((value) => (pageVal = value));
 
   let bgImage = ""
-  backgroundStore.subscribe((val) => bgImage = val[1])
+  settingStore.subscribe((val) => bgImage = val.bg_img)
 </script>
 
 <div class="poketrax" style="background-image: url({bgImage})">
