@@ -1,7 +1,7 @@
 /// This file pretains to all Pokemon database interactions and meta data for the database
 use crate::models::pokemon::{Card, Expantion, SealedProduct, Series};
 use crate::utils::shared::{get_data_dir,};
-use crate::utils::settings::{get_admin_file_path, update_admin_file_path};
+use crate::utils::settings::{get_admin_file_path};
 use rusqlite::{Connection, Result, named_params};
 use lazy_static::lazy_static;
 use super::shared::in_list;
@@ -160,9 +160,10 @@ pub fn delete_expantion(name: String) -> Result<(), Box<dyn std::error::Error>> 
 #[cfg(test)]
 mod expantion_tests {
     use super::*;
+    use crate::utils::settings::update_admin_file_path;
     #[test]
     fn test_expantion_add_remove() {
-        update_admin_file_path(String::from("./test-data/data.sql"));
+        update_admin_file_path("./test-data/data.sql");
         let mut exp = Expantion {
             name: String::from("TEST_EXP"),
             series: String::from("TEST_SERIES"),
@@ -294,9 +295,10 @@ pub fn delete_series(name: String) -> Result<(), Box<dyn std::error::Error>>{
 #[cfg(test)]
 mod series_tests {
     use super::*;
+    use crate::utils::settings::update_admin_file_path;
     #[test]
     fn test_series_add_remove() {
-        update_admin_file_path(String::from("./test-data/data.sql"));
+        update_admin_file_path("./test-data/data.sql");
         let mut series = Series {
             name: String::from("TEST_SERIES"),
             icon: String::from("icon.jpg"),
@@ -447,8 +449,7 @@ pub fn card_search_sql(
     let mut query = connection.prepare(statement.as_str())?;
     let rows = query.query_map([], |row| {
         let variants_str: String = row.get(10).unwrap_or_default();
-        let variants: Vec<String> =
-            serde_json::from_str(variants_str.as_str()).expect("JSON parsing error");
+        let variants: Vec<String> = serde_json::from_str(&variants_str).unwrap_or_default();
         Ok(Card {
             name: row.get(0).unwrap_or_default(),
             cardId: row.get(1).unwrap_or_default(),
@@ -610,9 +611,10 @@ pub fn delete_card(cardId: &str) -> Result<(), Box<dyn std::error::Error>> {
 #[cfg(test)]
 mod upsert_card_test {
     use super::*;
+    use crate::utils::settings::update_admin_file_path;
     #[test]
     fn test_add_delete() {
-        update_admin_file_path(String::from("./test-data/data.sql"));
+        update_admin_file_path("./test-data/data.sql");
         let mut card = Card {
             cardId : String::from("TEST_CARD"),
             name: String::from("TEST_CARD"),
