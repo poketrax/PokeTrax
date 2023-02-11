@@ -47,3 +47,16 @@ export async function setSetting(update: Settings) {
     body: JSON.stringify(update),
   }); 
 }
+
+export async function clearCardCache(set?: string){
+  let url = `${baseURL}/meta/card_cache`
+  if(set != null){
+    url = `${url}/${set.replaceAll(" ", "-")}`
+  }
+  fetch(url,{method: "DELETE"});
+}
+
+export async function clearExpCache(){
+  let url = `${baseURL}/meta/exp_cache`
+  fetch(url,{method: "DELETE"});
+}

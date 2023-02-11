@@ -24,10 +24,12 @@
   let setOptions : SelectOption[];
   setStore.subscribe((data) => {
     setOptions = data.map((opt) => {
+      let date = new Date(Date.parse(opt.releaseDate))
+      let sort = opt.releaseDate !== "" ? Date.parse(date.toISOString()) : 0
       return {
         value: opt.name,
         metaData: { imgSrc: `${baseURL}/pokemon/expansion/symbol/${opt.name}` },
-        sortProp: Date.parse(opt.releaseDate),
+        sortProp:  sort,
         component: ImgOption
       };
     });
@@ -74,5 +76,5 @@
   <div class="w-2" />
   <AutoMultiSelect options={setOptions} dataStore={selSetsStore} label="Sets" on:change={filterSets}/>
   <div class="w-2" />
-  <AutoMultiSelect options={rarityOptions} dataStore={selRareStore} label="Rarity" on:change={filterSets}/>
+  <AutoMultiSelect options={rarityOptions} dataStore={selRareStore} label="Rarity" on:change={filterRarity}/>
 </div>
