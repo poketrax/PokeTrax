@@ -52,7 +52,6 @@ pub async fn set_settings(req: web::Json<Settings>) -> Result<impl Responder> {
     Ok(HttpResponse::Accepted())
 }
 
-
 #[derive(Deserialize)]
 pub struct CardCacheDelete{
     exp: Option<String>
@@ -72,7 +71,7 @@ pub async fn delete_card_cache(path : web::Path<CardCacheDelete>) -> Result<impl
 }
 
 /// Update the admin database location
-#[delete("/meta/exp_cache/")]
+#[delete("/meta/exp_cache")]
 pub async fn delete_exp_cache() -> Result<impl Responder> {
     let logo = format!("{}/{}",get_data_dir(),"exp_logo");
     let symbol = format!("{}/{}",get_data_dir(),"exp_symb");
