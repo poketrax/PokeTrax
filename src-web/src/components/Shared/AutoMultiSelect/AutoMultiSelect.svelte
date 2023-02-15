@@ -67,7 +67,7 @@
       <input class="input input-xs mt-2 ml-4 w-72 input-bordered" placeholder="Search" bind:value={searchTerm} on:change={() => sortOptions(searchTerm)}/>
       <div class="h-2" />
       {#each displayedOptions as option}
-        <div class="flex items-center {() => selectedStyle(option)}">
+        <div class="flex items-center  {() => selectedStyle(option)}" tabindex="0">
           <input
             type="checkbox"
             id={option.value}
