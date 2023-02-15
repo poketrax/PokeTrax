@@ -83,6 +83,8 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(meta::open)
             .service(meta::get_settings_rest)
             .service(meta::set_settings)
+            .service(meta::delete_card_cache)
+            .service(meta::delete_exp_cache)
 
             .service(img_handler::card_img)
             .service(img_handler::exp_symbol)

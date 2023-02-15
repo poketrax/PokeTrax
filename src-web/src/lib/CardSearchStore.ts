@@ -242,7 +242,6 @@ export function getPriceChartData(card: Card): Promise<ChartData[]> {
         });
       }
     }
-    console.log(JSON.stringify(data));
     resolve(data);
   });
 }

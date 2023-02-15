@@ -62,7 +62,7 @@
       <Icon path={mdiMenuDown} class="h-6 w-6" />
     </span>
     <div
-      class="dropdown-content shadow bg-base-100 rounded-box w-80 h-max max-h-96 overflow-y-scroll"
+      class="dropdown-content shadow bg-base-100 rounded-box w-80 h-max max-h-96 overflow-y-scroll" tabindex="0"
     >
       <input class="input input-xs mt-2 ml-4 w-72 input-bordered" placeholder="Search" bind:value={searchTerm} on:change={() => sortOptions(searchTerm)}/>
       <div class="h-2" />
@@ -71,6 +71,7 @@
           <input
             type="checkbox"
             id={option.value}
+            
             checked={selected.includes(option.value)}
             class="checkbox border-solid ml-4 border-2 roun border-black"
             style="border-top-right-radius: 0.5rem;border-bottom-right-radius: 0.5rem"
