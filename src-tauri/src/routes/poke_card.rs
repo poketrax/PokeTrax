@@ -42,7 +42,6 @@ pub async fn expansions() -> Result<impl Responder> {
 /// Get expansion via name
 #[get("/pokemon/expansion/{name}")]
 pub async fn expantion_by_name(name: web::Path<String>) -> Result<impl Responder> {
-    println!("name: {}", name);
     match get_expansion(name.to_string(), None) {
         Ok(data) => Ok(web::Json(data)),
         Err(e) => Err(error::ErrorBadRequest(e)),
@@ -163,7 +162,6 @@ mod rarities_tests {
         let resp = test::call_service(&app, req).await;
         let body = test::read_body(resp).await;
         let body_str = std::str::from_utf8(&body).unwrap();
-        println!("Rarity Response: {}", body_str);
         let json: Vec<String> = serde_json::from_str(body_str).unwrap();
         assert!(json.len() > 0);
     }
