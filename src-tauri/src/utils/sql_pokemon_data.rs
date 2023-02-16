@@ -602,11 +602,11 @@ pub fn upsert_card(card: &Card) -> Result<(), Box<dyn std::error::Error>> {
 /// Delete Card from admin database
 /// #Argmuents
 ///    * cardId - card id of card to delete
-pub fn delete_card(cardId: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub fn delete_card(card_id: &str) -> Result<usize, Box<dyn std::error::Error>> {
     let connection = Connection::open(get_admin_file_path())?;
     let mut statement = connection.prepare("DELETE FROM cards WHERE cardId = :cardId")?;
-    statement.execute(named_params!{":cardId": cardId})?;
-    Ok(())
+    let rows = statement.execute(named_params!{":cardId": card_id})?;
+    Ok(rows)
 }
 #[cfg(test)]
 mod upsert_card_test {

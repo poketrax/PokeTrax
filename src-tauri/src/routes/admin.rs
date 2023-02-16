@@ -138,8 +138,16 @@ pub async fn admin_upsert_card(card: web::Json<Card>) -> Result<impl Responder> 
 /// Delete Card
 #[delete("/admin/pokemon/card")]
 pub async fn admin_delete_card(card: web::Json<Card>) -> Result<impl Responder> {
-    match delete_card(&card.0.name) {
-        Ok(_) => Ok(HttpResponse::Accepted()),
+    let id = card.0.cardId;
+    log::info!("Deleting card: {}", id);
+    match delete_card(&id) {
+        Ok(num_rows) => {
+            if num_rows > 0 {
+                Ok(HttpResponse::Accepted())
+            } else {
+                Ok(HttpResponse::BadRequest())
+            }
+        },
         Err(e) => Err(error::ErrorBadRequest(e)),
     }
 }

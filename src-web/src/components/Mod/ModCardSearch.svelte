@@ -71,6 +71,10 @@
         setEditCard(newCard) 
   }
 
+  function refresh() {
+    initAdminStore();
+    executeCardSearch();
+  }
 </script>
 
 {#if selectedCard == null && showMassEdit === false}
@@ -89,7 +93,7 @@
         <Icon class="h-6" path={mdiPlus} />
       </button>
       <div class="w-2" />
-      <button id="refresh-button" class="btn btn-square" on:click={initAdminStore}>
+      <button id="refresh-button" class="btn btn-square" on:click={refresh}>
         <Icon class="h-6" path={mdiRefresh} />
       </button>
       <div class="w-2" />
