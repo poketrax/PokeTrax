@@ -105,6 +105,7 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(admin::admin_delete_series)
 
             .service(prices::card_prices_ebay)
+            .service(prices::collection_value)
             
     })
     .bind(("127.0.0.1", PORT))?

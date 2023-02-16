@@ -59,7 +59,7 @@ pub fn delete_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     let tags = format!("[\"{}\"]", collection.name);
     //Find records with collection
     let number_of_cards = search_card_collection_count(None, None, None, Some(tags.clone()))?;
-    let cards = search_card_collection(0, None, None, None, Some(tags), None, Some(number_of_cards as u32))?;
+    let cards = search_card_collection(0, None, None, None, Some(tags), None, Some(number_of_cards))?;
     for mut card in cards {
         if card.tags.is_some() {
             let tags_vec = card.tags.unwrap();
@@ -242,7 +242,7 @@ pub fn search_card_collection(
     rare_filter: Option<String>,
     tag_filter: Option<String>,
     sort: Option<String>,
-    limit: Option<u32>
+    limit: Option<i64>
 ) -> Result<Vec<Card>, Box<dyn std::error::Error>> {
     let limit_str: String;
     let offset: String;
@@ -252,7 +252,7 @@ pub fn search_card_collection(
     }else{
         let lim = limit.unwrap();
         limit_str = lim.to_string();
-        offset = (page.to_owned() * lim).to_string();
+        offset = (i64::from(page.to_owned()) * lim).to_string();
     }
     let mut _cards: Vec<Card> = Vec::new();
 
