@@ -79,7 +79,7 @@ pub async fn get_static_resources() {
     }
 }
 
-/// SQL util to search for a value in a JSON array value uses json functions
+/// SQL util to search for a value in a JSON array value uses json functions Many to Many
 /// # Arguments
 ///    * col_name - name of the column that is a json list
 ///    * value - list of values urlencoded json array
@@ -130,7 +130,7 @@ pub fn json_list_value(col_name: String, value: Option<String>) -> String {
     }
 }
 
-/// SQL util to search for a value in a JSON array value uses chain of equals (DEPRICATED)
+/// SQL util to search for a value in a JSON array value uses chain of equals one to many
 /// # Arguments
 ///    * col_name - name of the column that is a json list
 ///    * value - list of values urlencoded json array

@@ -58,7 +58,7 @@ pub fn delete_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
     let tags = format!("[\"{}\"]", collection.name);
     //Find records with collection
-    let number_of_cards = search_card_collection_count(None, None, None,Some(tags.clone()))?;
+    let number_of_cards = search_card_collection_count(None, None, None, Some(tags.clone()))?;
     let cards = search_card_collection(0, None, None, None, Some(tags), None, Some(number_of_cards as u32))?;
     for mut card in cards {
         if card.tags.is_some() {
@@ -201,13 +201,18 @@ pub fn search_card_collection_count(
     let attach = format!("ATTACH DATABASE '{}' AS cardDB", POKE_DB_PATH.as_str());
     connection.execute(attach.as_str(), [])?;
 
+    let mut search_term = String::from("");
+    if name_filter.is_some() {
+        search_term = name_filter.unwrap();
+    }
+
     let query_sql = format!(
         "SELECT _collection.cardId
         FROM collectionCards _collection
         INNER JOIN cardDB.cards _cards ON _collection.cardId = _cards.cardId
         WHERE _collection.cardId like '%{}%'
         {} {} {}",
-        name_filter.unwrap_or_default().as_str(),
+        search_term,
         in_list(String::from("_cards.expName"), &exp_filter),
         in_list(String::from("_cards.rarity"), &rare_filter),
         json_list_value(String::from("_collection.tags"), tag_filter),

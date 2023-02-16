@@ -110,25 +110,25 @@ pub async fn search_cards(
 ) -> Result<impl Responder> {
     let mut _cards: Vec<Card>;
     let count;
-    let tag_str = search_params.tags.clone().unwrap_or_default();
+    let tag_str = search_params.0.tags.clone().unwrap_or_default();
     let _tags: String = urlencoding::decode(&tag_str).unwrap().into();
 
     match search_card_collection_count(
-        search_params.name.clone(),
-        search_params.expansions.clone(),
-        search_params.rarities.clone(),
-        search_params.tags.clone(),
+        search_params.0.name.clone(),
+        search_params.0.expansions.clone(),
+        search_params.0.rarities.clone(),
+        search_params.0.tags,
     ) {
         Ok(val) => count = val,
         Err(e) => return Err(error::ErrorBadRequest(e)),
     }
     match search_card_collection(
         *page,
-        search_params.name.clone(),
-        search_params.expansions.clone(),
-        search_params.rarities.clone(),
+        search_params.0.name,
+        search_params.0.expansions,
+        search_params.0.rarities,
         Some(_tags),
-        search_params.sort.clone(),
+        search_params.0.sort,
         None,
     ) {
         Ok(val) => _cards = val,
