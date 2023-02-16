@@ -1,4 +1,5 @@
 use crate::routes::prices::Price;
+use crate::models::pokemon::Card;
 use crate::utils::shared::get_data_dir;
 use crate::utils::sql_collection_data::search_card_collection_count;
 use lazy_static::lazy_static;
@@ -45,7 +46,7 @@ pub fn get_prices(card_id: &str, start: &str) -> Result<Vec<Price>, Box<dyn std:
 }
 #[cfg(test)]
 mod get_prices_tests {
-    use super::{get_prices};
+    use super::get_prices;
     use serde_json::to_string_pretty;
     #[test]
     fn get_prices_test() {
@@ -75,25 +76,22 @@ pub fn get_latest_price(card_id: &str) -> Result<Price, Box<dyn std::error::Erro
         ORDER BY date(date) DESC 
         LIMIT 1",
     )?;
-    let price = statement.query_row(
-        named_params! {":card_id": &card_id},
-        |row| {
-            let price = Price {
-                date: row.get(0).unwrap(),
-                cardId: row.get(1).unwrap(),
-                variant: row.get(2).unwrap_or_default(),
-                rawPrice: row.get(3).unwrap(),
-                gradedPriceTen: row.get(4).unwrap(),
-                gradedPriceNine: row.get(5).unwrap(),
-            };
-            Ok(price)
-        },
-    )?;
+    let price = statement.query_row(named_params! {":card_id": &card_id}, |row| {
+        let price = Price {
+            date: row.get(0).unwrap(),
+            cardId: row.get(1).unwrap(),
+            variant: row.get(2).unwrap_or_default(),
+            rawPrice: row.get(3).unwrap(),
+            gradedPriceTen: row.get(4).unwrap(),
+            gradedPriceNine: row.get(5).unwrap(),
+        };
+        Ok(price)
+    })?;
     Ok(price)
 }
 #[cfg(test)]
 mod get_latest_price_tests {
-    use super::{get_latest_price};
+    use super::get_latest_price;
     use serde_json::to_string_pretty;
     #[test]
     fn get_prices_test() {
@@ -110,8 +108,8 @@ mod get_latest_price_tests {
 }
 
 /// # Get Collection Value
-///    * Get value of all cards in a search 
-/// 
+///    * Get value of all cards in a search
+///
 pub fn get_collection_value(
     name_filter: Option<String>,
     exp_filter: Option<String>,
@@ -136,30 +134,48 @@ pub fn get_collection_value(
     )?;
 
     for card in cards {
-        let price = get_latest_price(&card.cardId)?;
-        let mut card_val = 0.0;
-        if card.grade.is_some() {
-            let grade = card.grade.unwrap();
-            if grade.contains("10") {card_val += price.gradedPriceTen}
-            if grade.contains("9") {card_val += price.gradedPriceNine}
-        } 
-        if card_val == 0.0 {
-            card_val += price.rawPrice;
+        let price_res = get_latest_price(&card.cardId);
+        match price_res {
+            Ok(price) => value += get_card_value(&price, &card),
+            Err(e) => log::debug!("Failed to Find Price")
         }
-        value += card_val;
     }
     Ok(value)
 }
 
+fn get_card_value(price: &Price, card: &Card) -> f64 {
+    let mut card_val = 0.0;
+    if card.grade.is_some() {
+        let grade = card.grade.clone().unwrap();
+        if grade.contains("10") {
+            card_val += price.gradedPriceTen
+        }
+        if grade.contains("9") {
+            card_val += price.gradedPriceNine
+        }
+    }
+    if card_val == 0.0 {
+        if price.rawPrice > card.price * 1.2 && card.price * 0.8 > price.rawPrice {
+            card_val += price.rawPrice;
+        }else{
+            card_val += card.price;
+        }
+    }
+    return card_val;
+}
 #[cfg(test)]
 mod get_collection_value_tests {
-    use super::{get_collection_value};
+    use super::get_collection_value;
     use serde_json::to_string_pretty;
     #[test]
     fn get_col_value_test() {
         let result = get_collection_value(
-            Some(String::from("SWSH07-Evolving-Skies-Dragonite-V-(Full-Art)-191")),
-            None,None, None
+            Some(String::from(
+                "SWSH07-Evolving-Skies-Dragonite-V-(Full-Art)-191",
+            )),
+            None,
+            None,
+            None,
         );
         match result {
             Ok(val) => {

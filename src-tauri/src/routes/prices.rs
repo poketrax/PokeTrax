@@ -1,7 +1,8 @@
 use crate::utils::sql_prices_data::get_prices;
 use crate::{routes::poke_card::CardSearch, utils::sql_prices_data::get_collection_value};
 use actix_web::{get, web, Responder, Result};
-use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use serde::{Deserialize, Serialize,};
 use urlencoding;
 
 #[allow(non_snake_case)]
@@ -39,7 +40,7 @@ pub async fn collection_value(search_params: web::Query<CardSearch>) -> Result<i
         search_params.0.rarities,
         search_params.0.tags,
     )?;
-    let response = format!("{{ value: {} }}", value);
-    let json_resp = serde_json::from_str(&response)?;
+    let response = format!("{{ \"value\": {} }}", value);
+    let json_resp: Value = serde_json::from_str(&response)?;
     Ok(web::Json(json_resp))
 }
