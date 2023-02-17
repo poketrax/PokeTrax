@@ -33,6 +33,8 @@ pageStore.subscribe((val) => (page = val));
 export const cardResultStore = writable(new CardSearchResults());
 //Selected display option [case, table]
 export const cardSearchDisplay = writable("grid");
+//Value of Searched Collection
+export const collectionValue = writable(0);
 
 let tagOpions = new Array<Tag>();
 tagOptionStore.subscribe((val) => (tagOpions = val));
@@ -74,24 +76,32 @@ export function deleteTag(tag: Tag) {
 
 export function executeCardSearch() {
   let url = new URL(`${baseURL}/pokemon/collection/cards/${page}`);
+  let valueUrl = new URL(`${baseURL}/pokemon/collection/value`)
   if (selectedSets.length !== 0) {
     url.searchParams.set(`expansions`, JSON.stringify(selectedSets));
+    valueUrl.searchParams.set(`expansions`, JSON.stringify(selectedSets));
   }
   if (searchTerm !== "") {
     url.searchParams.set(`name`, searchTerm);
+    valueUrl.searchParams.set(`name`, searchTerm);
   }
   if (sort !== "") {
     url.searchParams.set("sort", sort);
   }
   if (selectedRarities.length !== 0) {
     url.searchParams.set(`rarities`, JSON.stringify(selectedRarities));
+    valueUrl.searchParams.set(`rarities`, JSON.stringify(selectedRarities));
   }
   if (selectedTags.length !== 0) {
     url.searchParams.set(`tags`, JSON.stringify(selectedTags));
+    valueUrl.searchParams.set(`tags`, JSON.stringify(selectedTags));
   }
   fetch(url.toString())
     .then((res) => res.json())
     .then((json) => cardResultStore.set(json));
+  fetch(valueUrl.toString())
+    .then((res) => res.json())
+    .then((json) => collectionValue.set(json.value))
 }
 
 export function addCardCollection(card: Card, mergeTags?: boolean) {

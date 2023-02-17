@@ -42,6 +42,8 @@
 
 <div class="flex items-center background {clazz}">
   <div class="flex-grow" />
+  <slot name="extra"/>
+  <div class="w-2"/> 
   <div class="pr-2">
     {start + 1}-{end} of {total}
   </div>

@@ -21,6 +21,7 @@
     sortStore,
   } from "../lib/CollectionStore";
   import CollectionListItem from "../components/Collection/CollectionListItem.svelte";
+  import CollectionValue from "../components/Collection/CollectionValue.svelte";
 
   let results: CardSearchResults = new CardSearchResults();
   let display = "grid";
@@ -69,18 +70,21 @@
     <div class="w-2" />
   </div>
 </div>
+
 <CardPagination
   class="foggy"
   {pageStore}
   executeSearch={executeCardSearch}
   resultStore={cardResultStore}
-/>
+><CollectionValue slot="extra"/>
+</CardPagination>
 <div
   class="lg:h-[calc(100vh-12rem)] sm:h-[calc(100vh-17rem)]  w-screen overflow-hidden"
 >
   <div
     class="flex lg:h-[calc(100vh-12rem)] sm:h-[calc(100vh-17rem)] w-screen overflow-auto"
   >
+  
     {#if display === "grid"}
       <div class="flex-grow" />
       <div>
