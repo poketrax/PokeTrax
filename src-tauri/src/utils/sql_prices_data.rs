@@ -161,7 +161,7 @@ fn get_card_value(price: &Price, card: &Card) -> f64 {
             card_val += card.price;
         }
     }
-    return card_val;
+    return card_val * card.count;
 }
 #[cfg(test)]
 mod get_collection_value_tests {
