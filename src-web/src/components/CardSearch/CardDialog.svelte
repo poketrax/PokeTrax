@@ -9,7 +9,7 @@
   import Icon from "../Shared/Icon.svelte";
   import { formatDate, baseURL } from "../../lib/Utils";
   import type { Card, Price } from "../../lib/Card";
-  import { getCardPrices, getPriceChartData } from "../../lib/CardSearchStore";
+  import { getTcgpPrices, getPriceChartData } from "../../lib/CardSearchStore";
   import {
     formatEnergy,
     formatPrice,

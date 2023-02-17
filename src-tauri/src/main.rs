@@ -66,7 +66,6 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(poke_card::series_by_name)
             .service(poke_card::rarities)
             .service(poke_card::card_search)
-            .service(poke_card::card_prices)
             .service(poke_card::expantion_by_name)
             
             .service(poke_product::product_search)
@@ -106,6 +105,7 @@ async fn start_rest_api() -> std::io::Result<()> {
 
             .service(prices::card_prices_ebay)
             .service(prices::collection_value)
+            .service(prices::tcgp_prices)
             
     })
     .bind(("127.0.0.1", PORT))?
