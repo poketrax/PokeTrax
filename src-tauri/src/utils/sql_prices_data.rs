@@ -137,7 +137,7 @@ pub fn get_collection_value(
         let price_res = get_latest_price(&card.cardId);
         match price_res {
             Ok(price) => value += get_card_value(&price, &card),
-            Err(e) => log::debug!("Failed to Find Price")
+            Err(_) => log::debug!("Failed to Find Price")
         }
     }
     Ok(value)
