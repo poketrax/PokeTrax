@@ -145,6 +145,11 @@ pub fn get_collection_value(
 
 fn get_card_value(price: &Price, card: &Card) -> f64 {
     let mut card_val = 0.0;
+    let mut count: f64 = 1.0;
+    if card.count.is_some() {
+        let _count = card.count.unwrap();
+        count *= _count as f64;
+    }
     if card.grade.is_some() {
         let grade = card.grade.clone().unwrap();
         if grade.contains("10") {
@@ -161,7 +166,7 @@ fn get_card_value(price: &Price, card: &Card) -> f64 {
             card_val += card.price;
         }
     }
-    return card_val * card.count;
+    return card_val * count;
 }
 #[cfg(test)]
 mod get_collection_value_tests {
