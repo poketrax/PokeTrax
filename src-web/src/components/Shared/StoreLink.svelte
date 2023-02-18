@@ -13,7 +13,6 @@
   function normalizeName(): string {
     let normailizer = /([a-zA-Z\s]+)(?:\([a-zA-Z\s]+\))?(?:\-[a-zA-Z\s]+)?/g;
     let found = [...product.name.matchAll(normailizer)];
-    console.log(JSON.stringify(found));
     if (found == null || found[0] == null) return product.name;
     else return found[0][1].toString();
   }

@@ -3,6 +3,7 @@ import type { Expansion, Series, ChartData } from "./CardMeta";
 import { writable } from "svelte/store";
 import { baseURL, page as mainPage } from "./Utils";
 import { timer } from "rxjs";
+import type { SealedProduct } from "./SealedProduct";
 
 export class SearchTerms {
   public keyword: string = "";
@@ -18,6 +19,12 @@ export class DbState {
   public data_version: number = 0;
   public price_version: number = 0;
   public msg: string = "";
+}
+
+class TcgpPrice {
+  public date: string;
+  public price: number;
+  public variant: string;
 }
 
 /////////////
@@ -90,7 +97,7 @@ async function statusLoop() {
 export function executeCardSearch() {
   let url = new URL(`${baseURL}/pokemon/cards/${page}`);
   if (selectedSets.length !== 0) {
-    url.searchParams.set(`expansions`,JSON.stringify(selectedSets));
+    url.searchParams.set(`expansions`, JSON.stringify(selectedSets));
   }
   if (searchTerm !== "") {
     url.searchParams.set(`name`, searchTerm);
@@ -115,7 +122,13 @@ export function executeCardSearch() {
 
 export function init_local() {
   expansions()
-    .then((data) => setStore.set(data.sort((a,b) => Date.parse(a.releaseDate) > Date.parse(b.releaseDate)? -1 : 1)))
+    .then((data) =>
+      setStore.set(
+        data.sort((a, b) =>
+          Date.parse(a.releaseDate) > Date.parse(b.releaseDate) ? -1 : 1
+        )
+      )
+    )
     .catch((err) => console.log(`Failed to load sets \n ${err}`));
   rarities()
     .then((data) => rarityStore.set(data))
@@ -171,16 +184,15 @@ function rarities(): Promise<string[]> {
  * @param end
  * @returns
  */
-export function getCardPrices(card: Card): Promise<Price[]> {
-  return new Promise<Price[]>((reslove, reject) => {
-    let url = new URL(
-      `${baseURL}/pokemon/card/price/${encodeURIComponent(card.cardId)}`
-    );
+export function getTcgpPrices(tcgpId: number): Promise<TcgpPrice[]> {
+  return new Promise<TcgpPrice[]>((reslove, reject) => {
+    let url = new URL(`${baseURL}/tcgp/price/${tcgpId}`);
     fetch(url)
       .then((res) => res.json())
       .then((data) => reslove(data))
       .catch((err) => reject(err));
   });
+
 }
 
 /**
@@ -205,9 +217,26 @@ export function getEbayCardPrices(card: Card): Promise<EbayPrice[]> {
   });
 }
 
+export function getProductChartData(product: SealedProduct) {
+  return new Promise<ChartData[]>(async (resolve, _) => {
+    let tcgp: TcgpPrice[] = await getTcgpPrices(product.idTCGP);
+    let data = new Array<ChartData>();
+    for (let point of tcgp) {
+      if (point.price !== 0) {
+        data.push({
+          group: `TCGP-${point.variant}`,
+          key: new Date(point.date),
+          value: point.price,
+        });
+      }
+    }
+    resolve(data)
+  });
+}
+
 export function getPriceChartData(card: Card): Promise<ChartData[]> {
   return new Promise<ChartData[]>(async (resolve, _) => {
-    let tcgp: Price[] = await getCardPrices(card);
+    let tcgp: TcgpPrice[] = await getTcgpPrices(card.idTCGP);
     let ebay: EbayPrice[] = await getEbayCardPrices(card);
     let data = new Array<ChartData>();
     for (let point of tcgp) {

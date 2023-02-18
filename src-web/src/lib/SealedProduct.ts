@@ -2,10 +2,10 @@ import type { PaginatedResults } from "./Utils";
 
 export class SealedProduct {
   public name: string;
-  public price?: number;
-  public idTCGP?: number;
   public expIdTCGP: string;
   public expName: string;
+  public price?: number;
+  public idTCGP?: number;
   public productType?: string;
   public collection?: string;
   public img?: string;

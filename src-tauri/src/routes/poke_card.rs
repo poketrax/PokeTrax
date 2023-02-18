@@ -275,39 +275,4 @@ mod card_search_tests {
     }
 }
 
-#[get("/pokemon/card/price/{id}")]
-pub async fn card_prices(
-    id: web::Path<String>,
-    _: web::Query<PriceSearch>,
-) -> Result<impl Responder> {
-    let _id = urlencoding::decode(id.as_str()).unwrap().to_string();
-    match get_card(&_id, None) {
-        Ok(card) => {
-            let mut prices: Vec<Price> = Vec::new();
-            let data_url = format!(
-                "https://infinite-api.tcgplayer.com/price/history/{}?range=annual",
-                card.idTCGP.clone()
-            );
-            let tcgp_res: Value = reqwest::get(data_url).await.unwrap().json().await.unwrap();
-            for tcp_price in tcgp_res["result"].as_array().unwrap() {
-                let date = tcp_price["date"].as_str().unwrap();
-                for variant in tcp_price["variants"].as_array().unwrap() {
-                    let price = Price {
-                        variant: String::from(variant["variant"].as_str().unwrap()),
-                        cardId: card.cardId.clone(),
-                        date: String::from(date),
-                        vendor: String::from("tcgp"),
-                        price: variant["marketPrice"]
-                            .as_str()
-                            .unwrap()
-                            .parse::<f64>()
-                            .unwrap(),
-                    };
-                    prices.push(price);
-                }
-            }
-            return Ok(web::Json(prices));
-        }
-        Err(_) => Err(error::ErrorBadRequest("Card not found")),
-    }
-}
+
