@@ -124,10 +124,11 @@ fn main(){
     SimpleLogger::new().with_level(level).init().unwrap();
     init_data_paths();
     update_admin_mode(args.admin);
-    read_settings();
+    read_settings().unwrap();
     sql_collection_data::initialize_data();
     //Check for cli commands
     let data_type = args.data.clone().unwrap_or_default().to_lowercase();
+    let daemon = get_deamon(&args);
     if data_type.eq("cards") {
         let command = args.command.clone();
         if command.is_none() {
@@ -142,7 +143,7 @@ fn main(){
             }
         }
     } else {
-        if args.daemon == false {
+        if daemon == false  {
            thread::spawn(move || {
                 let server_future = start_rest_api();
                 rt::System::new().block_on(server_future).unwrap()
@@ -156,6 +157,18 @@ fn main(){
             rt::System::new().block_on(server_future).unwrap();
         }
     }
+}
+
+fn get_deamon(args: &Cli) -> bool{
+    let daemon_ev;
+    match std::env::var("POKETRAX_DAEMON") {
+        Ok(val) => daemon_ev = val.to_lowercase(),
+        Err(_) => daemon_ev = String::from("false"),
+    }
+    let d_ev_bool: bool = daemon_ev.parse().unwrap();
+    let value = d_ev_bool || args.daemon;
+    if value { log::info!("Running in daemon mode") }
+    return value
 }
 
 /**
