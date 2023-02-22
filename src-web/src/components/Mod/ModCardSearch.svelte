@@ -43,7 +43,6 @@
 	let selectedCard: Card | undefined = null;
 	let showMassEditButton = false;
 	let showMassEdit = false;
-	let addCard = false;
 
 	/**
 	 * Set the edit card page active or not
