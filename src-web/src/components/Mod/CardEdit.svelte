@@ -2,7 +2,7 @@
 	import { Energy, CardImage } from 'tcg-case';
 	import { mdiArrowLeft, mdiCheck, mdiCancel, mdiTrashCan, mdiFloppy, mdiOpenInNew } from '@mdi/js';
 	import Icon from '../Shared/Icon.svelte';
-	import { baseURL } from '../../lib/Utils';
+	import { baseURL, openUrl } from '../../lib/Utils';
 	import type { Card } from '../../lib/Card';
 	import { rarityStore, setStore } from '../../lib/CardSearchStore';
 	import { formatEnergy } from '../../lib/Utils';
@@ -39,7 +39,7 @@
 				`/${card.expName.replaceAll(' ', '-')}` +
 				`/${card.cardId}.jpg`
 		);
-    
+		openUrl(url);
 	}
 
 	function setDate() {
@@ -207,8 +207,8 @@
 						</tr>
 						<tr>
 							<td>Expansion TCGP Number (expIdTCGP)</td>
-							<td
-								><input
+							<td>
+								<input
 									type="text"
 									placeholder="expIdTCGP"
 									bind:value={card.expIdTCGP}
@@ -261,14 +261,19 @@
 						</tr>
 						<tr>
 							<td>TCGP ID (idTCGP)</td>
-							<td
-								><input
-									type="number"
-									placeholder="idTCGP"
-									bind:value={card.idTCGP}
-									class="input input-bordered border-solid w-[450px]"
-								/></td
-							>
+							<td>
+								<label class="input-group"
+									><input
+										type="number"
+										placeholder="idTCGP"
+										bind:value={card.idTCGP}
+										class="input input-bordered border-solid w-[390px]"
+									/>
+									<button class="btn" on:click={() => openUrl('https://tcgplayer.com/product/' + card.idTCGP.toFixed(0))}>
+										<Icon path={mdiOpenInNew} class="w-6" />
+									</button>
+								</label>
+							</td>
 						</tr>
 						<tr>
 							<td>Pokedex number (pokedex)</td>

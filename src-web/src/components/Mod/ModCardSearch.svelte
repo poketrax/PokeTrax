@@ -5,7 +5,7 @@
 	import { CardImage, Energy } from 'tcg-case';
 	import CardDetails from '../Shared/CardDetails.svelte';
 	import { mdiPencil, mdiPlaylistEdit, mdiRefresh, mdiPlus } from '@mdi/js';
-	import { baseURL, formatEnergy, formatDate } from '../../lib/Utils';
+	import { baseURL, formatEnergy, formatDate, openUrl } from '../../lib/Utils';
 	import CardEdit from './CardEdit.svelte';
 	import Icon from '../Shared/Icon.svelte';
 	import { writable } from 'svelte/store';
@@ -173,9 +173,8 @@
 							</td>
 							<!--TCGP ID-->
 							<td>
-								<a class="link" href={'https://tcgplayer.com/product/' + card.idTCGP.toFixed(0)}
-									>{card.idTCGP}</a
-								>
+								<div class="link" on:click={() => openUrl('https://tcgplayer.com/product/' + card.idTCGP.toFixed(0))}
+									>{card.idTCGP}</div>
 							</td>
 							<!--Release Date-->
 							<td>
