@@ -66,6 +66,7 @@ cargo doc --no-deps
 ### ENV Variables
 
 PK_DATA_DIR="./data" Data directory for data files
+POKETRAX_DAEMON=true Disables UI for testing and headless execution
 
 ### Parameters
 | Name | Function |

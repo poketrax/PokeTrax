@@ -24,6 +24,7 @@
 
 <div class="btn-group">
   <button
+    id="display-grid"
     class="btn {grid}"
     on:click={() => {
       setDisplay("grid", true);
@@ -32,6 +33,7 @@
     <Icon path={mdiGrid} class="h-6 w-6" />
   </button>
   <button
+    id="display-list"
     class="btn {list}"
     on:click={() => {
       setDisplay("list", true);
