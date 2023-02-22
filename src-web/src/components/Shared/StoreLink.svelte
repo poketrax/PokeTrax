@@ -2,7 +2,7 @@
   import type { Card } from "../../lib/Card";
   import ebay from "../../assets/brands/ebay.png";
   import tcgp from "../../assets/brands/tcgp.png";
-  import { baseURL } from "../../lib/Utils";
+  import { openUrl } from "../../lib/Utils";
   import type { SealedProduct } from "../../lib/SealedProduct";
   export let store: string;
   export let sealedProduct: boolean = false;
@@ -36,13 +36,7 @@
     return ebayUrl.toString();
   }
 
-  function openUrl(url: string) {
-    fetch(`${baseURL}/meta/open`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: `{"url": "${url}"}`,
-    });
-  }
+  
 </script>
 
 {#if store === "tcgp"}
