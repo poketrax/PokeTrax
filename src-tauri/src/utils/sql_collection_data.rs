@@ -219,7 +219,7 @@ pub fn search_card_collection_count(
     );
 
     let statement = format!("SELECT count(cardID) as count FROM ({})",&query_sql);
-    let row = connection.query_row(&statement, named_params! {":searchTerm",search_term}, |row| Ok(row.get(0)))?;
+    let row = connection.query_row(&statement, named_params! {":searchTerm":search_term}, |row| Ok(row.get(0)))?;
     match row {
         Ok(val) => return Ok(val),
         Err(e) => Err(Box::from(e)),
