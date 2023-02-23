@@ -61,7 +61,7 @@
 <BasicToast message="Success!" type="alert-success" bind:this={successToast} />
 <BasicToast message="Failed!" type="alert-error" bind:this={errorToast} />
 <!--EDIT FORM-->
-<div class="h-[calc(100vh-8rem)] w-screen overflow-hidden">
+<div class="h-[calc(100vh-8rem)] w-screen overflow-hidden foggy">
   <div class=" h-[calc(100vh-8rem)] w-screen overflow-auto">
     <div class="m-2">
       <div class="bg-gray-200 flex items-center w-full">
