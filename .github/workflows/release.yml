@@ -56,7 +56,7 @@ jobs:
       - uses: actions/setup-node@v3
       - name: Create update.json
         run: |
-          cd src-web
+          cd src-pages
           npm install
           npm run build-update-file
       - name: Add update.json to Release
