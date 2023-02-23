@@ -77,6 +77,10 @@
 		initAdminStore();
 		executeCardSearch();
 	}
+
+	function openTCGP(id: string) {
+		openUrl('https://tcgplayer.com/product/' + id);
+	}
 </script>
 
 {#if selectedCard == null && showMassEdit === false}
@@ -173,8 +177,15 @@
 							</td>
 							<!--TCGP ID-->
 							<td>
-								<div class="link" on:click={() => openUrl('https://tcgplayer.com/product/' + card.idTCGP.toFixed(0))}
-									>{card.idTCGP}</div>
+								<div
+									class="link"
+									on:click={() => openTCGP(card.idTCGP.toFixed(0))}
+									on:keypress={(e) => {
+										if (e.key === 'enter') openTCGP(card.idTCGP.toFixed(0));
+									}}
+								>
+									{card.idTCGP}
+								</div>
 							</td>
 							<!--Release Date-->
 							<td>
