@@ -4,7 +4,7 @@ use crate::routes::collections::Tag;
 use crate::utils::sql_pokemon_data::POKE_DB_PATH;
 use crate::utils::shared::{get_data_dir, in_list, json_list_value};
 use lazy_static::lazy_static;
-use rusqlite::{Connection, Result};
+use rusqlite::{Connection, Result, named_params};
 use serde_json;
 
 static ADD_TABLE_CARD_COLLECTION: &str = "CREATE TABLE IF NOT EXISTS collectionCards (cardId TEXT, tags TEXT, variant TEXT, paid REAL, count INTEGER, grade TEXT)";
@@ -203,23 +203,23 @@ pub fn search_card_collection_count(
 
     let mut search_term = String::from("");
     if name_filter.is_some() {
-        search_term = name_filter.unwrap();
+        search_term = format!("%{}%",name_filter.unwrap());
+
     }
 
     let query_sql = format!(
         "SELECT _collection.cardId
         FROM collectionCards _collection
         INNER JOIN cardDB.cards _cards ON _collection.cardId = _cards.cardId
-        WHERE _collection.cardId like '%{}%'
+        WHERE _collection.cardId like :searchTerm
         {} {} {}",
-        search_term,
         in_list(String::from("_cards.expName"), &exp_filter),
         in_list(String::from("_cards.rarity"), &rare_filter),
-        json_list_value(String::from("_collection.tags"), tag_filter),
+        json_list_value(String::from("_collection.tags"), tag_filter)
     );
 
     let statement = format!("SELECT count(cardID) as count FROM ({})",&query_sql);
-    let row = connection.query_row(&statement, [], |row| Ok(row.get(0)))?;
+    let row = connection.query_row(&statement, named_params! {":searchTerm",search_term}, |row| Ok(row.get(0)))?;
     match row {
         Ok(val) => return Ok(val),
         Err(e) => Err(Box::from(e)),
