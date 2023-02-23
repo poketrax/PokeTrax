@@ -10,11 +10,13 @@ describe('Search Tests', () => {
 		cy.get('#display-list').click();
 		cy.get('#card-list-item-0');
 		cy.get('#sort-name').click();
-    cy.contains("AV");
+		cy.contains('AV');
 		cy.get('#sort-set-number').click();
-    cy.contains("VSTAR");
+		cy.contains('VSTAR');
 		cy.get('#sort-dex').click();
-		cy.get('#sort-price').click();
-		cy.get('#sort-date').click();
+		cy.get('#search').type('Charizard');
+		cy.get('#Sets-dropdown').click();
+		cy.get('#Lost Origin').click();
+		cy.contains('TG03');
 	});
 });
