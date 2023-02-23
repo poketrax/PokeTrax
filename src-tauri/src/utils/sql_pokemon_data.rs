@@ -693,8 +693,8 @@ pub fn product_count(name_filter: Option<String>, db_path: Option<String>) -> Re
     let _name_filter = format!("%{}%",name_filter.unwrap_or_default());
     let statement = String::from(
         "SELECT count(name) as total 
-            FROM cards 
-            WHERE cardId like ?1"
+            FROM sealed 
+            WHERE name like ?1"
     );
     let mut query = connection.prepare(&statement)?;
     //Determine count
