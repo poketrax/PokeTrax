@@ -1,21 +1,21 @@
 {
  "version": "v1.1.0",
- "pub_date": "2023-02-23T14:55:40.250Z",
+ "pub_date": "2023-02-23T16:34:26.087Z",
  "platforms": {
   "darwin-x86_64": {
-   "signature": "Not Found",
+   "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSUzdFMjRrWVZsMWRud0hIbTRrWXVrMjNUQlBiQVNGZlZpM08xVVhrbi9EVTRkUnEzMWlhYWFHZXhZRFpmOGVyQTMrTDNkVkxxMEdpczVtR3RuaUxHWVpvTm5NZzlHR1FjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjc3MTY5ODQ1CWZpbGU6UG9rZVRyYXguYXBwLnRhci5negpjeE9tcUw0WmVWblZZVGRmNys1ek5pS0VqVlExQzVteFI5YW9mUXM5VFYrRHJJNmZuQzVuRVJpR1NMR0VBc0Rpc0RLazRmcDk4dkYwdFFQeUJGdk1BUT09Cg==",
    "url": "https://github.com/poketrax/PokeTrax/releases/download/v1.1.0/PokeTrax.app.tar.gz"
   },
   "darwin-aarch64": {
-   "signature": "Not Found",
+   "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSUzdFMjRrWVZsMWRud0hIbTRrWXVrMjNUQlBiQVNGZlZpM08xVVhrbi9EVTRkUnEzMWlhYWFHZXhZRFpmOGVyQTMrTDNkVkxxMEdpczVtR3RuaUxHWVpvTm5NZzlHR1FjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjc3MTY5ODQ1CWZpbGU6UG9rZVRyYXguYXBwLnRhci5negpjeE9tcUw0WmVWblZZVGRmNys1ek5pS0VqVlExQzVteFI5YW9mUXM5VFYrRHJJNmZuQzVuRVJpR1NMR0VBc0Rpc0RLazRmcDk4dkYwdFFQeUJGdk1BUT09Cg==",
    "url": "https://github.com/poketrax/PokeTrax/releases/download/v1.1.0/PokeTrax.app.tar.gz"
   },
   "linux-x86_64": {
-   "signature": "Not Found",
+   "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSUzdFMjRrWVZsMVoyd3JZdUdQOWdZK3MvaS9tTEYrNFphcWJjZTIrTUw5VmJlTTFHVEdJSGs2Mm5Kc05ENmd1SHA5QW1XRm95OWx5VEFEVmlSbmFhMmRGV1pKQUc3cndrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjc3MTY5MzA5CWZpbGU6cG9rZS10cmF4XzEuMS4wX2FtZDY0LkFwcEltYWdlLnRhci5negpEVXZUbFVvbGd3akpuMVcyelNTT1Q0ODhPWmpTSVJBdkRpWFFNaGt0YzlJRnRna0NFYlZ0WXVNdEhVVSt5UUloTDdlcTZmbXFUSGc0d2l4K3JMakNCQT09Cg==",
    "url": "https://github.com/poketrax/PokeTrax/releases/download/v1.1.0/poke-trax_1.1.0_amd64.AppImage.tar.gz"
   },
   "windows-x86_64": {
-   "signature": "Not Found",
+   "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSUzdFMjRrWVZsMVp1aHloRjFpdzZFcEdHY2Z5eGJaeDlXa1ljekhBNUdidWNXMEFDbkY5WUVKTkZTeCswZWdBRVJreUpXNEgreUprV2FHZ0gwSHNzZFM2eFVJWVFZU0FVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjc3MTY5NDMwCWZpbGU6UG9rZVRyYXhfMS4xLjBfeDY0X2VuLVVTLm1zaS56aXAKU0ViTUw3VUkrQlpGNTk2NTFPZkdwZU16VExKQkNSdmIwMENJMTNEclBzeDN2cVE5YU5JQ3VPL3hEejFyUWVhUjZmSHl5QWVGUm15Y3BmN0NVN0doQUE9PQo=",
    "url": "https://github.com/poketrax/PokeTrax/releases/download/v1.1.0/PokeTrax_1.1.0_x64_en-US.msi.zip"
   }
  }
