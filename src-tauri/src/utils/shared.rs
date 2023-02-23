@@ -122,7 +122,7 @@ pub fn json_list_value(col_name: String, value: Option<String>) -> String {
                     }
                 }
             }
-            Err(e) => {
+            Err(_) => {
                 log::warn!("Url decoding failed");
                 return String::from("");
             }
@@ -146,7 +146,7 @@ pub fn in_list(col_name: String, values: &Option<String>) -> String {
                 let filter = braces.replace_all(&_decode.into_owned(), "").to_string();
                 return format!("AND {} in ({})", col_name, filter);
             }
-            Err(e) => {
+            Err(_) => {
                 log::warn!("Url decoding failed");
                 return String::from("");
             }

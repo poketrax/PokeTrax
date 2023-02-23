@@ -2,7 +2,7 @@ use crate::utils::{
     shared::{self, get_data_dir},
     sql_pokemon_data,
 };
-use actix_web::{get, web, HttpRequest, HttpResponse, HttpResponseBuilder, Responder, Result};
+use actix_web::{get, web, HttpRequest, HttpResponse, Responder, Result};
 use lazy_static::lazy_static;
 use reqwest::StatusCode;
 use std::{fs::create_dir_all, path::Path};
@@ -183,7 +183,7 @@ async fn exp_symbol(name: web::Path<String>) -> Result<impl Responder> {
                     }
                 }
             }
-            Err(e) => {
+            Err(_) => {
                 log::warn!("Failed to find Expansion : {}", _name);
                 Ok(error_response()?)
             }

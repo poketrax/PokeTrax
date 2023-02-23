@@ -56,11 +56,6 @@ pub fn get_admin_file_path() -> String {
     return SETTINGS.read().unwrap().admin_file.clone();
 }
 
-pub fn update_admin_file_path(path: &str) {
-    let mut settings = SETTINGS.write().unwrap();
-    settings.admin_file = String::from(path);
-}
-
 pub fn get_admin_mode() -> bool {
     return SETTINGS.read().unwrap().admin.clone();
 }
@@ -75,7 +70,12 @@ mod admin_file_tests {
     use super::*;
     #[test]
     fn test_admin_right_read() {
-        update_admin_file_path("./test-data/data.sql");
+        let settings = Settings {
+            admin: true,
+            admin_file: String::from("./test-data/data.sql"),
+            bg_img: String::from("")
+        };
+        update_settings(settings);
         let path = get_admin_file_path();
         assert!(
             path == "./test-data/data.sql",
