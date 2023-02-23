@@ -66,6 +66,7 @@
 
 <div class="flex w-full">
   <input
+    id="search"
     type="text"
     placeholder="Search"
     class="input input-bordered rounded-sm flex-grow max-w-x"

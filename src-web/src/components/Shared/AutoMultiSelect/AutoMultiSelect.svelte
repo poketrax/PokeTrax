@@ -58,7 +58,7 @@
 <div class="input-group h-12 z-20 w-fit">
   <span>{label}</span>
   <div class="input dropdown pl-0 pr-1">
-    <span class="h-12 bg-base-100" tabindex="0" on:click={() => sortOptions(searchTerm)}>
+    <span id={`${label}-dropdown`} class="h-12 bg-base-100" tabindex="0" on:click={() => sortOptions(searchTerm)}>
       <Icon path={mdiMenuDown} class="h-6 w-6" />
     </span>
     <div
@@ -71,7 +71,6 @@
           <input
             type="checkbox"
             id={option.value}
-            
             checked={selected.includes(option.value)}
             class="checkbox border-solid ml-4 border-2 roun border-black"
             style="border-top-right-radius: 0.5rem;border-bottom-right-radius: 0.5rem"
