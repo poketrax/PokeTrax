@@ -1,11 +1,10 @@
-use crate::models::pokemon::{Card, Expantion, Price, Series};
+use crate::models::pokemon::{Card, Expantion, Series};
 use crate::utils::sql_pokemon_data::{
-    card_count, card_search_sql, get_card, get_expansion, get_expansions, get_rarities, get_series,
+    card_count, card_search_sql, get_expansion, get_expansions, get_rarities, get_series,
     get_series_list,
 };
 use actix_web::{error, get, web, Responder, Result};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::str;
 use urlencoding;
 

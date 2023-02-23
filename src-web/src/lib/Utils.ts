@@ -110,3 +110,11 @@ export function objEq(v1, v2): boolean {
   let currJSON = JSON.stringify(v2);
   return incJSON === currJSON;
 }
+
+export function openUrl(url: string) {
+  fetch(`${baseURL}/meta/open`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: `{"url": "${url}"}`,
+  });
+}

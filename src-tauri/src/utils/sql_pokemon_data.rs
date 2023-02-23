@@ -160,10 +160,15 @@ pub fn delete_expantion(name: String) -> Result<(), Box<dyn std::error::Error>> 
 #[cfg(test)]
 mod expantion_tests {
     use super::*;
-    use crate::utils::settings::update_admin_file_path;
+    use crate::utils::settings::{Settings, update_settings};
     #[test]
     fn test_expantion_add_remove() {
-        update_admin_file_path("./test-data/data.sql");
+        let settings = Settings {
+            admin: true,
+            admin_file: String::from("./test-data/data.sql"),
+            bg_img: String::from("")
+        };
+        update_settings(settings);
         let mut exp = Expantion {
             name: String::from("TEST_EXP"),
             series: String::from("TEST_SERIES"),
@@ -295,10 +300,15 @@ pub fn delete_series(name: String) -> Result<(), Box<dyn std::error::Error>>{
 #[cfg(test)]
 mod series_tests {
     use super::*;
-    use crate::utils::settings::update_admin_file_path;
+    use crate::utils::settings::{Settings, update_settings};
     #[test]
     fn test_series_add_remove() {
-        update_admin_file_path("./test-data/data.sql");
+        let settings = Settings {
+            admin: true,
+            admin_file: String::from("./test-data/data.sql"),
+            bg_img: String::from("")
+        };
+        update_settings(settings);
         let mut series = Series {
             name: String::from("TEST_SERIES"),
             icon: String::from("icon.jpg"),
@@ -610,11 +620,17 @@ pub fn delete_card(card_id: &str) -> Result<usize, Box<dyn std::error::Error>> {
 }
 #[cfg(test)]
 mod upsert_card_test {
+    use crate::utils::settings::{Settings,update_settings};
+
     use super::*;
-    use crate::utils::settings::update_admin_file_path;
     #[test]
     fn test_add_delete() {
-        update_admin_file_path("./test-data/data.sql");
+        let settings = Settings {
+            admin: true,
+            admin_file: String::from("./test-data/data.sql"),
+            bg_img: String::from("")
+        };
+        update_settings(settings);
         let mut card = Card {
             cardId : String::from("TEST_CARD"),
             name: String::from("TEST_CARD"),
@@ -677,8 +693,8 @@ pub fn product_count(name_filter: Option<String>, db_path: Option<String>) -> Re
     let _name_filter = format!("%{}%",name_filter.unwrap_or_default());
     let statement = String::from(
         "SELECT count(name) as total 
-            FROM cards 
-            WHERE cardId like ?1"
+            FROM sealed 
+            WHERE name like ?1"
     );
     let mut query = connection.prepare(&statement)?;
     //Determine count

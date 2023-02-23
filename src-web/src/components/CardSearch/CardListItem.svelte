@@ -47,7 +47,7 @@
   }
 </script>
 
-<tr>
+<tr id="card-list-item-{id}">
   <th>
     <label>
       <input

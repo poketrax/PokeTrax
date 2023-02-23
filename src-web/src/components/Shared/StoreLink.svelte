@@ -2,13 +2,11 @@
   import type { Card } from "../../lib/Card";
   import ebay from "../../assets/brands/ebay.png";
   import tcgp from "../../assets/brands/tcgp.png";
-  import { baseURL } from "../../lib/Utils";
+  import { openUrl } from "../../lib/Utils";
   import type { SealedProduct } from "../../lib/SealedProduct";
   export let store: string;
   export let sealedProduct: boolean = false;
-  export let product: SealedProduct | Card;
-
-  console.log(JSON.stringify(product));
+  export let product: SealedProduct | Card
 
   function normalizeName(): string {
     let normailizer = /([a-zA-Z\s]+)(?:\([a-zA-Z\s]+\))?(?:\-[a-zA-Z\s]+)?/g;
@@ -38,13 +36,7 @@
     return ebayUrl.toString();
   }
 
-  function openUrl(url: string) {
-    fetch(`${baseURL}/meta/open`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: `{"url": "${url}"}`,
-    });
-  }
+  
 </script>
 
 {#if store === "tcgp"}
@@ -59,6 +51,10 @@
   </button>
 {:else if store === "ebay" && !sealedProduct}
   <div class="dropdown dropdown-top z-[150] safari-z-200">
+    <!--
+      Ignore Warnings Apple is a bunch of snobs and won't fix the behavoir of buttons and
+      think they shouldn't be focusable so we are breaking some rules with regaurds to tabindexies 
+    -->
     <label tabindex="0" class="btn btn-ghost m-1 w-20 h-12">
       <div class="flex w-full h-full p-1 align-center justify-items-center">
         <img class="object-contain" src={ebay} alt="tcgp" />
