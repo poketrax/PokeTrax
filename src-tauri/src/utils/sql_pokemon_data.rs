@@ -207,8 +207,7 @@ pub fn get_series_list(db_path: Option<String>) -> Result<Vec<Series>, Box<dyn s
         connection = Connection::open(db_path.unwrap_or_default().as_str())?;
     }
     let mut statement = connection
-        .prepare("SELECT name, releaseDate, icon FROM series")
-        .unwrap();
+        .prepare("SELECT name, releaseDate, icon FROM series")?;
     let rows = statement
         .query_map([], |row| {
             Ok(Series {
@@ -216,8 +215,7 @@ pub fn get_series_list(db_path: Option<String>) -> Result<Vec<Series>, Box<dyn s
                 releaseDate: row.get(1)?,
                 icon: row.get(2)?,
             })
-        })
-        .unwrap();
+        })?;
     for row in rows {
         match row {
             Ok(val) => _series.push(val),
