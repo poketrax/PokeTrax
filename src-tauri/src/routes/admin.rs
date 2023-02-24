@@ -66,8 +66,10 @@ pub async fn admin_delete_expansion(exp: web::Json<Expantion>) -> Result<impl Re
 /// Get admin series
 #[get("/admin/pokemon/series")]
 pub async fn admin_series() -> Result<impl Responder> {
-    let mut _series: Vec<Series> = get_series_list(Some(get_admin_file_path())).unwrap();
-    Ok(web::Json(_series))
+    match get_series_list(Some(get_admin_file_path())) {
+        Ok(series) => Ok(web::Json(series)),
+        Err(e) => Err(error::ErrorBadRequest(e))
+    }
 }
 
 /// Get admins series via name
