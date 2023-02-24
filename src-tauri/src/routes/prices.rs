@@ -1,6 +1,6 @@
 use crate::utils::sql_prices_data::get_prices;
 use crate::{routes::poke_card::CardSearch, utils::sql_prices_data::get_collection_value};
-use actix_web::{get, web, Responder, Result};
+use actix_web::{get, web, Responder, Result, error, HttpResponse};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use urlencoding;
@@ -46,34 +46,38 @@ pub async fn collection_value(search_params: web::Query<CardSearch>) -> Result<i
 }
 
 #[derive(Serialize, Deserialize)]
-struct TcgpPrice {
+pub struct TcgpPrice {
     pub price: f64,
     pub date: String,
     pub variant: String,
 }
 
-#[get("/tcgp/price/{id}")]
-pub async fn tcgp_prices(id: web::Path<u32>) -> Result<impl Responder> {
+async fn pull_TCGP_data(id: u32) -> Result<Vec<TcgpPrice>, Box<dyn std::error::Error>> {
     let mut prices: Vec<TcgpPrice> = Vec::new();
     let data_url = format!(
         "https://infinite-api.tcgplayer.com/price/history/{}?range=annual",
         id
     );
-    let tcgp_res: Value = reqwest::get(data_url).await.unwrap().json().await.unwrap();
+    let tcgp_res: Value = reqwest::get(data_url).await?.json().await?;
+
     for tcp_price in tcgp_res["result"].as_array().unwrap() {
         let date = tcp_price["date"].as_str().unwrap();
         for variant in tcp_price["variants"].as_array().unwrap() {
             let price = TcgpPrice {
                 variant: String::from(variant["variant"].as_str().unwrap()),
                 date: String::from(date),
-                price: variant["marketPrice"]
-                    .as_str()
-                    .unwrap()
-                    .parse::<f64>()
-                    .unwrap()
+                price: variant["marketPrice"].as_str().unwrap().parse::<f64>()?,
             };
             prices.push(price);
         }
     }
-    return Ok(web::Json(prices));
+    Ok(prices)
+}
+
+#[get("/tcgp/price/{id}")]
+pub async fn tcgp_prices(id: web::Path<u32>) -> Result<web::Json<Vec<TcgpPrice>>, error::Error> {
+    match pull_TCGP_data(*id).await {
+        Ok(prices) => Ok(web::Json(prices)),
+        Err(e) => Err(error::ErrorBadRequest(e))
+    }
 }
