@@ -14,7 +14,7 @@
     <div class=" h-16"/>
     <div class="classic-10" />
     <div class=" h-24"/>
-    <div>
+    <div id="loading">
       <PokeBallSpinner />
     </div>
   </div>
