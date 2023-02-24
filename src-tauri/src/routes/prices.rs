@@ -1,6 +1,6 @@
 use crate::utils::sql_prices_data::get_prices;
 use crate::{routes::poke_card::CardSearch, utils::sql_prices_data::get_collection_value};
-use actix_web::{get, web, Responder, Result, error, HttpResponse};
+use actix_web::{get, web, Responder, Result, error};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use urlencoding;
@@ -52,7 +52,7 @@ pub struct TcgpPrice {
     pub variant: String,
 }
 
-async fn pull_TCGP_data(id: u32) -> Result<Vec<TcgpPrice>, Box<dyn std::error::Error>> {
+async fn pull_tcgp_data(id: u32) -> Result<Vec<TcgpPrice>, Box<dyn std::error::Error>> {
     let mut prices: Vec<TcgpPrice> = Vec::new();
     let data_url = format!(
         "https://infinite-api.tcgplayer.com/price/history/{}?range=annual",
@@ -76,7 +76,7 @@ async fn pull_TCGP_data(id: u32) -> Result<Vec<TcgpPrice>, Box<dyn std::error::E
 
 #[get("/tcgp/price/{id}")]
 pub async fn tcgp_prices(id: web::Path<u32>) -> Result<web::Json<Vec<TcgpPrice>>, error::Error> {
-    match pull_TCGP_data(*id).await {
+    match pull_tcgp_data(*id).await {
         Ok(prices) => Ok(web::Json(prices)),
         Err(e) => Err(error::ErrorBadRequest(e))
     }
