@@ -201,7 +201,7 @@ pub fn search_card_collection_count(
     let attach = format!("ATTACH DATABASE '{}' AS cardDB", POKE_DB_PATH.as_str());
     connection.execute(attach.as_str(), [])?;
 
-    let mut search_term = String::from("");
+    let mut search_term = String::from("%%");
     if name_filter.is_some() {
         search_term = format!("%{}%",name_filter.unwrap());
 
@@ -219,7 +219,7 @@ pub fn search_card_collection_count(
     );
 
     let statement = format!("SELECT count(cardID) as count FROM ({})",&query_sql);
-    let row = connection.query_row(&statement, named_params! {":searchTerm":search_term}, |row| Ok(row.get(0)))?;
+    let row = connection.query_row(&statement, named_params! {":searchTerm": &search_term}, |row| Ok(row.get(0)))?;
     match row {
         Ok(val) => return Ok(val),
         Err(e) => Err(Box::from(e)),
