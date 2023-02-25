@@ -36,8 +36,7 @@ jobs:
           TAURI_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         run: |
-          cargo build
-          cargo add tauri-cli
+          cargo install tauri-cli
           cargo tauri build
   e2e-test:
     runs-on: ubuntu-22.04
