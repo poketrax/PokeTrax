@@ -55,7 +55,7 @@ jobs:
           build : npm run cypress-build
           start: npm run cypress-setup
           wait-on: 'http://localhost:3131/meta/db_status, http://localhost:3001'
-          wait-on-timeout: 300      
+          wait-on-timeout: 600      
         env:
           GITHUB_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
