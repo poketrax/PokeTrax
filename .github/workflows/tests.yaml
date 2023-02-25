@@ -52,7 +52,7 @@ jobs:
         with: 
           working-directory: ./src-web
           browser: chrome
-          build : npm run build
+          build : npm run cypress-build
           start: npm run cypress-setup
           wait-on: 'http://localhost:3131/meta/db_status, http://localhost:3001'
           wait-on-timeout: 600      
