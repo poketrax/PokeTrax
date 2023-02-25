@@ -12,7 +12,7 @@
   import PokeBallSpinner from "../Shared/PokeBallSpinner.svelte";
   import { createEventDispatcher } from "svelte";
   import BasicToast from "../Shared/BasicToast.svelte";
-  import {getCard, upsertCard} from "../../lib/AdminDataStore";
+  import {getCard, deleteCard, upsertCard} from "../../lib/AdminDataStore";
 
   const dispatch = createEventDispatcher();
   export let cards: string[];
@@ -67,17 +67,16 @@
     inProgress = false;
   }
 
-  function del() {
-    /*
-        deleteCard(card)
-        .then((_) => {
-                successToast.show();
-                showConfirmSave = false;
-            })
-            .catch((_) => {
-                errorToast.show();
-                showConfirmSave = false;
-            });*/
+  async function del() {
+    inProgress = true
+    for(let cardId of cards){
+      let card: Card = await getCard(cardId);
+      await deleteCard(card)
+      cardsProcessed++;
+    }
+    successToast.show();
+    cardsProcessed = 0;
+    inProgress = false;
   }
 </script>
 
