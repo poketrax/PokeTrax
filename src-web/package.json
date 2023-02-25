@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm install && vite build",
     "preview": "vite preview",
+    "cypress-setup": "./cypress-setup.sh",
     "cypress": "cypress open",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,svelte}\""

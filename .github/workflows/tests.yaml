@@ -3,19 +3,18 @@ on:
   pull_request:
     types: [opened, reopened, edited]
 jobs:
-  test-tauri:
+  tests:
       strategy:
         fail-fast: false
         matrix:
           platform: [macos-latest, ubuntu-20.04, windows-latest]
-
       runs-on: ${{ matrix.platform }}
       steps:
       - uses: actions/checkout@v2
       - name: setup node
         uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: 18
       - name: install Rust stable
         uses: actions-rs/toolchain@v1
         with:
@@ -32,6 +31,28 @@ jobs:
           npm run build
       - name: Test Build Tauri
         working-directory: src-tauri
+        env:
+          GITHUB_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         run: |
-          cargo install
           cargo tauri build
+  e2e-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with: 
+          working-directory: ./src-web
+          browser: chrome
+          build : npm run build
+          start: npm cypress-setup
+          wait-on: 'http://localhost:3131/meta/db_status, http://localhost:3001'
+          wait-on-timeout: 600      
+        env:
+          GITHUB_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+
