@@ -54,7 +54,7 @@ jobs:
           browser: chrome
           build : npm run cypress-build 
           start: npm run cypress-start
-          wait-on: 'http://localhost:3131/meta/db_status, http://127.0.0.1:4173/'
+          wait-on: 'http://localhost:3131/meta/db_status'
           wait-on-timeout: 600      
         env:
           GITHUB_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
