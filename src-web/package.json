@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "npm install && vite build",
     "preview": "vite preview",
-    "cypress-start": "concurrently --kill-others \"npm run preview\" ./cypress-start-tauri.sh",
+    "cypress-start": "concurrently \"npm run preview\" ./cypress-start-tauri.sh",
     "cypress-build": "npm run build && ./cypress-build-tauri.sh",
     "cypress": "cypress open",
     "check": "svelte-check --tsconfig ./tsconfig.json",
