@@ -52,17 +52,9 @@ jobs:
         with: 
           working-directory: ./src-web
           browser: chrome
-          build : |
-            npm run build
-            cd ../src-tauri
-            cargo install tauri-cli
-            cargo tauri build
-          start: |
-            npm run dev &
-            cd ../src-tauri
-            cargo install tauri-cli
-            PK_DATA_DIR="../src-web/cypress/test-data" POKETRAX_DAEMON=true cargo tauri dev  
-          wait-on: 'http://localhost:3131/meta/db_status, http://localhost:3001'
+          build : npm run cypress-build 
+          start: npm run cypress-start
+          wait-on: 'http://localhost:3131/meta/db_status, http://127.0.0.1:4173/'
           wait-on-timeout: 600      
         env:
           GITHUB_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}

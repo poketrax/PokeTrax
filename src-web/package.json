@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "npm install && vite build",
     "preview": "vite preview",
-    "cypress-setup": "./cypress-setup.sh",
-    "cypress-build": "./cypress-build.sh",
+    "cypress-start": "npm run preview & ./cypress-start-tauri.sh",
+    "cypress-build": "npm run build && ./cypress-build-tauri.sh",
     "cypress": "cypress open",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,svelte}\""
