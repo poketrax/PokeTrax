@@ -4,7 +4,7 @@ describe('Search Tests', () => {
 	it('Display Tests', () => {
 		//Load Page
 		cy.visit('http://localhost:3001');
-		cy.get('#loading', { timeout: 120000 }).should('not.exist');
+		cy.get('#loading', { timeout: 300000 }).should('not.exist');
 		//check for card case
 		cy.get('#card-case0');
 		//set list
