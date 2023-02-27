@@ -5,5 +5,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
+    taskTimeout: 20000,
+    video: false
   },
 });
