@@ -93,7 +93,8 @@ export function executeCardSearch() {
 function expansions(): Promise<Expansion[]> {
 	return new Promise<Expansion[]>((resolve, reject) => {
 		fetch(`${baseURL}/admin/pokemon/expansions`)
-			.then((res) => res.json())
+			.then(async (res) => res.json())
+			.catch((err) => reject(err))
 			.then((data) => resolve(data))
 			.catch((err) => reject(err));
 	});
@@ -107,6 +108,7 @@ function series(): Promise<Series[]> {
 	return new Promise<Series[]>((resolve, reject) => {
 		fetch(`${baseURL}/admin/pokemon/series`)
 			.then((res) => res.json())
+			.catch((err) => reject(err))
 			.then((data) => resolve(data))
 			.catch((err) => reject(err));
 	});
@@ -120,6 +122,7 @@ function rarities(): Promise<string[]> {
 	return new Promise<string[]>((resolve, reject) => {
 		fetch(`${baseURL}/admin/pokemon/card/rarities`)
 			.then((res) => res.json())
+			.catch((err) => reject(err))
 			.then((data) => resolve(data))
 			.catch((err) => reject(err));
 	});

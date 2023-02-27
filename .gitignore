@@ -26,3 +26,7 @@ poketrax
 *.sw?
 /src-tauri/data/
 build.sh
+
+#cypress
+src-web/cypress/videos
+src-web/cypress/screenshots
