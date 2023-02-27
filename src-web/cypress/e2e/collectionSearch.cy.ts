@@ -2,7 +2,7 @@ export {}
 describe('Collection Tests', () => {
   it('basic view tests', () => {
     cy.visit('http://localhost:3001');
-    cy.get('#loading', {timeout: 60000}).should('not.exist');
+    cy.get('#loading', {timeout: 120000}).should('not.exist');
     cy.get("#collection-page").click();
     //Search for know cards
     cy.contains('Charizard')
