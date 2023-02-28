@@ -74,7 +74,7 @@ pub struct SealedProduct {
     pub expName: String,
     pub productType: String,
     pub img: String,
-    pub collection: Option<String>,
+    pub tags: Option<Vec<String>>,
     pub paid: Option<f64>,
     pub count: Option<i64>,
 }
