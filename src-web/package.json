@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm install && vite build",
     "preview": "vite preview",
-    "cypress": "cypress open",
+    "cypress-start": "concurrently \"npm run preview\" ./cypress-start-tauri.sh",
+    "cypress-build": "npm run build && ./cypress-build-tauri.sh",
+    "cypress": "cypress run",
+    "cypress-open": "cypress open",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,svelte}\""
   },
@@ -18,6 +21,7 @@
     "@tsconfig/svelte": "^3.0.0",
     "autoprefixer": "^10.4.13",
     "babel-loader": "^9.1.2",
+    "concurrently": "^7.6.0",
     "postcss": "^8.4.21",
     "prettier-plugin-svelte": "^2.9.0",
     "sass": "^1.57.1",

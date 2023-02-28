@@ -44,11 +44,11 @@
 
   function onCheck(event) {
     if (event.target.checked) {
-      selected.push(event.target.id);
+      selected.push(event.target.value);
       dataStore.set(selected);
       dispatch("change", event);
     } else {
-      selected.splice(selected.indexOf(event.target.id), 1);
+      selected.splice(selected.indexOf(event.target.value), 1);
       dataStore.set(selected);
       dispatch("change", event);
     }
@@ -70,7 +70,8 @@
         <div class="flex items-center  {() => selectedStyle(option)}" tabindex="0">
           <input
             type="checkbox"
-            id={option.value}
+            id={option.value.replaceAll(" ","-")}
+            value={option.value}
             checked={selected.includes(option.value)}
             class="checkbox border-solid ml-4 border-2 roun border-black"
             style="border-top-right-radius: 0.5rem;border-bottom-right-radius: 0.5rem"

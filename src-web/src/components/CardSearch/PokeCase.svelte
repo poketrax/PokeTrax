@@ -60,9 +60,10 @@
     {#if collection}
       {#if grade != null}
         <CardGradeStamp
-          class="m-0 w-12"
+          class="m-0 w-14 border-2 border-solid"
           grade={grade.grade}
           grader={grade.grader}
+          modifier={grade.modifier}
         />
       {/if}
     {:else if edit}
@@ -118,4 +119,12 @@
     font-family: "Poppins", sans-serif;
     font-weight: bold;
   }
+  /*Style to include that are removed erroneously from tree shaker*/
+  .m-0 {}
+  .border-2 {}
+  .border-gray-600 {}
+  .bg-yellow-600 {}
+  .bg-slate-300 {}
+  .bg-black {}
+  .text-yellow-600 {}
 </style>

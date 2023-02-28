@@ -98,10 +98,14 @@ export function executeCardSearch() {
   }
   fetch(url.toString())
     .then((res) => res.json())
-    .then((json) => cardResultStore.set(json));
+    .catch((err) => console.log(err))
+    .then((json) => cardResultStore.set(json))
+    .catch((err) => console.log(err))
   fetch(valueUrl.toString())
     .then((res) => res.json())
+    .catch((err) => console.log(err))
     .then((json) => collectionValue.set(json.value))
+    .catch((err) => console.log(err))
 }
 
 export function addCardCollection(card: Card, mergeTags?: boolean) {
