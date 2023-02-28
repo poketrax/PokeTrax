@@ -1,4 +1,4 @@
-name: test
+name: test-build
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited]

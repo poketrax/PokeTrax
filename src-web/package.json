@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "cypress-start": "concurrently \"npm run preview\" ./cypress-start-tauri.sh",
     "cypress-build": "npm run build && ./cypress-build-tauri.sh",
-    "cypress": "cypress open",
+    "cypress": "cypress run",
+    "cypress-open": "cypress open",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,svelte}\""
   },
