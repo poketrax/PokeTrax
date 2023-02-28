@@ -725,11 +725,13 @@ mod product_count_tests {
 /// # Arguments
 ///    * 'page' - page number of the query (pages are currently 25 elements long)
 ///    * 'name_filter' - search term for the name of the card
+///    * 'type_filter' - type filter urlendcoded json array
 ///    * 'sort' - ORDER BY statement for sorting results
 ///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
 pub fn product_search_sql(
     page: u32,
     name_filter: Option<String>,
+    type_filter: Option<String>,
     sort: Option<String>,
     db_path: Option<String>
 ) -> Result<Vec<SealedProduct>, Box<dyn std::error::Error>> {
@@ -742,14 +744,17 @@ pub fn product_search_sql(
     } else {
         connection = Connection::open(db_path.unwrap_or_default().as_str())?;
     }
+
     let _name_filter = format!("%{}%", name_filter.unwrap_or_default());
     let statement = format!(
         "SELECT name, price, idTCGP, expIdTCGP, expName, type, img
         FROM sealed 
         WHERE name LIKE ?1
         {}
+        {}
         LIMIT {}
         OFFSET {}",
+        in_list(String::from("type"), &type_filter),
         &sort.unwrap_or_default(),
         &limit_str,
         &format!("{}", (page.to_owned() * limit)),
@@ -767,7 +772,7 @@ pub fn product_search_sql(
             expName: row.get(4).unwrap_or_default(),
             productType: row.get(5).unwrap_or_default(),
             img: row.get(6).unwrap_or_default(),
-            collection: None,
+            tags: None,
             paid: None,
             count: None,
         })
@@ -800,7 +805,7 @@ mod product_tests {
 
     #[test]
      fn get_products() {
-        let products = product_search_sql(0, None, None, None);
+        let products = product_search_sql(0, None, None, None, None);
         match products {
             Ok(val) => {
                 let msg = to_string_pretty(&val).unwrap();
@@ -813,4 +818,26 @@ mod product_tests {
             }
         }
     }
+}
+
+/// Get Product Types
+/// # Arguments
+///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
+pub fn get_product_types(db_path: Option<String>) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+    let mut types: Vec<String> = Vec::new();
+    let connection: Connection;
+    if db_path.is_none() {
+        connection = Connection::open(POKE_DB_PATH.as_str())?;
+    } else {
+        connection = Connection::open(db_path.unwrap_or_default().as_str())?;
+    }
+    let mut query = connection.prepare("SELECT DISTINCT type from sealed WHERE type != ''")?;
+    let rows = query.query_map([], |row| Ok(row.get(0)?)).unwrap();
+    for row in rows {
+        match row {
+            Ok(val) => types.push(val),
+            Err(e) => return Err(Box::from(e)),
+        }
+    }
+    Ok(types)
 }

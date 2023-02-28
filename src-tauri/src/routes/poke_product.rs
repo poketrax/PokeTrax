@@ -1,12 +1,13 @@
 use crate::models::pokemon::SealedProduct;
 use crate::utils::sql_pokemon_data;
-use actix_web::{error, get, web, Responder, Result};
+use actix_web::{error, get, web, Responder, Result, HttpResponse};
 use serde::{Deserialize, Serialize};
 use urlencoding;
 
 #[derive(Deserialize, Serialize, Clone)]
 pub struct ProductSearch {
     pub name: Option<String>,
+    pub types: Option<String>,
     pub sort: Option<String>,
 }
 
@@ -26,16 +27,6 @@ pub async fn product_search(
         .expect("UTF-8")
         .to_string();
     name_filter = name_filter.replace(" ", "-");
-    /*Expantion Filter
-    let mut exp_filter =
-        urlencoding::decode(search_params.expansions.as_deref().unwrap_or_default())
-            .expect("UTF-8")
-            .to_string();
-    if exp_filter.eq("") == false {
-        exp_filter = braces.replace_all(&exp_filter, "").to_string();
-        exp_filter = format!("AND expName in ({})", exp_filter);
-        //info!("expFilter {}", exp_filter.clone());
-    }*/
     //Order
     let order = urlencoding::decode(search_params.sort.as_deref().unwrap_or_default())
         .expect("UTF-8")
@@ -59,15 +50,25 @@ pub async fn product_search(
     }
 
     let products: Vec<SealedProduct>;
-    match sql_pokemon_data::product_search_sql(*page, Some(name_filter.clone()), Some(sort), None)
-    {
+    match sql_pokemon_data::product_search_sql(
+        *page,
+        Some(name_filter.clone()),
+        search_params.0.types,
+        Some(sort),
+        None,
+    ) {
         Ok(val) => products = val,
         Err(e) => return Err(error::ErrorInternalServerError(e)),
     }
-
     let results = ProductSearchResults {
         count: count,
         products: products,
     };
     Ok(web::Json(results))
+}
+
+#[get("/pokemon/products/types")]
+pub async fn product_types() -> Result<impl Responder> {
+    let types = sql_pokemon_data::get_product_types(None)?;
+    Ok(web::Json(types))
 }

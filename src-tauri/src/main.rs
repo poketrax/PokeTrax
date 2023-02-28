@@ -69,6 +69,7 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(poke_card::expantion_by_name)
             
             .service(poke_product::product_search)
+            .service(poke_product::product_types)
             
             .service(collections::get_all_tags)
             .service(collections::put_tag)
