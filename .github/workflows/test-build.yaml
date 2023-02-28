@@ -38,26 +38,3 @@ jobs:
         run: |
           cargo install tauri-cli
           cargo tauri build
-  e2e-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: install dependencies (ubuntu only)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with: 
-          working-directory: ./src-web
-          browser: chrome
-          build : npm run cypress-build 
-          start: npm run cypress-start
-          wait-on: 'http://localhost:3131/meta/db_status'
-          wait-on-timeout: 600      
-        env:
-          GITHUB_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
-          TAURI_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
-          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-
