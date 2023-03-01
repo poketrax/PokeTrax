@@ -681,7 +681,7 @@ mod upsert_card_test {
 /// # Arguments
 ///    * 'name_filter' - search term for the name of the card
 ///    * 'db_path' - path to sqlite database defaults to POKE_DB_PATH
-pub fn product_count(name_filter: Option<String>, db_path: Option<String>) -> Result<i64, Box<dyn std::error::Error>> {
+pub fn product_count(name_filter: Option<String>, type_filter: Option<String>, db_path: Option<String>) -> Result<i64, Box<dyn std::error::Error>> {
     let connection: Connection;
     if db_path.is_none() {
         connection = Connection::open(POKE_DB_PATH.as_str())?;
@@ -689,10 +689,12 @@ pub fn product_count(name_filter: Option<String>, db_path: Option<String>) -> Re
         connection = Connection::open(db_path.unwrap_or_default().as_str())?;
     }
     let _name_filter = format!("%{}%",name_filter.unwrap_or_default());
-    let statement = String::from(
+    let statement = format!(
         "SELECT count(name) as total 
             FROM sealed 
-            WHERE name like ?1"
+            WHERE name like ?1
+            {}",
+            in_list(String::from("type"), &type_filter)
     );
     let mut query = connection.prepare(&statement)?;
     //Determine count
@@ -709,7 +711,7 @@ mod product_count_tests {
     #[actix_web::test]
     async fn product_count_test() {
         let name_filter = Some(String::from("Charizard"));
-        let count = product_count(name_filter, None);
+        let count = product_count(name_filter, None, None);
         match count {
             Ok(val) => {
                 assert!(val > 10)
@@ -792,7 +794,7 @@ mod product_tests {
     use serde_json::to_string_pretty;
     #[test]
      fn get_product_count() {
-        let count = product_count(None, None);
+        let count = product_count(None, None, None);
         match count {
             Ok(val) => {
                 assert!(val > 0)

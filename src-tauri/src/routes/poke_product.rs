@@ -44,7 +44,7 @@ pub async fn product_search(
 
     let count: i64;
 
-    match sql_pokemon_data::product_count(Some(name_filter.clone()), None) {
+    match sql_pokemon_data::product_count(Some(name_filter.clone()), search_params.0.types.clone(), None) {
         Ok(val) => count = val,
         Err(e) => return Err(error::ErrorInternalServerError(e)),
     }
