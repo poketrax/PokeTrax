@@ -67,7 +67,7 @@ pub async fn product_search(
     Ok(web::Json(results))
 }
 
-#[get("/pokemon/products/types")]
+#[get("/pokemon/product/types")]
 pub async fn product_types() -> Result<impl Responder> {
     let types = sql_pokemon_data::get_product_types(None)?;
     Ok(web::Json(types))
