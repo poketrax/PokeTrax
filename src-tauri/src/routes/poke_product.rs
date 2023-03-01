@@ -1,6 +1,6 @@
 use crate::models::pokemon::SealedProduct;
 use crate::utils::sql_pokemon_data;
-use actix_web::{error, get, web, Responder, Result, HttpResponse};
+use actix_web::{error, get, web, Responder, Result};
 use serde::{Deserialize, Serialize};
 use urlencoding;
 
