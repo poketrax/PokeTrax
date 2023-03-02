@@ -29,6 +29,8 @@ sortStore.subscribe((val) => (sort = val));
 export const pageStore = writable(0);
 export let page = 0;
 pageStore.subscribe((val) => (page = val));
+//Collection View
+export const collectionView = writable("Cards") 
 //Card Results
 export const cardResultStore = writable(new CardSearchResults());
 //Selected display option [case, table]
