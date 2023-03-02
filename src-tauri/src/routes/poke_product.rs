@@ -9,6 +9,7 @@ pub struct ProductSearch {
     pub name: Option<String>,
     pub types: Option<String>,
     pub sort: Option<String>,
+    pub tags: Option<String>,
 }
 
 #[derive(Deserialize, Serialize)]

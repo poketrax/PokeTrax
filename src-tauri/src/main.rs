@@ -77,6 +77,9 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(collections::search_cards)
             .service(collections::put_card)
             .service(collections::remove_card)
+            .service(collections::search_products)
+            .service(collections::remove_product)
+            .service(collections::put_product)
             
             .service(meta::init)
             .service(meta::get_status)
