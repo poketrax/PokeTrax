@@ -12,8 +12,6 @@
 
   export let product: SealedProduct;
   export let show: boolean;
-
-  console.log(JSON.stringify(product));
   let chartData: any[];
 
   $: getProductChartData(product).then(

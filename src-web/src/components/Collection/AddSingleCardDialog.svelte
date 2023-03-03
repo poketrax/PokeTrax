@@ -1,6 +1,4 @@
 <script lang="ts">
-  import "@carbon/styles/css/styles.css";
-  import "@carbon/charts/styles.css";
   import { Energy, CardImageFancy } from "tcg-case";
   import { mdiClose } from "@mdi/js";
   import Icon from "../Shared/Icon.svelte";

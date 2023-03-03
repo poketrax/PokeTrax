@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { SelectOption } from './../Shared/AutoMultiSelect/SelectOption';
 	import type { Writable } from 'svelte/store';
 	import AutoMultiSelect from '../Shared/AutoMultiSelect/AutoMultiSelect.svelte';
 	import { productTypesStore, typesSelected } from '../../lib/ProductSearchStore';
