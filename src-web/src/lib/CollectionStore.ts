@@ -1,7 +1,8 @@
 import { writable } from "svelte/store";
 import type { Card } from "./Card";
 import { CardSearchResults } from "./Card";
-import type { Tag } from "./Collection";
+import { ProductList } from "./SealedProduct";
+import type { Tag } from "./Tag";
 import { baseURL } from "./Utils";
 
 export let tagOptionStore = writable(new Array<Tag>());
@@ -18,25 +19,27 @@ export const selectedRaritiesStore = writable(new Array<string>());
 export let selectedRarities = [];
 selectedRaritiesStore.subscribe((val) => (selectedRarities = val));
 //Search term entered
-export const searchTermStore = writable("");
-export let searchTerm = "";
-searchTermStore.subscribe((val) => (searchTerm = val));
+export const cardSearchTermStore = writable("");
+export let cardSearchTerm = "";
+cardSearchTermStore.subscribe((val) => (cardSearchTerm = val));
 //Sort button pressed
-export const sortStore = writable("");
+export const cardSortStore = writable("");
 export let sort = "";
-sortStore.subscribe((val) => (sort = val));
+cardSortStore.subscribe((val) => (sort = val));
 //Page selected
-export const pageStore = writable(0);
+export const cardPageStore = writable(0);
 export let page = 0;
-pageStore.subscribe((val) => (page = val));
+cardPageStore.subscribe((val) => (page = val));
 //Collection View
 export const collectionView = writable("Cards") 
 //Card Results
 export const cardResultStore = writable(new CardSearchResults());
+export const productResultStore = writable(new ProductList())
 //Selected display option [case, table]
 export const cardSearchDisplay = writable("grid");
 //Value of Searched Collection
-export const collectionValue = writable(0);
+export const cardCollectionValue = writable(0);
+export const productCollectionValue = writable(0);
 
 let tagOpions = new Array<Tag>();
 tagOptionStore.subscribe((val) => (tagOpions = val));
@@ -83,9 +86,9 @@ export function executeCardSearch() {
     url.searchParams.set(`expansions`, JSON.stringify(selectedSets));
     valueUrl.searchParams.set(`expansions`, JSON.stringify(selectedSets));
   }
-  if (searchTerm !== "") {
-    url.searchParams.set(`name`, searchTerm);
-    valueUrl.searchParams.set(`name`, searchTerm);
+  if (cardSearchTerm !== "") {
+    url.searchParams.set(`name`, cardSearchTerm);
+    valueUrl.searchParams.set(`name`, cardSearchTerm);
   }
   if (sort !== "") {
     url.searchParams.set("sort", sort);
@@ -106,7 +109,7 @@ export function executeCardSearch() {
   fetch(valueUrl.toString())
     .then((res) => res.json())
     .catch((err) => console.log(err))
-    .then((json) => collectionValue.set(json.value))
+    .then((json) => cardCollectionValue.set(json.value))
     .catch((err) => console.log(err))
 }
 

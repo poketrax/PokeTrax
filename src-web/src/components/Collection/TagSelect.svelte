@@ -3,7 +3,7 @@
   import Icon from "../Shared/Icon.svelte";
   import type { Writable } from "svelte/store";
   import { mdiMenuDown } from "@mdi/js";
-  import type { Tag } from "../../lib/Collection";
+  import type { Tag } from "../../lib/Tag";
   import { mdiPlus, mdiDelete } from "@mdi/js";
   import {
     tagOptionStore,

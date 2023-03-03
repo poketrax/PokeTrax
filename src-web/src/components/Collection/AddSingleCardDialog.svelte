@@ -6,7 +6,7 @@
   import Icon from "../Shared/Icon.svelte";
   import { baseURL, formatEnergy, getHolo } from "../../lib/Utils";
   import type { Card } from "../../lib/Card";
-  import type { Tag } from "../../lib/Collection";
+  import type { Tag } from "../../lib/Tag";
   import { addCardCollection, tagOptionStore } from "../../lib/CollectionStore";
 
   export let card: Card;
