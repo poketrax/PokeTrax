@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Price } from 'tcg-case';
-	import { formatPrice } from './../../lib/Utils';
-	import { addProductCollection } from '../../lib/CollectionStore';
+	import { formatPrice, getTextColorBgContrast } from './../../lib/Utils';
+	import { addProductCollection, getTagFromCard } from '../../lib/CollectionStore';
 	import type { SealedProduct } from '../../lib/SealedProduct';
 	import StoreLink from '../Shared/StoreLink.svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -60,7 +60,13 @@
 						<Icon path={mdiTrashCan} class="w-6" />
 					</button>
 					{#if confirm}
-						<button class="btn btn-square btn-success" on:click={() => {dispatch('delete'); confirm = false}}>
+						<button
+							class="btn btn-square btn-success"
+							on:click={() => {
+								dispatch('delete');
+								confirm = false;
+							}}
+						>
 							<Icon path={mdiCheck} class="w-6" />
 						</button>
 						<button class="btn btn-square btn-error" on:click={() => (confirm = false)}>
@@ -83,10 +89,26 @@
 						<td>Paid</td>
 						<td> {formatPrice(product.paid)}</td>
 					</tr>
-					<tr>
-						<td>Type</td>
-						<td> {product.productType}</td>
-					</tr>
+					{#if product.tags && product.tags.length !== 0}
+						<tr>
+							<td>Tags</td>
+							<td>
+								{#each getTagFromCard(product.tags) as tag}
+									<span
+										class="badge badge-ghost badge-sm"
+										style="background-color: {tag.color}; color: {getTextColorBgContrast(
+											tag.color
+										)}">{tag.name}</span
+									>
+								{/each}
+							</td>
+						</tr>
+					{:else}
+						<tr>
+							<td>Type</td>
+							<td> {product.productType}</td>
+						</tr>
+					{/if}
 					<tr>
 						<td>Total Value</td>
 						<td> {formatPrice(total)}</td>
@@ -102,7 +124,9 @@
 				<StoreLink store="tcgp" sealedProduct {product} />
 			</div>
 		{:else}
-			<CountControl bind:count={product.count} on:change={update} />
+			<div class="flex">
+				<CountControl bind:count={product.count} on:change={update} />
+			</div>
 		{/if}
 	</div>
 </div>

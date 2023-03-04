@@ -3,7 +3,6 @@ use crate::models::pokemon::{Card, SealedProduct};
 use crate::routes::collections::Tag;
 use crate::utils::shared::{get_data_dir, in_list, json_list_value};
 use crate::utils::sql_pokemon_data::POKE_DB_PATH;
-use clap::builder::OsStringValueParser;
 use lazy_static::lazy_static;
 use rusqlite::{named_params, Connection, Result};
 use serde_json;
@@ -598,18 +597,23 @@ pub fn upsert_product(product: &SealedProduct, overwrite: Option<bool>) -> Resul
             },
         )?;
     } else {
-        let statement = "UPDATE collectionProducts SET count = :count WHERE name = :name";
+        let statement = "UPDATE collectionProducts SET count = :count, tags = :tags WHERE name = :name";
         let count: i64;
+        let tags: Vec<String>;
         if overwrite.is_some() && overwrite.unwrap() {
-            count = product.count.unwrap()
+            count = product.count.unwrap();
+            tags = product.tags.clone().unwrap();
         } else {
             count = found[0].count.unwrap_or_default() + product.count.unwrap_or_default();
+            tags = found[0].tags.clone().unwrap_or_default();
         }
         log::debug!("Updating {}", &product.name);
+        let tag_str = serde_json::to_string(&tags)?;
         connection.execute(
             statement,
             named_params! {
                 ":count": count,
+                ":tags": &tag_str,
                 ":name": &product.name
             },
         )?;

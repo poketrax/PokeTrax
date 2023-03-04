@@ -174,7 +174,8 @@ export function addProductCollection(product: SealedProduct, overwrite?: boolean
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(product)
-	}).then(() => executeProductSearch());
+	}).then(() => executeProductSearch())
+	.catch((e) => console.log(e));
 }
 
 export function removeCardCollection(card: Card) {
