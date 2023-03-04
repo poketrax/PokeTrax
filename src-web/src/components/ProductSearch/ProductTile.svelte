@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Price } from 'tcg-case';
 	import { formatPrice } from './../../lib/Utils';
 	import type { SealedProduct } from '../../lib/SealedProduct';
 	import StoreLink from '../Shared/StoreLink.svelte';
@@ -39,14 +40,25 @@
 			>
 				{product.name}
 			</div>
-			<button class="btn btn-circle ml-2" on:click={() => dispatch('add')}>
-				<Icon path={mdiPlus} class="w-6"/>
-			</button>
+			<div class="flex-grow" />
+			{#if product.count == null}
+				<button class="btn btn-circle ml-2" on:click={() => dispatch('add')}>
+					<Icon path={mdiPlus} class="w-6" />
+				</button>
+			{/if}
 		</div>
-		<p>{formatPrice(product.price)}</p>
-		<div class="card-actions justify-end">
-			<StoreLink store="ebay" sealedProduct {product} />
-			<StoreLink store="tcgp" sealedProduct {product} />
-		</div>
+		{#if product.paid}
+			<span>Price: <Price price={product.price} paid={product.paid} /></span>
+			<p>Paid: {formatPrice(product.paid)}</p>
+		{:else}
+			<p>{formatPrice(product.price)}</p>
+		{/if}
+		{#if product.count == null}
+			<div class="card-actions justify-end">
+				<StoreLink store="ebay" sealedProduct {product} />
+				<StoreLink store="tcgp" sealedProduct {product} />
+			</div>
+		{/if}
+		
 	</div>
 </div>

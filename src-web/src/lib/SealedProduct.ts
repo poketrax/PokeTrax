@@ -7,7 +7,7 @@ export class SealedProduct {
   public price?: number;
   public idTCGP?: number;
   public productType?: string;
-  public collection?: string;
+  public tags?: string[];
   public img?: string;
   public paid?: number;
   public count?: number;

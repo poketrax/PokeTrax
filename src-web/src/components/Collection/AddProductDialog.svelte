@@ -4,8 +4,8 @@
 	import { formatPrice } from '../../lib/Utils';
 	import StoreLink from '../Shared/StoreLink.svelte';
 	import type { SealedProduct } from '../../lib/SealedProduct';
-	import type { Tag } from '../../lib/Tag';
-	import { tagOptionStore } from '../../lib/CollectionStore';
+    import type { Tag } from './../../lib/Tag';
+	import { addProductCollection, tagOptionStore } from '../../lib/CollectionStore';
 
 	export let product: SealedProduct;
 	export let show: boolean;
@@ -13,11 +13,16 @@
 
 	let selectedTags = new Array<string>();
 	let paid = 0;
-	let count = 0;
+	let count = 1;
 
 	tagOptionStore.subscribe((val) => (tagOptions = val));
 
-	function addProduct() {}
+	function addProduct() {
+        product.count = count;
+        product.paid = paid;
+        product.tags = selectedTags;
+        addProductCollection(product);
+    }
 
 	function onCheck(event) {
 		if (event.target.checked) {
@@ -28,7 +33,7 @@
 	}
 </script>
 
-<input type="checkbox" id="dialog" class="modal-toggle" bind:checked={show} />
+<input type="checkbox" id="dialog" class="modal-toggle" bind:checked={show}/>
 <label for="dialog" class="modal cursor-pointer">
 	<label class="modal-box relative w-fit max-w-5xl overflow-hidden" for="">
 		<div>

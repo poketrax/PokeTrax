@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import type { Card } from "./Card";
 import { CardSearchResults } from "./Card";
-import { ProductList } from "./SealedProduct";
+import { ProductList, SealedProduct } from "./SealedProduct";
 import type { Tag } from "./Tag";
 import { baseURL } from "./Utils";
 
@@ -52,6 +52,10 @@ productSortStore.subscribe((val) => (productSort = val));
 export const productPageStore = writable(0);
 export let productPage = 0;
 productPageStore.subscribe((val) => (productPage = val));
+//Types Selected
+export const typesSelected = writable(new Array<string>());
+export let types = [];
+typesSelected.subscribe((val) => (types = val));
 //Product Search Results
 export const productResultStore = writable(new ProductList())
 //Product Collection value
@@ -135,7 +139,21 @@ export function executeCardSearch() {
 }
 
 export function executeProductSearch() {
-
+  let url = new URL(`${baseURL}/pokemon/collection/products/${productPage}`);
+  if (productSearchTerm !== "") {
+    url.searchParams.set("name", productSearchTerm)
+  }
+  if (types.length != 0) {
+    url.searchParams.set("types", JSON.stringify(types))
+  }
+  if (selectedTags.length !== 0) {
+    url.searchParams.set(`tags`, JSON.stringify(selectedTags));
+  }
+  fetch(url.toString())
+    .then((res) => res.json())
+    .catch((err) => console.log(err))
+    .then((json) => productResultStore.set(json))
+    .catch((err) => console.log(err))
 }
 
 export function addCardCollection(card: Card, mergeTags?: boolean) {
@@ -149,6 +167,15 @@ export function addCardCollection(card: Card, mergeTags?: boolean) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(card),
   }).then(() => executeCardSearch());
+}
+
+export function addProductCollection(product: SealedProduct) {
+  let url = `${baseURL}/pokemon/collection/product`
+  fetch(url, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product),
+  }).then(() => executeProductSearch());
 }
 
 export function removeCardCollection(card: Card) {
