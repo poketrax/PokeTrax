@@ -60,7 +60,7 @@
 						<Icon path={mdiTrashCan} class="w-6" />
 					</button>
 					{#if confirm}
-						<button class="btn btn-square btn-success" on:click={() => dispatch('delete')}>
+						<button class="btn btn-square btn-success" on:click={() => {dispatch('delete'); confirm = false}}>
 							<Icon path={mdiCheck} class="w-6" />
 						</button>
 						<button class="btn btn-square btn-error" on:click={() => (confirm = false)}>

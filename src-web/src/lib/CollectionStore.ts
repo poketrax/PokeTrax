@@ -185,6 +185,15 @@ export function removeCardCollection(card: Card) {
 	}).then(() => executeCardSearch());
 }
 
+export function removeProdcutCollection(product: SealedProduct){
+	let url = `${baseURL}/pokemon/collection/product`
+	fetch(url,{
+		method: 'DELETE',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(product)
+	}).then(() => executeProductSearch());
+}
+
 export function getTagFromCard(tags: string[]): Tag[] {
 	let tagArray = new Array<Tag>();
 	for (let tagName of tags) {

@@ -6,10 +6,12 @@
 		executeProductSearch,
 		selectedTagsStore,
 		productSearchTermStore,
-		productResultStore
+		productResultStore,
+		removeProdcutCollection,
 	} from './../../lib/CollectionStore';
 	import CollectionToggle from './CollectionToggle.svelte';
 	import TagSelect from './TagSelect.svelte';
+
 	let view = 'Cards';
 	let products = new Array<SealedProduct>();
 	let searchTerm = '';
@@ -21,6 +23,10 @@
 	function keywordSearch() {
 		productSearchTermStore.set(searchTerm);
 		executeProductSearch();
+	}
+
+	function deleteProd(product: SealedProduct) {	
+		removeProdcutCollection(product);
 	}
 
 	executeProductSearch();
@@ -46,7 +52,7 @@
 			<div class="flex-grow" />
 			<div class="grid h-fit grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-2 m-2">
 				{#each products as product}
-					<ProductTile {product} />
+					<ProductTile {product} on:delete={() => deleteProd(product)}/>
 				{/each}
 			</div> 
 			<div class="flex-grow" />
