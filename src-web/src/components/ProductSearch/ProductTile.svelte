@@ -16,7 +16,7 @@
 	$: total = product.count * product.price;
 
 	function update() {
-		addProductCollection(product);
+		addProductCollection(product, true);
 	}
 </script>
 
