@@ -23,6 +23,7 @@ pub struct Tag {
 #[derive(Deserialize, Serialize, Clone)]
 pub struct UpsertOptions {
     tag_merge: Option<bool>,
+    overwrite: Option<bool>
 }
 
 #[put("/pokemon/tag")]
@@ -164,8 +165,8 @@ pub async fn search_products(
 }
 
 #[put("/pokemon/collection/product")]
-pub async fn put_product(product: web::Json<SealedProduct>) -> Result<impl Responder>{
-    match upsert_product(&product) {
+pub async fn put_product(options: web::Query<UpsertOptions>, product: web::Json<SealedProduct>) -> Result<impl Responder>{
+    match upsert_product(&product, options.0.overwrite) {
         Ok(()) => Ok(HttpResponse::Accepted()),
         Err(e) => Err(error::ErrorBadRequest(e)),
     }

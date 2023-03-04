@@ -3,6 +3,7 @@ use crate::models::pokemon::{Card, SealedProduct};
 use crate::routes::collections::Tag;
 use crate::utils::shared::{get_data_dir, in_list, json_list_value};
 use crate::utils::sql_pokemon_data::POKE_DB_PATH;
+use clap::builder::OsStringValueParser;
 use lazy_static::lazy_static;
 use rusqlite::{named_params, Connection, Result};
 use serde_json;
@@ -517,7 +518,7 @@ pub fn search_product_collection(
     );
     //Query page
     let mut query = connection.prepare(&statement)?;
-    let rows = query.query_map(named_params!{":name_filter" : &_name_filter}, |row| {
+    let rows = query.query_map(named_params! {":name_filter" : &_name_filter}, |row| {
         let id_tcgp_row: String = row.get(2).unwrap_or_default();
         let id_tcgp_str = id_tcgp_row.replace(".0", "");
         let tags_str: String = row.get(7).unwrap_or_default();
@@ -581,7 +582,7 @@ pub fn product_collection_count(
 /// Upsert a Product
 /// #Arguments
 ///    * product - product to upsert
-pub fn upsert_product(product: &SealedProduct) -> Result<(), Box<dyn std::error::Error>> {
+pub fn upsert_product(product: &SealedProduct, overwrite: Option<bool>) -> Result<(), Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
     let found = search_product_collection(0, Some(product.name.clone()), None, None, None)?;
     if found.len() == 0 {
@@ -596,14 +597,19 @@ pub fn upsert_product(product: &SealedProduct) -> Result<(), Box<dyn std::error:
                 ":count": &product.count.unwrap_or_default()
             },
         )?;
-    }else {
+    } else {
         let statement = "UPDATE collectionProducts SET count = :count WHERE name = :name";
-        let new_count = found[0].count.unwrap_or_default() + 1;
+        let count: i64;
+        if overwrite.is_some() && overwrite.unwrap() {
+            count = product.count.unwrap()
+        } else {
+            count = found[0].count.unwrap_or_default() + product.count.unwrap_or_default();
+        }
         log::debug!("Updating {}", &product.name);
         connection.execute(
             statement,
             named_params! {
-                ":count": new_count,
+                ":count": count,
                 ":name": &product.name
             },
         )?;
@@ -689,16 +695,15 @@ mod collection_sealed_tests {
     fn test_add_remove() {
         test_init();
         let product = product(Vec::new());
-        let name = product.name.clone(); 
-        upsert_product(&product).unwrap();
+        let name = product.name.clone();
+        upsert_product(&product, Some(true)).unwrap();
         let results = search_product_collection(0, Some(name.clone()), None, None, None).unwrap();
         assert!(results[0].count.unwrap() == 1);
-        upsert_product(&product).unwrap();
+        upsert_product(&product, Some(true)).unwrap();
         let results = search_product_collection(0, Some(name.clone()), None, None, None).unwrap();
         assert!(results[0].count.unwrap() == 2);
         delete_product(&product).unwrap();
         let results = search_product_collection(0, Some(name.clone()), None, None, None).unwrap();
         assert!(results.len() == 0);
     }
-
 }

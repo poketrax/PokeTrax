@@ -44,7 +44,7 @@
 	<div class="h-[calc(100vh-8rem)] w-screen overflow-hidden">
 		<div class="flex h-[calc(100vh-8rem)] w-screen overflow-auto">
 			<div class="flex-grow" />
-			<div class="grid grid-cols-2 gap-2 m-2">
+			<div class="grid h-fit grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-2 m-2">
 				{#each products as product}
 					<ProductTile {product} />
 				{/each}

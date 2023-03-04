@@ -22,6 +22,7 @@
         product.paid = paid;
         product.tags = selectedTags;
         addProductCollection(product);
+        show = false;
     }
 
 	function onCheck(event) {
