@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Tag } from "./../../lib/Collection";
+  import type { Tag } from "../../lib/Tag";
   import {
     CardCase,
     Energy,

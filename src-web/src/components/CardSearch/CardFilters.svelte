@@ -75,7 +75,7 @@
     on:input={keywordSearch}
   />
   <div class="w-2" />
-  <AutoMultiSelect options={setOptions} dataStore={selSetsStore} label="Sets" on:change={filterSets}/>
+  <AutoMultiSelect options={setOptions} dataStore={selSetsStore} class="dropdown-end" label="Sets" on:change={filterSets}/>
   <div class="w-2" />
-  <AutoMultiSelect options={rarityOptions} dataStore={selRareStore} label="Rarity" on:change={filterRarity}/>
+  <AutoMultiSelect options={rarityOptions} dataStore={selRareStore} class="dropdown-end" label="Rarity" on:change={filterRarity}/>
 </div>

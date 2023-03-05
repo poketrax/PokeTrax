@@ -1,15 +1,16 @@
 /// This Module is used interact with the collections database file.
-use crate::models::pokemon::Card;
+use crate::models::pokemon::{Card, SealedProduct};
 use crate::routes::collections::Tag;
-use crate::utils::sql_pokemon_data::POKE_DB_PATH;
 use crate::utils::shared::{get_data_dir, in_list, json_list_value};
+use crate::utils::sql_pokemon_data::POKE_DB_PATH;
 use lazy_static::lazy_static;
-use rusqlite::{Connection, Result, named_params};
+use rusqlite::{named_params, Connection, Result};
 use serde_json;
 
 static ADD_TABLE_CARD_COLLECTION: &str = "CREATE TABLE IF NOT EXISTS collectionCards (cardId TEXT, tags TEXT, variant TEXT, paid REAL, count INTEGER, grade TEXT)";
 static ADD_TABLE_PRODUCT_COLLECTION: &str = "CREATE TABLE IF NOT EXISTS collectionProducts (name TEXT, tags TEXT, paid REAL, count INTEGER)";
-static ADD_COLLECTION_TABLE: &str = "CREATE TABLE IF NOT EXISTS collections (name TEXT, color TEXT)";
+static ADD_COLLECTION_TABLE: &str =
+    "CREATE TABLE IF NOT EXISTS collections (name TEXT, color TEXT)";
 
 lazy_static! {
     pub static ref POKE_COLLECTION_DB_PATH: String =
@@ -20,19 +21,21 @@ pub fn initialize_data() {
     log::info!("Creating collection tables");
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
     connection.execute(ADD_TABLE_CARD_COLLECTION, []).unwrap();
-    connection.execute(ADD_TABLE_PRODUCT_COLLECTION, []).unwrap();
+    connection
+        .execute(ADD_TABLE_PRODUCT_COLLECTION, [])
+        .unwrap();
     connection.execute(ADD_COLLECTION_TABLE, []).unwrap();
 }
 
-/// Get all Tags for collections 
+/// Get all Tags for collections
 pub fn get_tags() -> Result<Vec<Tag>, Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
-    let mut query =connection.prepare("SELECT name, color FROM collections")?;
+    let mut query = connection.prepare("SELECT name, color FROM collections")?;
     let mut collections: Vec<Tag> = Vec::new();
     let rows = query.query_map([], |row| {
         Ok(Tag {
-            name : row.get(0)?,
-            color: row.get(1)?
+            name: row.get(0)?,
+            color: row.get(1)?,
         })
     })?;
     for row in rows {
@@ -59,13 +62,16 @@ pub fn delete_tag(collection: Tag) -> Result<(), Box<dyn std::error::Error>> {
     let tags = format!("[\"{}\"]", collection.name);
     //Find records with collection
     let number_of_cards = search_card_collection_count(None, None, None, Some(tags.clone()))?;
-    let cards = search_card_collection(0, None, None, None, Some(tags), None, Some(number_of_cards))?;
+    let cards =
+        search_card_collection(0, None, None, None, Some(tags), None, Some(number_of_cards))?;
     for mut card in cards {
         if card.tags.is_some() {
             let tags_vec = card.tags.unwrap();
             let mut new_tags: Vec<String> = Vec::new();
-            for tag in tags_vec { 
-                if tag.eq(&collection.name) == false {new_tags.push(tag)}
+            for tag in tags_vec {
+                if tag.eq(&collection.name) == false {
+                    new_tags.push(tag)
+                }
             }
             card.tags = Some(new_tags);
             upsert_card(&card)?;
@@ -194,7 +200,7 @@ pub fn search_card_collection_count(
     name_filter: Option<String>,
     exp_filter: Option<String>,
     rare_filter: Option<String>,
-    tag_filter: Option<String>
+    tag_filter: Option<String>,
 ) -> Result<i64, Box<dyn std::error::Error>> {
     let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str()).unwrap();
 
@@ -203,8 +209,7 @@ pub fn search_card_collection_count(
 
     let mut search_term = String::from("%%");
     if name_filter.is_some() {
-        search_term = format!("%{}%",name_filter.unwrap());
-
+        search_term = format!("%{}%", name_filter.unwrap());
     }
 
     let query_sql = format!(
@@ -218,8 +223,12 @@ pub fn search_card_collection_count(
         json_list_value(String::from("_collection.tags"), tag_filter)
     );
 
-    let statement = format!("SELECT count(cardID) as count FROM ({})",&query_sql);
-    let row = connection.query_row(&statement, named_params! {":searchTerm": &search_term}, |row| Ok(row.get(0)))?;
+    let statement = format!("SELECT count(cardID) as count FROM ({})", &query_sql);
+    let row = connection.query_row(
+        &statement,
+        named_params! {":searchTerm": &search_term},
+        |row| Ok(row.get(0)),
+    )?;
     match row {
         Ok(val) => return Ok(val),
         Err(e) => Err(Box::from(e)),
@@ -242,14 +251,14 @@ pub fn search_card_collection(
     rare_filter: Option<String>,
     tag_filter: Option<String>,
     sort: Option<String>,
-    limit: Option<i64>
+    limit: Option<i64>,
 ) -> Result<Vec<Card>, Box<dyn std::error::Error>> {
     let limit_str: String;
     let offset: String;
     if limit.is_none() {
         limit_str = 25.to_string();
         offset = (page.to_owned() * 25).to_string();
-    }else{
+    } else {
         let lim = limit.unwrap();
         limit_str = lim.to_string();
         offset = (i64::from(page.to_owned()) * lim).to_string();
@@ -260,8 +269,8 @@ pub fn search_card_collection(
     let attach = format!("ATTACH DATABASE '{}' AS cardDB", POKE_DB_PATH.as_str());
     log::debug!("attach : {}", attach);
     connection.execute(attach.as_str(), [])?;
-    
-    let _name_filter = format!("%{}%",name_filter.unwrap_or_default().as_str());
+
+    let _name_filter = format!("%{}%", name_filter.unwrap_or_default().as_str());
     let query_sql = format!(
         "SELECT _collection.cardId, _collection.tags, _collection.variant,
         _collection.paid, _collection.grade, _collection.count,
@@ -282,7 +291,7 @@ pub fn search_card_collection(
         &offset
     );
     //Query page
-    log::debug!("collect card search sql: {}",query_sql);
+    log::debug!("collect card search sql: {}", query_sql);
     let mut query = connection.prepare(query_sql.as_str())?;
     let rows = query
         .query_map([&_name_filter], |row| {
@@ -327,7 +336,7 @@ pub fn search_card_collection(
 }
 #[cfg(test)]
 mod collection_tests {
-    use super::{*, add_tag};
+    use super::{add_tag, *};
     use crate::models::pokemon::Card;
     use log::LevelFilter;
     use simple_logger::SimpleLogger;
@@ -420,8 +429,9 @@ mod collection_tests {
 
     #[test]
     fn test_add_tag() {
-        let tag = Tag{
-            name: String::from("col1"), color: String::from("red")
+        let tag = Tag {
+            name: String::from("col1"),
+            color: String::from("red"),
         };
         match add_tag(tag) {
             Ok(_) => assert!(true),
@@ -434,8 +444,9 @@ mod collection_tests {
 
     #[test]
     fn test_delete_tag() {
-        let tag = Tag{
-            name: String::from("col1"), color: String::from("red")
+        let tag = Tag {
+            name: String::from("col1"),
+            color: String::from("red"),
         };
         match delete_tag(tag) {
             Ok(_) => assert!(true),
@@ -448,7 +459,15 @@ mod collection_tests {
 
     #[test]
     fn search_card_collection_test() {
-        match search_card_collection(0, None, None, None, Some(String::from("[\"col2\",\"col1\"]")), None, None) {
+        match search_card_collection(
+            0,
+            None,
+            None,
+            None,
+            Some(String::from("[\"col2\",\"col1\"]")),
+            None,
+            None,
+        ) {
             Ok(val) => {
                 log::debug!("{}", serde_json::to_string_pretty(&val).unwrap());
                 assert!(true)
@@ -458,5 +477,237 @@ mod collection_tests {
                 assert!(false)
             }
         }
+    }
+}
+
+pub fn search_product_collection(
+    page: u32,
+    name_filter: Option<String>,
+    type_filter: Option<String>,
+    tag_filter: Option<String>,
+    sort: Option<String>,
+) -> Result<Vec<SealedProduct>, Box<dyn std::error::Error>> {
+    let limit = 25;
+    let limit_str = format!("{}", limit);
+    let mut products: Vec<SealedProduct> = Vec::new();
+    let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
+
+    let attach = format!("ATTACH DATABASE '{}' AS data", POKE_DB_PATH.as_str());
+    connection.execute(attach.as_str(), [])?;
+
+    let _name_filter = format!("%{}%", name_filter.unwrap_or_default());
+    let statement = format!(
+        "SELECT 
+        product.name, product.price, product.idTCGP,
+        product.expIdTCGP, product.expName, product.type, product.img, 
+        coll.tags, coll.paid, coll.count
+        FROM collectionProducts coll
+        INNER JOIN data.sealed product ON coll.name = product.name
+        WHERE product.name LIKE :name_filter
+        {}
+        {}
+        {}
+        LIMIT {}
+        OFFSET {}",
+        in_list(String::from("product.type"), &type_filter),
+        json_list_value(String::from("coll.tags"), tag_filter),
+        &sort.unwrap_or_default(),
+        &limit_str,
+        &format!("{}", (page.to_owned() * limit)),
+    );
+    //Query page
+    let mut query = connection.prepare(&statement)?;
+    let rows = query.query_map(named_params! {":name_filter" : &_name_filter}, |row| {
+        let id_tcgp_row: String = row.get(2).unwrap_or_default();
+        let id_tcgp_str = id_tcgp_row.replace(".0", "");
+        let tags_str: String = row.get(7).unwrap_or_default();
+        let tags: Vec<String> =
+            serde_json::from_str(tags_str.as_str()).expect("Failed to parse tags Array");
+        Ok(SealedProduct {
+            name: row.get(0).unwrap_or_default(),
+            price: row.get(1).unwrap_or_default(),
+            idTCGP: id_tcgp_str.parse::<i64>().unwrap_or_default(),
+            expIdTCGP: row.get(3).unwrap_or_default(),
+            expName: row.get(4).unwrap_or_default(),
+            productType: row.get(5).unwrap_or_default(),
+
+            img: row.get(6).unwrap_or_default(),
+            tags: Some(tags),
+            paid: row.get(8).unwrap_or_default(),
+            count: row.get(9).unwrap_or_default(),
+        })
+    })?;
+    for row in rows {
+        match row {
+            Ok(val) => products.push(val),
+            Err(e) => return Err(Box::from(e)),
+        }
+    }
+    Ok(products)
+}
+
+pub fn product_collection_count(
+    name_filter: Option<String>,
+    type_filter: Option<String>,
+    tag_filter: Option<String>,
+) -> Result<i64, Box<dyn std::error::Error>> {
+    let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
+    let attach = format!("ATTACH DATABASE '{}' AS data", POKE_DB_PATH.as_str());
+    connection.execute(attach.as_str(), [])?;
+
+    let _name_filter = format!("%{}%", name_filter.unwrap_or_default());
+    let query_sql = format!(
+        "SELECT 
+        product.name as name
+        FROM collectionProducts coll
+        INNER JOIN data.sealed product ON coll.name = product.name
+        WHERE product.name LIKE :searchTerm
+        {} {}",
+        in_list(String::from("product.type"), &type_filter),
+        json_list_value(String::from("coll.tags"), tag_filter)
+    );
+    let statement = format!("SELECT count(name) as count FROM ({})", &query_sql);
+    let row = connection.query_row(
+        &statement,
+        named_params! {":searchTerm": &_name_filter},
+        |row| Ok(row.get(0)),
+    )?;
+    match row {
+        Ok(val) => return Ok(val),
+        Err(e) => Err(Box::from(e)),
+    }
+}
+
+/// Upsert a Product
+/// #Arguments
+///    * product - product to upsert
+pub fn upsert_product(product: &SealedProduct, overwrite: Option<bool>) -> Result<(), Box<dyn std::error::Error>> {
+    let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
+    let found = search_product_collection(0, Some(product.name.clone()), None, None, None)?;
+    if found.len() == 0 {
+        let statement = "INSERT INTO collectionProducts (name, tags, paid, count) values (:name, :tags, :paid, :count)";
+        log::debug!("Inserting {} ", &product.name);
+        connection.execute(
+            statement,
+            named_params! {
+                ":name" : &product.name,
+                ":tags": serde_json::to_string(&product.tags).unwrap_or_default(),
+                ":paid": &product.paid.unwrap_or_default(),
+                ":count": &product.count.unwrap_or_default()
+            },
+        )?;
+    } else {
+        let statement = "UPDATE collectionProducts SET count = :count, tags = :tags WHERE name = :name";
+        let count: i64;
+        let tags: Vec<String>;
+        if overwrite.is_some() && overwrite.unwrap() {
+            count = product.count.unwrap();
+            tags = product.tags.clone().unwrap();
+        } else {
+            count = found[0].count.unwrap_or_default() + product.count.unwrap_or_default();
+            tags = found[0].tags.clone().unwrap_or_default();
+        }
+        log::debug!("Updating {}", &product.name);
+        let tag_str = serde_json::to_string(&tags)?;
+        connection.execute(
+            statement,
+            named_params! {
+                ":count": count,
+                ":tags": &tag_str,
+                ":name": &product.name
+            },
+        )?;
+    }
+    Ok(())
+}
+
+/// Delete Product
+/// #Arguments
+///    * product - product to delete
+pub fn delete_product(product: &SealedProduct) -> Result<(), Box<dyn std::error::Error>> {
+    let connection = Connection::open(POKE_COLLECTION_DB_PATH.as_str())?;
+    let statement = "DELETE FROM collectionProducts WHERE name = :name";
+    connection.execute(
+        statement,
+        named_params! {
+            ":name": &product.name
+        },
+    )?;
+    Ok(())
+}
+
+#[cfg(test)]
+mod collection_sealed_tests {
+    use super::*;
+    use crate::models::pokemon::SealedProduct;
+    use log::LevelFilter;
+    use simple_logger::SimpleLogger;
+
+    fn product(tags: Vec<String>) -> SealedProduct {
+        return SealedProduct {
+            tags: Some(tags),
+            paid: Some(1.0),
+            count: Some(1),
+            name: String::from("Pokemon GO Booster Pack"),
+            expName: String::from("name"),
+            productType: String::from("Booster Pack"),
+            expIdTCGP: String::from("name"),
+            img: String::from("name"),
+            idTCGP: 12345,
+            price: 0.0,
+        };
+    }
+
+    #[test]
+    fn test_init() {
+        SimpleLogger::new()
+            .with_level(LevelFilter::Debug)
+            .init()
+            .unwrap();
+        initialize_data()
+    }
+
+    #[test]
+    fn test_search() {
+        match search_product_collection(0, None, None, None, None) {
+            Ok(val) => {
+                log::debug!("{}", serde_json::to_string_pretty(&val).unwrap());
+                assert!(true)
+            }
+            Err(e) => {
+                println!("{}", e);
+                assert!(false)
+            }
+        }
+    }
+
+    #[test]
+    fn test_count() {
+        test_init();
+        match product_collection_count(None, None, None) {
+            Ok(val) => {
+                log::debug!("{}", val);
+                assert!(true)
+            }
+            Err(e) => {
+                println!("{}", e);
+                assert!(false)
+            }
+        }
+    }
+    #[test]
+    fn test_add_remove() {
+        test_init();
+        let product = product(Vec::new());
+        let name = product.name.clone();
+        upsert_product(&product, Some(true)).unwrap();
+        let results = search_product_collection(0, Some(name.clone()), None, None, None).unwrap();
+        assert!(results[0].count.unwrap() == 1);
+        upsert_product(&product, Some(true)).unwrap();
+        let results = search_product_collection(0, Some(name.clone()), None, None, None).unwrap();
+        assert!(results[0].count.unwrap() == 2);
+        delete_product(&product).unwrap();
+        let results = search_product_collection(0, Some(name.clone()), None, None, None).unwrap();
+        assert!(results.len() == 0);
     }
 }

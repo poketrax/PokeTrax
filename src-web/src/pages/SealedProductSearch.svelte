@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AddProductDialog from './../components/Collection/AddProductDialog.svelte';
   import ProductTile from "../components/ProductSearch/ProductTile.svelte";
   import type { SealedProduct } from "../lib/SealedProduct";
   import ProductFilters from "../components/ProductSearch/ProductFilters.svelte";
@@ -15,6 +16,7 @@
 
   let products = new Array<SealedProduct>();
   let showDialog = false;
+  let showAdd = false;
   let selectedProduct: SealedProduct = {
     name: "",
     expIdTCGP: "",
@@ -28,10 +30,16 @@
     showDialog = true;
   }
 
+  function addDialog(product: SealedProduct){
+    selectedProduct = product;
+    showAdd = true;
+  }
+
   executeProductSearch();
 </script>
 
 <ProductDialog product={selectedProduct} bind:show={showDialog}/>
+<AddProductDialog product={selectedProduct} bind:show={showAdd}/>
 <div class="flex h-20 items-center foggy">
   <ProductFilters
     {searchTermStore}
@@ -55,7 +63,7 @@
       id="card-grid"
     >
       {#each products as product}
-        <ProductTile {product} on:click={() => openDialog(product)}/>
+        <ProductTile {product} on:click={() => openDialog(product)} on:add={() => addDialog(product)}/>
       {/each}
     </div>
   </div>

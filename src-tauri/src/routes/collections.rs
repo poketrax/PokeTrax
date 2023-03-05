@@ -1,8 +1,10 @@
-use crate::models::pokemon::Card;
+use crate::models::pokemon::{Card, SealedProduct};
 use crate::routes::poke_card::CardSearch;
+use crate::routes::poke_product::{ProductSearch, ProductSearchResults};
 use crate::utils::sql_collection_data::{
     add_tag, delete_card, delete_tag, get_tags, search_card_collection,
-    search_card_collection_count, upsert_card,
+    search_card_collection_count, upsert_card, search_product_collection, 
+    product_collection_count, upsert_product, delete_product
 };
 use actix_web::{delete, error, get, put, web, HttpResponse, Responder, Result};
 use serde::{Deserialize, Serialize};
@@ -21,6 +23,7 @@ pub struct Tag {
 #[derive(Deserialize, Serialize, Clone)]
 pub struct UpsertOptions {
     tag_merge: Option<bool>,
+    overwrite: Option<bool>
 }
 
 #[put("/pokemon/tag")]
@@ -138,4 +141,41 @@ pub async fn search_cards(
         count: count,
         cards: _cards,
     }))
+}
+
+#[get("/pokemon/collection/products/{page}")]
+pub async fn search_products(
+    page: web::Path<u32>,
+    search_params: web::Query<ProductSearch>
+) -> Result<impl Responder> {
+    let products: Vec<SealedProduct>;
+    let count: i64;
+    match product_collection_count(search_params.0.name.clone(), search_params.0.types.clone(), search_params.0.tags.clone()){
+        Ok(val) => count = val,
+        Err(e) => return Err(error::ErrorBadRequest(e))
+    }
+    match search_product_collection(*page, search_params.0.name, search_params.0.types, search_params.0.tags, search_params.0.sort){
+        Ok(val) => products = val,
+        Err(e) => return Err(error::ErrorBadRequest(e))
+    }
+    Ok(web::Json(ProductSearchResults {
+        count: count,
+        products: products
+    }))
+}
+
+#[put("/pokemon/collection/product")]
+pub async fn put_product(options: web::Query<UpsertOptions>, product: web::Json<SealedProduct>) -> Result<impl Responder>{
+    match upsert_product(&product, options.0.overwrite) {
+        Ok(()) => Ok(HttpResponse::Accepted()),
+        Err(e) => Err(error::ErrorBadRequest(e)),
+    }
+}
+
+#[delete("/pokemon/collection/product")]
+pub async fn remove_product(product: web::Json<SealedProduct>) -> Result<impl Responder>{
+    match delete_product(&product) {
+        Ok(()) => Ok(HttpResponse::Accepted()),
+        Err(e) => Err(error::ErrorBadRequest(e)),
+    }
 }
