@@ -1,29 +1,33 @@
 <script lang="ts">
-	import { mdiClose } from '@mdi/js';
 	import Icon from '../Shared/Icon.svelte';
 	import { formatPrice } from '../../lib/Utils';
 	import StoreLink from '../Shared/StoreLink.svelte';
 	import type { SealedProduct } from '../../lib/SealedProduct';
-    import type { Tag } from './../../lib/Tag';
+	import { mdiClose, mdiTrashCan, mdiCheck, mdiCancel } from '@mdi/js';
+	import type { Tag } from './../../lib/Tag';
 	import { addProductCollection, tagOptionStore } from '../../lib/CollectionStore';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
 	export let product: SealedProduct;
 	export let show: boolean;
-	let tagOptions = new Array<Tag>();
+	export let edit = false;
 
-	let selectedTags = new Array<string>();
-	let paid = 0;
-	let count = 1;
+	let tagOptions = new Array<Tag>();
+	let selectedTags = product.tags ?? new Array<string>();
+	let paid = product.paid ?? 0;
+	let count = product.count ?? 1;
+	let confirm = false;
 
 	tagOptionStore.subscribe((val) => (tagOptions = val));
 
-	function addProduct() {
-        product.count = count;
-        product.paid = paid;
-        product.tags = selectedTags;
-        addProductCollection(product);
-        show = false;
-    }
+	function addProduct(overwrite?: boolean) {
+		product.count = count;
+		product.paid = paid;
+		product.tags = selectedTags;
+		addProductCollection(product, overwrite);
+		show = false;
+	}
 
 	function onCheck(event) {
 		if (event.target.checked) {
@@ -34,7 +38,7 @@
 	}
 </script>
 
-<input type="checkbox" id="dialog" class="modal-toggle" bind:checked={show}/>
+<input type="checkbox" id="dialog" class="modal-toggle" bind:checked={show} />
 <label for="dialog" class="modal cursor-pointer">
 	<label class="modal-box relative w-fit max-w-5xl overflow-hidden" for="">
 		<div>
@@ -44,10 +48,31 @@
 			>
 				<span class="text-xl">{product.name}</span>
 				<div class="grow" />
+				{#if edit}
+					<div class="btn-group">
+						<button class="btn btn-square" on:click={() => (confirm = true)}>
+							<Icon path={mdiTrashCan} class="w-6" />
+						</button>
+						{#if confirm}
+							<button
+								class="btn btn-square btn-success"
+								on:click={() => {
+									dispatch('delete');
+									confirm = false;
+								}}
+							>
+								<Icon path={mdiCheck} class="w-6" />
+							</button>
+							<button class="btn btn-square btn-error" on:click={() => (confirm = false)}>
+								<Icon path={mdiCancel} class="w-6" />
+							</button>
+						{/if}
+					</div>
+				{/if}
 				<button
 					id={`close-card-dialog`}
 					aria-label="Close Card Dialog"
-					class="btn rounded-full"
+					class="btn btn-square"
 					on:click={() => {
 						show = false;
 					}}
@@ -129,7 +154,11 @@
 						show = false;
 					}}>Cancel</button
 				>
-				<button class="btn" on:click={addProduct}>Add</button>
+				{#if edit}
+					<button class="btn" on:click={() => addProduct(true)}>Save</button>
+				{:else}
+					<button class="btn" on:click={()=> addProduct(false)}>Add</button>
+				{/if}
 			</div>
 		</div>
 	</label>

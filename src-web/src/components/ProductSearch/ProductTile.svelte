@@ -5,12 +5,11 @@
 	import type { SealedProduct } from '../../lib/SealedProduct';
 	import StoreLink from '../Shared/StoreLink.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { mdiPlus, mdiTrashCan, mdiCheck, mdiCancel } from '@mdi/js';
+	import { mdiPlus, mdiPencil } from '@mdi/js';
 	import Icon from '../Shared/Icon.svelte';
 	import CountControl from '../Collection/CountControl.svelte';
 
 	export let product: SealedProduct;
-	let confirm = false;
 	const dispatch = createEventDispatcher();
 
 	$: total = product.count * product.price;
@@ -55,25 +54,9 @@
 					<Icon path={mdiPlus} class="w-6" />
 				</button>
 			{:else}
-				<div class="btn-group">
-					<button class="btn btn-square" on:click={() => (confirm = true)}>
-						<Icon path={mdiTrashCan} class="w-6" />
-					</button>
-					{#if confirm}
-						<button
-							class="btn btn-square btn-success"
-							on:click={() => {
-								dispatch('delete');
-								confirm = false;
-							}}
-						>
-							<Icon path={mdiCheck} class="w-6" />
-						</button>
-						<button class="btn btn-square btn-error" on:click={() => (confirm = false)}>
-							<Icon path={mdiCancel} class="w-6" />
-						</button>
-					{/if}
-				</div>
+				<button class="btn btn-circle" on:click={() => dispatch('edit')}>
+					<Icon path={mdiPencil} class="w-6"/>
+				</button>
 			{/if}
 		</div>
 		{#if product.paid}

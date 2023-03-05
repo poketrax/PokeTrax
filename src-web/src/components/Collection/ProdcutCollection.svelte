@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SealedProduct } from 'src/lib/SealedProduct';
+	import { SealedProduct } from '../../lib/SealedProduct';
 	import ProductTile from '../ProductSearch/ProductTile.svelte';
 	import {
 		collectionView,
@@ -7,25 +7,35 @@
 		selectedTagsStore,
 		productSearchTermStore,
 		productResultStore,
-		removeProdcutCollection,
+		removeProdcutCollection
 	} from './../../lib/CollectionStore';
+	import AddProductDialog from './AddProductDialog.svelte';
 	import CollectionToggle from './CollectionToggle.svelte';
 	import TagSelect from './TagSelect.svelte';
 
 	let view = 'Cards';
 	let products = new Array<SealedProduct>();
 	let searchTerm = '';
+	let selectedProduct = new SealedProduct('', '', '');
+	let showEditDialog = false;
+
 	collectionView.subscribe((val) => (view = val));
 	productResultStore.subscribe((prods) => {
 		products = prods.products;
 	});
+
+	function openDialog(product: SealedProduct) {
+		console.log(`open ${product.name}`);
+		selectedProduct = product;
+		showEditDialog = true;
+	}
 
 	function keywordSearch() {
 		productSearchTermStore.set(searchTerm);
 		executeProductSearch();
 	}
 
-	function deleteProd(product: SealedProduct) {	
+	function deleteProd(product: SealedProduct) {
 		removeProdcutCollection(product);
 	}
 
@@ -33,6 +43,7 @@
 </script>
 
 {#if view === 'Products'}
+	<AddProductDialog product={selectedProduct} bind:show={showEditDialog} edit={true} />
 	<div class="flex p-2 foggy">
 		<input
 			id="search"
@@ -52,9 +63,13 @@
 			<div class="flex-grow" />
 			<div class="grid h-fit grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-2 m-2">
 				{#each products as product}
-					<ProductTile {product} on:delete={() => deleteProd(product)}/>
+					<ProductTile
+						{product}
+						on:delete={() => deleteProd(product)}
+						on:edit={() => openDialog(product)}
+					/>
 				{/each}
-			</div> 
+			</div>
 			<div class="flex-grow" />
 		</div>
 	</div>
