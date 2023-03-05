@@ -698,7 +698,7 @@ pub fn product_count(name_filter: Option<String>, type_filter: Option<String>, d
     );
     let mut query = connection.prepare(&statement)?;
     //Determine count
-    let row = query.query_row([_name_filter], |row| Ok(row.get(0)))?;
+    let row = query.query_row([&_name_filter], |row| Ok(row.get(0)))?;
     match row {
         Ok(val) => return Ok(val),
         Err(e) => Err(Box::from(e)),
@@ -751,7 +751,7 @@ pub fn product_search_sql(
     let statement = format!(
         "SELECT name, price, idTCGP, expIdTCGP, expName, type, img
         FROM sealed 
-        WHERE name LIKE ?1
+        WHERE name LIKE :name
         {}
         {}
         LIMIT {}
@@ -763,7 +763,7 @@ pub fn product_search_sql(
     );
     //Query page
     let mut query = connection.prepare(&statement)?;
-    let rows = query.query_map([_name_filter], |row| {
+    let rows = query.query_map(named_params!{":name" : &_name_filter}, |row| {
         let id_tcgp_row : String = row.get(2).unwrap_or_default();
         let id_tcgp_str = id_tcgp_row.replace(".0", "");
         Ok(SealedProduct {
