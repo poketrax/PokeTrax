@@ -23,7 +23,7 @@
   const dispatch = createEventDispatcher();
 
   export let card: Card;
-  export let id: number;
+  export let alt: string;
   export let edit = false;
   export let collection = false;
   export let revFoil = "";
@@ -38,7 +38,7 @@
 </script>
 
 <CardCase
-  {id}
+  id={1}
   class="hover:shadow-inner w-[300px] pt-4 truncate foggy"
   labelBG={`assets/revholo/${formatEnergy(card)}-rev.png`}
   title={card.name}
@@ -68,7 +68,7 @@
       {/if}
     {:else if edit}
       <button
-        id={`add-card-button${id}`}
+        id={`add-card-button${alt}`}
         aria-label="Add Card to Collection"
         class={`btn btn-circle h-12 w-12 shadow-lg mt-2 mb-2`}
         on:click={(event) => dispatch("clickEdit", event)}
@@ -77,7 +77,7 @@
       </button>
     {:else}
       <button
-        id="{`add-card-button${id}`}A"
+        id="{`add-card-button${alt}`}A"
         aria-label="Add Card to Collection"
         class="btn btn-circle h-12 w-12 shadow-lg mt-2 mb-2 indicator"
         on:click={(event) => dispatch("clickAdd", event)}
@@ -101,7 +101,7 @@
     cardImg={`${baseURL}/pokemon/card_img/${encodeURI(
       card.expName
     )}/${encodeURI(card.cardId)}`}
-    {id}
+    id={alt}
   />
   <img
     slot="footer1"

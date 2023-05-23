@@ -103,7 +103,7 @@
                 : ""}
               on:clickImage={() => openCardDialog(card)}
               tags={getTagFromCard(card.tags)}
-              id={i}
+              alt={i}
             />
           {/each}
         </div>

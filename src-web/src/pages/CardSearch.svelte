@@ -95,7 +95,7 @@
           {#each results.cards as card, i}
             <PokeCase
               {card}
-              id={i}
+              alt={i}
               on:clickImage={() => openCardDialog(card)}
               on:clickAdd={() => openAddSingleDialog(card)}
             />
