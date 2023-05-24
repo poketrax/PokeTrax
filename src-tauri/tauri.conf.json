@@ -62,7 +62,7 @@
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ1NjU4NTkxQjg0REVDNTIKUldSUzdFMjRrWVZsMWNoUGlOMFN4bUZoem8zQnpiM21XYnkrVjN3Z0FxL2VFTkRzSTZVNFlIM2YK",
       "endpoints": [
-        "https://poketrax.github.io/PokeTrax/update.json"
+        "https://github.com/poketrax/PokeTrax/releases/latest/download/latest.json"
       ]
     },
     "windows": [

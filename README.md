@@ -91,11 +91,5 @@ poketrax -h
 ### Process for Updating Version
 
    1. Make sure src-tauri/tauri.conf.json version matches Release.
-   1. Create Release in Github 
+   1. Create Release in Github
    1. Action will produce artifacts
-   1. Run 
-      ```sh
-       cd src-pages
-       npm run build-prod
-      ```
-    1. Commit document changes to update update.json.
