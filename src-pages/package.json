@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build --base=./",
     "build-test": "vite build --base=/poketrax-pages/",
-    "build-prod": "vite build --base=/PokeTrax/",
-    "build-update-file": " node updater.js",
+    "build-prod": "vite build --base=/PokeTrax/ && node updater.js",
+    "build-update-file": "node updater.js",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
