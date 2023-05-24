@@ -91,7 +91,6 @@ pub async fn series() -> Result<impl Responder> {
     Ok(web::Json(_series))
 }
 
-
 /// Get series via name
 #[get("/pokemon/series/{name}")]
 pub async fn series_by_name(name: web::Path<String>) -> Result<impl Responder> {
@@ -137,12 +136,12 @@ mod series_tests {
   Rarities
 --------------------------------------------------------- */
 
-/// Get rarities 
+/// Get rarities
 #[get("/pokemon/card/rarities")]
 pub async fn rarities() -> Result<impl Responder> {
     match get_rarities(None) {
-        Ok(rarities) => { Ok(web::Json(rarities))},
-        Err(e) => { Err(error::ErrorInternalServerError(e))},
+        Ok(rarities) => Ok(web::Json(rarities)),
+        Err(e) => Err(error::ErrorInternalServerError(e)),
     }
 }
 
@@ -201,12 +200,16 @@ pub async fn card_search_helper(
     } else if order.eq("dateDSC") {
         sort = String::from("ORDER BY datetime(releaseDate) DESC");
     } else {
-        sort = String::from("");
+        sort = String::from("ORDER BY datetime(releaseDate) DESC");
     }
     let count: i64;
 
-    match card_count(&Some(name_filter.clone()), &search_params.expansions,&search_params.rarities, &db_path)
-    {
+    match card_count(
+        &Some(name_filter.clone()),
+        &search_params.expansions,
+        &search_params.rarities,
+        &db_path,
+    ) {
         Ok(val) => count = val,
         Err(e) => return Err(e),
     }
@@ -217,7 +220,8 @@ pub async fn card_search_helper(
         search_params.expansions.clone(),
         search_params.rarities.clone(),
         Some(sort),
-        db_path.clone());
+        db_path.clone(),
+    );
     match search {
         Ok(val) => _cards = val,
         Err(e) => return Err(e),
@@ -237,8 +241,8 @@ pub async fn card_search(
     search_params: web::Query<CardSearch>,
 ) -> Result<impl Responder> {
     match card_search_helper(*page, search_params.0, None).await {
-        Ok(results) => {Ok(web::Json(results))},
-        Err(e) => {Err(error::ErrorBadRequest(e))}
+        Ok(results) => Ok(web::Json(results)),
+        Err(e) => Err(error::ErrorBadRequest(e)),
     }
 }
 
@@ -273,5 +277,3 @@ mod card_search_tests {
         assert!(results.count == 1);
     }
 }
-
-
