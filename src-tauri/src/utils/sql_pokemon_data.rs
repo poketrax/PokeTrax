@@ -449,7 +449,7 @@ pub fn card_search_sql(
         &name_filter.unwrap_or_default(),
         in_list(String::from("expName"), &exp_filter),
         in_list(String::from("rarity"), &rare_filter),
-        &sort.unwrap_or_default(),
+        sort.unwrap_or_default(),
         &format!("{}", limit),
         &format!("{}", (page.to_owned() * limit))
     );
