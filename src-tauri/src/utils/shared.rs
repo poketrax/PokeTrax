@@ -55,7 +55,8 @@ pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
     if res.status() == reqwest::StatusCode::NOT_FOUND {
         return Err(String::from("404 error pulling data"));
     } else {
-        let mut file = fs::File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
+        let mut file =
+            fs::File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
         let mut stream = res.bytes_stream();
         while let Some(item) = stream.next().await {
             let chunk = item.or(Err(format!("Error while downloading file")))?;
@@ -79,6 +80,18 @@ pub async fn get_static_resources() {
     }
 }
 
+pub fn sort_sql(query_param: &str) -> String {
+    match query_param {
+        "name" => return String::from("ORDER BY name ASC"),
+        "setNumber" => return String::from("ORDER BY expCardNumber ASC"),
+        "pokedex" => return String::from("ORDER BY pokedex ASC"),
+        "priceASC" => return String::from("ORDER BY price ASC"),
+        "priceDSC" => return String::from("ORDER BY price DESC"),
+        "dateASC" => return String::from("ORDER BY datetime(releaseDate) ASC"),
+        "dateDSC" => return String::from("ORDER BY datetime(releaseDate) DESC"),
+        _ => return String::from("ORDER BY datetime(releaseDate) DESC"),
+    }
+}
 /// SQL util to search for a value in a JSON array value uses json functions Many to Many
 /// # Arguments
 ///    * col_name - name of the column that is a json list

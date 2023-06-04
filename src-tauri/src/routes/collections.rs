@@ -1,6 +1,7 @@
 use crate::models::pokemon::{Card, SealedProduct};
 use crate::routes::poke_card::CardSearch;
 use crate::routes::poke_product::{ProductSearch, ProductSearchResults};
+use crate::utils::shared::sort_sql;
 use crate::utils::sql_collection_data::{
     add_tag, delete_card, delete_tag, get_tags, search_card_collection,
     search_card_collection_count, upsert_card, search_product_collection, 
@@ -115,6 +116,7 @@ pub async fn search_cards(
     let count;
     let tag_str = search_params.0.tags.clone().unwrap_or_default();
     let _tags: String = urlencoding::decode(&tag_str).unwrap().into();
+    let sort: String = sort_sql(&search_params.0.sort.unwrap_or_default());
 
     match search_card_collection_count(
         search_params.0.name.clone(),
@@ -131,7 +133,7 @@ pub async fn search_cards(
         search_params.0.expansions,
         search_params.0.rarities,
         Some(_tags),
-        search_params.0.sort,
+        Some(sort),
         None,
     ) {
         Ok(val) => _cards = val,
@@ -149,12 +151,13 @@ pub async fn search_products(
     search_params: web::Query<ProductSearch>
 ) -> Result<impl Responder> {
     let products: Vec<SealedProduct>;
+    let sort: String = sort_sql(&search_params.0.sort.unwrap_or_default());
     let count: i64;
     match product_collection_count(search_params.0.name.clone(), search_params.0.types.clone(), search_params.0.tags.clone()){
         Ok(val) => count = val,
         Err(e) => return Err(error::ErrorBadRequest(e))
     }
-    match search_product_collection(*page, search_params.0.name, search_params.0.types, search_params.0.tags, search_params.0.sort){
+    match search_product_collection(*page, search_params.0.name, search_params.0.types, search_params.0.tags, Some(sort)){
         Ok(val) => products = val,
         Err(e) => return Err(error::ErrorBadRequest(e))
     }

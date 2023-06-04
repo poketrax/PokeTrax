@@ -1,4 +1,5 @@
 use crate::models::pokemon::{Card, Expantion, Series};
+use crate::utils::shared::sort_sql;
 use crate::utils::sql_pokemon_data::{
     card_count, card_search_sql, get_expansion, get_expansions, get_rarities, get_series,
     get_series_list,
@@ -184,24 +185,7 @@ pub async fn card_search_helper(
     let order = urlencoding::decode(search_params.sort.as_deref().unwrap_or_default())
         .expect("UTF-8")
         .to_string();
-    let sort: String;
-    if order.eq("name") {
-        sort = String::from("ORDER BY name ASC");
-    } else if order.eq("setNumber") {
-        sort = String::from("ORDER BY expCardNumber ASC");
-    } else if order.eq("pokedex") {
-        sort = String::from("ORDER BY pokedex ASC");
-    } else if order.eq("priceASC") {
-        sort = String::from("ORDER BY price ASC");
-    } else if order.eq("priceDSC") {
-        sort = String::from("ORDER BY price DESC");
-    } else if order.eq("dateASC") {
-        sort = String::from("ORDER BY datetime(releaseDate) ASC");
-    } else if order.eq("dateDSC") {
-        sort = String::from("ORDER BY datetime(releaseDate) DESC");
-    } else {
-        sort = String::from("ORDER BY datetime(releaseDate) DESC");
-    }
+    let sort: String = sort_sql(&order);
     let count: i64;
 
     match card_count(

@@ -1,4 +1,4 @@
-use crate::models::pokemon::SealedProduct;
+use crate::{models::pokemon::SealedProduct, utils::shared::sort_sql};
 use crate::utils::sql_pokemon_data;
 use actix_web::{error, get, web, Responder, Result};
 use serde::{Deserialize, Serialize};
@@ -32,17 +32,7 @@ pub async fn product_search(
     let order = urlencoding::decode(search_params.sort.as_deref().unwrap_or_default())
         .expect("UTF-8")
         .to_string();
-    let sort: String;
-    if order.eq("name") {
-        sort = String::from("ORDER BY name ASC");
-    } else if order.eq("priceASC") {
-        sort = String::from("ORDER BY price ASC");
-    } else if order.eq("priceDSC") {
-        sort = String::from("ORDER BY price DESC");
-    } else {
-        sort = String::from("");
-    }
-
+    let sort: String = sort_sql(&order);
     let count: i64;
 
     match sql_pokemon_data::product_count(Some(name_filter.clone()), search_params.0.types.clone(), None) {
