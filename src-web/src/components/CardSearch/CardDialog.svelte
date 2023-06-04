@@ -9,7 +9,7 @@
 	import Icon from '../Shared/Icon.svelte';
 	import { formatDate, baseURL } from '../../lib/Utils';
 	import type { Card } from '../../lib/Card';
-	import { getPriceChartData } from '../../lib/CardSearchStore';
+	import { getEbayCardPrices, getPriceChartData } from '../../lib/CardSearchStore';
 	import {
 		formatEnergy,
 		formatPrice,
@@ -29,6 +29,7 @@
 
 	let tagStore = writable(card.tags);
 	let save = false;
+	let price = card.price;
 	let chartData: any[];
 	let expNum: string = '';
 
@@ -36,6 +37,12 @@
 	$: getPriceChartData(card).then((val) => {
 		chartData = val;
 	});
+	$: if(card.price === 0){
+		getEbayCardPrices(card)
+		.then(value => {
+			price = value[0].rawPrice;
+		})
+	}
 
 	$: formatExpansionNumber(card.expCardNumber, card.expName).then((val) => (expNum = val));
 
@@ -115,7 +122,7 @@
 				<div class="ml-2">
 					<div class="flex">
 						<div class="grow" />
-						<span>Market Price: {formatPrice(card.price)}</span>
+						<span>Market Price: {formatPrice(price)}</span>
 						<div class="w-2" />
 					</div>
 					<div class="flex">

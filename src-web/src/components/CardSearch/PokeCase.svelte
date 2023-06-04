@@ -8,6 +8,7 @@
 	import type { Card } from '../../lib/Card';
 	import { mdiPlus, mdiPencil, mdiCheck } from '@mdi/js';
 	import { cardInCollection } from '../../lib/CollectionStore';
+	import { getEbayCardPrices } from '../../lib/CardSearchStore';
 
 	const dispatch = createEventDispatcher();
 
@@ -20,9 +21,17 @@
 
 	let grade: Grade = null;
 	let inCollection = false;
+	let price: number = card.price;
+
 	$: cardInCollection(card).then((val) => (inCollection = val));
 	$: if (card) {
 		grade = Grade.parseGrade(card.grade ?? '');
+	}
+	$: if(card.price === 0){
+		getEbayCardPrices(card)
+		.then(value => {
+			price = value[0].rawPrice;
+		})
 	}
 </script>
 
@@ -96,7 +105,7 @@
 		src={`${baseURL}/pokemon/expansion/symbol/${encodeURI(card.expName)}`}
 		alt={card.expName}
 	/>
-	<span slot="footer2">{formatPrice(card.price)}</span>
+	<span slot="footer2">{formatPrice(price)}</span>
 	<span slot="footer3">{card.expCardNumber}</span>
 	<PokeRarity
 		slot="footer4"
