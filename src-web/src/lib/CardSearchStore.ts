@@ -78,7 +78,7 @@ export function initCardStore() {
 }
 
 async function statusLoop() {
-	let loop = timer(0, 300);
+	let loop = timer(0, 3000);
 	let sub = loop.subscribe(async (_) => {
 		let resp = await fetch(`${baseURL}/meta/db_status`);
 		let status: DbState = await resp.json();
