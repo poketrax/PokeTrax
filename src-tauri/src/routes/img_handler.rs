@@ -36,8 +36,11 @@ async fn card_img(req: HttpRequest) -> Result<impl Responder> {
     let _id: String = req.match_info().query("id").parse()?;
     let id: String = urlencoding::decode(&_id).unwrap_or_default().into_owned();
     //make sure exp directory is their
-    let exp_path = format!("{}{}", CARD_IMG_PATH.as_str(), _exp);
-    create_dir_all(exp_path).unwrap();
+    let exp_path_str = format!("{}{}", CARD_IMG_PATH.as_str(), _exp);
+    let exp_path = Path::new(&exp_path_str);
+    if exp_path.exists() {
+        create_dir_all(exp_path)?;
+    }
     //get Ready to pull or save file
     let path_name = format!("{}{}/{}{}", CARD_IMG_PATH.as_str(), _exp, id, ".jpg");
     let github_path = format!(
