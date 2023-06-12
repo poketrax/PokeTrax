@@ -113,7 +113,7 @@ async fn start_rest_api() -> std::io::Result<()> {
             
     })
     .bind(("127.0.0.1", PORT))?
-    .workers(2)
+    .workers(6)
     .run();
     // Send server handle back to the main thread
     let _ = tx.send(server.handle());
