@@ -37,10 +37,10 @@ async fn card_img(req: HttpRequest) -> Result<impl Responder> {
     let id: String = urlencoding::decode(&_id).unwrap_or_default().into_owned();
     //make sure exp directory is their
     let exp_path_str = format!("{}{}", CARD_IMG_PATH.as_str(), _exp);
+    
     let exp_path = Path::new(&exp_path_str);
-    if exp_path.exists() {
-        create_dir_all(exp_path)?;
-    }
+    create_dir_all(exp_path)?;
+
     //get Ready to pull or save file
     let path_name = format!("{}{}/{}{}", CARD_IMG_PATH.as_str(), _exp, id, ".jpg");
     let github_path = format!(
@@ -55,14 +55,14 @@ async fn card_img(req: HttpRequest) -> Result<impl Responder> {
     } else {
         //Try to pull card and cache it
         match sql_pokemon_data::get_card(&id, None) {
-            Ok(card) => match shared::download_file(&github_path, path_name.as_str()).await {
+            Ok(card) => match shared::download_file_limit(&github_path, path_name.as_str(), 2000).await {
                 Ok(()) => {
                     log::debug!("Downloading Card Img from GitHub");
                     Ok(img_response(&path_name).await?)
                 }
                 Err(e) => {
                     log::warn!("Failed to download img from GitHub : {}\n{}", card.img, e);
-                    match shared::download_file(card.img.as_str(), path_name.as_str()).await {
+                    match shared::download_file_limit(card.img.as_str(), path_name.as_str(), 2000).await {
                         Ok(()) => {
                             log::debug!("Downloading Card Img from Soruce");
                             Ok(img_response(&path_name).await?)

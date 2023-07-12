@@ -67,6 +67,17 @@ pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
     }
 }
 
+pub async fn download_file_limit(url: &str, path: &str, floor: u64) -> Result<(), Box<dyn std::error::Error>> {
+  download_file(url, path).await?;
+  let metadata = fs::metadata(path)?;
+  let size = metadata.len();
+  if size < floor {
+    fs::remove_file(path)?;
+    return Err(Box::from("Image too small will try again soon"));
+  }
+  Ok(())
+}
+
 /// Download static resources from the web
 pub async fn get_static_resources() {
     let file_name = format!("{}/pokemon-back.png", get_data_dir());
