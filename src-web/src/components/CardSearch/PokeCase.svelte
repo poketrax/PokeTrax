@@ -21,7 +21,7 @@
 
 	let grade: Grade = null;
 	let inCollection = false;
-	let price: number = card.price;
+	let price: string = "$0";
 
 	$: cardInCollection(card).then((val) => (inCollection = val));
 	$: if (card) {
@@ -105,7 +105,7 @@
 		src={`${baseURL}/pokemon/expansion/symbol/${encodeURI(card.expName)}`}
 		alt={card.expName}
 	/>
-	<span slot="footer2">{formatPrice(price)}</span>
+	<span slot="footer2">{price}</span>
 	<span slot="footer3">{card.expCardNumber}</span>
 	<PokeRarity
 		slot="footer4"
