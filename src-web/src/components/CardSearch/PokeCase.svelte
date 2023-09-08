@@ -30,7 +30,7 @@
 	$: if(card.price === 0){
 		getEbayCardPrices(card)
 		.then(value => {
-			price = value[0].rawPrice;
+			price = formatPrice(value[0].rawPrice);
 		})
 	}
 </script>
