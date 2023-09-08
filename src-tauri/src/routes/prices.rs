@@ -59,8 +59,11 @@ async fn pull_tcgp_data(id: u32) -> Result<Vec<TcgpPrice>, Box<dyn std::error::E
         id
     );
     let tcgp_res: Value = reqwest::get(data_url).await?.json().await?;
-
-    for tcp_price in tcgp_res["result"].as_array().unwrap() {
+    let results = tcgp_res["result"].as_array();
+    if results.is_none() {
+      return Ok(prices);
+    }
+    for tcp_price in results.unwrap() {
         let date = tcp_price["date"].as_str().unwrap();
         for variant in tcp_price["variants"].as_array().unwrap() {
             let price = TcgpPrice {
