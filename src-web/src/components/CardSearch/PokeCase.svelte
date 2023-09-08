@@ -27,10 +27,10 @@
 	$: if (card) {
 		grade = Grade.parseGrade(card.grade ?? '');
 	}
-	$: if(card.price === 0) {
+	$: if(card.price === 0){
 		getEbayCardPrices(card)
 		.then(value => {
-			price = formatPrice(value[value.length - 1].rawPrice);
+			price = value[0].rawPrice;
 		})
 	}
 </script>
