@@ -1,4 +1,4 @@
-use crate::models::pokemon::{Card, SealedProduct};
+use crate::models::pokemon::{Card, SealedProduct, TcgpListItem};
 use crate::routes::poke_card::CardSearch;
 use crate::routes::poke_product::{ProductSearch, ProductSearchResults};
 use crate::utils::shared::sort_sql;
@@ -143,6 +143,42 @@ pub async fn search_cards(
         count: count,
         cards: _cards,
     }))
+}
+
+#[get("/pokemon/collection/cards/tcpg/list")]
+pub async fn tcpg_list(
+  search_params: web::Query<CardSearch>,
+) -> Result<impl Responder> {
+  let mut tcgp_list: Vec<TcgpListItem> = Vec::new();
+  let mut _cards: Vec<Card>;
+  let tag_str = search_params.0.tags.clone().unwrap_or_default();
+  let _tags: String = urlencoding::decode(&tag_str).unwrap().into();
+  let sort: String = sort_sql(&search_params.0.sort.unwrap_or_default());
+
+  match search_card_collection(
+      0,
+      search_params.0.name,
+      search_params.0.expansions,
+      search_params.0.rarities,
+      Some(_tags),
+      Some(sort),
+      Some(100),
+  ) {
+      Ok(val) => _cards = val,
+      Err(e) => return Err(error::ErrorBadRequest(e)),
+  }
+  for card in _cards {
+    let count;
+    if card.count.is_some() {
+      count = card.count.unwrap();
+    }else {
+      count = 1
+    }
+    tcgp_list.push(
+      TcgpListItem { quantity: count, name: card.name, code: card.expCodeTCGP, cardid: card.expCardNumber }
+    )
+  }
+  Ok(web::Json(tcgp_list))
 }
 
 #[get("/pokemon/collection/products/{page}")]

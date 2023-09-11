@@ -80,6 +80,7 @@ async fn start_rest_api() -> std::io::Result<()> {
             .service(collections::search_products)
             .service(collections::remove_product)
             .service(collections::put_product)
+            .service(collections::tcpg_list)
             
             .service(meta::init)
             .service(meta::get_status)

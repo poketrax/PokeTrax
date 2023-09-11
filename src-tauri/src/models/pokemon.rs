@@ -33,6 +33,16 @@ pub struct Card{
 #[derive(Serialize)]
 #[derive(Deserialize)]
 #[allow(non_snake_case)]
+pub struct TcgpListItem{
+  pub quantity: i64,
+  pub name: String,
+  pub code: String,
+  pub cardid: String 
+}
+
+#[derive(Serialize)]
+#[derive(Deserialize)]
+#[allow(non_snake_case)]
 pub struct Expantion{
     pub name: String,
     pub series: String,
