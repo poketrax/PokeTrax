@@ -6,7 +6,7 @@
   import "@carbon/charts/styles.css";
   import { add_classes } from "svelte/internal";
 
-  fetch(`https://api.github.com/repos/poketrax/pokepull/releases`)
+  fetch(`https://api.github.com/repos/poketrax/pokedata/releases`)
     .then((response) => response.json())
     .then((data) => {
       let stats = [];
