@@ -23,6 +23,13 @@
 	let inCollection = false;
 	let price: string = "$0";
 
+  $: if(card.price === 0){
+		getEbayCardPrices(card)
+		.then(value => {
+			price = formatPrice(value[0].rawPrice);
+		})
+	}
+
 	$: cardInCollection(card).then((val) => (inCollection = val));
 	$: if (card) {
 		grade = Grade.parseGrade(card.grade ?? '');
